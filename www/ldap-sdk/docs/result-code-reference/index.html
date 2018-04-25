@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<!-- start coded_template: id:2099975582 path:generated_layouts/2099975562.html -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]--><!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]--><!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]--><!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="Ping Identity">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+<!-- UPDATE PAGE TITLE HERE -->
+    <title>UnboundID LDAP SDK for Java Documentation</title>
+    <link rel="shortcut icon" href="//cdn2.hubspot.net/hub/405650/file-1005453378-ico/images/favicon.ico?t=1416511326909">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <link href="../css/public_common.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/style_ldap.min.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://static.hsappstatic.net/content_shared_assets/static-1.3864/js/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,500,300" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Exo:200,300,400,500,700,800" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  </head>
+  <body class="  hs-content-id-1917259562 hs-site-page page hs-content-path-getting-started-with-ldap hs-content-name-ldapcom-10-getting-started-with-ldap  " style="">
+    <div class="header-container-wrapper">
+    <div class="header-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+        <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell interior" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-global_group " style="" data-widget-type="global_group" data-x="0" data-w="12">
+              <div class="header">
+                <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div id="header" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+                      <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+                        <div class="row-fluid ">
+                          <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                            <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                            <div class="row-fluid ">
+                              <div class="span12 widget-span widget-type-cell nav_wrapper" style="" data-widget-type="cell" data-x="0" data-w="12">
+                              <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                                <div class="row-fluid ">
+                                  <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-menu nav_primary container" style="" data-widget-type="menu" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+                                          <span id="hs_cos_wrapper_module_14141041471997021" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_menu" style="" data-hs-cos-general-type="widget" data-hs-cos-type="menu">
+                                            <div id="hs_menu_wrapper_module_14141041471997021" class="hs-menu-wrapper active-branch no-flyouts hs-menu-flow-horizontal" data-sitemap-name="ldap">
+                                             <ul class=" active-branch">
+                                                <li class="hs-menu-item hs-menu-depth-1 active hs-item-has-children active-branch"><a href="https://www.ldap.com/getting-started-with-ldap">Getting Started with LDAP</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/developing-clients-apps">Developing Clients &amp; Apps</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/ldap-specs">LDAP Specs</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/blog">Blog</a></li>
+                                             </ul>
+                                            </div>
+                                          </span>
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+<!-- Hide the UnboundID-specific social links
+                                          <span id="hs_cos_wrapper_module_141589903233513879" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html">
+                                            <a href="http://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+                                            <a href="http://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+                                            <a href="http://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+                                            <a href="http://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a>
+                                          </span>
+ -->
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                </div><!--end widget-span -->
+                              </div><!--end row-->
+                            </div><!--end row-wrapper -->
+                          </div><!--end widget-span -->
+                        </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+            </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div>
+      </div><!--end widget-span -->
+    </div><!--end row-->
+  </div><!--end row-wrapper -->
+          <div class="row-fluid-wrapper row-depth-1 row-number-3 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell texture_bg" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span9 widget-span widget-type-header header" style="" data-widget-type="header" data-x="0" data-w="9">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_14159041779443715" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_header" style="" data-hs-cos-general-type="widget" data-hs-cos-type="header">
+<!-- UPDATE PAGE HEADER HERE -->
+                          <h1>UnboundID LDAP SDK for Java Documentation</h1>
+                        </span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                    <div class="span3 widget-span widget-type-cell logo" style="" data-widget-type="cell" data-x="9" data-w="3">
+
+                      <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget ldap_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_ldap_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/" id="hs-link-ldap_logo" style="border-width:0px;border:0px;"><img src="../images/LDAPCOM_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="LDAPCOM_logo.jpg" title="LDAPCOM_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget unboundid_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_unboundid_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java" id="hs-link-unboundid_logo" style="border-width:0px;border:0px;"><img src="../images/UNBOUNDID_sponsored_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="UNBOUNDID_sponsored_logo.jpg" title="UNBOUNDID_sponsored_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end header -->
+  </div><!--end header wrapper -->
+
+  <div class="body-container-wrapper">
+    <div class="body-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell torso" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span8 widget-span widget-type-cell content" style="" data-widget-type="cell" data-x="0" data-w="8">
+                    <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text intro" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_141634972542617336" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- ENTER INTRO TEXT HERE -->
+<!-- <p> Intro Text </p> -->
+                            </span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text main" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_14159041873173857" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- BODY CONTENT GOES HERE -->
+              <div align="right">
+                <a href="../index.html" style="font-size: 85%">Product Information</a>
+              </div>
+
+              <h2>LDAP Result Code Reference</h2>
+
+              <p>
+                Whenever an LDAP directory server completes processing for an operation, it sends a response message back to the client with information about that operation. This response can help the client understand whether the operation succeeded or failed, but it may also provide additional information with more specific details about the nature of that success or failure. That response message includes a numeric result code, which is a basic indication of whether the operation succeeded, and to help categorize the reason for the failure.
+              </p>
+
+              <p>
+                Although each result code has a name in addition to its numeric value, it’s not always clear when a given result code might be used and what the potential causes might be. This reference tries to address that.  It presents information collected from a number of different specifications, especially <a href="../specs/rfc4511.txt" target="_blank">RFC 4511</a> (the core LDAPv3 protocol reference) and <a href="../specs/draft-just-ldapv3-rescodes-02.txt" target="_blank">draft-just-ldapv3-rescodes</a> (an IETF draft that served as an earlier version of a result code reference), along with information gleaned from years of experience working with LDAP.
+              </p>
+
+              <ul>
+                <li>
+                  <a href="response-elements.html">The Elements of an LDAP Operation Response Message</a>
+                </li>
+
+                <li>
+                  <a href="core-ldapv3-result-codes.html">Core LDAPv3 Result Codes</a>
+                </li>
+
+                <li>
+                  <a href="other-server-side-result-codes.html">Other Server-Side Result Codes</a>
+                </li>
+
+                <li>
+                  <a href="client-side-result-codes.html">Client-Side Result Codes</a>
+                </li>
+              </ul>
+
+              <p></p>
+              <h3>Table of LDAP Result Codes</h3>
+
+              <p>The links above provide information about LDAP responses and result codes organized into logical sections.  But if you’re looking for a specific result code, the following table can take you directly to the discussion of that code.</p>
+
+              <table border="1" cellpadding="5" cellspacing="0">
+                <tr>
+                  <th align="left">Result Code Name</th>
+                  <th align="center">Numeric Value</th>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-success">success</a></tt></td>
+                  <td align="center">0</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-operationsError">operationsError</a></tt></td>
+                  <td align="center">1</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-protocolError">protocolError</a></tt></td>
+                  <td align="center">2</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-timeLimitExceeded">timeLimitExceeded</a></tt></td>
+                  <td align="center">3</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-sizeLimitExceeded">sizeLimitExceeded</a></tt></td>
+                  <td align="center">4</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-compareFalse">compareFalse</a></tt></td>
+                  <td align="center">5</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-compareTrue">compareTrue</a></tt></td>
+                  <td align="center">6</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-authMethodNotSupported">authMethodNotSupported</a></tt></td>
+                  <td align="center">7</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-strongerAuthRequired">strongerAuthRequired</a></tt></td>
+                  <td align="center">8</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-referral">referral</a></tt></td>
+                  <td align="center">10</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-adminLimitExceeded">adminLimitExceeded</a></tt></td>
+                  <td align="center">11</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-unavailableCriticalExtension">unavailableCriticalExtension</a></tt></td>
+                  <td align="center">12</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-confidentialityRequired">confidentialityRequired</a></tt></td>
+                  <td align="center">13</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-saslBindInProgress">saslBindInProgress</a></tt></td>
+                  <td align="center">14</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-noSuchAttribute">noSuchAttribute</a></tt></td>
+                  <td align="center">16</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-undefinedAttributeType">undefinedAttributeType</a></tt></td>
+                  <td align="center">17</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-inappropriateMatching">inappropriateMatching</a></tt></td>
+                  <td align="center">18</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-constraintViolation">constraintViolation</a></tt></td>
+                  <td align="center">19</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-attributeOrValueExists">attributeOrValueExists</a></tt></td>
+                  <td align="center">20</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-invalidAttributeSyntax">invalidAttributeSyntax</a></tt></td>
+                  <td align="center">21</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-noSuchObject">noSuchObject</a></tt></td>
+                  <td align="center">32</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-aliasProblem">aliasProblem</a></tt></td>
+                  <td align="center">33</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-invalidDNSyntax">invalidDNSyntax</a></tt></td>
+                  <td align="center">34</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-isLeaf">isLeaf</a></tt></td>
+                  <td align="center">35</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-aliasDereferencingProblem">aliasDereferencingProblem</a></tt></td>
+                  <td align="center">36</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-inappropriateAuthentication">inappropriateAuthentication</a></tt></td>
+                  <td align="center">48</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-invalidCredentials">invalidCredentials</a></tt></td>
+                  <td align="center">49</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-insufficientAccessRights">insufficientAccessRights</a></tt></td>
+                  <td align="center">50</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-busy">busy</a></tt></td>
+                  <td align="center">51</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-unavailable">unavailable</a></tt></td>
+                  <td align="center">52</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-unwillingToPerform">unwillingToPerform</a></tt></td>
+                  <td align="center">53</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-loopDetect">loopDetect</a></tt></td>
+                  <td align="center">54</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-sortControlMissing">sortControlMissing</a></tt></td>
+                  <td align="center">60</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-offsetRangeError">offsetRangeError</a></tt></td>
+                  <td align="center">61</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-namingViolation">namingViolation</a></tt></td>
+                  <td align="center">64</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-objectClassViolation">objectClassViolation</a></tt></td>
+                  <td align="center">65</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-notAllowedOnNonLeaf">notAllowedOnNonLeaf</a></tt></td>
+                  <td align="center">66</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-notAllowedOnRDN">notAllowedOnRDN</a></tt></td>
+                  <td align="center">67</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-entryAlreadyExists">entryAlreadyExists</a></tt></td>
+                  <td align="center">68</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-objectClassModsProhibited">objectClassModsProhibited</a></tt></td>
+                  <td align="center">69</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-resultsTooLarge">resultsTooLarge</a></tt></td>
+                  <td align="center">70</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-affectsMultipleDSAs">affectsMultipleDSAs</a></tt></td>
+                  <td align="center">71</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-virtualListViewError">virtualListViewError</a></tt> or <tt><a href="other-server-side-result-codes.html#rc-controlError">controlError</a></tt></td>
+                  <td align="center">76</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="core-ldapv3-result-codes.html#rc-other">other</a></tt></td>
+                  <td align="center">80</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-serverDown">serverDown</a></tt></td>
+                  <td align="center">81</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-localError">localError</a></tt></td>
+                  <td align="center">82</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-encodingError">encodingError</a></tt></td>
+                  <td align="center">83</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-decodingError">decodingError</a></tt></td>
+                  <td align="center">84</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-timeout">timeout</a></tt></td>
+                  <td align="center">85</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-authUnknown">authUnknown</a></tt></td>
+                  <td align="center">86</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-filterError">filterError</a></tt></td>
+                  <td align="center">87</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-userCanceled">userCanceled</a></tt></td>
+                  <td align="center">88</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-paramError">paramError</a></tt></td>
+                  <td align="center">89</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-noMemory">noMemory</a></tt></td>
+                  <td align="center">90</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-connectError">connectError</a></tt></td>
+                  <td align="center">91</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-notSupported">notSupported</a></tt></td>
+                  <td align="center">92</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-controlNotFound">controlNotFound</a></tt></td>
+                  <td align="center">93</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-noResultsReturned">noResultsReturned</a></tt></td>
+                  <td align="center">94</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-moreResultsToReturn">moreResultsToReturn</a></tt></td>
+                  <td align="center">95</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-clientLoop">clientLoop</a></tt></td>
+                  <td align="center">96</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-referralLimitExceeded">referralLimitExceeded</a></tt></td>
+                  <td align="center">97</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-invalidResponse">invalidResponse</a></tt></td>
+                  <td align="center">100</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-ambiguousResponse">ambiguousResponse</a></tt></td>
+                  <td align="center">101</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-tlsNotSupported">tlsNotSupported</a></tt></td>
+                  <td align="center">112</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-intermediateResponse">intermediateResponse</a></tt></td>
+                  <td align="center">113</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="client-side-result-codes.html#rc-unknownType">unknownType</a></tt></td>
+                  <td align="center">114</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-canceled">canceled</a></tt></td>
+                  <td align="center">118</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-noSuchOperation">noSuchOperation</a></tt></td>
+                  <td align="center">119</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-tooLate">tooLate</a></tt></td>
+                  <td align="center">120</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-cannotCancel">cannotCancel</a></tt></td>
+                  <td align="center">121</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-assertionFailed">assertionFailed</a></tt></td>
+                  <td align="center">122</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-authorizationDenied">authorizationDenied</a></tt></td>
+                  <td align="center">123</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-e-syncRefreshRequired">e-syncRefreshRequired</a></tt></td>
+                  <td align="center">4096</td>
+                </tr>
+                <tr>
+                  <td align="left"><tt><a href="other-server-side-result-codes.html#rc-noOperation">noOperation</a></tt></td>
+                  <td align="center">16654</td>
+                </tr>
+              </table>
+
+              <p></p>
+
+              <table border="0" width="100%">
+                <tr>
+                  <td align="left"></td>
+                  <td align="right">Next: <a href="response-elements.html">The Elements of an LDAP Operation Response Message</a></td>
+                </tr>
+              </table>
+</span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  <div class="span4 widget-span widget-type-rich_text aside" style="" data-widget-type="rich_text" data-x="8" data-w="4">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14159042281815177" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- SIDEBAR for SUBNAV & JUMP LINKS -->
+                      <ul>
+                        <li>
+                          <a href="../release-notes.html">Release Notes</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../javadoc/index.html" target="_blank">Generated API Documentation</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../ldapsdk-faq.html">Frequently-Asked Questions</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../advantages/index.html">UnboundID LDAP SDK Advantages</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../getting-started/index.html">Getting Started</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../persist/index.html">Using the Persistence Framework</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../in-memory-directory-server.html">Using the In-Memory Directory Server</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../examples/index.html">Example Source Code</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../specs/index.html">LDAP Specifications</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../help.html">Getting Help</a>
+                          <br><br>
+                        </li>
+                      </ul>
+                    </span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end body -->
+  </div><!--end body wrapper -->
+
+  <div class="footer-container-wrapper">
+    <div class="footer-container container-fluid">
+
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-global_group footer" style="" data-widget-type="global_group" data-x="0" data-w="12">
+  <div class="">        <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div id="footer" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span6 widget-span widget-type-cell logo_block" style="" data-widget-type="cell" data-x="0" data-w="6">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text sponsored_by" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250291729860" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>Sponsored by</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text logo" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250269365496" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java"><img src="../images/footer-logo.png" alt="footer-logo"></a></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text copyright" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250294473975" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>©2018 Ping Identity Corporation. The LDAP SDK for Java is developed by Ping Identity.</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                </div><!--end widget-span -->
+              <div class="span6 widget-span widget-type-cell nav_address" style="" data-widget-type="cell" data-x="6" data-w="6">
+
+                <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162485993094412" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html"><a href="https://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+  <a href="https://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+  <a href="https://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+  <a href="https://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-2 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text address" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504111262539" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><strong>UnboundID</strong><br>13809 Research Blvd, Suite 500<br>Austin, TX 78750&nbsp;</p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-3 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text email" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504125722657" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><a href="mailto:ldapsdk-support@pingidentity.com">ldapsdk-support@pingidentity.com</a></p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+  </div>
+
+        </div><!--end widget-span -->
+      </div><!--end row-->
+      </div><!--end row-wrapper -->
+
+    </div><!--end footer -->
+  </div><!--end footer wrapper -->
+
+
+  </body>
+</html>

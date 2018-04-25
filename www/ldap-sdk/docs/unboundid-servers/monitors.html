@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<!-- start coded_template: id:2099975582 path:generated_layouts/2099975562.html -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]--><!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]--><!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]--><!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="Ping Identity">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+<!-- UPDATE PAGE TITLE HERE -->
+    <title>UnboundID LDAP SDK for Java Documentation</title>
+    <link rel="shortcut icon" href="//cdn2.hubspot.net/hub/405650/file-1005453378-ico/images/favicon.ico?t=1416511326909">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <link href="../css/public_common.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/style_ldap.min.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://static.hsappstatic.net/content_shared_assets/static-1.3864/js/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,500,300" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Exo:200,300,400,500,700,800" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  </head>
+  <body class="  hs-content-id-1917259562 hs-site-page page hs-content-path-getting-started-with-ldap hs-content-name-ldapcom-10-getting-started-with-ldap  " style="">
+    <div class="header-container-wrapper">
+    <div class="header-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+        <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell interior" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-global_group " style="" data-widget-type="global_group" data-x="0" data-w="12">
+              <div class="header">
+                <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div id="header" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+                      <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+                        <div class="row-fluid ">
+                          <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                            <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                            <div class="row-fluid ">
+                              <div class="span12 widget-span widget-type-cell nav_wrapper" style="" data-widget-type="cell" data-x="0" data-w="12">
+                              <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                                <div class="row-fluid ">
+                                  <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-menu nav_primary container" style="" data-widget-type="menu" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+                                          <span id="hs_cos_wrapper_module_14141041471997021" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_menu" style="" data-hs-cos-general-type="widget" data-hs-cos-type="menu">
+                                            <div id="hs_menu_wrapper_module_14141041471997021" class="hs-menu-wrapper active-branch no-flyouts hs-menu-flow-horizontal" data-sitemap-name="ldap">
+                                             <ul class=" active-branch">
+                                                <li class="hs-menu-item hs-menu-depth-1 active hs-item-has-children active-branch"><a href="https://www.ldap.com/getting-started-with-ldap">Getting Started with LDAP</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/developing-clients-apps">Developing Clients &amp; Apps</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/ldap-specs">LDAP Specs</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/blog">Blog</a></li>
+                                             </ul>
+                                            </div>
+                                          </span>
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+<!-- Hide the UnboundID-specific social links
+                                          <span id="hs_cos_wrapper_module_141589903233513879" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html">
+                                            <a href="http://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+                                            <a href="http://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+                                            <a href="http://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+                                            <a href="http://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a>
+                                          </span>
+ -->
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                </div><!--end widget-span -->
+                              </div><!--end row-->
+                            </div><!--end row-wrapper -->
+                          </div><!--end widget-span -->
+                        </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+            </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div>
+      </div><!--end widget-span -->
+    </div><!--end row-->
+  </div><!--end row-wrapper -->
+          <div class="row-fluid-wrapper row-depth-1 row-number-3 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell texture_bg" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span9 widget-span widget-type-header header" style="" data-widget-type="header" data-x="0" data-w="9">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_14159041779443715" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_header" style="" data-hs-cos-general-type="widget" data-hs-cos-type="header">
+<!-- UPDATE PAGE HEADER HERE -->
+                          <h1>UnboundID LDAP SDK for Java Documentation</h1>
+                        </span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                    <div class="span3 widget-span widget-type-cell logo" style="" data-widget-type="cell" data-x="9" data-w="3">
+
+                      <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget ldap_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_ldap_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/" id="hs-link-ldap_logo" style="border-width:0px;border:0px;"><img src="../images/LDAPCOM_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="LDAPCOM_logo.jpg" title="LDAPCOM_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget unboundid_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_unboundid_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java" id="hs-link-unboundid_logo" style="border-width:0px;border:0px;"><img src="../images/UNBOUNDID_sponsored_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="UNBOUNDID_sponsored_logo.jpg" title="UNBOUNDID_sponsored_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end header -->
+  </div><!--end header wrapper -->
+
+  <div class="body-container-wrapper">
+    <div class="body-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell torso" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span8 widget-span widget-type-cell content" style="" data-widget-type="cell" data-x="0" data-w="8">
+                    <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text intro" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_141634972542617336" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- ENTER INTRO TEXT HERE -->
+<!-- <p> Intro Text </p> -->
+                            </span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text main" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_14159041873173857" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- BODY CONTENT GOES HERE -->
+              <div align="right">
+                <a href="../index.html" style="font-size: 85%">Product Information</a>
+              </div>
+
+              <h2>Interacting with Ping Identity, UnboundID, or Alcatel-Lucent 8661 Directory
+                  Server Monitor Data</h2>
+
+              <p>
+                The UnboundID LDAP SDK for Java provides support for retrieving and interpreting
+                monitor data from a Ping Identity, UnboundID, or Alcatel-Lucent 8661 Directory
+                Server instance.  Currently supported monitor entries include:
+              </p>
+
+              <ul>
+                <li>
+                  The general monitor entry, which provides information about the server, including
+                  the time that it started and the length of time it has been online, the current,
+                  maximum concurrent, and total number of connections established since startup,
+                  and product and vendor information.
+                  <br><br>
+                </li>
+
+                <li>
+                  The active operations monitor entry, which provides a summary of the operations
+                  currently being processed within the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Backend monitor entries, which can provide information about each backend defined
+                  in the server, including the backend ID, base DNs, total entries (overall and per
+                  base DN), whether the backend is writable, and whether the backend is marked
+                  private.
+                  <br><br>
+                </li>
+
+                <li>
+                  The client connection monitor entry, which provides information about all client
+                  connections currently established to the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Connection handler monitor entries, which can provide information about each
+                  connection handler defined in the server, including the listen addresses and
+                  ports, the protocol it uses, the number of connections currently established to
+                  the connection handler, and information about each of those connections.
+                  <br><br>
+                </li>
+
+                <li>
+                  The disk space usage monitor entry, which provides information about server
+                  components that may consume a significant amount of disk space, and whether the
+                  system may be low on usable disk space.
+                  <br><br>
+                </li>
+
+                <li>
+                  The entry cache monitor entry, which provides information about the current and
+                  maximum sizes and entry counts for the cache, the number of cache tries, hits,
+                  and misses, and the cache hit ratio.
+                  <br><br>
+                </li>
+
+                <li>
+                  JE environment monitor entries, which provide information about Berkeley DB Java
+                  Edition databases used by some backends, including the backend ID and JE version.
+                  <br><br>
+                </li>
+
+                <li>
+                  LDAP external server monitor entries, which provide information about the backend
+                  servers used by the Ping Identity, UnboundID, or Alcatel-Lucent 8661 Directory
+                  Proxy Server, including the address, port, and communication security level, the
+                  current health of the server, and the state of the connection pool(s) used to
+                  communicate with that server.
+                  <br><br>
+                </li>
+
+                <li>
+                  LDAP statistics monitor entries, which provide information about the work done by
+                  each LDAP connection handler, including the number of bytes and LDAP messages
+                  read and written, the number of connections established and closed, and the
+                  number of each type of request and response processed.
+                  <br><br>
+                </li>
+
+                <li>
+                  The memory usage monitor entry, which provides information about the memory
+                  consumption and garbage collection processing performed within the JVM.
+                  <br><br>
+                </li>
+
+                <li>
+                  The processing time histogram monitor entry, which provides information about the
+                  length of time required to process the various types of operations, broken down
+                  into user-defined buckets.
+                  <br><br>
+                </li>
+
+                <li>
+                  Replica monitor entries, which provide information about the state of a replica
+                  for a specified portion of the server DIT, including the base DN, replica ID,
+                  generation ID, and information about its communication with the replication
+                  server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Replication server monitor entries, which provide information about the state of
+                  a replication server, including the replication server ID, replicated base DNs
+                  and generation IDs, and the port number on which the replication server is
+                  listening.
+                  <br><br>
+                </li>
+
+                <li>
+                  Replication summary monitor entries, which provide information about replication
+                  state for a specified portion of the server DIT, including the base DN as well
+                  as information about each replica and replication server associated with that
+                  base DN.
+                  <br><br>
+                </li>
+
+                <li>
+                  The stack trace monitor entry, which provides a stack trace of the JVM being used
+                  to run the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  The system info monitor entry, which provides information about the system and
+                  JVM on which the server is running.
+                  <br><br>
+                </li>
+
+                <li>
+                  The traditional work queue monitor entry, which provides information about the
+                  state of the server work queue, including the current, average, and maximum
+                  observed backlog, the total number of requests submitted, and the number of
+                  requests that were rejected because the work queue was full.  Note that this will
+                  only be available when the Directory Server is configured to use the traditional
+                  work queue rather than the UnboundID work queue.
+                  <br><br>
+                </li>
+
+                <li>
+                  The UnboundID work queue monitor entry, which provides information about the
+                  state of the server work queue, including the current, average, and maximum
+                  observed work queue sizes, and the number of requests that were rejected because
+                  the work queue was full.  Note that this will not be available if the Directory
+                  Server is configured to use the traditional work queue rather than the UnboundID
+                  work queue.
+                  <br><br>
+                </li>
+
+                <li>
+                  The version monitor entry, which provides detailed version information about the
+                  server.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+              <h3>Monitor Entries</h3>
+
+              <p>
+                The Directory Server monitor information is made available in the form of monitor
+                entries.  All monitor entries have some common properties, and then each specific
+                type of monitor entry has a number of methods that may be used to obtain specific
+                information about the data provided by the server for the associated monitor type.
+              </p>
+
+              <p>
+                The information that is available for all types of monitor entries includes:
+              </p>
+
+              <ul>
+                <li>
+                  The name of the monitor entry.  This will be the RDN value for the entry in the
+                  server.
+                </li>
+
+                <li>
+                  The display name for the monitor entry, which is a user-friendly name for the
+                  entry.
+                </li>
+
+                <li>
+                  A description of the monitor entry and the kind of information that it provides.
+                </li>
+
+                <li>
+                  A map containing the parsed set monitor attributes for that monitor entry.  This
+                  will be examined in more detail below.
+                </li>
+
+                <li>
+                  Access to the <tt>Entry</tt> object from which the monitor information was
+                  extracted.
+                </li>
+              </ul>
+
+              <p>
+                Specific types of monitor entries also provide ways of getting access to the
+                information that they provide.  For example, the version monitor entry provides the
+                following methods that may be used to get different elements related to the server
+                version:
+              </p>
+
+              <ul>
+               <li><tt>getProductName()</tt></li>
+               <li><tt>getShortProductName()</tt></li>
+               <li><tt>getFullVersion()</tt></li>
+               <li><tt>getCompactVersion()</tt></li>
+               <li><tt>getMajorVersion()</tt></li>
+               <li><tt>getMinorVersion()</tt></li>
+               <li><tt>getPointVersion()</tt></li>
+               <li><tt>getBuildID()</tt></li>
+               <li><tt>getBuildNumber()</tt></li>
+               <li><tt>getRevisionNumber()</tt></li>
+               <li><tt>getVersionQualifier()</tt></li>
+               <li><tt>getFixIDs()</tt></li>
+             </ul>
+
+             <p></p>
+             <h3>Monitor Attributes</h3>
+
+             <p>
+               As described above, each specific type of monitor entry provides methods that may be
+               used to access the different kinds of information that type of monitor entry
+               provides.  This is very useful if you know exactly the type of information that you
+               wish to retrieve, but it is not very useful for a generic application that wishes to
+               access any of the monitor information without hard-coding methods to get access to
+               the available information.  While it would certainly be possible to simply retrieve
+               the entries from the server and display the attribute names and values, this is not
+               ideal because the attribute names are not user friendly or localizeable and in some
+               cases may not be fully self-explanatory, and it is not always easy to determine the
+               data type for the associated information.
+             </p>
+
+             <p>
+               To solve these problems and make the monitor data available in a generic but still
+               very useful way, the UnboundID LDAP SDK for Java provides the
+               "<tt>public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()</tt>" method
+               in each monitor entry.  Each <tt>MonitorAttribute</tt> object provides the following
+               information:
+             </p>
+
+             <ul>
+               <li>
+                 A name, which uniquely identifies the monitor attribute within the monitor entry
+                 and is the key used to access that monitor entry in the map returned by the
+                 <tt>getMonitorAttributes</tt> method.  This name isn't intended to be displayed to
+                 the end user, but rather to allow easier lookup of the associated data.
+                 <br><br>
+               </li>
+
+               <li>
+                 A human-readable and localizeable display name, which is suitable for presenting
+                 to the end user.
+                 <br><br>
+               </li>
+
+               <li>
+                 A human-readable and localizeable description, which describes the kind of
+                 information held in that attribute.
+                 <br><br>
+               </li>
+
+               <li>
+                 A class that represents the type of information held in the monitor attribute.  It
+                 will be one of the following classes:  <tt>Boolean</tt>, <tt>Date</tt>,
+                 <tt>Double</tt>, <tt>Long</tt>, or <tt>String</tt>.
+                 <br><br>
+               </li>
+
+               <li>
+                 One or more values containing the actual data for the associated monitor
+                 attribute.
+                 <br><br>
+               </li>
+             </ul>
+
+             <p>
+               Using the information provided by monitor attributes, it possible for an application
+               to obtain and interact with server monitor data in a generic manner and yet still
+               interact with it and/or present it to end users in a useful and meaningful way.
+             </p>
+
+             <p></p>
+             <h3>The Monitor Manager</h3>
+
+             <p>
+               The <tt>MonitorManager</tt> class provides an interface for accessing the monitor
+               data provided by the server.  The"<tt>public List&lt;MonitorEntry&gt;
+               getMonitorEntries(LDAPConnection connection)</tt>" method can be used to retrieve
+               all of the monitor entries provided by the server, parsed as their appropriate
+               monitor entry subtypes.  However, if you are interested in obtaining a specific set
+               of monitor information, then there are methods available for getting each specific
+               type of monitor entry (e.g., the <tt>getBackendMonitorEntries</tt> method will
+               retrieve all of the backend monitor entries provided by the server).
+             </p>
+</span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  <div class="span4 widget-span widget-type-rich_text aside" style="" data-widget-type="rich_text" data-x="8" data-w="4">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14159042281815177" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- SIDEBAR for SUBNAV & JUMP LINKS -->
+                      <ul>
+                        <li>
+                          <a href="../release-notes.html">Release Notes</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../javadoc/index.html" target="_blank">Generated API Documentation</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../ldapsdk-faq.html">Frequently-Asked Questions</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../advantages/index.html">UnboundID LDAP SDK Advantages</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../getting-started/index.html">Getting Started</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../persist/index.html">Using the Persistence Framework</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../in-memory-directory-server.html">Using the In-Memory Directory Server</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../examples/index.html">Example Source Code</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../specs/index.html">LDAP Specifications</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../help.html">Getting Help</a>
+                          <br><br>
+                        </li>
+                      </ul>
+                    </span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end body -->
+  </div><!--end body wrapper -->
+
+  <div class="footer-container-wrapper">
+    <div class="footer-container container-fluid">
+
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-global_group footer" style="" data-widget-type="global_group" data-x="0" data-w="12">
+  <div class="">        <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div id="footer" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span6 widget-span widget-type-cell logo_block" style="" data-widget-type="cell" data-x="0" data-w="6">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text sponsored_by" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250291729860" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>Sponsored by</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text logo" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250269365496" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java"><img src="../images/footer-logo.png" alt="footer-logo"></a></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text copyright" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250294473975" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>©2018 Ping Identity Corporation. The LDAP SDK for Java is developed by Ping Identity.</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                </div><!--end widget-span -->
+              <div class="span6 widget-span widget-type-cell nav_address" style="" data-widget-type="cell" data-x="6" data-w="6">
+
+                <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162485993094412" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html"><a href="https://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+  <a href="https://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+  <a href="https://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+  <a href="https://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-2 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text address" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504111262539" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><strong>UnboundID</strong><br>13809 Research Blvd, Suite 500<br>Austin, TX 78750&nbsp;</p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-3 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text email" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504125722657" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><a href="mailto:ldapsdk-support@pingidentity.com">ldapsdk-support@pingidentity.com</a></p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+  </div>
+
+        </div><!--end widget-span -->
+      </div><!--end row-->
+      </div><!--end row-wrapper -->
+
+    </div><!--end footer -->
+  </div><!--end footer wrapper -->
+
+
+  </body>
+</html>

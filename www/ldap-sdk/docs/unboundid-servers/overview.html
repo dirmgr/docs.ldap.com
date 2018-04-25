@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<!-- start coded_template: id:2099975582 path:generated_layouts/2099975562.html -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]--><!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]--><!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]--><!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="Ping Identity">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+<!-- UPDATE PAGE TITLE HERE -->
+    <title>UnboundID LDAP SDK for Java Documentation</title>
+    <link rel="shortcut icon" href="//cdn2.hubspot.net/hub/405650/file-1005453378-ico/images/favicon.ico?t=1416511326909">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <link href="../css/public_common.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/style_ldap.min.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://static.hsappstatic.net/content_shared_assets/static-1.3864/js/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,500,300" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Exo:200,300,400,500,700,800" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  </head>
+  <body class="  hs-content-id-1917259562 hs-site-page page hs-content-path-getting-started-with-ldap hs-content-name-ldapcom-10-getting-started-with-ldap  " style="">
+    <div class="header-container-wrapper">
+    <div class="header-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+        <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell interior" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-global_group " style="" data-widget-type="global_group" data-x="0" data-w="12">
+              <div class="header">
+                <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div id="header" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+                      <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+                        <div class="row-fluid ">
+                          <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                            <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                            <div class="row-fluid ">
+                              <div class="span12 widget-span widget-type-cell nav_wrapper" style="" data-widget-type="cell" data-x="0" data-w="12">
+                              <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                                <div class="row-fluid ">
+                                  <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-menu nav_primary container" style="" data-widget-type="menu" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+                                          <span id="hs_cos_wrapper_module_14141041471997021" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_menu" style="" data-hs-cos-general-type="widget" data-hs-cos-type="menu">
+                                            <div id="hs_menu_wrapper_module_14141041471997021" class="hs-menu-wrapper active-branch no-flyouts hs-menu-flow-horizontal" data-sitemap-name="ldap">
+                                             <ul class=" active-branch">
+                                                <li class="hs-menu-item hs-menu-depth-1 active hs-item-has-children active-branch"><a href="https://www.ldap.com/getting-started-with-ldap">Getting Started with LDAP</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/developing-clients-apps">Developing Clients &amp; Apps</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/ldap-specs">LDAP Specs</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/blog">Blog</a></li>
+                                             </ul>
+                                            </div>
+                                          </span>
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+<!-- Hide the UnboundID-specific social links
+                                          <span id="hs_cos_wrapper_module_141589903233513879" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html">
+                                            <a href="http://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+                                            <a href="http://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+                                            <a href="http://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+                                            <a href="http://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a>
+                                          </span>
+ -->
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                </div><!--end widget-span -->
+                              </div><!--end row-->
+                            </div><!--end row-wrapper -->
+                          </div><!--end widget-span -->
+                        </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+            </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div>
+      </div><!--end widget-span -->
+    </div><!--end row-->
+  </div><!--end row-wrapper -->
+          <div class="row-fluid-wrapper row-depth-1 row-number-3 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell texture_bg" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span9 widget-span widget-type-header header" style="" data-widget-type="header" data-x="0" data-w="9">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_14159041779443715" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_header" style="" data-hs-cos-general-type="widget" data-hs-cos-type="header">
+<!-- UPDATE PAGE HEADER HERE -->
+                          <h1>UnboundID LDAP SDK for Java Documentation</h1>
+                        </span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                    <div class="span3 widget-span widget-type-cell logo" style="" data-widget-type="cell" data-x="9" data-w="3">
+
+                      <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget ldap_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_ldap_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/" id="hs-link-ldap_logo" style="border-width:0px;border:0px;"><img src="../images/LDAPCOM_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="LDAPCOM_logo.jpg" title="LDAPCOM_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget unboundid_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_unboundid_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java" id="hs-link-unboundid_logo" style="border-width:0px;border:0px;"><img src="../images/UNBOUNDID_sponsored_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="UNBOUNDID_sponsored_logo.jpg" title="UNBOUNDID_sponsored_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end header -->
+  </div><!--end header wrapper -->
+
+  <div class="body-container-wrapper">
+    <div class="body-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell torso" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span8 widget-span widget-type-cell content" style="" data-widget-type="cell" data-x="0" data-w="8">
+                    <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text intro" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_141634972542617336" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- ENTER INTRO TEXT HERE -->
+<!-- <p> Intro Text </p> -->
+                            </span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text main" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_14159041873173857" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- BODY CONTENT GOES HERE -->
+              <div align="right">
+                <a href="../index.html" style="font-size: 85%">Product Information</a>
+              </div>
+
+              <h2>Overview of Additional UnboundID-Specific Functionality</h2>
+
+              <p>
+                The UnboundID LDAP SDK for Java provides a significant amount of additional
+                functionality that is available for use when the SDK is used to communicate with
+                an instance of the Ping Identity, UnboundID, or Alcatel-Lucent 8661 Directory
+                Server.  This page describes that additional functionality.
+              </p>
+
+              <p></p>
+              <h3>Additional Controls</h3>
+
+              <p>
+                The following additional controls are available when communicating with a
+                Ping Identity, UnboundID, or Alcatel-Lucent 8661 Directory Server instance:
+              </p>
+
+              <ul>
+                <li>
+                  <b>Account Usability Control</b> -- Provides information about whether a
+                  specified user account is available for use, and if not information about why it
+                  may be unavailable.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Administrative Operation Control</b> -- Indicates that the associated request
+                  is intended for some administrative purpose rather than a general application
+                  request.  Operations with this control may be treated specially by the server,
+                  including placing additional information in access log messages and excluding
+                  them from inclusion in response time histogram tracking.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Batched Transaction Specification Control</b> -- Indicates that the associated
+                  operation is part of a batched transaction.  This must be used in conjunction
+                  with the start batched transaction and end batched transaction extended
+                  operations.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Exclude Branch Control</b> -- Provides the ability to exclude entries in
+                  a specified set of branches from search results.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Extended Schema Information Control</b> -- Provides the ability to request
+                  that the server return extended information (including information about
+                  the files in which schema elements are defined and whether those definitions are
+                  considered read-only) as part of the server schema.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Get Authorization Entry Control</b> -- Provides the ability to retrieve the
+                  entries for the authentication and/or authorization entries for the user in the
+                  bind response received from the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Get Effective Rights Control</b> -- Provides access to information about what
+                  rights a specified user has when interacting with a given entry.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Get Server ID Control</b> -- Provides a way for the client to request
+                  information about which server was actually used to process a request (including
+                  the ability to make that determination through a Directory Proxy Server).  It
+                  may be used in conjunction with the route to server request control to request
+                  that an operation be processed by a specific server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Ignore NO-USER-MODIFICATION Control</b> -- Provides the ability to add an
+                  entry to a Directory Server that already contains attributes which may be marked
+                  NO-USER-MODIFICATION in the server schema.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Interactive Transaction Specification Control</b> -- Indicates that the
+                  specified operation is part of an interactive transaction.  This must be used in
+                  conjunction with the start interactive transaction and end interactive
+                  transaction extended operations.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Intermediate Client Control</b> -- May be used to help track requests and
+                  responses through a directory environment (e.g., between a client, a directory
+                  proxy server, and a directory server).
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Join Control</b> -- Can be used to correlate search result entries with other
+                  entries related based on a given set of criteria.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>No Operation Control</b> -- Provides the ability to request that the server
+                  validate that a write operation would likely succeed, but without making any
+                  changes to data in the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Operation Purpose Control</b> -- Provides the ability for a client to
+                  identify itself to the server and provide information about the reason for the
+                  associated operation.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Password Policy Control</b> -- Provides password policy-related information
+                  for a user account.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Real Attributes Only Control</b> -- Indicates that search entries returned
+                  should not include any virtual attributes.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Replication Repair Control</b> -- Provides the ability to make a change in
+                  the server which will not be replicated to other servers, primarily intended for
+                  fixing problems due to replication conflicts.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Retain Identity Control</b> -- May be used with a bind request to indicate
+                  that the server should process the bind but not actually change the identity
+                  associated with the client connection.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Route to Server Control</b> -- May be used to request that the operation be
+                  routed to a particular backend server.  This is primarily intended for use when
+                  the request is to be sent through a Directory Proxy Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Unsolicited Cancel Control</b> -- Indicates that the associated operation was
+                  canceled by the Directory Server for a reason other than being canceled by the
+                  client (e.g., because the client connection is being closed or the server is
+                  shutting down and all outstanding requests are being canceled).
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Virtual Attributes Only Control</b> -- Indicates that search entries returned
+                  should only include virtual attributes.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+              <h3>Additional Extended Operations</h3>
+
+              <p>
+                The following additional extended operations are available when communicating with
+                a Ping Identity, UnboundID, or Alcatel-Lucent 8661 Directory Server instance:
+              </p>
+
+              <ul>
+                <li>
+                  <b>End Administrative Session</b> -- Indicates that the server should end an
+                  active administrative session for the connection.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>End Batched Transaction</b> -- Indicates that the server should either commit
+                  or abort a batched transaction.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>End Interactive Transaction</b> -- Indicates that the server should either
+                  commit or abort an interactive transaction.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Get Changelog Batch</b> -- Allows the client to request a batch of changelog
+                  entries from the server.  This may be used to retrieve information about changes
+                  in a manner that works across multiple servers (and through a Directory Proxy
+                  Server) and can resume where the last batch ended.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Get Connection ID</b> -- Allows the client to request the connection ID
+                  associated with the client connection used to issue the request.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Password Policy State</b> -- Allows the client to get and set a number of
+                  properties related to a user's password policy state.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Start Administrative Session</b> -- Creates an administrative session that
+                  can be used to request that operations be processed using a dedicated pool of
+                  worker threads.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Start Batched Transaction</b> -- Indicates that the client wishes to perform
+                  multiple updates as part of a single atomic transaction.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Start Interactive Transaction</b> -- Indicates that the client wishes to
+                  process multiple operations as a single atomic unit using a transaction.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Stream Directory Values</b> -- Provides the ability to obtain a list of entry
+                  DNs and/or the values of specified attributes for all entries in a specified
+                  portion of the DIT.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+              <h3>Access to Monitor Data</h3>
+
+              <p>
+                The UnboundID LDAP SDK for Java provides access to the following types of monitor
+                information:
+              </p>
+
+              <ul>
+                <li>
+                  <b>Active Operations</b> -- Information about operations currently in progress in
+                  the Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Backend</b> -- Information about configured Directory Server backends.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Client Connection</b> -- Information about all client connections currently
+                  established.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Connection Handler</b> -- Information about configured Directory Server
+                  connection handlers.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Disk Space Usage</b> -- Information about components of the server which may
+                  consume a significant amount of disk space.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Entry Cache</b> -- Information about the state of the Directory Server entry
+                  cache.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>FIFO Entry Cache</b> -- Information about the state of a FIFO entry cache
+                  configured in the Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>General</b> -- General information about the state of the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Index</b> -- Information about index content and usage in a Berkeley DB JE
+                  backend.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>JE Environment</b> -- Information about the Berkeley DB Java Edition
+                  environment in use by a Directory Server backend.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>LDAP External Server</b> -- Information about backend servers used by the
+                  Ping Identity, UnboundID, or Alcatel-Lucent 8661 Directory Proxy Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>LDAP Statistics</b> -- Information about the types of communication performed
+                  by an LDAP connection handler.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Memory Usage</b> -- Information about memory usage and garbage collection
+                  within the JVM.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Processing Time Histogram</b> -- Information about the time required for the
+                  server to process various types of operations.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Replica</b> -- Information about the sate of a replica for a portion of the
+                  replicated content.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Replication Server</b> -- Information about the state of a replication server
+                  for a portion of the replicated content.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Replication Summary</b> -- Information about the replication state for a
+                  specified portion of the server DIT.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Stack Trace</b> -- A stack trace of all threads running in the Directory
+                  Server JVM.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>System Info</b> -- Information about the underlying system and JVM used to
+                  run the Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Traditional Work Queue</b> -- Information about the state of the Directory
+                  Server traditional work queue.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>UnboundID Work Queue</b> -- Information about the state of the enhanced
+                  UnboundID Directory Server work queue.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Version</b> -- Information about the Directory Server version.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+              <h3>Support for Managing Tasks</h3>
+
+              <p>
+                The UnboundID LDAP SDK for Java provides support for scheduling and managing the
+                following types of tasks:
+              </p>
+
+              <ul>
+                <li>
+                  <b>Add Schema File</b> -- Add the contents of one or more schema files to the
+                  server schema.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Alert</b> -- Generate arbitrary administrative alerts and alter the the set
+                  of degraded and unavailable alert types for the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Audit Data Security</b> -- Provides the ability to initiate a data security
+                  audit in the server to identify information in entries that may have an
+                  impact on the security of the environment.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Backup</b> -- Back up the contents of one or more Directory Server backends.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Disconnect Client</b> -- Terminate a specified client connection.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Dump DB Details</b> -- Retrieve information about the state of the individual
+                  databases that comprise a Berkeley DB JE backend.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Enter Lockdown Mode</b> -- Cause the Directory Server to enter a restricted
+                  operation mode.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Export</b> -- Export the contents of a Directory Server backend to LDIF.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Groovy-Scripted</b> -- Invokes a custom task written in the Groovy scripting
+                  language with the UnboundID Server SDK.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Import</b> -- Import LDIF data into a Directory Server backend.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Leave Lockdown Mode</b> -- Cause the Directory Server to leave the restricted
+                  operation mode.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Rebuild</b> -- Generate or rebuild indexes for a Berkeley DB Java Edition
+                  backend.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Refresh Encryption Settings</b> -- Causes the Directory Server to reload its
+                  encryption settings definitions after a change was made to the set of
+                  definitions.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Restore</b> -- Restore a backup for a specified Directory Server backend.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Search</b> -- Perform an internal search and write the results to a specified
+                  file on the server filesystem.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Shutdown</b> -- Shut down or restart the Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Third-Party</b> -- Invokes a custom Java-based task written with the
+                  UnboundID Server SDK.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+              <h3>Other UnboundID-Specific APIs</h3>
+
+              <p>
+                The UnboundID LDAP SDK for Java also provides support for the following additional
+                capabilities that are specifically intended for use in conjunction with the Ping
+                Identity, UnboundID, or Alcatel-Lucent 8661 Directory Server:
+              </p>
+
+              <ul>
+                <li>
+                  <b>Alert Entry Parsing</b> -- The LDAP SDK provides support for parsing alert
+                  entries as included in the Ping Identity, UnboundID, or Alcatel-Lucent 8661
+                  Directory Server's administrative alerts backend.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Changelog Entry Parsing</b> -- The LDAP SDK provides support for parsing
+                  UnboundID-proprietary attributes contained in changelog entries, including
+                  information about values of updated attributes before and after the change, and
+                  also about key attributes from the entry.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>Log File Parsing</b> -- The LDAP SDK provides support for parsing access and
+                  error log messages generated by the Ping Identity, UnboundID, or Alcatel-Lucent
+                  8661 Directory Server.
+                  <br><br>
+                </li>
+              </ul>
+</span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  <div class="span4 widget-span widget-type-rich_text aside" style="" data-widget-type="rich_text" data-x="8" data-w="4">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14159042281815177" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- SIDEBAR for SUBNAV & JUMP LINKS -->
+                      <ul>
+                        <li>
+                          <a href="../release-notes.html">Release Notes</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../javadoc/index.html" target="_blank">Generated API Documentation</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../ldapsdk-faq.html">Frequently-Asked Questions</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../advantages/index.html">UnboundID LDAP SDK Advantages</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../getting-started/index.html">Getting Started</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../persist/index.html">Using the Persistence Framework</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../in-memory-directory-server.html">Using the In-Memory Directory Server</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../examples/index.html">Example Source Code</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../specs/index.html">LDAP Specifications</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../help.html">Getting Help</a>
+                          <br><br>
+                        </li>
+                      </ul>
+                    </span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end body -->
+  </div><!--end body wrapper -->
+
+  <div class="footer-container-wrapper">
+    <div class="footer-container container-fluid">
+
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-global_group footer" style="" data-widget-type="global_group" data-x="0" data-w="12">
+  <div class="">        <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div id="footer" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span6 widget-span widget-type-cell logo_block" style="" data-widget-type="cell" data-x="0" data-w="6">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text sponsored_by" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250291729860" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>Sponsored by</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text logo" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250269365496" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java"><img src="../images/footer-logo.png" alt="footer-logo"></a></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text copyright" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250294473975" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>©2018 Ping Identity Corporation. The LDAP SDK for Java is developed by Ping Identity.</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                </div><!--end widget-span -->
+              <div class="span6 widget-span widget-type-cell nav_address" style="" data-widget-type="cell" data-x="6" data-w="6">
+
+                <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162485993094412" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html"><a href="https://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+  <a href="https://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+  <a href="https://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+  <a href="https://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-2 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text address" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504111262539" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><strong>UnboundID</strong><br>13809 Research Blvd, Suite 500<br>Austin, TX 78750&nbsp;</p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-3 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text email" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504125722657" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><a href="mailto:ldapsdk-support@pingidentity.com">ldapsdk-support@pingidentity.com</a></p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+  </div>
+
+        </div><!--end widget-span -->
+      </div><!--end row-->
+      </div><!--end row-wrapper -->
+
+    </div><!--end footer -->
+  </div><!--end footer wrapper -->
+
+
+  </body>
+</html>

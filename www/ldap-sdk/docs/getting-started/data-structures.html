@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<!-- start coded_template: id:2099975582 path:generated_layouts/2099975562.html -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]--><!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]--><!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]--><!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="Ping Identity">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+<!-- UPDATE PAGE TITLE HERE -->
+    <title>UnboundID LDAP SDK for Java Documentation</title>
+    <link rel="shortcut icon" href="//cdn2.hubspot.net/hub/405650/file-1005453378-ico/images/favicon.ico?t=1416511326909">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <link href="../css/public_common.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/style_ldap.min.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://static.hsappstatic.net/content_shared_assets/static-1.3864/js/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,500,300" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Exo:200,300,400,500,700,800" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  </head>
+  <body class="  hs-content-id-1917259562 hs-site-page page hs-content-path-getting-started-with-ldap hs-content-name-ldapcom-10-getting-started-with-ldap  " style="">
+    <div class="header-container-wrapper">
+    <div class="header-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+        <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell interior" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-global_group " style="" data-widget-type="global_group" data-x="0" data-w="12">
+              <div class="header">
+                <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div id="header" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+                      <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+                        <div class="row-fluid ">
+                          <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                            <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                            <div class="row-fluid ">
+                              <div class="span12 widget-span widget-type-cell nav_wrapper" style="" data-widget-type="cell" data-x="0" data-w="12">
+                              <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                                <div class="row-fluid ">
+                                  <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-menu nav_primary container" style="" data-widget-type="menu" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+                                          <span id="hs_cos_wrapper_module_14141041471997021" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_menu" style="" data-hs-cos-general-type="widget" data-hs-cos-type="menu">
+                                            <div id="hs_menu_wrapper_module_14141041471997021" class="hs-menu-wrapper active-branch no-flyouts hs-menu-flow-horizontal" data-sitemap-name="ldap">
+                                             <ul class=" active-branch">
+                                                <li class="hs-menu-item hs-menu-depth-1 active hs-item-has-children active-branch"><a href="https://www.ldap.com/getting-started-with-ldap">Getting Started with LDAP</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/developing-clients-apps">Developing Clients &amp; Apps</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/ldap-specs">LDAP Specs</a></li>
+                                                <li class="hs-menu-item hs-menu-depth-1"><a href="https://www.ldap.com/blog">Blog</a></li>
+                                             </ul>
+                                            </div>
+                                          </span>
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                                    <div class="row-fluid ">
+                                      <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                                        <div class="cell-wrapper layout-widget-wrapper">
+<!-- Hide the UnboundID-specific social links
+                                          <span id="hs_cos_wrapper_module_141589903233513879" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html">
+                                            <a href="http://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+                                            <a href="http://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+                                            <a href="http://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+                                            <a href="http://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a>
+                                          </span>
+ -->
+                                        </div><!--end layout-widget-wrapper -->
+                                      </div><!--end widget-span -->
+                                    </div><!--end row-->
+                                  </div><!--end row-wrapper -->
+                                </div><!--end widget-span -->
+                              </div><!--end row-->
+                            </div><!--end row-wrapper -->
+                          </div><!--end widget-span -->
+                        </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+            </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div>
+      </div><!--end widget-span -->
+    </div><!--end row-->
+  </div><!--end row-wrapper -->
+          <div class="row-fluid-wrapper row-depth-1 row-number-3 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell texture_bg" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span9 widget-span widget-type-header header" style="" data-widget-type="header" data-x="0" data-w="9">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_14159041779443715" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_header" style="" data-hs-cos-general-type="widget" data-hs-cos-type="header">
+<!-- UPDATE PAGE HEADER HERE -->
+                          <h1>UnboundID LDAP SDK for Java Documentation</h1>
+                        </span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                    <div class="span3 widget-span widget-type-cell logo" style="" data-widget-type="cell" data-x="9" data-w="3">
+
+                      <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget ldap_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_ldap_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/" id="hs-link-ldap_logo" style="border-width:0px;border:0px;"><img src="../images/LDAPCOM_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="LDAPCOM_logo.jpg" title="LDAPCOM_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-global_widget unboundid_logo" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_unboundid_logo" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_linked_image" style="" data-hs-cos-general-type="widget" data-hs-cos-type="linked_image"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java" id="hs-link-unboundid_logo" style="border-width:0px;border:0px;"><img src="../images/UNBOUNDID_sponsored_logo.jpg" class="hs-image-widget " style="width:279px;border-width:0px;border:0px;" width="279" alt="UNBOUNDID_sponsored_logo.jpg" title="UNBOUNDID_sponsored_logo.jpg"></a></span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end header -->
+  </div><!--end header wrapper -->
+
+  <div class="body-container-wrapper">
+    <div class="body-container container-fluid">
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-cell torso" style="" data-widget-type="cell" data-x="0" data-w="12">
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+                <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span8 widget-span widget-type-cell content" style="" data-widget-type="cell" data-x="0" data-w="8">
+                    <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text intro" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_141634972542617336" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- ENTER INTRO TEXT HERE -->
+<!-- <p> Intro Text </p> -->
+                            </span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                      <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                      <div class="row-fluid ">
+                        <div class="span12 widget-span widget-type-rich_text main" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                          <div class="cell-wrapper layout-widget-wrapper">
+                            <span id="hs_cos_wrapper_module_14159041873173857" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- BODY CONTENT GOES HERE -->
+              <div align="right">
+                <br>
+                <a href="../index.html" style="font-size: 85%">Product Information</a>
+                <br>
+                <a href="index.html" style="font-size: 85%">Getting Started with the LDAP SDK</a>
+              </div>
+
+              <h2>Common LDAP SDK Data Structures</h2>
+
+              <p>
+                The UnboundID LDAP SDK for Java includes a number of data structures that are
+                commonly used when creating and using connections and request and result objects.
+                They are briefly outlined in this section.
+              </p>
+
+              <p></p>
+              <h3>Attribute</h3>
+
+              <p>
+                Attributes are the fundamental units for storing information in LDAP.  An
+                <tt>Attribute</tt> object has a name and zero or more values, and may also have a
+                matching rule which provides information about how the SDK should interact with
+                values for that attribute.  Attribute values are typically handled as strings, but
+                may also be treated as byte arrays.
+              </p>
+
+              <p>
+                <tt>Attribute</tt> objects are immutable and contain methods for retrieving the
+                attribute name and set of values.
+              </p>
+
+              <p></p>
+              <h3>Entry</h3>
+
+              <p>
+                An entry is a named collection of attributes that generally relate to a given
+                object (e.g., a person).  The name is a DN, or distinguished name, which will be
+                discussed further below.
+              </p>
+
+              <p>
+                <tt>Entry</tt> objects are mutable and contain methods for retrieving and setting
+                the DN, and for retrieving and altering the set of attributes.  They also provide
+                methods for representing the entry in LDIF form, and there is a constructor that
+                can be used to create an entry from its LDIF representation.
+              </p>
+
+              <p></p>
+              <h3>Modification</h3>
+
+              <p>
+                A <tt>Modification</tt> describes a change that should be applied to an attribute
+                in an entry.  An LDAP modify operation includes one or more modifications.
+              </p>
+
+              <p>
+                A modification consists of a modification type, an attribute name, and zero or more
+                values.  The following modification types are supported (and are defined as
+                constants in the <tt>Modification</tt> class):
+              </p>
+
+              <ul>
+                <li>
+                  <b>ADD</b> -- Adds a new attribute to an entry, or adds one or more values to an
+                  existing attribute.  At least one attribute value must be provided with the ADD
+                  modification type.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>DELETE</b> -- Deletes an attribute from an entry, or deletes one or more
+                  values from the attribute.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>REPLACE</b> -- Replaces the specified attribute in the entry.  If no values
+                  are provided, then the attribute will be removed if it exists.  If a set of
+                  values was provided, then it will be used in place of the current values, or
+                  added to the entry if the specified attribute does not exist.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>INCREMENT</b> -- Increments an integer value by a specified amount (it may be
+                  negative if the value should be decremented).  Exactly one value must be provided
+                  with the INCREMENT modification type.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p>
+                <tt>Modification</tt> objects provide methods for retrieving the modification type,
+                attribute name and set of values, but do not provide any methods for altering the
+                content of the modification.
+              </p>
+
+              <p></p>
+              <h3>Filter</h3>
+
+              <p>
+                Search filters define a set of criteria that may be used to identify a set of
+                matching entries, or to determine whether a given entry matches a set of criteria.
+                There are ten types of filters that may be used in LDAP:
+              </p>
+
+              <ul>
+                <li>
+                  <b>AND</b> -- Encapsulates zero or more other filters and requires that all of
+                  those filters must match the target entry.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>OR</b> -- Encapsulates zero or more other filters and requires that at least
+                  one of those filters must match the target entry.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>NOT</b> -- Encapsulates exactly one other filter and negates the result of
+                  that filter (e.g., if the encapsulated filter matches the target entry, then the
+                  NOT filter does not match, and vice versa).
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>EQUALITY</b> -- Requires that a specified attribute value must be contained in
+                  the target entry.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>SUBSTRING</b> -- Requires that the target entry must contain at least one
+                  value for the specified attribute which matches a substring assertion.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>GREATER OR EQUAL</b> -- Requires that the target entry must contain at least
+                  one value for the specified attribute which is greater than or equal to the
+                  provided value.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>LESS OR EQUAL</b> -- Requires that the target entry must contain at least one
+                  value for the specified attribute which is less than or equal to the provided
+                  value.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>PRESENCE</b> -- Requires that the target entry must contain at least one value
+                  for the specified attribute.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>APPROXIMATE MATCH</b> -- Requires that the target entry must contain at least
+                  one value for the specified attribute which approximately matches a given value.
+                  <br><br>
+                </li>
+
+                <li>
+                  <b>EXTENSIBLE MATCH</b> -- Requires that the target entry must contain at least
+                  one value for the specified attribute which matches a given value using a
+                  specified matching rule.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p>
+                Because there are different kinds of filters, and there are different kinds of
+                information in each type of filter, the <tt>Filter</tt> class does not contain any
+                public constructors but instead it contains a number of static methods for creating
+                various types of filters.  It is possible to create filters from their string
+                representations, but it is also possible to construct filters from their individual
+                components.  For example, the "<tt>createEqualityFilter(String attribute name,
+                String assertionValue)</tt>" method can be used to create an equality filter with
+                the specified name and value.  Constructing filters in this manner rather than from
+                a string representation has a number of benefits, including:
+              </p>
+
+              <ul>
+                <li>
+                  It is faster, since it is not necessary to parse the string representation of the
+                  filter in order to extract the elements it contains.
+                  <br><br>
+                </li>
+
+                <li>
+                  It is easier, since the assertion value could potentially contain special
+                  characters that need to be escaped in order to include them in the string
+                  representation, but this is not needed if the raw value is provided separately.
+                  <br><br>
+                </li>
+
+                <li>
+                  It is safer, since if the assertion value may be based on user input then it is
+                  not necessary to worry about sanitizing the data or the possibility of injection
+                  attacks.
+                  <br><br>
+                </li>
+
+                <li>
+                  <tt>Filter</tt> objects are immutable and contain methods for getting the filter
+                  type and the various elements that may be included in each type of filter.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+              <h3>DN and RDN</h3>
+
+              <p>
+                <tt>DN</tt> objects provide a representation of an entry's distinguished name.  The
+                DN of an entry uniquely identifies that entry in the directory and also provides
+                information about its location in the directory hierarchy.  A DN is comprised of
+                zero or more relative distinguished names (RDNs), and each RDN is comprised of one
+                or more name-value pairs.
+              </p>
+
+              <p>
+                In most cases within the LDAP SDK, it is possible to use the string representations
+                of DNs and RDNs, but comparing distinguished names should always be done using
+                <tt>DN</tt> objects, and comparing relative distinguished names should always be
+                done using <tt>RDN</tt> objects.  These objects will perform the comparisons in a
+                more correct manner, ignoring insignificant capitalization and spacing differences,
+                and differences in the order of the elements in a multivalued RDN.  In addition,
+                <tt>DN</tt> and <tt>RDN</tt> objects provide methods for obtaining normalized
+                string representations.  Finally, <tt>DN</tt> objects contain methods for
+                retrieving the parent DN and for determining whether DN objects have a hierarchical
+                relationship.
+              </p>
+</span>
+                          </div><!--end layout-widget-wrapper -->
+                        </div><!--end widget-span -->
+                      </div><!--end row-->
+                      </div><!--end row-wrapper -->
+                    </div><!--end widget-span -->
+                  <div class="span4 widget-span widget-type-rich_text aside" style="" data-widget-type="rich_text" data-x="8" data-w="4">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14159042281815177" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text">
+<!-- SIDEBAR for SUBNAV & JUMP LINKS -->
+                      <ul>
+                        <li>
+                          <a href="../release-notes.html">Release Notes</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../javadoc/index.html" target="_blank">Generated API Documentation</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../ldapsdk-faq.html">Frequently-Asked Questions</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../advantages/index.html">UnboundID LDAP SDK Advantages</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../getting-started/index.html">Getting Started</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../persist/index.html">Using the Persistence Framework</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../in-memory-directory-server.html">Using the In-Memory Directory Server</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../examples/index.html">Example Source Code</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../specs/index.html">LDAP Specifications</a>
+                          <br><br>
+                        </li>
+                        <li>
+                          <a href="../help.html">Getting Help</a>
+                          <br><br>
+                        </li>
+                      </ul>
+                    </span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+
+    </div><!--end body -->
+  </div><!--end body wrapper -->
+
+  <div class="footer-container-wrapper">
+    <div class="footer-container container-fluid">
+
+      <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div class="span12 widget-span widget-type-global_group footer" style="" data-widget-type="global_group" data-x="0" data-w="12">
+  <div class="">        <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+      <div class="row-fluid ">
+        <div id="footer" class="span12 widget-span widget-type-cell section" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+          <div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+          <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-cell container" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+              <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+              <div class="row-fluid ">
+                <div class="span6 widget-span widget-type-cell logo_block" style="" data-widget-type="cell" data-x="0" data-w="6">
+
+                  <div class="row-fluid-wrapper row-depth-3 row-number-1 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text sponsored_by" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250291729860" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>Sponsored by</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-2 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text logo" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250269365496" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><a href="https://www.ldap.com/unboundid-ldap-sdk-for-java"><img src="../images/footer-logo.png" alt="footer-logo"></a></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                  <div class="row-fluid-wrapper row-depth-3 row-number-3 ">
+                  <div class="row-fluid ">
+                    <div class="span12 widget-span widget-type-rich_text copyright" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                      <div class="cell-wrapper layout-widget-wrapper">
+                        <span id="hs_cos_wrapper_module_1416250294473975" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p>©2018 Ping Identity Corporation. The LDAP SDK for Java is developed by Ping Identity.</p></span>
+                      </div><!--end layout-widget-wrapper -->
+                    </div><!--end widget-span -->
+                  </div><!--end row-->
+                  </div><!--end row-wrapper -->
+                </div><!--end widget-span -->
+              <div class="span6 widget-span widget-type-cell nav_address" style="" data-widget-type="cell" data-x="6" data-w="6">
+
+                <div class="row-fluid-wrapper row-depth-2 row-number-1 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-raw_html social_nav" style="" data-widget-type="raw_html" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162485993094412" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html"><a href="https://twitter.com/unboundid"><i class="fa fa-twitter"></i></a>
+  <a href="https://www.linkedin.com/company/497942"><i class="fa fa-linkedin"></i></a>
+  <a href="https://www.youtube.com/user/UnboundID"><i class="fa fa-youtube-play"></i></a>
+  <a href="https://plus.google.com/117882194977541022244/about"><i class="fa fa-google-plus"></i></a></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-2 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text address" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504111262539" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><strong>UnboundID</strong><br>13809 Research Blvd, Suite 500<br>Austin, TX 78750&nbsp;</p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+                <div class="row-fluid-wrapper row-depth-2 row-number-3 ">
+                <div class="row-fluid ">
+                  <div class="span12 widget-span widget-type-rich_text email" style="" data-widget-type="rich_text" data-x="0" data-w="12">
+                    <div class="cell-wrapper layout-widget-wrapper">
+                      <span id="hs_cos_wrapper_module_14162504125722657" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><p><a href="mailto:ldapsdk-support@pingidentity.com">ldapsdk-support@pingidentity.com</a></p></span>
+                    </div><!--end layout-widget-wrapper -->
+                  </div><!--end widget-span -->
+                </div><!--end row-->
+                </div><!--end row-wrapper -->
+              </div><!--end widget-span -->
+          </div><!--end row-->
+          </div><!--end row-wrapper -->
+        </div><!--end widget-span -->
+    </div><!--end row-->
+    </div><!--end row-wrapper -->
+  </div><!--end widget-span -->
+  </div><!--end row-->
+  </div><!--end row-wrapper -->
+  </div>
+
+        </div><!--end widget-span -->
+      </div><!--end row-->
+      </div><!--end row-wrapper -->
+
+    </div><!--end footer -->
+  </div><!--end footer wrapper -->
+
+
+  </body>
+</html>

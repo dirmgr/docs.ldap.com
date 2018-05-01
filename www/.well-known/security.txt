@@ -1,0 +1,5 @@
+# Our security address
+Contact: security@ldap.com
+
+# Our PGP key
+Encryption: https://ldap.com/.well-known/gpg.txt

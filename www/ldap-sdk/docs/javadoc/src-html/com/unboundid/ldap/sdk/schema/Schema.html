@@ -613,7 +613,7 @@
 <span class="sourceLineNo">605</span>            m.put(toLowerCase(name), oc);<a name="line.605"></a>
 <span class="sourceLineNo">606</span>          }<a name="line.606"></a>
 <span class="sourceLineNo">607</span><a name="line.607"></a>
-<span class="sourceLineNo">608</span>          switch (getOCType(oc, m))<a name="line.608"></a>
+<span class="sourceLineNo">608</span>          switch (oc.getObjectClassType(null))<a name="line.608"></a>
 <span class="sourceLineNo">609</span>          {<a name="line.609"></a>
 <span class="sourceLineNo">610</span>            case ABSTRACT:<a name="line.610"></a>
 <span class="sourceLineNo">611</span>              sAbstract.add(oc);<a name="line.611"></a>
@@ -1141,660 +1141,623 @@
 <span class="sourceLineNo">1133</span><a name="line.1133"></a>
 <span class="sourceLineNo">1134</span><a name="line.1134"></a>
 <span class="sourceLineNo">1135</span>  /**<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>   * Retrieves the object class type for the specified object class, recursively<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>   * checking its parents as needed.<a name="line.1137"></a>
+<span class="sourceLineNo">1136</span>   * Retrieves the value of the subschemaSubentry attribute from the specified<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>   * entry using the provided connection.<a name="line.1137"></a>
 <span class="sourceLineNo">1138</span>   *<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>   * @param  oc  The object class definition for which to make the<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>   *             determination.<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>   * @param  m   The map of defined object classes.<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>   *<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>   * @return  The object class type for the object class.<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>   */<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>  private static ObjectClassType getOCType(final ObjectClassDefinition oc,<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>                                      final Map&lt;String,ObjectClassDefinition&gt; m)<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>  {<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>    ObjectClassType t = oc.getObjectClassType();<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>    if (t != null)<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>    {<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>      return t;<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>    }<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span><a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>    for (final String s : oc.getSuperiorClasses())<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>    {<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>      final ObjectClassDefinition d = m.get(toLowerCase(s));<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>      if (d != null)<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>      {<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>        t = getOCType(d, m);<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>        if (t != null)<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>        {<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>          return t;<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>        }<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>      }<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>    }<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span><a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>    return ObjectClassType.STRUCTURAL;<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>  }<a name="line.1168"></a>
+<span class="sourceLineNo">1139</span>   * @param  connection  The connection to use in order to perform the search.<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>   *                     It must not be {@code null}.<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>   * @param  entryDN     The DN of the entry from which to retrieve the<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>   *                     subschemaSubentry attribute.  It may be {@code null} or<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>   *                     an empty string in order to retrieve the value from the<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>   *                     server's root DSE.<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>   *<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>   * @return  The value of the subschemaSubentry attribute from the specified<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>   *          entry, or {@code null} if it is not available for some reason<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>   *          (e.g., the client does not have permission to read the target<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>   *          entry or the subschemaSubentry attribute).<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>   *<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>   * @throws  LDAPException  If a problem occurs while attempting to retrieve<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>   *                         the specified entry.<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>   */<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>  public static String getSubschemaSubentryDN(final LDAPConnection connection,<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>                                              final String entryDN)<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span>         throws LDAPException<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>  {<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>    ensureNotNull(connection);<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span><a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>    final Entry e;<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>    if (entryDN == null)<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>    {<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>      e = connection.getEntry("", SUBSCHEMA_SUBENTRY_REQUEST_ATTRS);<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>    }<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>    else<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>    {<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>      e = connection.getEntry(entryDN, SUBSCHEMA_SUBENTRY_REQUEST_ATTRS);<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>    }<a name="line.1168"></a>
 <span class="sourceLineNo">1169</span><a name="line.1169"></a>
-<span class="sourceLineNo">1170</span><a name="line.1170"></a>
-<span class="sourceLineNo">1171</span><a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>  /**<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>   * Retrieves the value of the subschemaSubentry attribute from the specified<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>   * entry using the provided connection.<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>   *<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>   * @param  connection  The connection to use in order to perform the search.<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>   *                     It must not be {@code null}.<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>   * @param  entryDN     The DN of the entry from which to retrieve the<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>   *                     subschemaSubentry attribute.  It may be {@code null} or<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>   *                     an empty string in order to retrieve the value from the<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>   *                     server's root DSE.<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>   *<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>   * @return  The value of the subschemaSubentry attribute from the specified<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>   *          entry, or {@code null} if it is not available for some reason<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>   *          (e.g., the client does not have permission to read the target<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>   *          entry or the subschemaSubentry attribute).<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>   *<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>   * @throws  LDAPException  If a problem occurs while attempting to retrieve<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>   *                         the specified entry.<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>   */<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>  public static String getSubschemaSubentryDN(final LDAPConnection connection,<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>                                              final String entryDN)<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>         throws LDAPException<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>  {<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>    ensureNotNull(connection);<a name="line.1195"></a>
-<span class="sourceLineNo">1196</span><a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>    final Entry e;<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>    if (entryDN == null)<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>    {<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>      e = connection.getEntry("", SUBSCHEMA_SUBENTRY_REQUEST_ATTRS);<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>    }<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>    else<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>    {<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>      e = connection.getEntry(entryDN, SUBSCHEMA_SUBENTRY_REQUEST_ATTRS);<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>    }<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span><a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>    if (e == null)<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>    {<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>      return null;<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>    }<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span><a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>    return e.getAttributeValue(ATTR_SUBSCHEMA_SUBENTRY);<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>  }<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span><a name="line.1214"></a>
-<span class="sourceLineNo">1215</span><a name="line.1215"></a>
-<span class="sourceLineNo">1216</span><a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>  /**<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>   * Retrieves the set of attribute syntax definitions contained in the server<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>   * schema.<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>   *<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>   * @return  The set of attribute syntax definitions contained in the server<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>   *          schema.<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>   */<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>  public Set&lt;AttributeSyntaxDefinition&gt; getAttributeSyntaxes()<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>  {<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>    return asSet;<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>  }<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span><a name="line.1228"></a>
-<span class="sourceLineNo">1229</span><a name="line.1229"></a>
-<span class="sourceLineNo">1230</span><a name="line.1230"></a>
-<span class="sourceLineNo">1231</span>  /**<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>   * Retrieves the attribute syntax with the specified OID from the server<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>   * schema.<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>   *<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>   * @param  oid  The OID of the attribute syntax to retrieve.  It must not be<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>   *              {@code null}.  It may optionally include a minimum upper bound<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>   *              (as may appear when the syntax OID is included in an attribute<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>   *              type definition), but if it does then that portion will be<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>   *              ignored when retrieving the attribute syntax.<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>   *<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>   * @return  The requested attribute syntax, or {@code null} if there is no<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>   *          such syntax defined in the server schema.<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>   */<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>  public AttributeSyntaxDefinition getAttributeSyntax(final String oid)<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>  {<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span>    ensureNotNull(oid);<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span><a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>    final String lowerOID = toLowerCase(oid);<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>    final int    curlyPos = lowerOID.indexOf('{');<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span><a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>    if (curlyPos &gt; 0)<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>    {<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>      return asMap.get(lowerOID.substring(0, curlyPos));<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>    }<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>    else<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>    {<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>      return asMap.get(lowerOID);<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>    }<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>  }<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span><a name="line.1260"></a>
-<span class="sourceLineNo">1261</span><a name="line.1261"></a>
-<span class="sourceLineNo">1262</span><a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>  /**<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span>   * Retrieves the set of attribute type definitions contained in the server<a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>   * schema.<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>   *<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>   * @return  The set of attribute type definitions contained in the server<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>   *          schema.<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>   */<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>  public Set&lt;AttributeTypeDefinition&gt; getAttributeTypes()<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span>  {<a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>    return atSet;<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>  }<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span><a name="line.1274"></a>
-<span class="sourceLineNo">1275</span><a name="line.1275"></a>
-<span class="sourceLineNo">1276</span><a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>  /**<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>   * Retrieves the set of operational attribute type definitions (i.e., those<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>   * definitions with a usage of directoryOperation, distributedOperation, or<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span>   * dSAOperation) contained in the  server  schema.<a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>   *<a name="line.1281"></a>
-<span class="sourceLineNo">1282</span>   * @return  The set of operational attribute type definitions contained in the<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span>   *          server schema.<a name="line.1283"></a>
-<span class="sourceLineNo">1284</span>   */<a name="line.1284"></a>
-<span class="sourceLineNo">1285</span>  public Set&lt;AttributeTypeDefinition&gt; getOperationalAttributeTypes()<a name="line.1285"></a>
-<span class="sourceLineNo">1286</span>  {<a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>    return operationalATSet;<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>  }<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span><a name="line.1289"></a>
-<span class="sourceLineNo">1290</span><a name="line.1290"></a>
-<span class="sourceLineNo">1291</span><a name="line.1291"></a>
-<span class="sourceLineNo">1292</span>  /**<a name="line.1292"></a>
-<span class="sourceLineNo">1293</span>   * Retrieves the set of user attribute type definitions (i.e., those<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>   * definitions with a usage of userApplications) contained in the  server<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span>   * schema.<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>   *<a name="line.1296"></a>
-<span class="sourceLineNo">1297</span>   * @return  The set of user attribute type definitions contained in the server<a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>   *          schema.<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>   */<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>  public Set&lt;AttributeTypeDefinition&gt; getUserAttributeTypes()<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>  {<a name="line.1301"></a>
-<span class="sourceLineNo">1302</span>    return userATSet;<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>  }<a name="line.1303"></a>
-<span class="sourceLineNo">1304</span><a name="line.1304"></a>
+<span class="sourceLineNo">1170</span>    if (e == null)<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>    {<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>      return null;<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>    }<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span><a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>    return e.getAttributeValue(ATTR_SUBSCHEMA_SUBENTRY);<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>  }<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span><a name="line.1177"></a>
+<span class="sourceLineNo">1178</span><a name="line.1178"></a>
+<span class="sourceLineNo">1179</span><a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>  /**<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>   * Retrieves the set of attribute syntax definitions contained in the server<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>   * schema.<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>   *<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>   * @return  The set of attribute syntax definitions contained in the server<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>   *          schema.<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>   */<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>  public Set&lt;AttributeSyntaxDefinition&gt; getAttributeSyntaxes()<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>  {<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>    return asSet;<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>  }<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span><a name="line.1191"></a>
+<span class="sourceLineNo">1192</span><a name="line.1192"></a>
+<span class="sourceLineNo">1193</span><a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>  /**<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>   * Retrieves the attribute syntax with the specified OID from the server<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>   * schema.<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>   *<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>   * @param  oid  The OID of the attribute syntax to retrieve.  It must not be<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>   *              {@code null}.  It may optionally include a minimum upper bound<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>   *              (as may appear when the syntax OID is included in an attribute<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>   *              type definition), but if it does then that portion will be<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>   *              ignored when retrieving the attribute syntax.<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>   *<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>   * @return  The requested attribute syntax, or {@code null} if there is no<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>   *          such syntax defined in the server schema.<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>   */<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>  public AttributeSyntaxDefinition getAttributeSyntax(final String oid)<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>  {<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>    ensureNotNull(oid);<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span><a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>    final String lowerOID = toLowerCase(oid);<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>    final int    curlyPos = lowerOID.indexOf('{');<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span><a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>    if (curlyPos &gt; 0)<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>    {<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>      return asMap.get(lowerOID.substring(0, curlyPos));<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>    }<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>    else<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>    {<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>      return asMap.get(lowerOID);<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>    }<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>  }<a name="line.1222"></a>
+<span class="sourceLineNo">1223</span><a name="line.1223"></a>
+<span class="sourceLineNo">1224</span><a name="line.1224"></a>
+<span class="sourceLineNo">1225</span><a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>  /**<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>   * Retrieves the set of attribute type definitions contained in the server<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>   * schema.<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>   *<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>   * @return  The set of attribute type definitions contained in the server<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>   *          schema.<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>   */<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>  public Set&lt;AttributeTypeDefinition&gt; getAttributeTypes()<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>  {<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>    return atSet;<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>  }<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span><a name="line.1237"></a>
+<span class="sourceLineNo">1238</span><a name="line.1238"></a>
+<span class="sourceLineNo">1239</span><a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>  /**<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>   * Retrieves the set of operational attribute type definitions (i.e., those<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>   * definitions with a usage of directoryOperation, distributedOperation, or<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>   * dSAOperation) contained in the  server  schema.<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>   *<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>   * @return  The set of operational attribute type definitions contained in the<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>   *          server schema.<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span>   */<a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>  public Set&lt;AttributeTypeDefinition&gt; getOperationalAttributeTypes()<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>  {<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>    return operationalATSet;<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>  }<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span><a name="line.1252"></a>
+<span class="sourceLineNo">1253</span><a name="line.1253"></a>
+<span class="sourceLineNo">1254</span><a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>  /**<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>   * Retrieves the set of user attribute type definitions (i.e., those<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>   * definitions with a usage of userApplications) contained in the  server<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>   * schema.<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>   *<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>   * @return  The set of user attribute type definitions contained in the server<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>   *          schema.<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>   */<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span>  public Set&lt;AttributeTypeDefinition&gt; getUserAttributeTypes()<a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>  {<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>    return userATSet;<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>  }<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span><a name="line.1267"></a>
+<span class="sourceLineNo">1268</span><a name="line.1268"></a>
+<span class="sourceLineNo">1269</span><a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>  /**<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>   * Retrieves the attribute type with the specified name or OID from the server<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>   * schema.<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>   *<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>   * @param  name  The name or OID of the attribute type to retrieve.  It must<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>   *               not be {@code null}.<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>   *<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>   * @return  The requested attribute type, or {@code null} if there is no<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>   *          such attribute type defined in the server schema.<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>   */<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>  public AttributeTypeDefinition getAttributeType(final String name)<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>  {<a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>    ensureNotNull(name);<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span><a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>    return atMap.get(toLowerCase(name));<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>  }<a name="line.1285"></a>
+<span class="sourceLineNo">1286</span><a name="line.1286"></a>
+<span class="sourceLineNo">1287</span><a name="line.1287"></a>
+<span class="sourceLineNo">1288</span><a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>  /**<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>   * Retrieves a list of all subordinate attribute type definitions for the<a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>   * provided attribute type definition.<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>   *<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>   * @param  d  The attribute type definition for which to retrieve all<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span>   *            subordinate attribute types.  It must not be {@code null}.<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>   *<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>   * @return  A list of all subordinate attribute type definitions for the<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>   *          provided attribute type definition, or an empty list if it does<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span>   *          not have any subordinate types or the provided attribute type is<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>   *          not defined in the schema.<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span>   */<a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>  public List&lt;AttributeTypeDefinition&gt; getSubordinateAttributeTypes(<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>                                            final AttributeTypeDefinition d)<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>  {<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>    ensureNotNull(d);<a name="line.1304"></a>
 <span class="sourceLineNo">1305</span><a name="line.1305"></a>
-<span class="sourceLineNo">1306</span><a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>  /**<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span>   * Retrieves the attribute type with the specified name or OID from the server<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>   * schema.<a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>   *<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>   * @param  name  The name or OID of the attribute type to retrieve.  It must<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>   *               not be {@code null}.<a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>   *<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>   * @return  The requested attribute type, or {@code null} if there is no<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span>   *          such attribute type defined in the server schema.<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>   */<a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>  public AttributeTypeDefinition getAttributeType(final String name)<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>  {<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>    ensureNotNull(name);<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span><a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>    return atMap.get(toLowerCase(name));<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>  }<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span><a name="line.1323"></a>
-<span class="sourceLineNo">1324</span><a name="line.1324"></a>
-<span class="sourceLineNo">1325</span><a name="line.1325"></a>
-<span class="sourceLineNo">1326</span>  /**<a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>   * Retrieves a list of all subordinate attribute type definitions for the<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>   * provided attribute type definition.<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>   *<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>   * @param  d  The attribute type definition for which to retrieve all<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>   *            subordinate attribute types.  It must not be {@code null}.<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>   *<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>   * @return  A list of all subordinate attribute type definitions for the<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span>   *          provided attribute type definition, or an empty list if it does<a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>   *          not have any subordinate types or the provided attribute type is<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>   *          not defined in the schema.<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>   */<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>  public List&lt;AttributeTypeDefinition&gt; getSubordinateAttributeTypes(<a name="line.1338"></a>
-<span class="sourceLineNo">1339</span>                                            final AttributeTypeDefinition d)<a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>  {<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>    ensureNotNull(d);<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span><a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>    final List&lt;AttributeTypeDefinition&gt; l = subordinateAttributeTypes.get(d);<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>    if (l == null)<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>    {<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span>      return Collections.emptyList();<a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>    }<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>    else<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span>    {<a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>      return Collections.unmodifiableList(l);<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>    }<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>  }<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span><a name="line.1353"></a>
-<span class="sourceLineNo">1354</span><a name="line.1354"></a>
-<span class="sourceLineNo">1355</span><a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>  /**<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span>   * Retrieves the set of DIT content rule definitions contained in the server<a name="line.1357"></a>
-<span class="sourceLineNo">1358</span>   * schema.<a name="line.1358"></a>
-<span class="sourceLineNo">1359</span>   *<a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>   * @return  The set of DIT content rule definitions contained in the server<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>   *          schema.<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>   */<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>  public Set&lt;DITContentRuleDefinition&gt; getDITContentRules()<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>  {<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>    return dcrSet;<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>  }<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span><a name="line.1367"></a>
-<span class="sourceLineNo">1368</span><a name="line.1368"></a>
-<span class="sourceLineNo">1369</span><a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>  /**<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>   * Retrieves the DIT content rule with the specified name or OID from the<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span>   * server schema.<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>   *<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>   * @param  name  The name or OID of the DIT content rule to retrieve.  It must<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>   *               not be {@code null}.<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>   *<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>   * @return  The requested DIT content rule, or {@code null} if there is no<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>   *          such rule defined in the server schema.<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>   */<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>  public DITContentRuleDefinition getDITContentRule(final String name)<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>  {<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>    ensureNotNull(name);<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span><a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>    return dcrMap.get(toLowerCase(name));<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>  }<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span><a name="line.1386"></a>
-<span class="sourceLineNo">1387</span><a name="line.1387"></a>
-<span class="sourceLineNo">1388</span><a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>  /**<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>   * Retrieves the set of DIT structure rule definitions contained in the server<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>   * schema.<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>   *<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>   * @return  The set of DIT structure rule definitions contained in the server<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>   *          schema.<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>   */<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>  public Set&lt;DITStructureRuleDefinition&gt; getDITStructureRules()<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>  {<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>    return dsrSet;<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>  }<a name="line.1399"></a>
+<span class="sourceLineNo">1306</span>    final List&lt;AttributeTypeDefinition&gt; l = subordinateAttributeTypes.get(d);<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>    if (l == null)<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>    {<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span>      return Collections.emptyList();<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>    }<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span>    else<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>    {<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>      return Collections.unmodifiableList(l);<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>    }<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>  }<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span><a name="line.1316"></a>
+<span class="sourceLineNo">1317</span><a name="line.1317"></a>
+<span class="sourceLineNo">1318</span><a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>  /**<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>   * Retrieves the set of DIT content rule definitions contained in the server<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>   * schema.<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>   *<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>   * @return  The set of DIT content rule definitions contained in the server<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>   *          schema.<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>   */<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>  public Set&lt;DITContentRuleDefinition&gt; getDITContentRules()<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>  {<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span>    return dcrSet;<a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>  }<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span><a name="line.1330"></a>
+<span class="sourceLineNo">1331</span><a name="line.1331"></a>
+<span class="sourceLineNo">1332</span><a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>  /**<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>   * Retrieves the DIT content rule with the specified name or OID from the<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>   * server schema.<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>   *<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>   * @param  name  The name or OID of the DIT content rule to retrieve.  It must<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>   *               not be {@code null}.<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>   *<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>   * @return  The requested DIT content rule, or {@code null} if there is no<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>   *          such rule defined in the server schema.<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>   */<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>  public DITContentRuleDefinition getDITContentRule(final String name)<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>  {<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>    ensureNotNull(name);<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span><a name="line.1346"></a>
+<span class="sourceLineNo">1347</span>    return dcrMap.get(toLowerCase(name));<a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>  }<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span><a name="line.1349"></a>
+<span class="sourceLineNo">1350</span><a name="line.1350"></a>
+<span class="sourceLineNo">1351</span><a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>  /**<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>   * Retrieves the set of DIT structure rule definitions contained in the server<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>   * schema.<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>   *<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>   * @return  The set of DIT structure rule definitions contained in the server<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>   *          schema.<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>   */<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span>  public Set&lt;DITStructureRuleDefinition&gt; getDITStructureRules()<a name="line.1359"></a>
+<span class="sourceLineNo">1360</span>  {<a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>    return dsrSet;<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>  }<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span><a name="line.1363"></a>
+<span class="sourceLineNo">1364</span><a name="line.1364"></a>
+<span class="sourceLineNo">1365</span><a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>  /**<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>   * Retrieves the DIT content rule with the specified rule ID from the server<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>   * schema.<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>   *<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>   * @param  ruleID  The rule ID for the DIT structure rule to retrieve.<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>   *<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>   * @return  The requested DIT structure rule, or {@code null} if there is no<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>   *          such rule defined in the server schema.<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span>   */<a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>  public DITStructureRuleDefinition getDITStructureRuleByID(final int ruleID)<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>  {<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>    return dsrMapByID.get(ruleID);<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>  }<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span><a name="line.1379"></a>
+<span class="sourceLineNo">1380</span><a name="line.1380"></a>
+<span class="sourceLineNo">1381</span><a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>  /**<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>   * Retrieves the DIT content rule with the specified name from the server<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>   * schema.<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>   *<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>   * @param  ruleName  The name of the DIT structure rule to retrieve.  It must<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>   *                   not be {@code null}.<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>   *<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>   * @return  The requested DIT structure rule, or {@code null} if there is no<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>   *          such rule defined in the server schema.<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>   */<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>  public DITStructureRuleDefinition getDITStructureRuleByName(<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>                                         final String ruleName)<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>  {<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>    ensureNotNull(ruleName);<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span><a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>    return dsrMapByName.get(toLowerCase(ruleName));<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>  }<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span><a name="line.1399"></a>
 <span class="sourceLineNo">1400</span><a name="line.1400"></a>
 <span class="sourceLineNo">1401</span><a name="line.1401"></a>
-<span class="sourceLineNo">1402</span><a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>  /**<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>   * Retrieves the DIT content rule with the specified rule ID from the server<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>   * schema.<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>   *<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>   * @param  ruleID  The rule ID for the DIT structure rule to retrieve.<a name="line.1407"></a>
+<span class="sourceLineNo">1402</span>  /**<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>   * Retrieves the DIT content rule associated with the specified name form from<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>   * the server schema.<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>   *<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>   * @param  nameForm  The name or OID of the name form for which to retrieve<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>   *                   the associated DIT structure rule.<a name="line.1407"></a>
 <span class="sourceLineNo">1408</span>   *<a name="line.1408"></a>
 <span class="sourceLineNo">1409</span>   * @return  The requested DIT structure rule, or {@code null} if there is no<a name="line.1409"></a>
 <span class="sourceLineNo">1410</span>   *          such rule defined in the server schema.<a name="line.1410"></a>
 <span class="sourceLineNo">1411</span>   */<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>  public DITStructureRuleDefinition getDITStructureRuleByID(final int ruleID)<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>  {<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>    return dsrMapByID.get(ruleID);<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>  }<a name="line.1415"></a>
+<span class="sourceLineNo">1412</span>  public DITStructureRuleDefinition getDITStructureRuleByNameForm(<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>                                         final String nameForm)<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>  {<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>    ensureNotNull(nameForm);<a name="line.1415"></a>
 <span class="sourceLineNo">1416</span><a name="line.1416"></a>
-<span class="sourceLineNo">1417</span><a name="line.1417"></a>
-<span class="sourceLineNo">1418</span><a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>  /**<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>   * Retrieves the DIT content rule with the specified name from the server<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>   * schema.<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>   *<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>   * @param  ruleName  The name of the DIT structure rule to retrieve.  It must<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>   *                   not be {@code null}.<a name="line.1424"></a>
+<span class="sourceLineNo">1417</span>    return dsrMapByNameForm.get(toLowerCase(nameForm));<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>  }<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span><a name="line.1419"></a>
+<span class="sourceLineNo">1420</span><a name="line.1420"></a>
+<span class="sourceLineNo">1421</span><a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>  /**<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>   * Retrieves the set of matching rule definitions contained in the server<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>   * schema.<a name="line.1424"></a>
 <span class="sourceLineNo">1425</span>   *<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>   * @return  The requested DIT structure rule, or {@code null} if there is no<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>   *          such rule defined in the server schema.<a name="line.1427"></a>
+<span class="sourceLineNo">1426</span>   * @return  The set of matching rule definitions contained in the server<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>   *          schema.<a name="line.1427"></a>
 <span class="sourceLineNo">1428</span>   */<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>  public DITStructureRuleDefinition getDITStructureRuleByName(<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>                                         final String ruleName)<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>  {<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>    ensureNotNull(ruleName);<a name="line.1432"></a>
+<span class="sourceLineNo">1429</span>  public Set&lt;MatchingRuleDefinition&gt; getMatchingRules()<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>  {<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>    return mrSet;<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>  }<a name="line.1432"></a>
 <span class="sourceLineNo">1433</span><a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>    return dsrMapByName.get(toLowerCase(ruleName));<a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>  }<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span><a name="line.1436"></a>
-<span class="sourceLineNo">1437</span><a name="line.1437"></a>
-<span class="sourceLineNo">1438</span><a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>  /**<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>   * Retrieves the DIT content rule associated with the specified name form from<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>   * the server schema.<a name="line.1441"></a>
+<span class="sourceLineNo">1434</span><a name="line.1434"></a>
+<span class="sourceLineNo">1435</span><a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>  /**<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>   * Retrieves the matching rule with the specified name or OID from the server<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>   * schema.<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>   *<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>   * @param  name  The name or OID of the matching rule to retrieve.  It must<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>   *               not be {@code null}.<a name="line.1441"></a>
 <span class="sourceLineNo">1442</span>   *<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>   * @param  nameForm  The name or OID of the name form for which to retrieve<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>   *                   the associated DIT structure rule.<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>   *<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>   * @return  The requested DIT structure rule, or {@code null} if there is no<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>   *          such rule defined in the server schema.<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>   */<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>  public DITStructureRuleDefinition getDITStructureRuleByNameForm(<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>                                         final String nameForm)<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>  {<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>    ensureNotNull(nameForm);<a name="line.1452"></a>
+<span class="sourceLineNo">1443</span>   * @return  The requested matching rule, or {@code null} if there is no<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>   *          such rule defined in the server schema.<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>   */<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>  public MatchingRuleDefinition getMatchingRule(final String name)<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>  {<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>    ensureNotNull(name);<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span><a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>    return mrMap.get(toLowerCase(name));<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>  }<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span><a name="line.1452"></a>
 <span class="sourceLineNo">1453</span><a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>    return dsrMapByNameForm.get(toLowerCase(nameForm));<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>  }<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span><a name="line.1456"></a>
-<span class="sourceLineNo">1457</span><a name="line.1457"></a>
-<span class="sourceLineNo">1458</span><a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>  /**<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>   * Retrieves the set of matching rule definitions contained in the server<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>   * schema.<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>   *<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>   * @return  The set of matching rule definitions contained in the server<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>   *          schema.<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>   */<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>  public Set&lt;MatchingRuleDefinition&gt; getMatchingRules()<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>  {<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>    return mrSet;<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>  }<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span><a name="line.1470"></a>
-<span class="sourceLineNo">1471</span><a name="line.1471"></a>
-<span class="sourceLineNo">1472</span><a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>  /**<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>   * Retrieves the matching rule with the specified name or OID from the server<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>   * schema.<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>   *<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>   * @param  name  The name or OID of the matching rule to retrieve.  It must<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>   *               not be {@code null}.<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>   *<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>   * @return  The requested matching rule, or {@code null} if there is no<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>   *          such rule defined in the server schema.<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>   */<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>  public MatchingRuleDefinition getMatchingRule(final String name)<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>  {<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>    ensureNotNull(name);<a name="line.1485"></a>
+<span class="sourceLineNo">1454</span><a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>  /**<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>   * Retrieves the set of matching rule use definitions contained in the server<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>   * schema.<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>   *<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>   * @return  The set of matching rule use definitions contained in the server<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>   *          schema.<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>   */<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>  public Set&lt;MatchingRuleUseDefinition&gt; getMatchingRuleUses()<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>  {<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>    return mruSet;<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>  }<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span><a name="line.1466"></a>
+<span class="sourceLineNo">1467</span><a name="line.1467"></a>
+<span class="sourceLineNo">1468</span><a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>  /**<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>   * Retrieves the matching rule use with the specified name or OID from the<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>   * server schema.<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>   *<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>   * @param  name  The name or OID of the matching rule use to retrieve.  It<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>   *               must not be {@code null}.<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>   *<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>   * @return  The requested matching rule, or {@code null} if there is no<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>   *          such matching rule use defined in the server schema.<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>   */<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>  public MatchingRuleUseDefinition getMatchingRuleUse(final String name)<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>  {<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>    ensureNotNull(name);<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span><a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>    return mruMap.get(toLowerCase(name));<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>  }<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span><a name="line.1485"></a>
 <span class="sourceLineNo">1486</span><a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>    return mrMap.get(toLowerCase(name));<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>  }<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span><a name="line.1489"></a>
-<span class="sourceLineNo">1490</span><a name="line.1490"></a>
-<span class="sourceLineNo">1491</span><a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>  /**<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>   * Retrieves the set of matching rule use definitions contained in the server<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>   * schema.<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>   *<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>   * @return  The set of matching rule use definitions contained in the server<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>   *          schema.<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>   */<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>  public Set&lt;MatchingRuleUseDefinition&gt; getMatchingRuleUses()<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>  {<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>    return mruSet;<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>  }<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span><a name="line.1503"></a>
-<span class="sourceLineNo">1504</span><a name="line.1504"></a>
-<span class="sourceLineNo">1505</span><a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>  /**<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>   * Retrieves the matching rule use with the specified name or OID from the<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>   * server schema.<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>   *<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>   * @param  name  The name or OID of the matching rule use to retrieve.  It<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>   *               must not be {@code null}.<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>   *<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>   * @return  The requested matching rule, or {@code null} if there is no<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>   *          such matching rule use defined in the server schema.<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>   */<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>  public MatchingRuleUseDefinition getMatchingRuleUse(final String name)<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>  {<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>    ensureNotNull(name);<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span><a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>    return mruMap.get(toLowerCase(name));<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>  }<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span><a name="line.1522"></a>
-<span class="sourceLineNo">1523</span><a name="line.1523"></a>
-<span class="sourceLineNo">1524</span><a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>  /**<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>   * Retrieves the set of name form definitions contained in the server schema.<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>   *<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>   * @return  The set of name form definitions contained in the server schema.<a name="line.1528"></a>
+<span class="sourceLineNo">1487</span><a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>  /**<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>   * Retrieves the set of name form definitions contained in the server schema.<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>   *<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>   * @return  The set of name form definitions contained in the server schema.<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>   */<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>  public Set&lt;NameFormDefinition&gt; getNameForms()<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>  {<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>    return nfSet;<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>  }<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span><a name="line.1497"></a>
+<span class="sourceLineNo">1498</span><a name="line.1498"></a>
+<span class="sourceLineNo">1499</span><a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>  /**<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>   * Retrieves the name form with the specified name or OID from the server<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>   * schema.<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>   *<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>   * @param  name  The name or OID of the name form to retrieve.  It must not be<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>   *               {@code null}.<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>   *<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>   * @return  The requested name form, or {@code null} if there is no<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>   *          such rule defined in the server schema.<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>   */<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>  public NameFormDefinition getNameFormByName(final String name)<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>  {<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>    ensureNotNull(name);<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span><a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>    return nfMapByName.get(toLowerCase(name));<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>  }<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span><a name="line.1516"></a>
+<span class="sourceLineNo">1517</span><a name="line.1517"></a>
+<span class="sourceLineNo">1518</span><a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>  /**<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>   * Retrieves the name form associated with the specified structural object<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>   * class from the server schema.<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>   *<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>   * @param  objectClass  The name or OID of the structural object class for<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>   *                      which to retrieve the associated name form.  It must<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>   *                      not be {@code null}.<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>   *<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>   * @return  The requested name form, or {@code null} if there is no<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>   *          such rule defined in the server schema.<a name="line.1528"></a>
 <span class="sourceLineNo">1529</span>   */<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>  public Set&lt;NameFormDefinition&gt; getNameForms()<a name="line.1530"></a>
+<span class="sourceLineNo">1530</span>  public NameFormDefinition getNameFormByObjectClass(final String objectClass)<a name="line.1530"></a>
 <span class="sourceLineNo">1531</span>  {<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>    return nfSet;<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>  }<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span><a name="line.1534"></a>
-<span class="sourceLineNo">1535</span><a name="line.1535"></a>
+<span class="sourceLineNo">1532</span>    ensureNotNull(objectClass);<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span><a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>    return nfMapByOC.get(toLowerCase(objectClass));<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>  }<a name="line.1535"></a>
 <span class="sourceLineNo">1536</span><a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>  /**<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>   * Retrieves the name form with the specified name or OID from the server<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>   * schema.<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>   *<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>   * @param  name  The name or OID of the name form to retrieve.  It must not be<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>   *               {@code null}.<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>   *<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>   * @return  The requested name form, or {@code null} if there is no<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>   *          such rule defined in the server schema.<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>   */<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>  public NameFormDefinition getNameFormByName(final String name)<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>  {<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>    ensureNotNull(name);<a name="line.1549"></a>
+<span class="sourceLineNo">1537</span><a name="line.1537"></a>
+<span class="sourceLineNo">1538</span><a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>  /**<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>   * Retrieves the set of object class definitions contained in the server<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>   * schema.<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>   *<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>   * @return  The set of object class definitions contained in the server<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>   *          schema.<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>   */<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>  public Set&lt;ObjectClassDefinition&gt; getObjectClasses()<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>  {<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>    return ocSet;<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>  }<a name="line.1549"></a>
 <span class="sourceLineNo">1550</span><a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>    return nfMapByName.get(toLowerCase(name));<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>  }<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span><a name="line.1553"></a>
-<span class="sourceLineNo">1554</span><a name="line.1554"></a>
-<span class="sourceLineNo">1555</span><a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>  /**<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>   * Retrieves the name form associated with the specified structural object<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>   * class from the server schema.<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>   *<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>   * @param  objectClass  The name or OID of the structural object class for<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>   *                      which to retrieve the associated name form.  It must<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>   *                      not be {@code null}.<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>   *<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>   * @return  The requested name form, or {@code null} if there is no<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>   *          such rule defined in the server schema.<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>   */<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>  public NameFormDefinition getNameFormByObjectClass(final String objectClass)<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>  {<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>    ensureNotNull(objectClass);<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span><a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>    return nfMapByOC.get(toLowerCase(objectClass));<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>  }<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span><a name="line.1573"></a>
-<span class="sourceLineNo">1574</span><a name="line.1574"></a>
-<span class="sourceLineNo">1575</span><a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>  /**<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>   * Retrieves the set of object class definitions contained in the server<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>   * schema.<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>   *<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>   * @return  The set of object class definitions contained in the server<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>   *          schema.<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>   */<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>  public Set&lt;ObjectClassDefinition&gt; getObjectClasses()<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span>  {<a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>    return ocSet;<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>  }<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span><a name="line.1587"></a>
-<span class="sourceLineNo">1588</span><a name="line.1588"></a>
-<span class="sourceLineNo">1589</span><a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>  /**<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>   * Retrieves the set of abstract object class definitions contained in the<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>   * server schema.<a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>   *<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>   * @return  The set of abstract object class definitions contained in the<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>   *          server schema.<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>   */<a name="line.1596"></a>
-<span class="sourceLineNo">1597</span>  public Set&lt;ObjectClassDefinition&gt; getAbstractObjectClasses()<a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>  {<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>    return abstractOCSet;<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>  }<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span><a name="line.1601"></a>
-<span class="sourceLineNo">1602</span><a name="line.1602"></a>
-<span class="sourceLineNo">1603</span><a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>  /**<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>   * Retrieves the set of auxiliary object class definitions contained in the<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span>   * server schema.<a name="line.1606"></a>
-<span class="sourceLineNo">1607</span>   *<a name="line.1607"></a>
-<span class="sourceLineNo">1608</span>   * @return  The set of auxiliary object class definitions contained in the<a name="line.1608"></a>
-<span class="sourceLineNo">1609</span>   *          server schema.<a name="line.1609"></a>
-<span class="sourceLineNo">1610</span>   */<a name="line.1610"></a>
-<span class="sourceLineNo">1611</span>  public Set&lt;ObjectClassDefinition&gt; getAuxiliaryObjectClasses()<a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>  {<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span>    return auxiliaryOCSet;<a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>  }<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span><a name="line.1615"></a>
-<span class="sourceLineNo">1616</span><a name="line.1616"></a>
-<span class="sourceLineNo">1617</span><a name="line.1617"></a>
-<span class="sourceLineNo">1618</span>  /**<a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>   * Retrieves the set of structural object class definitions contained in the<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>   * server schema.<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>   *<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span>   * @return  The set of structural object class definitions contained in the<a name="line.1622"></a>
-<span class="sourceLineNo">1623</span>   *          server schema.<a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>   */<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span>  public Set&lt;ObjectClassDefinition&gt; getStructuralObjectClasses()<a name="line.1625"></a>
-<span class="sourceLineNo">1626</span>  {<a name="line.1626"></a>
-<span class="sourceLineNo">1627</span>    return structuralOCSet;<a name="line.1627"></a>
-<span class="sourceLineNo">1628</span>  }<a name="line.1628"></a>
-<span class="sourceLineNo">1629</span><a name="line.1629"></a>
-<span class="sourceLineNo">1630</span><a name="line.1630"></a>
-<span class="sourceLineNo">1631</span><a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>  /**<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span>   * Retrieves the object class with the specified name or OID from the server<a name="line.1633"></a>
-<span class="sourceLineNo">1634</span>   * schema.<a name="line.1634"></a>
-<span class="sourceLineNo">1635</span>   *<a name="line.1635"></a>
-<span class="sourceLineNo">1636</span>   * @param  name  The name or OID of the object class to retrieve.  It must<a name="line.1636"></a>
-<span class="sourceLineNo">1637</span>   *               not be {@code null}.<a name="line.1637"></a>
-<span class="sourceLineNo">1638</span>   *<a name="line.1638"></a>
-<span class="sourceLineNo">1639</span>   * @return  The requested object class, or {@code null} if there is no such<a name="line.1639"></a>
-<span class="sourceLineNo">1640</span>   *          class defined in the server schema.<a name="line.1640"></a>
-<span class="sourceLineNo">1641</span>   */<a name="line.1641"></a>
-<span class="sourceLineNo">1642</span>  public ObjectClassDefinition getObjectClass(final String name)<a name="line.1642"></a>
-<span class="sourceLineNo">1643</span>  {<a name="line.1643"></a>
-<span class="sourceLineNo">1644</span>    ensureNotNull(name);<a name="line.1644"></a>
-<span class="sourceLineNo">1645</span><a name="line.1645"></a>
-<span class="sourceLineNo">1646</span>    return ocMap.get(toLowerCase(name));<a name="line.1646"></a>
-<span class="sourceLineNo">1647</span>  }<a name="line.1647"></a>
-<span class="sourceLineNo">1648</span><a name="line.1648"></a>
-<span class="sourceLineNo">1649</span><a name="line.1649"></a>
+<span class="sourceLineNo">1551</span><a name="line.1551"></a>
+<span class="sourceLineNo">1552</span><a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>  /**<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>   * Retrieves the set of abstract object class definitions contained in the<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>   * server schema.<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>   *<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>   * @return  The set of abstract object class definitions contained in the<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>   *          server schema.<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>   */<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>  public Set&lt;ObjectClassDefinition&gt; getAbstractObjectClasses()<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>  {<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>    return abstractOCSet;<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>  }<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span><a name="line.1564"></a>
+<span class="sourceLineNo">1565</span><a name="line.1565"></a>
+<span class="sourceLineNo">1566</span><a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>  /**<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>   * Retrieves the set of auxiliary object class definitions contained in the<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>   * server schema.<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>   *<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>   * @return  The set of auxiliary object class definitions contained in the<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>   *          server schema.<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>   */<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>  public Set&lt;ObjectClassDefinition&gt; getAuxiliaryObjectClasses()<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>  {<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>    return auxiliaryOCSet;<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>  }<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span><a name="line.1578"></a>
+<span class="sourceLineNo">1579</span><a name="line.1579"></a>
+<span class="sourceLineNo">1580</span><a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>  /**<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>   * Retrieves the set of structural object class definitions contained in the<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>   * server schema.<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>   *<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>   * @return  The set of structural object class definitions contained in the<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>   *          server schema.<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>   */<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>  public Set&lt;ObjectClassDefinition&gt; getStructuralObjectClasses()<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>  {<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>    return structuralOCSet;<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>  }<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span><a name="line.1592"></a>
+<span class="sourceLineNo">1593</span><a name="line.1593"></a>
+<span class="sourceLineNo">1594</span><a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>  /**<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>   * Retrieves the object class with the specified name or OID from the server<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>   * schema.<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span>   *<a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>   * @param  name  The name or OID of the object class to retrieve.  It must<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>   *               not be {@code null}.<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>   *<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>   * @return  The requested object class, or {@code null} if there is no such<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>   *          class defined in the server schema.<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>   */<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>  public ObjectClassDefinition getObjectClass(final String name)<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>  {<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span>    ensureNotNull(name);<a name="line.1607"></a>
+<span class="sourceLineNo">1608</span><a name="line.1608"></a>
+<span class="sourceLineNo">1609</span>    return ocMap.get(toLowerCase(name));<a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>  }<a name="line.1610"></a>
+<span class="sourceLineNo">1611</span><a name="line.1611"></a>
+<span class="sourceLineNo">1612</span><a name="line.1612"></a>
+<span class="sourceLineNo">1613</span><a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>  /**<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>   * Retrieves a hash code for this schema object.<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>   *<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>   * @return  A hash code for this schema object.<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span>   */<a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>  @Override()<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>  public int hashCode()<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>  {<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>    int hc;<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span>    try<a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>    {<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>      hc = schemaEntry.getParsedDN().hashCode();<a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>    }<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>    catch (final Exception e)<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>    {<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span>      debugException(e);<a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>      hc = toLowerCase(schemaEntry.getDN()).hashCode();<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>    }<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span><a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>    Attribute a = schemaEntry.getAttribute(ATTR_ATTRIBUTE_SYNTAX);<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>    if (a != null)<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>    {<a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>      hc += a.hashCode();<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span>    }<a name="line.1637"></a>
+<span class="sourceLineNo">1638</span><a name="line.1638"></a>
+<span class="sourceLineNo">1639</span>    a = schemaEntry.getAttribute(ATTR_MATCHING_RULE);<a name="line.1639"></a>
+<span class="sourceLineNo">1640</span>    if (a != null)<a name="line.1640"></a>
+<span class="sourceLineNo">1641</span>    {<a name="line.1641"></a>
+<span class="sourceLineNo">1642</span>      hc += a.hashCode();<a name="line.1642"></a>
+<span class="sourceLineNo">1643</span>    }<a name="line.1643"></a>
+<span class="sourceLineNo">1644</span><a name="line.1644"></a>
+<span class="sourceLineNo">1645</span>    a = schemaEntry.getAttribute(ATTR_ATTRIBUTE_TYPE);<a name="line.1645"></a>
+<span class="sourceLineNo">1646</span>    if (a != null)<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>    {<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span>      hc += a.hashCode();<a name="line.1648"></a>
+<span class="sourceLineNo">1649</span>    }<a name="line.1649"></a>
 <span class="sourceLineNo">1650</span><a name="line.1650"></a>
-<span class="sourceLineNo">1651</span>  /**<a name="line.1651"></a>
-<span class="sourceLineNo">1652</span>   * Retrieves a hash code for this schema object.<a name="line.1652"></a>
-<span class="sourceLineNo">1653</span>   *<a name="line.1653"></a>
-<span class="sourceLineNo">1654</span>   * @return  A hash code for this schema object.<a name="line.1654"></a>
-<span class="sourceLineNo">1655</span>   */<a name="line.1655"></a>
-<span class="sourceLineNo">1656</span>  @Override()<a name="line.1656"></a>
-<span class="sourceLineNo">1657</span>  public int hashCode()<a name="line.1657"></a>
-<span class="sourceLineNo">1658</span>  {<a name="line.1658"></a>
-<span class="sourceLineNo">1659</span>    int hc;<a name="line.1659"></a>
-<span class="sourceLineNo">1660</span>    try<a name="line.1660"></a>
-<span class="sourceLineNo">1661</span>    {<a name="line.1661"></a>
-<span class="sourceLineNo">1662</span>      hc = schemaEntry.getParsedDN().hashCode();<a name="line.1662"></a>
-<span class="sourceLineNo">1663</span>    }<a name="line.1663"></a>
-<span class="sourceLineNo">1664</span>    catch (final Exception e)<a name="line.1664"></a>
+<span class="sourceLineNo">1651</span>    a = schemaEntry.getAttribute(ATTR_OBJECT_CLASS);<a name="line.1651"></a>
+<span class="sourceLineNo">1652</span>    if (a != null)<a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>    {<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span>      hc += a.hashCode();<a name="line.1654"></a>
+<span class="sourceLineNo">1655</span>    }<a name="line.1655"></a>
+<span class="sourceLineNo">1656</span><a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>    a = schemaEntry.getAttribute(ATTR_NAME_FORM);<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>    if (a != null)<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>    {<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>      hc += a.hashCode();<a name="line.1660"></a>
+<span class="sourceLineNo">1661</span>    }<a name="line.1661"></a>
+<span class="sourceLineNo">1662</span><a name="line.1662"></a>
+<span class="sourceLineNo">1663</span>    a = schemaEntry.getAttribute(ATTR_DIT_CONTENT_RULE);<a name="line.1663"></a>
+<span class="sourceLineNo">1664</span>    if (a != null)<a name="line.1664"></a>
 <span class="sourceLineNo">1665</span>    {<a name="line.1665"></a>
-<span class="sourceLineNo">1666</span>      debugException(e);<a name="line.1666"></a>
-<span class="sourceLineNo">1667</span>      hc = toLowerCase(schemaEntry.getDN()).hashCode();<a name="line.1667"></a>
-<span class="sourceLineNo">1668</span>    }<a name="line.1668"></a>
-<span class="sourceLineNo">1669</span><a name="line.1669"></a>
-<span class="sourceLineNo">1670</span>    Attribute a = schemaEntry.getAttribute(ATTR_ATTRIBUTE_SYNTAX);<a name="line.1670"></a>
-<span class="sourceLineNo">1671</span>    if (a != null)<a name="line.1671"></a>
-<span class="sourceLineNo">1672</span>    {<a name="line.1672"></a>
-<span class="sourceLineNo">1673</span>      hc += a.hashCode();<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>    }<a name="line.1674"></a>
-<span class="sourceLineNo">1675</span><a name="line.1675"></a>
-<span class="sourceLineNo">1676</span>    a = schemaEntry.getAttribute(ATTR_MATCHING_RULE);<a name="line.1676"></a>
-<span class="sourceLineNo">1677</span>    if (a != null)<a name="line.1677"></a>
-<span class="sourceLineNo">1678</span>    {<a name="line.1678"></a>
-<span class="sourceLineNo">1679</span>      hc += a.hashCode();<a name="line.1679"></a>
-<span class="sourceLineNo">1680</span>    }<a name="line.1680"></a>
-<span class="sourceLineNo">1681</span><a name="line.1681"></a>
-<span class="sourceLineNo">1682</span>    a = schemaEntry.getAttribute(ATTR_ATTRIBUTE_TYPE);<a name="line.1682"></a>
-<span class="sourceLineNo">1683</span>    if (a != null)<a name="line.1683"></a>
-<span class="sourceLineNo">1684</span>    {<a name="line.1684"></a>
-<span class="sourceLineNo">1685</span>      hc += a.hashCode();<a name="line.1685"></a>
-<span class="sourceLineNo">1686</span>    }<a name="line.1686"></a>
-<span class="sourceLineNo">1687</span><a name="line.1687"></a>
-<span class="sourceLineNo">1688</span>    a = schemaEntry.getAttribute(ATTR_OBJECT_CLASS);<a name="line.1688"></a>
-<span class="sourceLineNo">1689</span>    if (a != null)<a name="line.1689"></a>
-<span class="sourceLineNo">1690</span>    {<a name="line.1690"></a>
-<span class="sourceLineNo">1691</span>      hc += a.hashCode();<a name="line.1691"></a>
-<span class="sourceLineNo">1692</span>    }<a name="line.1692"></a>
-<span class="sourceLineNo">1693</span><a name="line.1693"></a>
-<span class="sourceLineNo">1694</span>    a = schemaEntry.getAttribute(ATTR_NAME_FORM);<a name="line.1694"></a>
-<span class="sourceLineNo">1695</span>    if (a != null)<a name="line.1695"></a>
-<span class="sourceLineNo">1696</span>    {<a name="line.1696"></a>
-<span class="sourceLineNo">1697</span>      hc += a.hashCode();<a name="line.1697"></a>
-<span class="sourceLineNo">1698</span>    }<a name="line.1698"></a>
-<span class="sourceLineNo">1699</span><a name="line.1699"></a>
-<span class="sourceLineNo">1700</span>    a = schemaEntry.getAttribute(ATTR_DIT_CONTENT_RULE);<a name="line.1700"></a>
-<span class="sourceLineNo">1701</span>    if (a != null)<a name="line.1701"></a>
-<span class="sourceLineNo">1702</span>    {<a name="line.1702"></a>
-<span class="sourceLineNo">1703</span>      hc += a.hashCode();<a name="line.1703"></a>
-<span class="sourceLineNo">1704</span>    }<a name="line.1704"></a>
-<span class="sourceLineNo">1705</span><a name="line.1705"></a>
-<span class="sourceLineNo">1706</span>    a = schemaEntry.getAttribute(ATTR_DIT_STRUCTURE_RULE);<a name="line.1706"></a>
-<span class="sourceLineNo">1707</span>    if (a != null)<a name="line.1707"></a>
+<span class="sourceLineNo">1666</span>      hc += a.hashCode();<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span>    }<a name="line.1667"></a>
+<span class="sourceLineNo">1668</span><a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>    a = schemaEntry.getAttribute(ATTR_DIT_STRUCTURE_RULE);<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span>    if (a != null)<a name="line.1670"></a>
+<span class="sourceLineNo">1671</span>    {<a name="line.1671"></a>
+<span class="sourceLineNo">1672</span>      hc += a.hashCode();<a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>    }<a name="line.1673"></a>
+<span class="sourceLineNo">1674</span><a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>    a = schemaEntry.getAttribute(ATTR_MATCHING_RULE_USE);<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span>    if (a != null)<a name="line.1676"></a>
+<span class="sourceLineNo">1677</span>    {<a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>      hc += a.hashCode();<a name="line.1678"></a>
+<span class="sourceLineNo">1679</span>    }<a name="line.1679"></a>
+<span class="sourceLineNo">1680</span><a name="line.1680"></a>
+<span class="sourceLineNo">1681</span>    return hc;<a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>  }<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span><a name="line.1683"></a>
+<span class="sourceLineNo">1684</span><a name="line.1684"></a>
+<span class="sourceLineNo">1685</span><a name="line.1685"></a>
+<span class="sourceLineNo">1686</span>  /**<a name="line.1686"></a>
+<span class="sourceLineNo">1687</span>   * Indicates whether the provided object is equal to this schema object.<a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>   *<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>   * @param  o  The object for which to make the determination.<a name="line.1689"></a>
+<span class="sourceLineNo">1690</span>   *<a name="line.1690"></a>
+<span class="sourceLineNo">1691</span>   * @return  {@code true} if the provided object is equal to this schema<a name="line.1691"></a>
+<span class="sourceLineNo">1692</span>   *          object, or {@code false} if not.<a name="line.1692"></a>
+<span class="sourceLineNo">1693</span>   */<a name="line.1693"></a>
+<span class="sourceLineNo">1694</span>  @Override()<a name="line.1694"></a>
+<span class="sourceLineNo">1695</span>  public boolean equals(final Object o)<a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>  {<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>    if (o == null)<a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>    {<a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>      return false;<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span>    }<a name="line.1700"></a>
+<span class="sourceLineNo">1701</span><a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>    if (o == this)<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span>    {<a name="line.1703"></a>
+<span class="sourceLineNo">1704</span>      return true;<a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>    }<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span><a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>    if (! (o instanceof Schema))<a name="line.1707"></a>
 <span class="sourceLineNo">1708</span>    {<a name="line.1708"></a>
-<span class="sourceLineNo">1709</span>      hc += a.hashCode();<a name="line.1709"></a>
+<span class="sourceLineNo">1709</span>      return false;<a name="line.1709"></a>
 <span class="sourceLineNo">1710</span>    }<a name="line.1710"></a>
 <span class="sourceLineNo">1711</span><a name="line.1711"></a>
-<span class="sourceLineNo">1712</span>    a = schemaEntry.getAttribute(ATTR_MATCHING_RULE_USE);<a name="line.1712"></a>
-<span class="sourceLineNo">1713</span>    if (a != null)<a name="line.1713"></a>
-<span class="sourceLineNo">1714</span>    {<a name="line.1714"></a>
-<span class="sourceLineNo">1715</span>      hc += a.hashCode();<a name="line.1715"></a>
-<span class="sourceLineNo">1716</span>    }<a name="line.1716"></a>
-<span class="sourceLineNo">1717</span><a name="line.1717"></a>
-<span class="sourceLineNo">1718</span>    return hc;<a name="line.1718"></a>
-<span class="sourceLineNo">1719</span>  }<a name="line.1719"></a>
-<span class="sourceLineNo">1720</span><a name="line.1720"></a>
-<span class="sourceLineNo">1721</span><a name="line.1721"></a>
-<span class="sourceLineNo">1722</span><a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>  /**<a name="line.1723"></a>
-<span class="sourceLineNo">1724</span>   * Indicates whether the provided object is equal to this schema object.<a name="line.1724"></a>
-<span class="sourceLineNo">1725</span>   *<a name="line.1725"></a>
-<span class="sourceLineNo">1726</span>   * @param  o  The object for which to make the determination.<a name="line.1726"></a>
-<span class="sourceLineNo">1727</span>   *<a name="line.1727"></a>
-<span class="sourceLineNo">1728</span>   * @return  {@code true} if the provided object is equal to this schema<a name="line.1728"></a>
-<span class="sourceLineNo">1729</span>   *          object, or {@code false} if not.<a name="line.1729"></a>
-<span class="sourceLineNo">1730</span>   */<a name="line.1730"></a>
-<span class="sourceLineNo">1731</span>  @Override()<a name="line.1731"></a>
-<span class="sourceLineNo">1732</span>  public boolean equals(final Object o)<a name="line.1732"></a>
-<span class="sourceLineNo">1733</span>  {<a name="line.1733"></a>
-<span class="sourceLineNo">1734</span>    if (o == null)<a name="line.1734"></a>
-<span class="sourceLineNo">1735</span>    {<a name="line.1735"></a>
-<span class="sourceLineNo">1736</span>      return false;<a name="line.1736"></a>
-<span class="sourceLineNo">1737</span>    }<a name="line.1737"></a>
-<span class="sourceLineNo">1738</span><a name="line.1738"></a>
-<span class="sourceLineNo">1739</span>    if (o == this)<a name="line.1739"></a>
-<span class="sourceLineNo">1740</span>    {<a name="line.1740"></a>
-<span class="sourceLineNo">1741</span>      return true;<a name="line.1741"></a>
-<span class="sourceLineNo">1742</span>    }<a name="line.1742"></a>
-<span class="sourceLineNo">1743</span><a name="line.1743"></a>
-<span class="sourceLineNo">1744</span>    if (! (o instanceof Schema))<a name="line.1744"></a>
-<span class="sourceLineNo">1745</span>    {<a name="line.1745"></a>
-<span class="sourceLineNo">1746</span>      return false;<a name="line.1746"></a>
-<span class="sourceLineNo">1747</span>    }<a name="line.1747"></a>
-<span class="sourceLineNo">1748</span><a name="line.1748"></a>
-<span class="sourceLineNo">1749</span>    final Schema s = (Schema) o;<a name="line.1749"></a>
-<span class="sourceLineNo">1750</span><a name="line.1750"></a>
-<span class="sourceLineNo">1751</span>    try<a name="line.1751"></a>
-<span class="sourceLineNo">1752</span>    {<a name="line.1752"></a>
-<span class="sourceLineNo">1753</span>      if (! schemaEntry.getParsedDN().equals(s.schemaEntry.getParsedDN()))<a name="line.1753"></a>
-<span class="sourceLineNo">1754</span>      {<a name="line.1754"></a>
-<span class="sourceLineNo">1755</span>        return false;<a name="line.1755"></a>
-<span class="sourceLineNo">1756</span>      }<a name="line.1756"></a>
-<span class="sourceLineNo">1757</span>    }<a name="line.1757"></a>
-<span class="sourceLineNo">1758</span>    catch (final Exception e)<a name="line.1758"></a>
-<span class="sourceLineNo">1759</span>    {<a name="line.1759"></a>
-<span class="sourceLineNo">1760</span>      debugException(e);<a name="line.1760"></a>
-<span class="sourceLineNo">1761</span>      if (! schemaEntry.getDN().equalsIgnoreCase(s.schemaEntry.getDN()))<a name="line.1761"></a>
-<span class="sourceLineNo">1762</span>      {<a name="line.1762"></a>
-<span class="sourceLineNo">1763</span>        return false;<a name="line.1763"></a>
-<span class="sourceLineNo">1764</span>      }<a name="line.1764"></a>
-<span class="sourceLineNo">1765</span>    }<a name="line.1765"></a>
-<span class="sourceLineNo">1766</span><a name="line.1766"></a>
-<span class="sourceLineNo">1767</span>    return (asSet.equals(s.asSet) &amp;&amp;<a name="line.1767"></a>
-<span class="sourceLineNo">1768</span>         mrSet.equals(s.mrSet) &amp;&amp;<a name="line.1768"></a>
-<span class="sourceLineNo">1769</span>         atSet.equals(s.atSet) &amp;&amp;<a name="line.1769"></a>
-<span class="sourceLineNo">1770</span>         ocSet.equals(s.ocSet) &amp;&amp;<a name="line.1770"></a>
-<span class="sourceLineNo">1771</span>         nfSet.equals(s.nfSet) &amp;&amp;<a name="line.1771"></a>
-<span class="sourceLineNo">1772</span>         dcrSet.equals(s.dcrSet) &amp;&amp;<a name="line.1772"></a>
-<span class="sourceLineNo">1773</span>         dsrSet.equals(s.dsrSet) &amp;&amp;<a name="line.1773"></a>
-<span class="sourceLineNo">1774</span>         mruSet.equals(s.mruSet));<a name="line.1774"></a>
-<span class="sourceLineNo">1775</span>  }<a name="line.1775"></a>
-<span class="sourceLineNo">1776</span><a name="line.1776"></a>
-<span class="sourceLineNo">1777</span><a name="line.1777"></a>
-<span class="sourceLineNo">1778</span><a name="line.1778"></a>
-<span class="sourceLineNo">1779</span>  /**<a name="line.1779"></a>
-<span class="sourceLineNo">1780</span>   * Retrieves a string representation of the associated schema entry.<a name="line.1780"></a>
-<span class="sourceLineNo">1781</span>   *<a name="line.1781"></a>
-<span class="sourceLineNo">1782</span>   * @return  A string representation of the associated schema entry.<a name="line.1782"></a>
-<span class="sourceLineNo">1783</span>   */<a name="line.1783"></a>
-<span class="sourceLineNo">1784</span>  @Override()<a name="line.1784"></a>
-<span class="sourceLineNo">1785</span>  public String toString()<a name="line.1785"></a>
-<span class="sourceLineNo">1786</span>  {<a name="line.1786"></a>
-<span class="sourceLineNo">1787</span>    return schemaEntry.toString();<a name="line.1787"></a>
-<span class="sourceLineNo">1788</span>  }<a name="line.1788"></a>
-<span class="sourceLineNo">1789</span>}<a name="line.1789"></a>
+<span class="sourceLineNo">1712</span>    final Schema s = (Schema) o;<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span><a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>    try<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span>    {<a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>      if (! schemaEntry.getParsedDN().equals(s.schemaEntry.getParsedDN()))<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>      {<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>        return false;<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span>      }<a name="line.1719"></a>
+<span class="sourceLineNo">1720</span>    }<a name="line.1720"></a>
+<span class="sourceLineNo">1721</span>    catch (final Exception e)<a name="line.1721"></a>
+<span class="sourceLineNo">1722</span>    {<a name="line.1722"></a>
+<span class="sourceLineNo">1723</span>      debugException(e);<a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>      if (! schemaEntry.getDN().equalsIgnoreCase(s.schemaEntry.getDN()))<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span>      {<a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>        return false;<a name="line.1726"></a>
+<span class="sourceLineNo">1727</span>      }<a name="line.1727"></a>
+<span class="sourceLineNo">1728</span>    }<a name="line.1728"></a>
+<span class="sourceLineNo">1729</span><a name="line.1729"></a>
+<span class="sourceLineNo">1730</span>    return (asSet.equals(s.asSet) &amp;&amp;<a name="line.1730"></a>
+<span class="sourceLineNo">1731</span>         mrSet.equals(s.mrSet) &amp;&amp;<a name="line.1731"></a>
+<span class="sourceLineNo">1732</span>         atSet.equals(s.atSet) &amp;&amp;<a name="line.1732"></a>
+<span class="sourceLineNo">1733</span>         ocSet.equals(s.ocSet) &amp;&amp;<a name="line.1733"></a>
+<span class="sourceLineNo">1734</span>         nfSet.equals(s.nfSet) &amp;&amp;<a name="line.1734"></a>
+<span class="sourceLineNo">1735</span>         dcrSet.equals(s.dcrSet) &amp;&amp;<a name="line.1735"></a>
+<span class="sourceLineNo">1736</span>         dsrSet.equals(s.dsrSet) &amp;&amp;<a name="line.1736"></a>
+<span class="sourceLineNo">1737</span>         mruSet.equals(s.mruSet));<a name="line.1737"></a>
+<span class="sourceLineNo">1738</span>  }<a name="line.1738"></a>
+<span class="sourceLineNo">1739</span><a name="line.1739"></a>
+<span class="sourceLineNo">1740</span><a name="line.1740"></a>
+<span class="sourceLineNo">1741</span><a name="line.1741"></a>
+<span class="sourceLineNo">1742</span>  /**<a name="line.1742"></a>
+<span class="sourceLineNo">1743</span>   * Retrieves a string representation of the associated schema entry.<a name="line.1743"></a>
+<span class="sourceLineNo">1744</span>   *<a name="line.1744"></a>
+<span class="sourceLineNo">1745</span>   * @return  A string representation of the associated schema entry.<a name="line.1745"></a>
+<span class="sourceLineNo">1746</span>   */<a name="line.1746"></a>
+<span class="sourceLineNo">1747</span>  @Override()<a name="line.1747"></a>
+<span class="sourceLineNo">1748</span>  public String toString()<a name="line.1748"></a>
+<span class="sourceLineNo">1749</span>  {<a name="line.1749"></a>
+<span class="sourceLineNo">1750</span>    return schemaEntry.toString();<a name="line.1750"></a>
+<span class="sourceLineNo">1751</span>  }<a name="line.1751"></a>
+<span class="sourceLineNo">1752</span>}<a name="line.1752"></a>
 
 
 

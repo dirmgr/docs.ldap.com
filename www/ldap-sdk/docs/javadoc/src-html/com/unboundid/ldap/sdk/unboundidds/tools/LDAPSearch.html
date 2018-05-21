@@ -2488,7 +2488,7 @@
 <span class="sourceLineNo">2480</span><a name="line.2480"></a>
 <span class="sourceLineNo">2481</span>          final SearchRequest searchRequest = new SearchRequest(<a name="line.2481"></a>
 <span class="sourceLineNo">2482</span>               new LDAPSearchListener(outputHandler, entryTransformations),<a name="line.2482"></a>
-<span class="sourceLineNo">2483</span>               url.getBaseDN().toString(), scope.getValue(), derefPolicy,<a name="line.2483"></a>
+<span class="sourceLineNo">2483</span>               url.getBaseDN().toString(), url.getScope(), derefPolicy,<a name="line.2483"></a>
 <span class="sourceLineNo">2484</span>               sizeLimit.getValue(), timeLimitSeconds.getValue(),<a name="line.2484"></a>
 <span class="sourceLineNo">2485</span>               typesOnly.isPresent(), url.getFilter(), url.getAttributes());<a name="line.2485"></a>
 <span class="sourceLineNo">2486</span>          final ResultCode rc =<a name="line.2486"></a>

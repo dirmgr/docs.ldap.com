@@ -578,26 +578,45 @@
 <span class="sourceLineNo">570</span>      }<a name="line.570"></a>
 <span class="sourceLineNo">571</span>      else<a name="line.571"></a>
 <span class="sourceLineNo">572</span>      {<a name="line.572"></a>
-<span class="sourceLineNo">573</span>        if (Character.isUpperCase(c))<a name="line.573"></a>
+<span class="sourceLineNo">573</span>        if (Character.isHighSurrogate(c))<a name="line.573"></a>
 <span class="sourceLineNo">574</span>        {<a name="line.574"></a>
-<span class="sourceLineNo">575</span>          buffer.setCharAt((pos-1), Character.toLowerCase(c));<a name="line.575"></a>
-<span class="sourceLineNo">576</span>        }<a name="line.576"></a>
-<span class="sourceLineNo">577</span><a name="line.577"></a>
-<span class="sourceLineNo">578</span>        lastWasSpace = false;<a name="line.578"></a>
-<span class="sourceLineNo">579</span>      }<a name="line.579"></a>
-<span class="sourceLineNo">580</span>    }<a name="line.580"></a>
-<span class="sourceLineNo">581</span><a name="line.581"></a>
-<span class="sourceLineNo">582</span>    // It is possible that there could be an extra space at the end.  If that's<a name="line.582"></a>
-<span class="sourceLineNo">583</span>    // the case, then remove it.<a name="line.583"></a>
-<span class="sourceLineNo">584</span>    if (trimFinal &amp;&amp; (buffer.length() &gt; 0) &amp;&amp;<a name="line.584"></a>
-<span class="sourceLineNo">585</span>        (buffer.charAt(buffer.length() - 1) == ' '))<a name="line.585"></a>
-<span class="sourceLineNo">586</span>    {<a name="line.586"></a>
-<span class="sourceLineNo">587</span>      buffer.deleteCharAt(buffer.length() - 1);<a name="line.587"></a>
-<span class="sourceLineNo">588</span>    }<a name="line.588"></a>
-<span class="sourceLineNo">589</span><a name="line.589"></a>
-<span class="sourceLineNo">590</span>    return new ASN1OctetString(buffer.toString());<a name="line.590"></a>
-<span class="sourceLineNo">591</span>  }<a name="line.591"></a>
-<span class="sourceLineNo">592</span>}<a name="line.592"></a>
+<span class="sourceLineNo">575</span>          if (pos &lt; buffer.length())<a name="line.575"></a>
+<span class="sourceLineNo">576</span>          {<a name="line.576"></a>
+<span class="sourceLineNo">577</span>            final char c2 = buffer.charAt(pos++);<a name="line.577"></a>
+<span class="sourceLineNo">578</span>            if (Character.isLowSurrogate(c2))<a name="line.578"></a>
+<span class="sourceLineNo">579</span>            {<a name="line.579"></a>
+<span class="sourceLineNo">580</span>              final int codePoint = Character.toCodePoint(c, c2);<a name="line.580"></a>
+<span class="sourceLineNo">581</span>              if (Character.isUpperCase(codePoint))<a name="line.581"></a>
+<span class="sourceLineNo">582</span>              {<a name="line.582"></a>
+<span class="sourceLineNo">583</span>                final int lowerCaseCodePoint = Character.toLowerCase(codePoint);<a name="line.583"></a>
+<span class="sourceLineNo">584</span>                buffer.setCharAt((pos-2),<a name="line.584"></a>
+<span class="sourceLineNo">585</span>                     Character.highSurrogate(lowerCaseCodePoint));<a name="line.585"></a>
+<span class="sourceLineNo">586</span>                buffer.setCharAt((pos-1),<a name="line.586"></a>
+<span class="sourceLineNo">587</span>                     Character.lowSurrogate(lowerCaseCodePoint));<a name="line.587"></a>
+<span class="sourceLineNo">588</span>              }<a name="line.588"></a>
+<span class="sourceLineNo">589</span>            }<a name="line.589"></a>
+<span class="sourceLineNo">590</span>          }<a name="line.590"></a>
+<span class="sourceLineNo">591</span>        }<a name="line.591"></a>
+<span class="sourceLineNo">592</span>        else if (Character.isUpperCase(c))<a name="line.592"></a>
+<span class="sourceLineNo">593</span>        {<a name="line.593"></a>
+<span class="sourceLineNo">594</span>          buffer.setCharAt((pos-1), Character.toLowerCase(c));<a name="line.594"></a>
+<span class="sourceLineNo">595</span>        }<a name="line.595"></a>
+<span class="sourceLineNo">596</span><a name="line.596"></a>
+<span class="sourceLineNo">597</span>        lastWasSpace = false;<a name="line.597"></a>
+<span class="sourceLineNo">598</span>      }<a name="line.598"></a>
+<span class="sourceLineNo">599</span>    }<a name="line.599"></a>
+<span class="sourceLineNo">600</span><a name="line.600"></a>
+<span class="sourceLineNo">601</span>    // It is possible that there could be an extra space at the end.  If that's<a name="line.601"></a>
+<span class="sourceLineNo">602</span>    // the case, then remove it.<a name="line.602"></a>
+<span class="sourceLineNo">603</span>    if (trimFinal &amp;&amp; (buffer.length() &gt; 0) &amp;&amp;<a name="line.603"></a>
+<span class="sourceLineNo">604</span>        (buffer.charAt(buffer.length() - 1) == ' '))<a name="line.604"></a>
+<span class="sourceLineNo">605</span>    {<a name="line.605"></a>
+<span class="sourceLineNo">606</span>      buffer.deleteCharAt(buffer.length() - 1);<a name="line.606"></a>
+<span class="sourceLineNo">607</span>    }<a name="line.607"></a>
+<span class="sourceLineNo">608</span><a name="line.608"></a>
+<span class="sourceLineNo">609</span>    return new ASN1OctetString(buffer.toString());<a name="line.609"></a>
+<span class="sourceLineNo">610</span>  }<a name="line.610"></a>
+<span class="sourceLineNo">611</span>}<a name="line.611"></a>
 
 
 

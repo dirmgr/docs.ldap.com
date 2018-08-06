@@ -397,7 +397,7 @@
 <span class="sourceLineNo">389</span>    }<a name="line.389"></a>
 <span class="sourceLineNo">390</span><a name="line.390"></a>
 <span class="sourceLineNo">391</span>    final ArrayBlockingQueue&lt;Object&gt; resultQueue =<a name="line.391"></a>
-<span class="sourceLineNo">392</span>         new ArrayBlockingQueue&lt;Object&gt;(addresses.length, false);<a name="line.392"></a>
+<span class="sourceLineNo">392</span>         new ArrayBlockingQueue&lt;&gt;(addresses.length, false);<a name="line.392"></a>
 <span class="sourceLineNo">393</span>    final AtomicBoolean connectionSelected = new AtomicBoolean(false);<a name="line.393"></a>
 <span class="sourceLineNo">394</span><a name="line.394"></a>
 <span class="sourceLineNo">395</span>    final FastestConnectThread[] connectThreads =<a name="line.395"></a>

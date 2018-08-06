@@ -39,12 +39,12 @@
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
-<span class="sourceLineNo">036</span><a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.ldap.sdk.schema.SchemaMessages.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.StaticUtils.*;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.util.Validator.*;<a name="line.39"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.StaticUtils;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafety;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.Validator;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.schema.SchemaMessages.*;<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
@@ -110,7 +110,7 @@
 <span class="sourceLineNo">102</span>  public DITContentRuleDefinition(final String s)<a name="line.102"></a>
 <span class="sourceLineNo">103</span>         throws LDAPException<a name="line.103"></a>
 <span class="sourceLineNo">104</span>  {<a name="line.104"></a>
-<span class="sourceLineNo">105</span>    ensureNotNull(s);<a name="line.105"></a>
+<span class="sourceLineNo">105</span>    Validator.ensureNotNull(s);<a name="line.105"></a>
 <span class="sourceLineNo">106</span><a name="line.106"></a>
 <span class="sourceLineNo">107</span>    ditContentRuleString = s.trim();<a name="line.107"></a>
 <span class="sourceLineNo">108</span><a name="line.108"></a>
@@ -141,12 +141,12 @@
 <span class="sourceLineNo">133</span>    // Technically, DIT content elements are supposed to appear in a specific<a name="line.133"></a>
 <span class="sourceLineNo">134</span>    // order, but we'll be lenient and allow remaining elements to come in any<a name="line.134"></a>
 <span class="sourceLineNo">135</span>    // order.<a name="line.135"></a>
-<span class="sourceLineNo">136</span>    final ArrayList&lt;String&gt;    nameList = new ArrayList&lt;String&gt;(1);<a name="line.136"></a>
-<span class="sourceLineNo">137</span>    final ArrayList&lt;String&gt;    reqAttrs = new ArrayList&lt;String&gt;();<a name="line.137"></a>
-<span class="sourceLineNo">138</span>    final ArrayList&lt;String&gt;    optAttrs = new ArrayList&lt;String&gt;();<a name="line.138"></a>
-<span class="sourceLineNo">139</span>    final ArrayList&lt;String&gt;    notAttrs = new ArrayList&lt;String&gt;();<a name="line.139"></a>
-<span class="sourceLineNo">140</span>    final ArrayList&lt;String&gt;    auxOCs   = new ArrayList&lt;String&gt;();<a name="line.140"></a>
-<span class="sourceLineNo">141</span>    final Map&lt;String,String[]&gt; exts     = new LinkedHashMap&lt;String,String[]&gt;();<a name="line.141"></a>
+<span class="sourceLineNo">136</span>    final ArrayList&lt;String&gt;    nameList = new ArrayList&lt;&gt;(5);<a name="line.136"></a>
+<span class="sourceLineNo">137</span>    final ArrayList&lt;String&gt;    reqAttrs = new ArrayList&lt;&gt;(10);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>    final ArrayList&lt;String&gt;    optAttrs = new ArrayList&lt;&gt;(10);<a name="line.138"></a>
+<span class="sourceLineNo">139</span>    final ArrayList&lt;String&gt;    notAttrs = new ArrayList&lt;&gt;(10);<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    final ArrayList&lt;String&gt;    auxOCs   = new ArrayList&lt;&gt;(10);<a name="line.140"></a>
+<span class="sourceLineNo">141</span>    final Map&lt;String,String[]&gt; exts     = new LinkedHashMap&lt;&gt;(5);<a name="line.141"></a>
 <span class="sourceLineNo">142</span>    Boolean obsolete = null;<a name="line.142"></a>
 <span class="sourceLineNo">143</span>    String  descr    = null;<a name="line.143"></a>
 <span class="sourceLineNo">144</span><a name="line.144"></a>
@@ -173,7 +173,7 @@
 <span class="sourceLineNo">165</span>        pos--;<a name="line.165"></a>
 <span class="sourceLineNo">166</span>      }<a name="line.166"></a>
 <span class="sourceLineNo">167</span><a name="line.167"></a>
-<span class="sourceLineNo">168</span>      final String lowerToken = toLowerCase(token);<a name="line.168"></a>
+<span class="sourceLineNo">168</span>      final String lowerToken = StaticUtils.toLowerCase(token);<a name="line.168"></a>
 <span class="sourceLineNo">169</span>      if (lowerToken.equals(")"))<a name="line.169"></a>
 <span class="sourceLineNo">170</span>      {<a name="line.170"></a>
 <span class="sourceLineNo">171</span>        // This indicates that we're at the end of the value.  There should not<a name="line.171"></a>
@@ -290,7 +290,7 @@
 <span class="sourceLineNo">282</span>      {<a name="line.282"></a>
 <span class="sourceLineNo">283</span>        pos = skipSpaces(ditContentRuleString, pos, length);<a name="line.283"></a>
 <span class="sourceLineNo">284</span><a name="line.284"></a>
-<span class="sourceLineNo">285</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;String&gt;();<a name="line.285"></a>
+<span class="sourceLineNo">285</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;&gt;(5);<a name="line.285"></a>
 <span class="sourceLineNo">286</span>        pos = readQDStrings(ditContentRuleString, pos, length, valueList);<a name="line.286"></a>
 <span class="sourceLineNo">287</span><a name="line.287"></a>
 <span class="sourceLineNo">288</span>        final String[] values = new String[valueList.size()];<a name="line.288"></a>
@@ -464,7 +464,7 @@
 <span class="sourceLineNo">456</span>                                  final String[] prohibitedAttributes,<a name="line.456"></a>
 <span class="sourceLineNo">457</span>                                  final Map&lt;String,String[]&gt; extensions)<a name="line.457"></a>
 <span class="sourceLineNo">458</span>  {<a name="line.458"></a>
-<span class="sourceLineNo">459</span>    ensureNotNull(oid);<a name="line.459"></a>
+<span class="sourceLineNo">459</span>    Validator.ensureNotNull(oid);<a name="line.459"></a>
 <span class="sourceLineNo">460</span><a name="line.460"></a>
 <span class="sourceLineNo">461</span>    this.oid             = oid;<a name="line.461"></a>
 <span class="sourceLineNo">462</span>    this.isObsolete      = isObsolete;<a name="line.462"></a>
@@ -472,7 +472,7 @@
 <span class="sourceLineNo">464</span><a name="line.464"></a>
 <span class="sourceLineNo">465</span>    if (names == null)<a name="line.465"></a>
 <span class="sourceLineNo">466</span>    {<a name="line.466"></a>
-<span class="sourceLineNo">467</span>      this.names = NO_STRINGS;<a name="line.467"></a>
+<span class="sourceLineNo">467</span>      this.names = StaticUtils.NO_STRINGS;<a name="line.467"></a>
 <span class="sourceLineNo">468</span>    }<a name="line.468"></a>
 <span class="sourceLineNo">469</span>    else<a name="line.469"></a>
 <span class="sourceLineNo">470</span>    {<a name="line.470"></a>
@@ -481,7 +481,7 @@
 <span class="sourceLineNo">473</span><a name="line.473"></a>
 <span class="sourceLineNo">474</span>    if (auxiliaryClasses == null)<a name="line.474"></a>
 <span class="sourceLineNo">475</span>    {<a name="line.475"></a>
-<span class="sourceLineNo">476</span>      this.auxiliaryClasses = NO_STRINGS;<a name="line.476"></a>
+<span class="sourceLineNo">476</span>      this.auxiliaryClasses = StaticUtils.NO_STRINGS;<a name="line.476"></a>
 <span class="sourceLineNo">477</span>    }<a name="line.477"></a>
 <span class="sourceLineNo">478</span>    else<a name="line.478"></a>
 <span class="sourceLineNo">479</span>    {<a name="line.479"></a>
@@ -490,7 +490,7 @@
 <span class="sourceLineNo">482</span><a name="line.482"></a>
 <span class="sourceLineNo">483</span>    if (requiredAttributes == null)<a name="line.483"></a>
 <span class="sourceLineNo">484</span>    {<a name="line.484"></a>
-<span class="sourceLineNo">485</span>      this.requiredAttributes = NO_STRINGS;<a name="line.485"></a>
+<span class="sourceLineNo">485</span>      this.requiredAttributes = StaticUtils.NO_STRINGS;<a name="line.485"></a>
 <span class="sourceLineNo">486</span>    }<a name="line.486"></a>
 <span class="sourceLineNo">487</span>    else<a name="line.487"></a>
 <span class="sourceLineNo">488</span>    {<a name="line.488"></a>
@@ -499,7 +499,7 @@
 <span class="sourceLineNo">491</span><a name="line.491"></a>
 <span class="sourceLineNo">492</span>    if (optionalAttributes == null)<a name="line.492"></a>
 <span class="sourceLineNo">493</span>    {<a name="line.493"></a>
-<span class="sourceLineNo">494</span>      this.optionalAttributes = NO_STRINGS;<a name="line.494"></a>
+<span class="sourceLineNo">494</span>      this.optionalAttributes = StaticUtils.NO_STRINGS;<a name="line.494"></a>
 <span class="sourceLineNo">495</span>    }<a name="line.495"></a>
 <span class="sourceLineNo">496</span>    else<a name="line.496"></a>
 <span class="sourceLineNo">497</span>    {<a name="line.497"></a>
@@ -508,7 +508,7 @@
 <span class="sourceLineNo">500</span><a name="line.500"></a>
 <span class="sourceLineNo">501</span>    if (prohibitedAttributes == null)<a name="line.501"></a>
 <span class="sourceLineNo">502</span>    {<a name="line.502"></a>
-<span class="sourceLineNo">503</span>      this.prohibitedAttributes = NO_STRINGS;<a name="line.503"></a>
+<span class="sourceLineNo">503</span>      this.prohibitedAttributes = StaticUtils.NO_STRINGS;<a name="line.503"></a>
 <span class="sourceLineNo">504</span>    }<a name="line.504"></a>
 <span class="sourceLineNo">505</span>    else<a name="line.505"></a>
 <span class="sourceLineNo">506</span>    {<a name="line.506"></a>
@@ -912,16 +912,16 @@
 <span class="sourceLineNo">904</span><a name="line.904"></a>
 <span class="sourceLineNo">905</span>    final DITContentRuleDefinition d = (DITContentRuleDefinition) o;<a name="line.905"></a>
 <span class="sourceLineNo">906</span>    return (oid.equals(d.oid) &amp;&amp;<a name="line.906"></a>
-<span class="sourceLineNo">907</span>         stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.907"></a>
-<span class="sourceLineNo">908</span>         stringsEqualIgnoreCaseOrderIndependent(auxiliaryClasses,<a name="line.908"></a>
+<span class="sourceLineNo">907</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.907"></a>
+<span class="sourceLineNo">908</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(auxiliaryClasses,<a name="line.908"></a>
 <span class="sourceLineNo">909</span>              d.auxiliaryClasses) &amp;&amp;<a name="line.909"></a>
-<span class="sourceLineNo">910</span>         stringsEqualIgnoreCaseOrderIndependent(requiredAttributes,<a name="line.910"></a>
+<span class="sourceLineNo">910</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(requiredAttributes,<a name="line.910"></a>
 <span class="sourceLineNo">911</span>              d.requiredAttributes) &amp;&amp;<a name="line.911"></a>
-<span class="sourceLineNo">912</span>         stringsEqualIgnoreCaseOrderIndependent(optionalAttributes,<a name="line.912"></a>
+<span class="sourceLineNo">912</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(optionalAttributes,<a name="line.912"></a>
 <span class="sourceLineNo">913</span>              d.optionalAttributes) &amp;&amp;<a name="line.913"></a>
-<span class="sourceLineNo">914</span>         stringsEqualIgnoreCaseOrderIndependent(prohibitedAttributes,<a name="line.914"></a>
-<span class="sourceLineNo">915</span>              d.prohibitedAttributes) &amp;&amp;<a name="line.915"></a>
-<span class="sourceLineNo">916</span>         bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.916"></a>
+<span class="sourceLineNo">914</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(<a name="line.914"></a>
+<span class="sourceLineNo">915</span>              prohibitedAttributes, d.prohibitedAttributes) &amp;&amp;<a name="line.915"></a>
+<span class="sourceLineNo">916</span>         StaticUtils.bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.916"></a>
 <span class="sourceLineNo">917</span>         (isObsolete == d.isObsolete) &amp;&amp;<a name="line.917"></a>
 <span class="sourceLineNo">918</span>         extensionsEqual(extensions, d.extensions));<a name="line.918"></a>
 <span class="sourceLineNo">919</span>  }<a name="line.919"></a>

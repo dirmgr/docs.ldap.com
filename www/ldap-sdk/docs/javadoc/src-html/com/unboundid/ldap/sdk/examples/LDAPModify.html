@@ -536,45 +536,44 @@
 <span class="sourceLineNo">528</span>  @Override()<a name="line.528"></a>
 <span class="sourceLineNo">529</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.529"></a>
 <span class="sourceLineNo">530</span>  {<a name="line.530"></a>
-<span class="sourceLineNo">531</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.531"></a>
-<span class="sourceLineNo">532</span>         new LinkedHashMap&lt;String[],String&gt;();<a name="line.532"></a>
-<span class="sourceLineNo">533</span><a name="line.533"></a>
-<span class="sourceLineNo">534</span>    String[] args =<a name="line.534"></a>
-<span class="sourceLineNo">535</span>    {<a name="line.535"></a>
-<span class="sourceLineNo">536</span>      "--hostname", "server.example.com",<a name="line.536"></a>
-<span class="sourceLineNo">537</span>      "--port", "389",<a name="line.537"></a>
-<span class="sourceLineNo">538</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.538"></a>
-<span class="sourceLineNo">539</span>      "--bindPassword", "password",<a name="line.539"></a>
-<span class="sourceLineNo">540</span>      "--ldifFile", "changes.ldif"<a name="line.540"></a>
-<span class="sourceLineNo">541</span>    };<a name="line.541"></a>
-<span class="sourceLineNo">542</span>    String description =<a name="line.542"></a>
-<span class="sourceLineNo">543</span>         "Attempt to apply the add, delete, modify, and/or modify DN " +<a name="line.543"></a>
-<span class="sourceLineNo">544</span>         "operations contained in the 'changes.ldif' file against the " +<a name="line.544"></a>
-<span class="sourceLineNo">545</span>         "specified directory server.";<a name="line.545"></a>
-<span class="sourceLineNo">546</span>    examples.put(args, description);<a name="line.546"></a>
-<span class="sourceLineNo">547</span><a name="line.547"></a>
-<span class="sourceLineNo">548</span>    args = new String[]<a name="line.548"></a>
-<span class="sourceLineNo">549</span>    {<a name="line.549"></a>
-<span class="sourceLineNo">550</span>      "--hostname", "server.example.com",<a name="line.550"></a>
-<span class="sourceLineNo">551</span>      "--port", "389",<a name="line.551"></a>
-<span class="sourceLineNo">552</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.552"></a>
-<span class="sourceLineNo">553</span>      "--bindPassword", "password",<a name="line.553"></a>
-<span class="sourceLineNo">554</span>      "--continueOnError",<a name="line.554"></a>
-<span class="sourceLineNo">555</span>      "--defaultAdd"<a name="line.555"></a>
-<span class="sourceLineNo">556</span>    };<a name="line.556"></a>
-<span class="sourceLineNo">557</span>    description =<a name="line.557"></a>
-<span class="sourceLineNo">558</span>         "Establish a connection to the specified directory server and then " +<a name="line.558"></a>
-<span class="sourceLineNo">559</span>         "wait for information about the add, delete, modify, and/or modify " +<a name="line.559"></a>
-<span class="sourceLineNo">560</span>         "DN operations to perform to be provided via standard input.  If " +<a name="line.560"></a>
-<span class="sourceLineNo">561</span>         "any invalid operations are requested, then the tool will display " +<a name="line.561"></a>
-<span class="sourceLineNo">562</span>         "an error message but will continue running.  Any LDIF record " +<a name="line.562"></a>
-<span class="sourceLineNo">563</span>         "provided which does not include a 'changeType' line will be " +<a name="line.563"></a>
-<span class="sourceLineNo">564</span>         "treated as an add request.";<a name="line.564"></a>
-<span class="sourceLineNo">565</span>    examples.put(args, description);<a name="line.565"></a>
-<span class="sourceLineNo">566</span><a name="line.566"></a>
-<span class="sourceLineNo">567</span>    return examples;<a name="line.567"></a>
-<span class="sourceLineNo">568</span>  }<a name="line.568"></a>
-<span class="sourceLineNo">569</span>}<a name="line.569"></a>
+<span class="sourceLineNo">531</span>    final LinkedHashMap&lt;String[],String&gt; examples = new LinkedHashMap&lt;&gt;(2);<a name="line.531"></a>
+<span class="sourceLineNo">532</span><a name="line.532"></a>
+<span class="sourceLineNo">533</span>    String[] args =<a name="line.533"></a>
+<span class="sourceLineNo">534</span>    {<a name="line.534"></a>
+<span class="sourceLineNo">535</span>      "--hostname", "server.example.com",<a name="line.535"></a>
+<span class="sourceLineNo">536</span>      "--port", "389",<a name="line.536"></a>
+<span class="sourceLineNo">537</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.537"></a>
+<span class="sourceLineNo">538</span>      "--bindPassword", "password",<a name="line.538"></a>
+<span class="sourceLineNo">539</span>      "--ldifFile", "changes.ldif"<a name="line.539"></a>
+<span class="sourceLineNo">540</span>    };<a name="line.540"></a>
+<span class="sourceLineNo">541</span>    String description =<a name="line.541"></a>
+<span class="sourceLineNo">542</span>         "Attempt to apply the add, delete, modify, and/or modify DN " +<a name="line.542"></a>
+<span class="sourceLineNo">543</span>         "operations contained in the 'changes.ldif' file against the " +<a name="line.543"></a>
+<span class="sourceLineNo">544</span>         "specified directory server.";<a name="line.544"></a>
+<span class="sourceLineNo">545</span>    examples.put(args, description);<a name="line.545"></a>
+<span class="sourceLineNo">546</span><a name="line.546"></a>
+<span class="sourceLineNo">547</span>    args = new String[]<a name="line.547"></a>
+<span class="sourceLineNo">548</span>    {<a name="line.548"></a>
+<span class="sourceLineNo">549</span>      "--hostname", "server.example.com",<a name="line.549"></a>
+<span class="sourceLineNo">550</span>      "--port", "389",<a name="line.550"></a>
+<span class="sourceLineNo">551</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.551"></a>
+<span class="sourceLineNo">552</span>      "--bindPassword", "password",<a name="line.552"></a>
+<span class="sourceLineNo">553</span>      "--continueOnError",<a name="line.553"></a>
+<span class="sourceLineNo">554</span>      "--defaultAdd"<a name="line.554"></a>
+<span class="sourceLineNo">555</span>    };<a name="line.555"></a>
+<span class="sourceLineNo">556</span>    description =<a name="line.556"></a>
+<span class="sourceLineNo">557</span>         "Establish a connection to the specified directory server and then " +<a name="line.557"></a>
+<span class="sourceLineNo">558</span>         "wait for information about the add, delete, modify, and/or modify " +<a name="line.558"></a>
+<span class="sourceLineNo">559</span>         "DN operations to perform to be provided via standard input.  If " +<a name="line.559"></a>
+<span class="sourceLineNo">560</span>         "any invalid operations are requested, then the tool will display " +<a name="line.560"></a>
+<span class="sourceLineNo">561</span>         "an error message but will continue running.  Any LDIF record " +<a name="line.561"></a>
+<span class="sourceLineNo">562</span>         "provided which does not include a 'changeType' line will be " +<a name="line.562"></a>
+<span class="sourceLineNo">563</span>         "treated as an add request.";<a name="line.563"></a>
+<span class="sourceLineNo">564</span>    examples.put(args, description);<a name="line.564"></a>
+<span class="sourceLineNo">565</span><a name="line.565"></a>
+<span class="sourceLineNo">566</span>    return examples;<a name="line.566"></a>
+<span class="sourceLineNo">567</span>  }<a name="line.567"></a>
+<span class="sourceLineNo">568</span>}<a name="line.568"></a>
 
 
 

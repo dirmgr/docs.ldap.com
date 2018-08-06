@@ -50,11 +50,11 @@
 <span class="sourceLineNo">042</span> * &lt;BLOCKQUOTE&gt;<a name="line.42"></a>
 <span class="sourceLineNo">043</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.43"></a>
 <span class="sourceLineNo">044</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.44"></a>
-<span class="sourceLineNo">045</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.45"></a>
-<span class="sourceLineNo">046</span> *   server products.  These classes provide support for proprietary<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *   functionality or for external specifications that are not considered stable<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   other types of LDAP servers.<a name="line.49"></a>
+<span class="sourceLineNo">045</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *   for proprietary functionality or for external specifications that are not<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *   interoperable way with other types of LDAP servers.<a name="line.49"></a>
 <span class="sourceLineNo">050</span> * &lt;/BLOCKQUOTE&gt;<a name="line.50"></a>
 <span class="sourceLineNo">051</span> */<a name="line.51"></a>
 <span class="sourceLineNo">052</span>@NotMutable()<a name="line.52"></a>
@@ -343,84 +343,83 @@
 <span class="sourceLineNo">335</span>  @Override()<a name="line.335"></a>
 <span class="sourceLineNo">336</span>  public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()<a name="line.336"></a>
 <span class="sourceLineNo">337</span>  {<a name="line.337"></a>
-<span class="sourceLineNo">338</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs =<a name="line.338"></a>
-<span class="sourceLineNo">339</span>         new LinkedHashMap&lt;String,MonitorAttribute&gt;(8);<a name="line.339"></a>
-<span class="sourceLineNo">340</span><a name="line.340"></a>
-<span class="sourceLineNo">341</span>    if (staticGroupEntries != null)<a name="line.341"></a>
-<span class="sourceLineNo">342</span>    {<a name="line.342"></a>
-<span class="sourceLineNo">343</span>      addMonitorAttribute(attrs,<a name="line.343"></a>
-<span class="sourceLineNo">344</span>           ATTR_STATIC_GROUP_ENTRIES,<a name="line.344"></a>
-<span class="sourceLineNo">345</span>           INFO_GROUP_CACHE_DISPNAME_STATIC_GROUP_ENTRIES.get(),<a name="line.345"></a>
-<span class="sourceLineNo">346</span>           INFO_GROUP_CACHE_DESC_STATIC_GROUP_ENTRIES.get(),<a name="line.346"></a>
-<span class="sourceLineNo">347</span>           staticGroupEntries);<a name="line.347"></a>
-<span class="sourceLineNo">348</span>    }<a name="line.348"></a>
-<span class="sourceLineNo">349</span><a name="line.349"></a>
-<span class="sourceLineNo">350</span>    if (staticGroupMembers != null)<a name="line.350"></a>
-<span class="sourceLineNo">351</span>    {<a name="line.351"></a>
-<span class="sourceLineNo">352</span>      addMonitorAttribute(attrs,<a name="line.352"></a>
-<span class="sourceLineNo">353</span>           ATTR_TOTAL_STATIC_GROUP_MEMBERS,<a name="line.353"></a>
-<span class="sourceLineNo">354</span>           INFO_GROUP_CACHE_DISPNAME_STATIC_GROUP_MEMBERS.get(),<a name="line.354"></a>
-<span class="sourceLineNo">355</span>           INFO_GROUP_CACHE_DESC_STATIC_GROUP_MEMBERS.get(),<a name="line.355"></a>
-<span class="sourceLineNo">356</span>           staticGroupMembers);<a name="line.356"></a>
-<span class="sourceLineNo">357</span>    }<a name="line.357"></a>
-<span class="sourceLineNo">358</span><a name="line.358"></a>
-<span class="sourceLineNo">359</span>    if (staticGroupUniqueMembers != null)<a name="line.359"></a>
-<span class="sourceLineNo">360</span>    {<a name="line.360"></a>
-<span class="sourceLineNo">361</span>      addMonitorAttribute(attrs,<a name="line.361"></a>
-<span class="sourceLineNo">362</span>           ATTR_UNIQUE_STATIC_GROUP_MEMBERS,<a name="line.362"></a>
-<span class="sourceLineNo">363</span>           INFO_GROUP_CACHE_DISPNAME_STATIC_GROUP_UNIQUE_MEMBERS.get(),<a name="line.363"></a>
-<span class="sourceLineNo">364</span>           INFO_GROUP_CACHE_DESC_STATIC_GROUP_UNIQUE_MEMBERS.get(),<a name="line.364"></a>
-<span class="sourceLineNo">365</span>           staticGroupUniqueMembers);<a name="line.365"></a>
-<span class="sourceLineNo">366</span>    }<a name="line.366"></a>
-<span class="sourceLineNo">367</span><a name="line.367"></a>
-<span class="sourceLineNo">368</span>    if (dynamicGroupEntries != null)<a name="line.368"></a>
-<span class="sourceLineNo">369</span>    {<a name="line.369"></a>
-<span class="sourceLineNo">370</span>      addMonitorAttribute(attrs,<a name="line.370"></a>
-<span class="sourceLineNo">371</span>           ATTR_DYNAMIC_GROUP_ENTRIES,<a name="line.371"></a>
-<span class="sourceLineNo">372</span>           INFO_GROUP_CACHE_DISPNAME_DYNAMIC_GROUP_ENTRIES.get(),<a name="line.372"></a>
-<span class="sourceLineNo">373</span>           INFO_GROUP_CACHE_DESC_DYNAMIC_GROUP_ENTRIES.get(),<a name="line.373"></a>
-<span class="sourceLineNo">374</span>           dynamicGroupEntries);<a name="line.374"></a>
-<span class="sourceLineNo">375</span>    }<a name="line.375"></a>
-<span class="sourceLineNo">376</span><a name="line.376"></a>
-<span class="sourceLineNo">377</span>    if (virtualStaticGroupEntries != null)<a name="line.377"></a>
-<span class="sourceLineNo">378</span>    {<a name="line.378"></a>
-<span class="sourceLineNo">379</span>      addMonitorAttribute(attrs,<a name="line.379"></a>
-<span class="sourceLineNo">380</span>           ATTR_VIRTUAL_STATIC_GROUP_ENTRIES,<a name="line.380"></a>
-<span class="sourceLineNo">381</span>           INFO_GROUP_CACHE_DISPNAME_VIRTUAL_STATIC_GROUP_ENTRIES.get(),<a name="line.381"></a>
-<span class="sourceLineNo">382</span>           INFO_GROUP_CACHE_DESC_VIRTUAL_STATIC_GROUP_ENTRIES.get(),<a name="line.382"></a>
-<span class="sourceLineNo">383</span>           virtualStaticGroupEntries);<a name="line.383"></a>
-<span class="sourceLineNo">384</span>    }<a name="line.384"></a>
-<span class="sourceLineNo">385</span><a name="line.385"></a>
-<span class="sourceLineNo">386</span>    if (currentCacheUsedBytes != null)<a name="line.386"></a>
-<span class="sourceLineNo">387</span>    {<a name="line.387"></a>
-<span class="sourceLineNo">388</span>      addMonitorAttribute(attrs,<a name="line.388"></a>
-<span class="sourceLineNo">389</span>           ATTR_CURRENT_CACHE_USED_BYTES,<a name="line.389"></a>
-<span class="sourceLineNo">390</span>           INFO_GROUP_CACHE_DISPNAME_CACHE_SIZE_BYTES.get(),<a name="line.390"></a>
-<span class="sourceLineNo">391</span>           INFO_GROUP_CACHE_DESC_CACHE_SIZE_BYTES.get(),<a name="line.391"></a>
-<span class="sourceLineNo">392</span>           currentCacheUsedBytes);<a name="line.392"></a>
-<span class="sourceLineNo">393</span>    }<a name="line.393"></a>
-<span class="sourceLineNo">394</span><a name="line.394"></a>
-<span class="sourceLineNo">395</span>    if (currentCacheUsedPercent != null)<a name="line.395"></a>
-<span class="sourceLineNo">396</span>    {<a name="line.396"></a>
-<span class="sourceLineNo">397</span>      addMonitorAttribute(attrs,<a name="line.397"></a>
-<span class="sourceLineNo">398</span>           ATTR_CURRENT_CACHE_USED_PERCENT,<a name="line.398"></a>
-<span class="sourceLineNo">399</span>           INFO_GROUP_CACHE_DISPNAME_CACHE_SIZE_PERCENT.get(),<a name="line.399"></a>
-<span class="sourceLineNo">400</span>           INFO_GROUP_CACHE_DESC_CACHE_SIZE_PERCENT.get(),<a name="line.400"></a>
-<span class="sourceLineNo">401</span>           currentCacheUsedPercent);<a name="line.401"></a>
-<span class="sourceLineNo">402</span>    }<a name="line.402"></a>
-<span class="sourceLineNo">403</span><a name="line.403"></a>
-<span class="sourceLineNo">404</span>    if (currentCacheUsedUpdateMillis != null)<a name="line.404"></a>
-<span class="sourceLineNo">405</span>    {<a name="line.405"></a>
-<span class="sourceLineNo">406</span>      addMonitorAttribute(attrs,<a name="line.406"></a>
-<span class="sourceLineNo">407</span>           ATTR_CURRENT_CACHE_USED_UPDATE_MILLIS,<a name="line.407"></a>
-<span class="sourceLineNo">408</span>           INFO_GROUP_CACHE_DISPNAME_CACHE_SIZE_UPDATE_MILLIS.get(),<a name="line.408"></a>
-<span class="sourceLineNo">409</span>           INFO_GROUP_CACHE_DESC_CACHE_SIZE_UPDATE_MILLIS.get(),<a name="line.409"></a>
-<span class="sourceLineNo">410</span>           currentCacheUsedUpdateMillis);<a name="line.410"></a>
-<span class="sourceLineNo">411</span>    }<a name="line.411"></a>
-<span class="sourceLineNo">412</span><a name="line.412"></a>
-<span class="sourceLineNo">413</span>    return Collections.unmodifiableMap(attrs);<a name="line.413"></a>
-<span class="sourceLineNo">414</span>  }<a name="line.414"></a>
-<span class="sourceLineNo">415</span>}<a name="line.415"></a>
+<span class="sourceLineNo">338</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs = new LinkedHashMap&lt;&gt;(8);<a name="line.338"></a>
+<span class="sourceLineNo">339</span><a name="line.339"></a>
+<span class="sourceLineNo">340</span>    if (staticGroupEntries != null)<a name="line.340"></a>
+<span class="sourceLineNo">341</span>    {<a name="line.341"></a>
+<span class="sourceLineNo">342</span>      addMonitorAttribute(attrs,<a name="line.342"></a>
+<span class="sourceLineNo">343</span>           ATTR_STATIC_GROUP_ENTRIES,<a name="line.343"></a>
+<span class="sourceLineNo">344</span>           INFO_GROUP_CACHE_DISPNAME_STATIC_GROUP_ENTRIES.get(),<a name="line.344"></a>
+<span class="sourceLineNo">345</span>           INFO_GROUP_CACHE_DESC_STATIC_GROUP_ENTRIES.get(),<a name="line.345"></a>
+<span class="sourceLineNo">346</span>           staticGroupEntries);<a name="line.346"></a>
+<span class="sourceLineNo">347</span>    }<a name="line.347"></a>
+<span class="sourceLineNo">348</span><a name="line.348"></a>
+<span class="sourceLineNo">349</span>    if (staticGroupMembers != null)<a name="line.349"></a>
+<span class="sourceLineNo">350</span>    {<a name="line.350"></a>
+<span class="sourceLineNo">351</span>      addMonitorAttribute(attrs,<a name="line.351"></a>
+<span class="sourceLineNo">352</span>           ATTR_TOTAL_STATIC_GROUP_MEMBERS,<a name="line.352"></a>
+<span class="sourceLineNo">353</span>           INFO_GROUP_CACHE_DISPNAME_STATIC_GROUP_MEMBERS.get(),<a name="line.353"></a>
+<span class="sourceLineNo">354</span>           INFO_GROUP_CACHE_DESC_STATIC_GROUP_MEMBERS.get(),<a name="line.354"></a>
+<span class="sourceLineNo">355</span>           staticGroupMembers);<a name="line.355"></a>
+<span class="sourceLineNo">356</span>    }<a name="line.356"></a>
+<span class="sourceLineNo">357</span><a name="line.357"></a>
+<span class="sourceLineNo">358</span>    if (staticGroupUniqueMembers != null)<a name="line.358"></a>
+<span class="sourceLineNo">359</span>    {<a name="line.359"></a>
+<span class="sourceLineNo">360</span>      addMonitorAttribute(attrs,<a name="line.360"></a>
+<span class="sourceLineNo">361</span>           ATTR_UNIQUE_STATIC_GROUP_MEMBERS,<a name="line.361"></a>
+<span class="sourceLineNo">362</span>           INFO_GROUP_CACHE_DISPNAME_STATIC_GROUP_UNIQUE_MEMBERS.get(),<a name="line.362"></a>
+<span class="sourceLineNo">363</span>           INFO_GROUP_CACHE_DESC_STATIC_GROUP_UNIQUE_MEMBERS.get(),<a name="line.363"></a>
+<span class="sourceLineNo">364</span>           staticGroupUniqueMembers);<a name="line.364"></a>
+<span class="sourceLineNo">365</span>    }<a name="line.365"></a>
+<span class="sourceLineNo">366</span><a name="line.366"></a>
+<span class="sourceLineNo">367</span>    if (dynamicGroupEntries != null)<a name="line.367"></a>
+<span class="sourceLineNo">368</span>    {<a name="line.368"></a>
+<span class="sourceLineNo">369</span>      addMonitorAttribute(attrs,<a name="line.369"></a>
+<span class="sourceLineNo">370</span>           ATTR_DYNAMIC_GROUP_ENTRIES,<a name="line.370"></a>
+<span class="sourceLineNo">371</span>           INFO_GROUP_CACHE_DISPNAME_DYNAMIC_GROUP_ENTRIES.get(),<a name="line.371"></a>
+<span class="sourceLineNo">372</span>           INFO_GROUP_CACHE_DESC_DYNAMIC_GROUP_ENTRIES.get(),<a name="line.372"></a>
+<span class="sourceLineNo">373</span>           dynamicGroupEntries);<a name="line.373"></a>
+<span class="sourceLineNo">374</span>    }<a name="line.374"></a>
+<span class="sourceLineNo">375</span><a name="line.375"></a>
+<span class="sourceLineNo">376</span>    if (virtualStaticGroupEntries != null)<a name="line.376"></a>
+<span class="sourceLineNo">377</span>    {<a name="line.377"></a>
+<span class="sourceLineNo">378</span>      addMonitorAttribute(attrs,<a name="line.378"></a>
+<span class="sourceLineNo">379</span>           ATTR_VIRTUAL_STATIC_GROUP_ENTRIES,<a name="line.379"></a>
+<span class="sourceLineNo">380</span>           INFO_GROUP_CACHE_DISPNAME_VIRTUAL_STATIC_GROUP_ENTRIES.get(),<a name="line.380"></a>
+<span class="sourceLineNo">381</span>           INFO_GROUP_CACHE_DESC_VIRTUAL_STATIC_GROUP_ENTRIES.get(),<a name="line.381"></a>
+<span class="sourceLineNo">382</span>           virtualStaticGroupEntries);<a name="line.382"></a>
+<span class="sourceLineNo">383</span>    }<a name="line.383"></a>
+<span class="sourceLineNo">384</span><a name="line.384"></a>
+<span class="sourceLineNo">385</span>    if (currentCacheUsedBytes != null)<a name="line.385"></a>
+<span class="sourceLineNo">386</span>    {<a name="line.386"></a>
+<span class="sourceLineNo">387</span>      addMonitorAttribute(attrs,<a name="line.387"></a>
+<span class="sourceLineNo">388</span>           ATTR_CURRENT_CACHE_USED_BYTES,<a name="line.388"></a>
+<span class="sourceLineNo">389</span>           INFO_GROUP_CACHE_DISPNAME_CACHE_SIZE_BYTES.get(),<a name="line.389"></a>
+<span class="sourceLineNo">390</span>           INFO_GROUP_CACHE_DESC_CACHE_SIZE_BYTES.get(),<a name="line.390"></a>
+<span class="sourceLineNo">391</span>           currentCacheUsedBytes);<a name="line.391"></a>
+<span class="sourceLineNo">392</span>    }<a name="line.392"></a>
+<span class="sourceLineNo">393</span><a name="line.393"></a>
+<span class="sourceLineNo">394</span>    if (currentCacheUsedPercent != null)<a name="line.394"></a>
+<span class="sourceLineNo">395</span>    {<a name="line.395"></a>
+<span class="sourceLineNo">396</span>      addMonitorAttribute(attrs,<a name="line.396"></a>
+<span class="sourceLineNo">397</span>           ATTR_CURRENT_CACHE_USED_PERCENT,<a name="line.397"></a>
+<span class="sourceLineNo">398</span>           INFO_GROUP_CACHE_DISPNAME_CACHE_SIZE_PERCENT.get(),<a name="line.398"></a>
+<span class="sourceLineNo">399</span>           INFO_GROUP_CACHE_DESC_CACHE_SIZE_PERCENT.get(),<a name="line.399"></a>
+<span class="sourceLineNo">400</span>           currentCacheUsedPercent);<a name="line.400"></a>
+<span class="sourceLineNo">401</span>    }<a name="line.401"></a>
+<span class="sourceLineNo">402</span><a name="line.402"></a>
+<span class="sourceLineNo">403</span>    if (currentCacheUsedUpdateMillis != null)<a name="line.403"></a>
+<span class="sourceLineNo">404</span>    {<a name="line.404"></a>
+<span class="sourceLineNo">405</span>      addMonitorAttribute(attrs,<a name="line.405"></a>
+<span class="sourceLineNo">406</span>           ATTR_CURRENT_CACHE_USED_UPDATE_MILLIS,<a name="line.406"></a>
+<span class="sourceLineNo">407</span>           INFO_GROUP_CACHE_DISPNAME_CACHE_SIZE_UPDATE_MILLIS.get(),<a name="line.407"></a>
+<span class="sourceLineNo">408</span>           INFO_GROUP_CACHE_DESC_CACHE_SIZE_UPDATE_MILLIS.get(),<a name="line.408"></a>
+<span class="sourceLineNo">409</span>           currentCacheUsedUpdateMillis);<a name="line.409"></a>
+<span class="sourceLineNo">410</span>    }<a name="line.410"></a>
+<span class="sourceLineNo">411</span><a name="line.411"></a>
+<span class="sourceLineNo">412</span>    return Collections.unmodifiableMap(attrs);<a name="line.412"></a>
+<span class="sourceLineNo">413</span>  }<a name="line.413"></a>
+<span class="sourceLineNo">414</span>}<a name="line.414"></a>
 
 
 

@@ -117,21 +117,21 @@
 <span class="sourceLineNo">109</span>           String.valueOf(firstToken)));<a name="line.109"></a>
 <span class="sourceLineNo">110</span>    }<a name="line.110"></a>
 <span class="sourceLineNo">111</span><a name="line.111"></a>
-<span class="sourceLineNo">112</span>    final LinkedHashMap&lt;String,JSONValue&gt; m =<a name="line.112"></a>
-<span class="sourceLineNo">113</span>         new LinkedHashMap&lt;String,JSONValue&gt;(10);<a name="line.113"></a>
-<span class="sourceLineNo">114</span>    readObject(m);<a name="line.114"></a>
-<span class="sourceLineNo">115</span><a name="line.115"></a>
-<span class="sourceLineNo">116</span>    return new JSONObject(m, currentObjectBytes.toString());<a name="line.116"></a>
-<span class="sourceLineNo">117</span>  }<a name="line.117"></a>
+<span class="sourceLineNo">112</span>    final LinkedHashMap&lt;String,JSONValue&gt; m = new LinkedHashMap&lt;&gt;(10);<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    readObject(m);<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>    return new JSONObject(m, currentObjectBytes.toString());<a name="line.115"></a>
+<span class="sourceLineNo">116</span>  }<a name="line.116"></a>
+<span class="sourceLineNo">117</span><a name="line.117"></a>
 <span class="sourceLineNo">118</span><a name="line.118"></a>
 <span class="sourceLineNo">119</span><a name="line.119"></a>
-<span class="sourceLineNo">120</span><a name="line.120"></a>
-<span class="sourceLineNo">121</span>  /**<a name="line.121"></a>
-<span class="sourceLineNo">122</span>   * Closes this JSON object reader and the underlying input stream.<a name="line.122"></a>
-<span class="sourceLineNo">123</span>   *<a name="line.123"></a>
-<span class="sourceLineNo">124</span>   * @throws  IOException  If a problem is encountered while closing the<a name="line.124"></a>
-<span class="sourceLineNo">125</span>   *                       underlying input stream.<a name="line.125"></a>
-<span class="sourceLineNo">126</span>   */<a name="line.126"></a>
+<span class="sourceLineNo">120</span>  /**<a name="line.120"></a>
+<span class="sourceLineNo">121</span>   * Closes this JSON object reader and the underlying input stream.<a name="line.121"></a>
+<span class="sourceLineNo">122</span>   *<a name="line.122"></a>
+<span class="sourceLineNo">123</span>   * @throws  IOException  If a problem is encountered while closing the<a name="line.123"></a>
+<span class="sourceLineNo">124</span>   *                       underlying input stream.<a name="line.124"></a>
+<span class="sourceLineNo">125</span>   */<a name="line.125"></a>
+<span class="sourceLineNo">126</span>  @Override()<a name="line.126"></a>
 <span class="sourceLineNo">127</span>  public void close()<a name="line.127"></a>
 <span class="sourceLineNo">128</span>         throws IOException<a name="line.128"></a>
 <span class="sourceLineNo">129</span>  {<a name="line.129"></a>
@@ -708,7 +708,7 @@
 <span class="sourceLineNo">700</span>  {<a name="line.700"></a>
 <span class="sourceLineNo">701</span>    // The opening square bracket will have already been consumed, so read<a name="line.701"></a>
 <span class="sourceLineNo">702</span>    // JSON values until we hit a closing square bracket.<a name="line.702"></a>
-<span class="sourceLineNo">703</span>    final ArrayList&lt;JSONValue&gt; values = new ArrayList&lt;JSONValue&gt;(10);<a name="line.703"></a>
+<span class="sourceLineNo">703</span>    final ArrayList&lt;JSONValue&gt; values = new ArrayList&lt;&gt;(10);<a name="line.703"></a>
 <span class="sourceLineNo">704</span>    boolean firstToken = true;<a name="line.704"></a>
 <span class="sourceLineNo">705</span>    while (true)<a name="line.705"></a>
 <span class="sourceLineNo">706</span>    {<a name="line.706"></a>
@@ -728,7 +728,7 @@
 <span class="sourceLineNo">720</span>      else if (token.equals('{'))<a name="line.720"></a>
 <span class="sourceLineNo">721</span>      {<a name="line.721"></a>
 <span class="sourceLineNo">722</span>        final LinkedHashMap&lt;String,JSONValue&gt; fieldMap =<a name="line.722"></a>
-<span class="sourceLineNo">723</span>             new LinkedHashMap&lt;String,JSONValue&gt;(10);<a name="line.723"></a>
+<span class="sourceLineNo">723</span>             new LinkedHashMap&lt;&gt;(10);<a name="line.723"></a>
 <span class="sourceLineNo">724</span>        values.add(readObject(fieldMap));<a name="line.724"></a>
 <span class="sourceLineNo">725</span>      }<a name="line.725"></a>
 <span class="sourceLineNo">726</span>      else if (token.equals(']') &amp;&amp; firstToken)<a name="line.726"></a>
@@ -836,61 +836,60 @@
 <span class="sourceLineNo">828</span>      }<a name="line.828"></a>
 <span class="sourceLineNo">829</span>      else if (valueToken.equals('{'))<a name="line.829"></a>
 <span class="sourceLineNo">830</span>      {<a name="line.830"></a>
-<span class="sourceLineNo">831</span>        final LinkedHashMap&lt;String,JSONValue&gt; m =<a name="line.831"></a>
-<span class="sourceLineNo">832</span>             new LinkedHashMap&lt;String,JSONValue&gt;(10);<a name="line.832"></a>
-<span class="sourceLineNo">833</span>        final JSONObject o = readObject(m);<a name="line.833"></a>
-<span class="sourceLineNo">834</span>        fields.put(fieldName, o);<a name="line.834"></a>
-<span class="sourceLineNo">835</span>      }<a name="line.835"></a>
-<span class="sourceLineNo">836</span>      else<a name="line.836"></a>
-<span class="sourceLineNo">837</span>      {<a name="line.837"></a>
-<span class="sourceLineNo">838</span>        throw new JSONException(ERR_OBJECT_READER_TOKEN_NOT_VALUE.get(<a name="line.838"></a>
-<span class="sourceLineNo">839</span>             currentObjectBytes.length(), String.valueOf(valueToken),<a name="line.839"></a>
-<span class="sourceLineNo">840</span>             String.valueOf(fieldNameToken)));<a name="line.840"></a>
-<span class="sourceLineNo">841</span>      }<a name="line.841"></a>
-<span class="sourceLineNo">842</span><a name="line.842"></a>
-<span class="sourceLineNo">843</span>      // Read the next token.  It must be either a comma (to indicate that<a name="line.843"></a>
-<span class="sourceLineNo">844</span>      // there will be another field) or a closing curly brace (to indicate<a name="line.844"></a>
-<span class="sourceLineNo">845</span>      // that the end of the object has been reached).<a name="line.845"></a>
-<span class="sourceLineNo">846</span>      final Object separatorToken = readToken(false);<a name="line.846"></a>
-<span class="sourceLineNo">847</span>      if (separatorToken.equals('}'))<a name="line.847"></a>
-<span class="sourceLineNo">848</span>      {<a name="line.848"></a>
-<span class="sourceLineNo">849</span>        return new JSONObject(fields);<a name="line.849"></a>
-<span class="sourceLineNo">850</span>      }<a name="line.850"></a>
-<span class="sourceLineNo">851</span>      else if (! separatorToken.equals(','))<a name="line.851"></a>
-<span class="sourceLineNo">852</span>      {<a name="line.852"></a>
-<span class="sourceLineNo">853</span>        throw new JSONException(<a name="line.853"></a>
-<span class="sourceLineNo">854</span>             ERR_OBJECT_READER_INVALID_TOKEN_AFTER_OBJECT_VALUE.get(<a name="line.854"></a>
-<span class="sourceLineNo">855</span>                  currentObjectBytes.length(), String.valueOf(separatorToken),<a name="line.855"></a>
-<span class="sourceLineNo">856</span>                  String.valueOf(fieldNameToken)));<a name="line.856"></a>
-<span class="sourceLineNo">857</span>      }<a name="line.857"></a>
-<span class="sourceLineNo">858</span>    }<a name="line.858"></a>
-<span class="sourceLineNo">859</span>  }<a name="line.859"></a>
+<span class="sourceLineNo">831</span>        final LinkedHashMap&lt;String,JSONValue&gt; m = new LinkedHashMap&lt;&gt;(10);<a name="line.831"></a>
+<span class="sourceLineNo">832</span>        final JSONObject o = readObject(m);<a name="line.832"></a>
+<span class="sourceLineNo">833</span>        fields.put(fieldName, o);<a name="line.833"></a>
+<span class="sourceLineNo">834</span>      }<a name="line.834"></a>
+<span class="sourceLineNo">835</span>      else<a name="line.835"></a>
+<span class="sourceLineNo">836</span>      {<a name="line.836"></a>
+<span class="sourceLineNo">837</span>        throw new JSONException(ERR_OBJECT_READER_TOKEN_NOT_VALUE.get(<a name="line.837"></a>
+<span class="sourceLineNo">838</span>             currentObjectBytes.length(), String.valueOf(valueToken),<a name="line.838"></a>
+<span class="sourceLineNo">839</span>             String.valueOf(fieldNameToken)));<a name="line.839"></a>
+<span class="sourceLineNo">840</span>      }<a name="line.840"></a>
+<span class="sourceLineNo">841</span><a name="line.841"></a>
+<span class="sourceLineNo">842</span>      // Read the next token.  It must be either a comma (to indicate that<a name="line.842"></a>
+<span class="sourceLineNo">843</span>      // there will be another field) or a closing curly brace (to indicate<a name="line.843"></a>
+<span class="sourceLineNo">844</span>      // that the end of the object has been reached).<a name="line.844"></a>
+<span class="sourceLineNo">845</span>      final Object separatorToken = readToken(false);<a name="line.845"></a>
+<span class="sourceLineNo">846</span>      if (separatorToken.equals('}'))<a name="line.846"></a>
+<span class="sourceLineNo">847</span>      {<a name="line.847"></a>
+<span class="sourceLineNo">848</span>        return new JSONObject(fields);<a name="line.848"></a>
+<span class="sourceLineNo">849</span>      }<a name="line.849"></a>
+<span class="sourceLineNo">850</span>      else if (! separatorToken.equals(','))<a name="line.850"></a>
+<span class="sourceLineNo">851</span>      {<a name="line.851"></a>
+<span class="sourceLineNo">852</span>        throw new JSONException(<a name="line.852"></a>
+<span class="sourceLineNo">853</span>             ERR_OBJECT_READER_INVALID_TOKEN_AFTER_OBJECT_VALUE.get(<a name="line.853"></a>
+<span class="sourceLineNo">854</span>                  currentObjectBytes.length(), String.valueOf(separatorToken),<a name="line.854"></a>
+<span class="sourceLineNo">855</span>                  String.valueOf(fieldNameToken)));<a name="line.855"></a>
+<span class="sourceLineNo">856</span>      }<a name="line.856"></a>
+<span class="sourceLineNo">857</span>    }<a name="line.857"></a>
+<span class="sourceLineNo">858</span>  }<a name="line.858"></a>
+<span class="sourceLineNo">859</span><a name="line.859"></a>
 <span class="sourceLineNo">860</span><a name="line.860"></a>
 <span class="sourceLineNo">861</span><a name="line.861"></a>
-<span class="sourceLineNo">862</span><a name="line.862"></a>
-<span class="sourceLineNo">863</span>  /**<a name="line.863"></a>
-<span class="sourceLineNo">864</span>   * Retrieves a string representation of the provided byte that is intended to<a name="line.864"></a>
-<span class="sourceLineNo">865</span>   * represent a character.  If the provided byte is a printable ASCII<a name="line.865"></a>
-<span class="sourceLineNo">866</span>   * character, then that character will be used.  Otherwise, the string<a name="line.866"></a>
-<span class="sourceLineNo">867</span>   * representation will be "0x" followed by the hexadecimal representation of<a name="line.867"></a>
-<span class="sourceLineNo">868</span>   * the byte.<a name="line.868"></a>
-<span class="sourceLineNo">869</span>   *<a name="line.869"></a>
-<span class="sourceLineNo">870</span>   * @param  b  The byte for which to obtain the string representation.<a name="line.870"></a>
-<span class="sourceLineNo">871</span>   *<a name="line.871"></a>
-<span class="sourceLineNo">872</span>   * @return  A string representation of the provided byte.<a name="line.872"></a>
-<span class="sourceLineNo">873</span>   */<a name="line.873"></a>
-<span class="sourceLineNo">874</span>  private static String byteToCharString(final byte b)<a name="line.874"></a>
-<span class="sourceLineNo">875</span>  {<a name="line.875"></a>
-<span class="sourceLineNo">876</span>    if ((b &gt;= ' ') &amp;&amp; (b &lt;= '~'))<a name="line.876"></a>
-<span class="sourceLineNo">877</span>    {<a name="line.877"></a>
-<span class="sourceLineNo">878</span>      return String.valueOf((char) (b &amp; 0xFF));<a name="line.878"></a>
-<span class="sourceLineNo">879</span>    }<a name="line.879"></a>
-<span class="sourceLineNo">880</span>    else<a name="line.880"></a>
-<span class="sourceLineNo">881</span>    {<a name="line.881"></a>
-<span class="sourceLineNo">882</span>      return "0x" + StaticUtils.toHex(b);<a name="line.882"></a>
-<span class="sourceLineNo">883</span>    }<a name="line.883"></a>
-<span class="sourceLineNo">884</span>  }<a name="line.884"></a>
-<span class="sourceLineNo">885</span>}<a name="line.885"></a>
+<span class="sourceLineNo">862</span>  /**<a name="line.862"></a>
+<span class="sourceLineNo">863</span>   * Retrieves a string representation of the provided byte that is intended to<a name="line.863"></a>
+<span class="sourceLineNo">864</span>   * represent a character.  If the provided byte is a printable ASCII<a name="line.864"></a>
+<span class="sourceLineNo">865</span>   * character, then that character will be used.  Otherwise, the string<a name="line.865"></a>
+<span class="sourceLineNo">866</span>   * representation will be "0x" followed by the hexadecimal representation of<a name="line.866"></a>
+<span class="sourceLineNo">867</span>   * the byte.<a name="line.867"></a>
+<span class="sourceLineNo">868</span>   *<a name="line.868"></a>
+<span class="sourceLineNo">869</span>   * @param  b  The byte for which to obtain the string representation.<a name="line.869"></a>
+<span class="sourceLineNo">870</span>   *<a name="line.870"></a>
+<span class="sourceLineNo">871</span>   * @return  A string representation of the provided byte.<a name="line.871"></a>
+<span class="sourceLineNo">872</span>   */<a name="line.872"></a>
+<span class="sourceLineNo">873</span>  private static String byteToCharString(final byte b)<a name="line.873"></a>
+<span class="sourceLineNo">874</span>  {<a name="line.874"></a>
+<span class="sourceLineNo">875</span>    if ((b &gt;= ' ') &amp;&amp; (b &lt;= '~'))<a name="line.875"></a>
+<span class="sourceLineNo">876</span>    {<a name="line.876"></a>
+<span class="sourceLineNo">877</span>      return String.valueOf((char) (b &amp; 0xFF));<a name="line.877"></a>
+<span class="sourceLineNo">878</span>    }<a name="line.878"></a>
+<span class="sourceLineNo">879</span>    else<a name="line.879"></a>
+<span class="sourceLineNo">880</span>    {<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      return "0x" + StaticUtils.toHex(b);<a name="line.881"></a>
+<span class="sourceLineNo">882</span>    }<a name="line.882"></a>
+<span class="sourceLineNo">883</span>  }<a name="line.883"></a>
+<span class="sourceLineNo">884</span>}<a name="line.884"></a>
 
 
 

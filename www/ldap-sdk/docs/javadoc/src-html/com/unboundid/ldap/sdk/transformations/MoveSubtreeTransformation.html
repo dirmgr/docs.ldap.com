@@ -102,7 +102,7 @@
 <span class="sourceLineNo">094</span>    // replacements<a name="line.94"></a>
 <span class="sourceLineNo">095</span>    final Collection&lt;Attribute&gt; originalAttributes = e.getAttributes();<a name="line.95"></a>
 <span class="sourceLineNo">096</span>    final ArrayList&lt;Attribute&gt; newAttributes =<a name="line.96"></a>
-<span class="sourceLineNo">097</span>         new ArrayList&lt;Attribute&gt;(originalAttributes.size());<a name="line.97"></a>
+<span class="sourceLineNo">097</span>         new ArrayList&lt;&gt;(originalAttributes.size());<a name="line.97"></a>
 <span class="sourceLineNo">098</span>    for (final Attribute a : originalAttributes)<a name="line.98"></a>
 <span class="sourceLineNo">099</span>    {<a name="line.99"></a>
 <span class="sourceLineNo">100</span>      final String[] originalValues = a.getValues();<a name="line.100"></a>
@@ -218,7 +218,7 @@
 <span class="sourceLineNo">210</span><a name="line.210"></a>
 <span class="sourceLineNo">211</span>      final RDN[] originalRDNs = dn.getRDNs();<a name="line.211"></a>
 <span class="sourceLineNo">212</span>      final RDN[] sourceRDNs = sourceDN.getRDNs();<a name="line.212"></a>
-<span class="sourceLineNo">213</span>      final ArrayList&lt;RDN&gt; newRDNs = new ArrayList&lt;RDN&gt;(2*originalRDNs.length);<a name="line.213"></a>
+<span class="sourceLineNo">213</span>      final ArrayList&lt;RDN&gt; newRDNs = new ArrayList&lt;&gt;(2*originalRDNs.length);<a name="line.213"></a>
 <span class="sourceLineNo">214</span>      final int numComponentsToKeep = originalRDNs.length - sourceRDNs.length;<a name="line.214"></a>
 <span class="sourceLineNo">215</span>      for (int i=0; i &lt; numComponentsToKeep; i++)<a name="line.215"></a>
 <span class="sourceLineNo">216</span>      {<a name="line.216"></a>

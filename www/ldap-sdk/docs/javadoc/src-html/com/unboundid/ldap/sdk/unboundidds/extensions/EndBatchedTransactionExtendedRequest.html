@@ -40,13 +40,13 @@
 <span class="sourceLineNo">032</span>import com.unboundid.ldap.sdk.LDAPConnection;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.unboundid.util.NotMutable;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafety;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.37"></a>
-<span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import static com.unboundid.util.Debug.*;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import static com.unboundid.util.Validator.*;<a name="line.41"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.Debug;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.NotMutable;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafety;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.Validator;<a name="line.39"></a>
+<span class="sourceLineNo">040</span><a name="line.40"></a>
+<span class="sourceLineNo">041</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
 <span class="sourceLineNo">044</span><a name="line.44"></a>
@@ -60,11 +60,11 @@
 <span class="sourceLineNo">052</span> * &lt;BLOCKQUOTE&gt;<a name="line.52"></a>
 <span class="sourceLineNo">053</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.53"></a>
 <span class="sourceLineNo">054</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.55"></a>
-<span class="sourceLineNo">056</span> *   server products.  These classes provide support for proprietary<a name="line.56"></a>
-<span class="sourceLineNo">057</span> *   functionality or for external specifications that are not considered stable<a name="line.57"></a>
-<span class="sourceLineNo">058</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *   other types of LDAP servers.<a name="line.59"></a>
+<span class="sourceLineNo">055</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.56"></a>
+<span class="sourceLineNo">057</span> *   for proprietary functionality or for external specifications that are not<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.58"></a>
+<span class="sourceLineNo">059</span> *   interoperable way with other types of LDAP servers.<a name="line.59"></a>
 <span class="sourceLineNo">060</span> * &lt;/BLOCKQUOTE&gt;<a name="line.60"></a>
 <span class="sourceLineNo">061</span> */<a name="line.61"></a>
 <span class="sourceLineNo">062</span>@NotMutable()<a name="line.62"></a>
@@ -179,7 +179,7 @@
 <span class="sourceLineNo">171</span>    }<a name="line.171"></a>
 <span class="sourceLineNo">172</span>    catch (final Exception e)<a name="line.172"></a>
 <span class="sourceLineNo">173</span>    {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>      debugException(e);<a name="line.174"></a>
+<span class="sourceLineNo">174</span>      Debug.debugException(e);<a name="line.174"></a>
 <span class="sourceLineNo">175</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.175"></a>
 <span class="sourceLineNo">176</span>                              ERR_END_TXN_REQUEST_CANNOT_DECODE.get(e), e);<a name="line.176"></a>
 <span class="sourceLineNo">177</span>    }<a name="line.177"></a>
@@ -202,7 +202,7 @@
 <span class="sourceLineNo">194</span>       encodeValue(final ASN1OctetString transactionID,<a name="line.194"></a>
 <span class="sourceLineNo">195</span>                   final boolean commit)<a name="line.195"></a>
 <span class="sourceLineNo">196</span>  {<a name="line.196"></a>
-<span class="sourceLineNo">197</span>    ensureNotNull(transactionID);<a name="line.197"></a>
+<span class="sourceLineNo">197</span>    Validator.ensureNotNull(transactionID);<a name="line.197"></a>
 <span class="sourceLineNo">198</span><a name="line.198"></a>
 <span class="sourceLineNo">199</span>    final ASN1Element[] valueElements;<a name="line.199"></a>
 <span class="sourceLineNo">200</span>    if (commit)<a name="line.200"></a>

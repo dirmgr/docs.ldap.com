@@ -40,12 +40,12 @@
 <span class="sourceLineNo">032</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import com.unboundid.ldap.sdk.SearchResult;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.unboundid.util.NotMutable;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafety;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.37"></a>
-<span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import static com.unboundid.util.Debug.*;<a name="line.40"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.Debug;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.NotMutable;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafety;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
@@ -185,7 +185,7 @@
 <span class="sourceLineNo">177</span>    }<a name="line.177"></a>
 <span class="sourceLineNo">178</span>    catch (final ASN1Exception ae)<a name="line.178"></a>
 <span class="sourceLineNo">179</span>    {<a name="line.179"></a>
-<span class="sourceLineNo">180</span>      debugException(ae);<a name="line.180"></a>
+<span class="sourceLineNo">180</span>      Debug.debugException(ae);<a name="line.180"></a>
 <span class="sourceLineNo">181</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.181"></a>
 <span class="sourceLineNo">182</span>                              ERR_SORT_RESPONSE_VALUE_NOT_SEQUENCE.get(ae), ae);<a name="line.182"></a>
 <span class="sourceLineNo">183</span>    }<a name="line.183"></a>
@@ -206,7 +206,7 @@
 <span class="sourceLineNo">198</span>    }<a name="line.198"></a>
 <span class="sourceLineNo">199</span>    catch (final ASN1Exception ae)<a name="line.199"></a>
 <span class="sourceLineNo">200</span>    {<a name="line.200"></a>
-<span class="sourceLineNo">201</span>      debugException(ae);<a name="line.201"></a>
+<span class="sourceLineNo">201</span>      Debug.debugException(ae);<a name="line.201"></a>
 <span class="sourceLineNo">202</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.202"></a>
 <span class="sourceLineNo">203</span>                              ERR_SORT_RESPONSE_FIRST_NOT_ENUM.get(ae), ae);<a name="line.203"></a>
 <span class="sourceLineNo">204</span>    }<a name="line.204"></a>

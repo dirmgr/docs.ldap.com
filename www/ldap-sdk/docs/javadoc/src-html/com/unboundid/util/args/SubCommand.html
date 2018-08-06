@@ -142,7 +142,7 @@
 <span class="sourceLineNo">134</span>    addName(name);<a name="line.134"></a>
 <span class="sourceLineNo">135</span><a name="line.135"></a>
 <span class="sourceLineNo">136</span>    this.description = description;<a name="line.136"></a>
-<span class="sourceLineNo">137</span>    if ((description == null) || (description.length() == 0))<a name="line.137"></a>
+<span class="sourceLineNo">137</span>    if ((description == null) || description.isEmpty())<a name="line.137"></a>
 <span class="sourceLineNo">138</span>    {<a name="line.138"></a>
 <span class="sourceLineNo">139</span>      throw new ArgumentException(<a name="line.139"></a>
 <span class="sourceLineNo">140</span>           ERR_SUBCOMMAND_DESCRIPTION_NULL_OR_EMPTY.get());<a name="line.140"></a>
@@ -165,7 +165,7 @@
 <span class="sourceLineNo">157</span><a name="line.157"></a>
 <span class="sourceLineNo">158</span>    if (exampleUsages == null)<a name="line.158"></a>
 <span class="sourceLineNo">159</span>    {<a name="line.159"></a>
-<span class="sourceLineNo">160</span>      this.exampleUsages = new LinkedHashMap&lt;&gt;();<a name="line.160"></a>
+<span class="sourceLineNo">160</span>      this.exampleUsages = new LinkedHashMap&lt;&gt;(10);<a name="line.160"></a>
 <span class="sourceLineNo">161</span>    }<a name="line.161"></a>
 <span class="sourceLineNo">162</span>    else<a name="line.162"></a>
 <span class="sourceLineNo">163</span>    {<a name="line.163"></a>
@@ -303,7 +303,7 @@
 <span class="sourceLineNo">295</span>  public void addName(final String name, final boolean isHidden)<a name="line.295"></a>
 <span class="sourceLineNo">296</span>         throws ArgumentException<a name="line.296"></a>
 <span class="sourceLineNo">297</span>  {<a name="line.297"></a>
-<span class="sourceLineNo">298</span>    if ((name == null) || (name.length() == 0))<a name="line.298"></a>
+<span class="sourceLineNo">298</span>    if ((name == null) || name.isEmpty())<a name="line.298"></a>
 <span class="sourceLineNo">299</span>    {<a name="line.299"></a>
 <span class="sourceLineNo">300</span>      throw new ArgumentException(ERR_SUBCOMMAND_NAME_NULL_OR_EMPTY.get());<a name="line.300"></a>
 <span class="sourceLineNo">301</span>    }<a name="line.301"></a>

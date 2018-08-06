@@ -27,6 +27,234 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 4.0.7</h3>
+
+              <p>
+                The following changes were made between the 4.0.6 and 4.0.7 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue in the LDAPConnectionPool and LDAPThreadLocalConnectionPool
+                  classes when created with a connection that is already established and
+                  authenticated (as opposed to being created from a server set and bind request).
+                  Internally, the LDAP SDK created its own server set and bind request from the
+                  provided connection's state information, but it incorrectly included bind
+                  credentials in the server set.  Under most circumstances, this would merely
+                  cause the LDAP SDK to send two bind requests (the second a duplicate of the
+                  first) when establishing a new connection as part of the pool.  However, it
+                  caused a bigger problem when using the new <tt>setBindRequest</tt> methods
+                  that were introduced in the 4.0.6 release.  Because the server set was
+                  created with bind credentials, the pool would create a connection that tried
+                  to use those old credentials before sending a second bind request with the
+                  new credentials, and this would fail if the old credentials were no longer
+                  valid.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the behavior that the LDAP SDK exhibited when configured to
+                  automatically follow referrals.  If the server returned a search result
+                  reference that the LDAP SDK could not follow (for example, because none of the
+                  URLs were valid, none of the servers could be reached, none of the searches
+                  succeeded, in those servers, etc.), the LDAP SDK would assign a result code of
+                  "referral" to the search operation, which would cause it to throw an exception
+                  when the search completed (as is the case for most non-success result codes).
+                  The LDAP SDK will no longer override the result code for the search operation,
+                  but will instead use whatever result code the server returned in its search
+                  result done message.  Any search result references that the LDAP SDK could not
+                  automatically follow will be made available to the caller through the same
+                  mechanism that would have been used if the SDK had not been configured to
+                  automatically follow referrals (that is, either hand them off to a search result
+                  listener or collect them in a list to include in the search result object).
+                  The LDAP SDK was already making the unfollowable search result references
+                  available in this manner, but the client probably wouldn't have gotten to the
+                  point of looking for them because of the exception resulting from the overridden
+                  operation result code.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new <tt>LDAPConnectionPoolHealthCheck.performPoolMaintenance</tt> method
+                  that can be used to perform processing on the pool itself (rather than on any
+                  individual connection) at regular intervals as specified by the connection
+                  pool's health check interval.  This method will be invoked by the health check
+                  thread after all other periodic health checking is performed.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new <tt>PruneUnneededConnectionsLDAPConnectionPoolHealthCheck</tt> class
+                  that can be used to monitor the size of a connection pool over time, and if the
+                  number of available (that is, not currently in use) connections is consistently
+                  greater than a specified minimum for a given length of time, then the number of
+                  connections in the pool can be reduced to that minimum.  This can be used to
+                  automatically shrink the size of the pool during periods of reduced activity.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the <tt>Schema</tt> class to provide additional constructors and methods
+                  that can be used to attempt to retrieve the schema without silently ignoring
+                  errors about unparsable elements.  Previously, if a schema entry contained one
+                  or more unparsable elements, they would be silently ignored.  It is now possible
+                  to more easily obtain information about unparsable elements or to have the LDAP
+                  SDK throw an exception if it encounters any unparsable elements.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added <tt>createSubInitialFilter</tt>, <tt>createSubAnyFilter</tt>, and
+                  <tt>createSubFinalFilter</tt> methods to the <tt>Filter</tt> class that are more
+                  convenient to use than the existing <tt>createSubstringFilter</tt> methods for
+                  substring filters that only have one type of component.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the Entry.diff method when operating in reversible mode so that when
+                  altering the values of an existing attribute, the delete modifications will be
+                  ordered before the add modifications.  Previously, the adds came before the
+                  deletes, but this could cause problems in some directory servers, especially
+                  when the modifications are intended to change the case of a value in a
+                  case-insensitive attribute (for example, the add could be ignored or rejected
+                  because the value already exists in the entry, or the delete could end up
+                  removing the value entirely).  Ordering the deletes before the adds should
+                  provide much more reliable results.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the modrate tool to add a new "--valuePattern" argument that can be used
+                  to specify the pattern to use to generate new values.  This argument is an
+                  alternative to the "--valueLength" and "--characterSet" arguments and allows for
+                  more flexibility in the types of values that can be generated.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-account tool so that the arguments related to TOTP secrets
+                  are marked sensitive.  This will ensure that the value is not displayed in the
+                  clear in certain cases like interactive mode output or tool invocation logging.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new "streamfile" value pattern component that operates like the existing
+                  "sequentialfile" component except that it limits the amount of the file that is
+                  read into memory at any given time, so it is more suitable for reading values
+                  from very large files.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new "timestamp" value pattern component that can be used to include
+                  either the current time or a randomly selected time from a given range in a
+                  variety of formats.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new "uuid" value pattern component that can be used to include a
+                  randomly generated universally unique identifier (UUID).
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new "random" value pattern component that can be used to include a
+                  specified number of randomly selected characters from a given character set.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a <tt>StaticUtils.toUpperCase</tt> method to complement the existing
+                  <tt>StaticUtils.toLowerCase</tt> method.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added <tt>Validator.ensureNotNullOrEmpty</tt> methods that work for
+                  collections, maps, arrays, and character sequences.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added <tt>LDAPTestUtils</tt> methods that can be used to make assertions about
+                  the diagnostic message of an LDAP result or an LDAP exception.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a new exec task that can be used to invoke a
+                  specified command in the Ping Identity Directory Server (subject to
+                  security restrictions imposed by the server).
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a new file retention task that can be used to
+                  examine files in a specified directory, identify files matching a given pattern,
+                  and delete any of those files that do not match count-based, age-based, or
+                  size-based criteria.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a new delay task that can be used sleep for a
+                  specified period of time, until the server work queue reports that all
+                  worker threads are idle and there are no pending operations, or until a
+                  given search or set of searches match at least one entry.  The delay task is
+                  primarily intended to be used as a spacer between other tasks in a dependency
+                  chain.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the ignore NO-USER-MODIFICATION request control to make it
+                  possible to set the criticality when creating an instance of the control.
+                  Previously, new instances were always critical.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapmodify tool to include the ignore NO-USER-MODIFICATION request
+                  control in both add and modify requests if the --ignoreNoUserModification
+                  argument was provided.  Previously, that argument only caused the control to be
+                  included in add requests.  Further, the control will now be marked non-critical
+                  instead of critical.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the task API to add support for a number of new properties, including
+                  the email addresses of users to notify on task start and successful
+                  completion (in addition to the existing properties specifying users to email
+                  on error or on any type of completion), and flags indicating whether the
+                  server should alert on task start, successful completion, or failure.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the argument parser's properties file support so that it expects the
+                  file to use the ISO 8859-1 encoding, and to support Unicode escape sequences
+                  that are comprised of a backslash followed by the letter u and four hexadecimal
+                  digits.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the tool invocation logger to add a failsafe mechanism for preventing
+                  passwords from being included in the log.  Although it will already redact the
+                  values of any arguments that are declared sensitive, it will now also redact the
+                  values of any arguments whose name suggests that their value is a password.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 4.0.6</h3>
 
               <p>

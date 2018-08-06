@@ -552,14 +552,14 @@
 <span class="sourceLineNo">544</span>    buffer.append(resultCode);<a name="line.544"></a>
 <span class="sourceLineNo">545</span>    buffer.append('\'');<a name="line.545"></a>
 <span class="sourceLineNo">546</span><a name="line.546"></a>
-<span class="sourceLineNo">547</span>    if ((diagnosticMessage != null) &amp;&amp; (diagnosticMessage.length() &gt; 0))<a name="line.547"></a>
+<span class="sourceLineNo">547</span>    if ((diagnosticMessage != null) &amp;&amp; (! diagnosticMessage.isEmpty()))<a name="line.547"></a>
 <span class="sourceLineNo">548</span>    {<a name="line.548"></a>
 <span class="sourceLineNo">549</span>      buffer.append(" diagnostic message='");<a name="line.549"></a>
 <span class="sourceLineNo">550</span>      buffer.append(diagnosticMessage);<a name="line.550"></a>
 <span class="sourceLineNo">551</span>      buffer.append('\'');<a name="line.551"></a>
 <span class="sourceLineNo">552</span>    }<a name="line.552"></a>
 <span class="sourceLineNo">553</span><a name="line.553"></a>
-<span class="sourceLineNo">554</span>    if ((matchedDN != null) &amp;&amp; (matchedDN.length() &gt; 0))<a name="line.554"></a>
+<span class="sourceLineNo">554</span>    if ((matchedDN != null) &amp;&amp; (! matchedDN.isEmpty()))<a name="line.554"></a>
 <span class="sourceLineNo">555</span>    {<a name="line.555"></a>
 <span class="sourceLineNo">556</span>      buffer.append("  matched DN='");<a name="line.556"></a>
 <span class="sourceLineNo">557</span>      buffer.append(matchedDN);<a name="line.557"></a>

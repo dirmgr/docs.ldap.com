@@ -71,11 +71,11 @@
 <span class="sourceLineNo">063</span> * &lt;BLOCKQUOTE&gt;<a name="line.63"></a>
 <span class="sourceLineNo">064</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.64"></a>
 <span class="sourceLineNo">065</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.65"></a>
-<span class="sourceLineNo">066</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.66"></a>
-<span class="sourceLineNo">067</span> *   server products.  These classes provide support for proprietary<a name="line.67"></a>
-<span class="sourceLineNo">068</span> *   functionality or for external specifications that are not considered stable<a name="line.68"></a>
-<span class="sourceLineNo">069</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.69"></a>
-<span class="sourceLineNo">070</span> *   other types of LDAP servers.<a name="line.70"></a>
+<span class="sourceLineNo">066</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.66"></a>
+<span class="sourceLineNo">067</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.67"></a>
+<span class="sourceLineNo">068</span> *   for proprietary functionality or for external specifications that are not<a name="line.68"></a>
+<span class="sourceLineNo">069</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.69"></a>
+<span class="sourceLineNo">070</span> *   interoperable way with other types of LDAP servers.<a name="line.70"></a>
 <span class="sourceLineNo">071</span> * &lt;/BLOCKQUOTE&gt;<a name="line.71"></a>
 <span class="sourceLineNo">072</span> * &lt;BR&gt;<a name="line.72"></a>
 <span class="sourceLineNo">073</span> * The changelog batch request value is encoded as follows:<a name="line.73"></a>
@@ -891,7 +891,7 @@
 <span class="sourceLineNo">883</span>            final ASN1Element[] includeElements =<a name="line.883"></a>
 <span class="sourceLineNo">884</span>                 ASN1Sequence.decodeAsSequence(elements[i]).elements();<a name="line.884"></a>
 <span class="sourceLineNo">885</span>            final ArrayList&lt;String&gt; includeList =<a name="line.885"></a>
-<span class="sourceLineNo">886</span>                 new ArrayList&lt;String&gt;(includeElements.length);<a name="line.886"></a>
+<span class="sourceLineNo">886</span>                 new ArrayList&lt;&gt;(includeElements.length);<a name="line.886"></a>
 <span class="sourceLineNo">887</span>            for (final ASN1Element e : includeElements)<a name="line.887"></a>
 <span class="sourceLineNo">888</span>            {<a name="line.888"></a>
 <span class="sourceLineNo">889</span>              includeList.add(<a name="line.889"></a>
@@ -904,7 +904,7 @@
 <span class="sourceLineNo">896</span>            final ASN1Element[] excludeElements =<a name="line.896"></a>
 <span class="sourceLineNo">897</span>                 ASN1Sequence.decodeAsSequence(elements[i]).elements();<a name="line.897"></a>
 <span class="sourceLineNo">898</span>            final ArrayList&lt;String&gt; excludeList =<a name="line.898"></a>
-<span class="sourceLineNo">899</span>                 new ArrayList&lt;String&gt;(excludeElements.length);<a name="line.899"></a>
+<span class="sourceLineNo">899</span>                 new ArrayList&lt;&gt;(excludeElements.length);<a name="line.899"></a>
 <span class="sourceLineNo">900</span>            for (final ASN1Element e : excludeElements)<a name="line.900"></a>
 <span class="sourceLineNo">901</span>            {<a name="line.901"></a>
 <span class="sourceLineNo">902</span>              excludeList.add(<a name="line.902"></a>
@@ -1104,7 +1104,7 @@
 <span class="sourceLineNo">1096</span>  {<a name="line.1096"></a>
 <span class="sourceLineNo">1097</span>    Validator.ensureNotNull(startingPoint);<a name="line.1097"></a>
 <span class="sourceLineNo">1098</span><a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(12);<a name="line.1099"></a>
+<span class="sourceLineNo">1099</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;&gt;(12);<a name="line.1099"></a>
 <span class="sourceLineNo">1100</span><a name="line.1100"></a>
 <span class="sourceLineNo">1101</span>    elements.add(startingPoint.encode());<a name="line.1101"></a>
 <span class="sourceLineNo">1102</span><a name="line.1102"></a>
@@ -1129,488 +1129,485 @@
 <span class="sourceLineNo">1121</span><a name="line.1121"></a>
 <span class="sourceLineNo">1122</span>    if ((includeBaseDNs != null) &amp;&amp; (! includeBaseDNs.isEmpty()))<a name="line.1122"></a>
 <span class="sourceLineNo">1123</span>    {<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>      final ArrayList&lt;ASN1Element&gt; l =<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>           new ArrayList&lt;ASN1Element&gt;(includeBaseDNs.size());<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>      for (final String s : includeBaseDNs)<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>      {<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>        l.add(new ASN1OctetString(s));<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>      }<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>      elements.add(new ASN1Sequence(TYPE_INCLUDE_BASE, l));<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span>    }<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span><a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>    if ((excludeBaseDNs != null) &amp;&amp; (! excludeBaseDNs.isEmpty()))<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>    {<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>      final ArrayList&lt;ASN1Element&gt; l =<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>           new ArrayList&lt;ASN1Element&gt;(excludeBaseDNs.size());<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>      for (final String s : excludeBaseDNs)<a name="line.1137"></a>
-<span class="sourceLineNo">1138</span>      {<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>        l.add(new ASN1OctetString(s));<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>      }<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>      elements.add(new ASN1Sequence(TYPE_EXCLUDE_BASE, l));<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>    }<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span><a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>    if ((changeTypes != null) &amp;&amp; (! changeTypes.isEmpty()) &amp;&amp;<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>        (! changeTypes.equals(EnumSet.allOf(ChangeType.class))))<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>    {<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>      final ArrayList&lt;ASN1Element&gt; l =<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>           new ArrayList&lt;ASN1Element&gt;(changeTypes.size());<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>      for (final ChangeType t : changeTypes)<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>      {<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>        switch (t)<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>        {<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>          case ADD:<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_ADD));<a name="line.1154"></a>
+<span class="sourceLineNo">1124</span>      final ArrayList&lt;ASN1Element&gt; l = new ArrayList&lt;&gt;(includeBaseDNs.size());<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>      for (final String s : includeBaseDNs)<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>      {<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>        l.add(new ASN1OctetString(s));<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>      }<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>      elements.add(new ASN1Sequence(TYPE_INCLUDE_BASE, l));<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>    }<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span><a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>    if ((excludeBaseDNs != null) &amp;&amp; (! excludeBaseDNs.isEmpty()))<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>    {<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>      final ArrayList&lt;ASN1Element&gt; l = new ArrayList&lt;&gt;(excludeBaseDNs.size());<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>      for (final String s : excludeBaseDNs)<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>      {<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>        l.add(new ASN1OctetString(s));<a name="line.1137"></a>
+<span class="sourceLineNo">1138</span>      }<a name="line.1138"></a>
+<span class="sourceLineNo">1139</span>      elements.add(new ASN1Sequence(TYPE_EXCLUDE_BASE, l));<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>    }<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span><a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>    if ((changeTypes != null) &amp;&amp; (! changeTypes.isEmpty()) &amp;&amp;<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>        (! changeTypes.equals(EnumSet.allOf(ChangeType.class))))<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>    {<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>      final ArrayList&lt;ASN1Element&gt; l = new ArrayList&lt;&gt;(changeTypes.size());<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>      for (final ChangeType t : changeTypes)<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>      {<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>        switch (t)<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>        {<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>          case ADD:<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_ADD));<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>            break;<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>          case DELETE:<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_DELETE));<a name="line.1154"></a>
 <span class="sourceLineNo">1155</span>            break;<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>          case DELETE:<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_DELETE));<a name="line.1157"></a>
+<span class="sourceLineNo">1156</span>          case MODIFY:<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_MODIFY));<a name="line.1157"></a>
 <span class="sourceLineNo">1158</span>            break;<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>          case MODIFY:<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_MODIFY));<a name="line.1160"></a>
+<span class="sourceLineNo">1159</span>          case MODIFY_DN:<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_MODIFY_DN));<a name="line.1160"></a>
 <span class="sourceLineNo">1161</span>            break;<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>          case MODIFY_DN:<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>            l.add(new ASN1Enumerated(CHANGE_TYPE_MODIFY_DN));<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>            break;<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>        }<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>      }<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>      elements.add(new ASN1Set(TYPE_CHANGE_TYPES, l));<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>    }<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span><a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>    if (continueOnMissingChanges)<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>    {<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>      elements.add(new ASN1Boolean(TYPE_CONTINUE_ON_MISSING_CHANGES, true));<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>    }<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span><a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>    if (pareEntriesForUserDN != null)<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>    {<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>      elements.add(new ASN1OctetString(TYPE_PARE_ENTRIES_FOR_USER_DN,<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>           pareEntriesForUserDN));<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>    }<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span><a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>    if (changeSelectionCriteria != null)<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>    {<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>      elements.add(changeSelectionCriteria.encode());<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>    }<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span><a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>    if (includeSoftDeletedEntryMods)<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>    {<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>      elements.add(new ASN1Boolean(TYPE_INCLUDE_SOFT_DELETED_ENTRY_MODS, true));<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>    }<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span><a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>    if (includeSoftDeletedEntryDeletes)<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>    {<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>      elements.add(new ASN1Boolean(TYPE_INCLUDE_SOFT_DELETED_ENTRY_DELETES,<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>           true));<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>    }<a name="line.1195"></a>
+<span class="sourceLineNo">1162</span>        }<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>      }<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>      elements.add(new ASN1Set(TYPE_CHANGE_TYPES, l));<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>    }<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span><a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>    if (continueOnMissingChanges)<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>    {<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>      elements.add(new ASN1Boolean(TYPE_CONTINUE_ON_MISSING_CHANGES, true));<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>    }<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span><a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>    if (pareEntriesForUserDN != null)<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>    {<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>      elements.add(new ASN1OctetString(TYPE_PARE_ENTRIES_FOR_USER_DN,<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>           pareEntriesForUserDN));<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>    }<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span><a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>    if (changeSelectionCriteria != null)<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>    {<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>      elements.add(changeSelectionCriteria.encode());<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>    }<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span><a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>    if (includeSoftDeletedEntryMods)<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>    {<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>      elements.add(new ASN1Boolean(TYPE_INCLUDE_SOFT_DELETED_ENTRY_MODS, true));<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>    }<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span><a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>    if (includeSoftDeletedEntryDeletes)<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>    {<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>      elements.add(new ASN1Boolean(TYPE_INCLUDE_SOFT_DELETED_ENTRY_DELETES,<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>           true));<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>    }<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span><a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>    return new ASN1OctetString(new ASN1Sequence(elements).encode());<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>  }<a name="line.1195"></a>
 <span class="sourceLineNo">1196</span><a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>    return new ASN1OctetString(new ASN1Sequence(elements).encode());<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>  }<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span><a name="line.1199"></a>
-<span class="sourceLineNo">1200</span><a name="line.1200"></a>
-<span class="sourceLineNo">1201</span><a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>  /**<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>   * Retrieves the starting point for the batch of changes to retrieve.<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>   *<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>   * @return  The starting point for the batch of changes to retrieve.<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>   */<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>  public ChangelogBatchStartingPoint getStartingPoint()<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>  {<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>    return startingPoint;<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>  }<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span><a name="line.1211"></a>
-<span class="sourceLineNo">1212</span><a name="line.1212"></a>
-<span class="sourceLineNo">1213</span><a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>  /**<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>   * Retrieves the maximum number of changes that should be returned before the<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>   * operation completes.  A value of zero indicates that the server should not<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>   * return any entries but should just return a result containing a token which<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>   * represents the starting point.<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>   *<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>   * @return  The maximum number of changes that should be returned before the<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>   *          operation completes.<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>   */<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>  public int getMaxChanges()<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>  {<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>    return maxChanges;<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>  }<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span><a name="line.1227"></a>
-<span class="sourceLineNo">1228</span><a name="line.1228"></a>
-<span class="sourceLineNo">1229</span><a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>  /**<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span>   * Retrieves the maximum length of time in milliseconds that the server should<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>   * wait for changes to become available before returning the corresponding<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>   * extended result to the client.  A value of zero indicates that the server<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>   * should return only those results which are immediately available without<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>   * waiting.<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>   *<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>   * @return  The maximum length of time in milliseconds that the server should<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>   *          wait for changes to become available, or 0 if the server should<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>   *          not wait at all.<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>   */<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>  public long getMaxWaitTimeMillis()<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>  {<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>    return maxWaitTimeMillis;<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>  }<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span><a name="line.1245"></a>
-<span class="sourceLineNo">1246</span><a name="line.1246"></a>
-<span class="sourceLineNo">1247</span><a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>  /**<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>   * Indicates whether the server should wait for up to the maximum length of<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>   * time for up to the maximum number of changes to be returned before sending<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>   * the extended result.<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>   *<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>   * @return  {@code false} if the server should return the corresponding<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>   *          extended result as soon as any changes are available (after<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>   *          sending those available changes), or {@code true} if the result<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>   *          should not be returned until either the maximum number of changes<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>   *          have been returned or the maximum wait time has elapsed.<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>   */<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>  public boolean waitForMaxChanges()<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span>  {<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>    return waitForMaxChanges;<a name="line.1261"></a>
-<span class="sourceLineNo">1262</span>  }<a name="line.1262"></a>
-<span class="sourceLineNo">1263</span><a name="line.1263"></a>
-<span class="sourceLineNo">1264</span><a name="line.1264"></a>
-<span class="sourceLineNo">1265</span><a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>  /**<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>   * Retrieves a list of base DNs below which the server should return<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>   * information about changes that have been processed.  If any include base<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>   * DNs are specified, then the server should return only changes to entries<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>   * which reside at or below one of the include base DNs and not at or below<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span>   * any of the exclude base DNs.  If no include or exclude base DNs are<a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>   * defined, then the server should return information about changes processed<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>   * anywhere within the DIT.<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>   *<a name="line.1274"></a>
-<span class="sourceLineNo">1275</span>   * @return  A list of the include base DNs for changes to retrieve, or an<a name="line.1275"></a>
-<span class="sourceLineNo">1276</span>   *          empty list if there are none.<a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>   */<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>  public List&lt;String&gt; getIncludeBaseDNs()<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>  {<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span>    return includeBaseDNs;<a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>  }<a name="line.1281"></a>
-<span class="sourceLineNo">1282</span><a name="line.1282"></a>
-<span class="sourceLineNo">1283</span><a name="line.1283"></a>
-<span class="sourceLineNo">1284</span><a name="line.1284"></a>
-<span class="sourceLineNo">1285</span>  /**<a name="line.1285"></a>
-<span class="sourceLineNo">1286</span>   * Retrieves a list of base DNs below which the server should exclude<a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>   * information about changes processed.  If any exclude base DNs are<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>   * specified, then the server should not return changes to entries which<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span>   * reside at or below any of the exclude base DNs, even if they are also below<a name="line.1289"></a>
-<span class="sourceLineNo">1290</span>   * an include base DN (and as such, the request should not include any exclude<a name="line.1290"></a>
-<span class="sourceLineNo">1291</span>   * base DNs which are at or below any include base DNs).  If no include or<a name="line.1291"></a>
-<span class="sourceLineNo">1292</span>   * exclude base DNs are defined, then the server should return information<a name="line.1292"></a>
-<span class="sourceLineNo">1293</span>   * about changes processed anywhere within the DIT.<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>   *<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span>   * @return  A list of the exclude base DNs for changes to retrieve, or an<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>   *          empty list if there are none.<a name="line.1296"></a>
-<span class="sourceLineNo">1297</span>   */<a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>  public List&lt;String&gt; getExcludeBaseDNs()<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>  {<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>    return excludeBaseDNs;<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>  }<a name="line.1301"></a>
-<span class="sourceLineNo">1302</span><a name="line.1302"></a>
-<span class="sourceLineNo">1303</span><a name="line.1303"></a>
-<span class="sourceLineNo">1304</span><a name="line.1304"></a>
-<span class="sourceLineNo">1305</span>  /**<a name="line.1305"></a>
-<span class="sourceLineNo">1306</span>   * Retrieves the set of change types for changes to be returned to the client.<a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>   *<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span>   * @return  The set of change types for changes to be returned to the client.<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>   */<a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>  public Set&lt;ChangeType&gt; getChangeTypes()<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>  {<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>    return changeTypes;<a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>  }<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span><a name="line.1314"></a>
-<span class="sourceLineNo">1315</span><a name="line.1315"></a>
-<span class="sourceLineNo">1316</span><a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>  /**<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>   * Indicates whether the server should make a best-effort attempt to return<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>   * changes to the client even if the starting point represents a time before<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span>   * the start of the changelog and there may be missing changes.<a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>   *<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>   * @return  {@code true} if the server should attempt to return as many<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span>   *          changes as possible even if some may be missing, or {@code false}<a name="line.1323"></a>
-<span class="sourceLineNo">1324</span>   *          if the server should return an error if there may be missing<a name="line.1324"></a>
-<span class="sourceLineNo">1325</span>   *          changes.<a name="line.1325"></a>
-<span class="sourceLineNo">1326</span>   */<a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>  public boolean continueOnMissingChanges()<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>  {<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>    return continueOnMissingChanges;<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>  }<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span><a name="line.1331"></a>
-<span class="sourceLineNo">1332</span><a name="line.1332"></a>
-<span class="sourceLineNo">1333</span><a name="line.1333"></a>
-<span class="sourceLineNo">1334</span>  /**<a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>   * Retrieves the possibly-empty DN of the user for whom changelog entries<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>   * should be pared based on access control and sensitive attribute<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>   * restrictions, if defined.<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>   *<a name="line.1338"></a>
-<span class="sourceLineNo">1339</span>   * @return  The possibly-empty DN of the user form whom changelog entries<a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>   *          should be pared based on access control and sensitive attribute<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>   *          restrictions, or {@code null} if changelog entries should not be<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span>   *          pared based for any user.<a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>   */<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>  public String getPareEntriesForUserDN()<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>  {<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span>    return pareEntriesForUserDN;<a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>  }<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span><a name="line.1348"></a>
-<span class="sourceLineNo">1349</span><a name="line.1349"></a>
-<span class="sourceLineNo">1350</span><a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>  /**<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>   * Retrieves the change selection criteria for this get changelog batch<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span>   * extended request, if defined.<a name="line.1353"></a>
-<span class="sourceLineNo">1354</span>   *<a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>   * @return  The change selection criteria for this get changelog batch<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>   *          extended request, or {@code null} if none is defined.<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span>   */<a name="line.1357"></a>
-<span class="sourceLineNo">1358</span>  public ChangelogBatchChangeSelectionCriteria getChangeSelectionCriteria()<a name="line.1358"></a>
-<span class="sourceLineNo">1359</span>  {<a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>    return changeSelectionCriteria;<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>  }<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span><a name="line.1362"></a>
-<span class="sourceLineNo">1363</span><a name="line.1363"></a>
-<span class="sourceLineNo">1364</span><a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>  /**<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>   * Indicates whether to include changes that represent modifications to<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>   * soft-deleted entries.<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>   *<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span>   * @return  {@code true} if the result set should include modifications to<a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>   *          soft-deleted entries, or {@code false} if not.<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>   */<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span>  public boolean includeSoftDeletedEntryMods()<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>  {<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>    return includeSoftDeletedEntryMods;<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>  }<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span><a name="line.1376"></a>
-<span class="sourceLineNo">1377</span><a name="line.1377"></a>
-<span class="sourceLineNo">1378</span><a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>  /**<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>   * Indicates whether to include changes that represent deletes of soft-deleted<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>   * entries.<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>   *<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>   * @return  {@code true} if the result set should include deletes of<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>   *          soft-deleted entries, or {@code false} if not.<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>   */<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>  public boolean includeSoftDeletedEntryDeletes()<a name="line.1386"></a>
-<span class="sourceLineNo">1387</span>  {<a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>    return includeSoftDeletedEntryDeletes;<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>  }<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span><a name="line.1390"></a>
-<span class="sourceLineNo">1391</span><a name="line.1391"></a>
-<span class="sourceLineNo">1392</span><a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>  /**<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>   * Retrieves the changelog entry listener that will be used for this request,<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>   * if applicable.<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>   *<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>   * @return  The changelog entry listener that will be used for this request,<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>   *          or {@code null} if the entries will be made available in the<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>   *          extended result.<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>   */<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>  public ChangelogEntryListener getEntryListener()<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>  {<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>    return entryListener;<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>  }<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span><a name="line.1405"></a>
-<span class="sourceLineNo">1406</span><a name="line.1406"></a>
-<span class="sourceLineNo">1407</span><a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>  /**<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>   * {@inheritDoc}<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>   */<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>  @Override()<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>  public GetChangelogBatchExtendedResult process(<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>              final LDAPConnection connection, final int depth)<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>         throws LDAPException<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>  {<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>    final IntermediateResponseListener l = getIntermediateResponseListener();<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>    if (l != null)<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>    {<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>      throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>           ERR_GET_CHANGELOG_BATCH_REQ_IR_LISTENER_NOT_ALLOWED.get());<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>    }<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span><a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>    final GetChangelogBatchIntermediateResponseListener listener;<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>    if (entryListener == null)<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>    {<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>      listener = new GetChangelogBatchIntermediateResponseListener(<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>           new DefaultChangelogEntryListener(this));<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>    }<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>    else<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>    {<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>      listener =<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>           new GetChangelogBatchIntermediateResponseListener(entryListener);<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>    }<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span><a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>    setIntermediateResponseListener(listener);<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span><a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>    ExtendedResult r;<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>    try<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>    {<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>      r = super.process(connection, depth);<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>    }<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>    catch (final LDAPException le)<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>    {<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>      Debug.debugException(le);<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span><a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>      r = new ExtendedResult(getLastMessageID(), le.getResultCode(),<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>           le.getDiagnosticMessage(), le.getMatchedDN(), le.getReferralURLs(),<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>           null, null, le.getResponseControls());<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>    }<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>    finally<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>    {<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>      setIntermediateResponseListener(null);<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>    }<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span><a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>    if (entryListener == null)<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>    {<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>      final DefaultChangelogEntryListener defaultEntryListener =<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>           (DefaultChangelogEntryListener) listener.getEntryListener();<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>      return new GetChangelogBatchExtendedResult(r,<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>           defaultEntryListener.getEntryList());<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>    }<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>    else<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>    {<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>      return new GetChangelogBatchExtendedResult(r, listener.getEntryCount());<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>    }<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>  }<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span><a name="line.1467"></a>
-<span class="sourceLineNo">1468</span><a name="line.1468"></a>
-<span class="sourceLineNo">1469</span><a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>  /**<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>   * {@inheritDoc}.<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>   */<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>  @Override()<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>  public GetChangelogBatchExtendedRequest duplicate()<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>  {<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>    return duplicate(getControls());<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>  }<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span><a name="line.1478"></a>
-<span class="sourceLineNo">1479</span><a name="line.1479"></a>
-<span class="sourceLineNo">1480</span><a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>  /**<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>   * {@inheritDoc}.<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>   */<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>  @Override()<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>  public GetChangelogBatchExtendedRequest duplicate(final Control[] controls)<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>  {<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>    final GetChangelogBatchExtendedRequest r =<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>         new GetChangelogBatchExtendedRequest(entryListener, startingPoint,<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>              maxChanges, maxWaitTimeMillis, waitForMaxChanges, includeBaseDNs,<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>              excludeBaseDNs, changeTypes, continueOnMissingChanges,<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>              pareEntriesForUserDN, changeSelectionCriteria,<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>              includeSoftDeletedEntryMods, includeSoftDeletedEntryDeletes,<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>              controls);<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>    r.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>    return r;<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>  }<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span><a name="line.1497"></a>
-<span class="sourceLineNo">1498</span><a name="line.1498"></a>
-<span class="sourceLineNo">1499</span><a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>  /**<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>   * {@inheritDoc}<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>   */<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>  @Override()<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>  public String getExtendedRequestName()<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>  {<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>    return INFO_GET_CHANGELOG_BATCH_REQ_NAME.get();<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>  }<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span><a name="line.1508"></a>
-<span class="sourceLineNo">1509</span><a name="line.1509"></a>
-<span class="sourceLineNo">1510</span><a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>  /**<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>   * {@inheritDoc}<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>   */<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>  @Override()<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>  public void toString(final StringBuilder buffer)<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>  {<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>    buffer.append("GetChangelogBatchExtendedRequest(startingPoint=");<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>    startingPoint.toString(buffer);<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span><a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>    buffer.append(", maxChanges=");<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>    buffer.append(maxChanges);<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>    buffer.append(", maxWaitTimeMillis=");<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>    buffer.append(maxWaitTimeMillis);<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>    buffer.append(", waitForMaxChanges=");<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>    buffer.append(waitForMaxChanges);<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>    buffer.append(", includeBase={");<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span><a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>    final Iterator&lt;String&gt; includeIterator = includeBaseDNs.iterator();<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>    while (includeIterator.hasNext())<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>    {<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>      buffer.append('"');<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>      buffer.append(includeIterator.next());<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>      buffer.append('"');<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>      if (includeIterator.hasNext())<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>      {<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>        buffer.append(", ");<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>      }<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>    }<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span><a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>    buffer.append("}, excludeBase={");<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span><a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>    final Iterator&lt;String&gt; excludeIterator = excludeBaseDNs.iterator();<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>    while (excludeIterator.hasNext())<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>    {<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>      buffer.append('"');<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>      buffer.append(excludeIterator.next());<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>      buffer.append('"');<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>      if (excludeIterator.hasNext())<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>      {<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>        buffer.append(", ");<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>      }<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>    }<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span><a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>    buffer.append("}, changeTypes={");<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span><a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>    final Iterator&lt;ChangeType&gt; typeIterator = changeTypes.iterator();<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>    while (typeIterator.hasNext())<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>    {<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>      buffer.append(typeIterator.next().getName());<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>      if (typeIterator.hasNext())<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>      {<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>        buffer.append(", ");<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>      }<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>    }<a name="line.1564"></a>
+<span class="sourceLineNo">1197</span><a name="line.1197"></a>
+<span class="sourceLineNo">1198</span><a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>  /**<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>   * Retrieves the starting point for the batch of changes to retrieve.<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>   *<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>   * @return  The starting point for the batch of changes to retrieve.<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>   */<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>  public ChangelogBatchStartingPoint getStartingPoint()<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>  {<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>    return startingPoint;<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>  }<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span><a name="line.1208"></a>
+<span class="sourceLineNo">1209</span><a name="line.1209"></a>
+<span class="sourceLineNo">1210</span><a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>  /**<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>   * Retrieves the maximum number of changes that should be returned before the<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>   * operation completes.  A value of zero indicates that the server should not<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>   * return any entries but should just return a result containing a token which<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>   * represents the starting point.<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>   *<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>   * @return  The maximum number of changes that should be returned before the<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>   *          operation completes.<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>   */<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>  public int getMaxChanges()<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>  {<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>    return maxChanges;<a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>  }<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span><a name="line.1224"></a>
+<span class="sourceLineNo">1225</span><a name="line.1225"></a>
+<span class="sourceLineNo">1226</span><a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>  /**<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>   * Retrieves the maximum length of time in milliseconds that the server should<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>   * wait for changes to become available before returning the corresponding<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>   * extended result to the client.  A value of zero indicates that the server<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>   * should return only those results which are immediately available without<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>   * waiting.<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>   *<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>   * @return  The maximum length of time in milliseconds that the server should<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>   *          wait for changes to become available, or 0 if the server should<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>   *          not wait at all.<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>   */<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>  public long getMaxWaitTimeMillis()<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>  {<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>    return maxWaitTimeMillis;<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>  }<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span><a name="line.1242"></a>
+<span class="sourceLineNo">1243</span><a name="line.1243"></a>
+<span class="sourceLineNo">1244</span><a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>  /**<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>   * Indicates whether the server should wait for up to the maximum length of<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span>   * time for up to the maximum number of changes to be returned before sending<a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>   * the extended result.<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>   *<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>   * @return  {@code false} if the server should return the corresponding<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>   *          extended result as soon as any changes are available (after<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>   *          sending those available changes), or {@code true} if the result<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>   *          should not be returned until either the maximum number of changes<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>   *          have been returned or the maximum wait time has elapsed.<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>   */<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>  public boolean waitForMaxChanges()<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>  {<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>    return waitForMaxChanges;<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>  }<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span><a name="line.1260"></a>
+<span class="sourceLineNo">1261</span><a name="line.1261"></a>
+<span class="sourceLineNo">1262</span><a name="line.1262"></a>
+<span class="sourceLineNo">1263</span>  /**<a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>   * Retrieves a list of base DNs below which the server should return<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>   * information about changes that have been processed.  If any include base<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>   * DNs are specified, then the server should return only changes to entries<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>   * which reside at or below one of the include base DNs and not at or below<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>   * any of the exclude base DNs.  If no include or exclude base DNs are<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span>   * defined, then the server should return information about changes processed<a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>   * anywhere within the DIT.<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>   *<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>   * @return  A list of the include base DNs for changes to retrieve, or an<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>   *          empty list if there are none.<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>   */<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>  public List&lt;String&gt; getIncludeBaseDNs()<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>  {<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>    return includeBaseDNs;<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>  }<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span><a name="line.1279"></a>
+<span class="sourceLineNo">1280</span><a name="line.1280"></a>
+<span class="sourceLineNo">1281</span><a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>  /**<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>   * Retrieves a list of base DNs below which the server should exclude<a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>   * information about changes processed.  If any exclude base DNs are<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>   * specified, then the server should not return changes to entries which<a name="line.1285"></a>
+<span class="sourceLineNo">1286</span>   * reside at or below any of the exclude base DNs, even if they are also below<a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>   * an include base DN (and as such, the request should not include any exclude<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span>   * base DNs which are at or below any include base DNs).  If no include or<a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>   * exclude base DNs are defined, then the server should return information<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>   * about changes processed anywhere within the DIT.<a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>   *<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>   * @return  A list of the exclude base DNs for changes to retrieve, or an<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>   *          empty list if there are none.<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span>   */<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>  public List&lt;String&gt; getExcludeBaseDNs()<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>  {<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>    return excludeBaseDNs;<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span>  }<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span><a name="line.1299"></a>
+<span class="sourceLineNo">1300</span><a name="line.1300"></a>
+<span class="sourceLineNo">1301</span><a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>  /**<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>   * Retrieves the set of change types for changes to be returned to the client.<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>   *<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>   * @return  The set of change types for changes to be returned to the client.<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span>   */<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>  public Set&lt;ChangeType&gt; getChangeTypes()<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>  {<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span>    return changeTypes;<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>  }<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span><a name="line.1311"></a>
+<span class="sourceLineNo">1312</span><a name="line.1312"></a>
+<span class="sourceLineNo">1313</span><a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>  /**<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>   * Indicates whether the server should make a best-effort attempt to return<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>   * changes to the client even if the starting point represents a time before<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span>   * the start of the changelog and there may be missing changes.<a name="line.1317"></a>
+<span class="sourceLineNo">1318</span>   *<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>   * @return  {@code true} if the server should attempt to return as many<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>   *          changes as possible even if some may be missing, or {@code false}<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>   *          if the server should return an error if there may be missing<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>   *          changes.<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>   */<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>  public boolean continueOnMissingChanges()<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>  {<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>    return continueOnMissingChanges;<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>  }<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span><a name="line.1328"></a>
+<span class="sourceLineNo">1329</span><a name="line.1329"></a>
+<span class="sourceLineNo">1330</span><a name="line.1330"></a>
+<span class="sourceLineNo">1331</span>  /**<a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>   * Retrieves the possibly-empty DN of the user for whom changelog entries<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>   * should be pared based on access control and sensitive attribute<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>   * restrictions, if defined.<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>   *<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>   * @return  The possibly-empty DN of the user form whom changelog entries<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>   *          should be pared based on access control and sensitive attribute<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>   *          restrictions, or {@code null} if changelog entries should not be<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>   *          pared based for any user.<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>   */<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>  public String getPareEntriesForUserDN()<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>  {<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>    return pareEntriesForUserDN;<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>  }<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span><a name="line.1345"></a>
+<span class="sourceLineNo">1346</span><a name="line.1346"></a>
+<span class="sourceLineNo">1347</span><a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>  /**<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>   * Retrieves the change selection criteria for this get changelog batch<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>   * extended request, if defined.<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span>   *<a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>   * @return  The change selection criteria for this get changelog batch<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>   *          extended request, or {@code null} if none is defined.<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>   */<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>  public ChangelogBatchChangeSelectionCriteria getChangeSelectionCriteria()<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>  {<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>    return changeSelectionCriteria;<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>  }<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span><a name="line.1359"></a>
+<span class="sourceLineNo">1360</span><a name="line.1360"></a>
+<span class="sourceLineNo">1361</span><a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>  /**<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>   * Indicates whether to include changes that represent modifications to<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>   * soft-deleted entries.<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>   *<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>   * @return  {@code true} if the result set should include modifications to<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>   *          soft-deleted entries, or {@code false} if not.<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>   */<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>  public boolean includeSoftDeletedEntryMods()<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>  {<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>    return includeSoftDeletedEntryMods;<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>  }<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span><a name="line.1373"></a>
+<span class="sourceLineNo">1374</span><a name="line.1374"></a>
+<span class="sourceLineNo">1375</span><a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>  /**<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>   * Indicates whether to include changes that represent deletes of soft-deleted<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>   * entries.<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>   *<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>   * @return  {@code true} if the result set should include deletes of<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>   *          soft-deleted entries, or {@code false} if not.<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>   */<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>  public boolean includeSoftDeletedEntryDeletes()<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>  {<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>    return includeSoftDeletedEntryDeletes;<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>  }<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span><a name="line.1387"></a>
+<span class="sourceLineNo">1388</span><a name="line.1388"></a>
+<span class="sourceLineNo">1389</span><a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>  /**<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>   * Retrieves the changelog entry listener that will be used for this request,<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>   * if applicable.<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>   *<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>   * @return  The changelog entry listener that will be used for this request,<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>   *          or {@code null} if the entries will be made available in the<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>   *          extended result.<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>   */<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>  public ChangelogEntryListener getEntryListener()<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>  {<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>    return entryListener;<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>  }<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span><a name="line.1402"></a>
+<span class="sourceLineNo">1403</span><a name="line.1403"></a>
+<span class="sourceLineNo">1404</span><a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>  /**<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>   * {@inheritDoc}<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>   */<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>  @Override()<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>  public GetChangelogBatchExtendedResult process(<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>              final LDAPConnection connection, final int depth)<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>         throws LDAPException<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>  {<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>    final IntermediateResponseListener l = getIntermediateResponseListener();<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>    if (l != null)<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>    {<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>      throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>           ERR_GET_CHANGELOG_BATCH_REQ_IR_LISTENER_NOT_ALLOWED.get());<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>    }<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span><a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>    final GetChangelogBatchIntermediateResponseListener listener;<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>    if (entryListener == null)<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>    {<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>      listener = new GetChangelogBatchIntermediateResponseListener(<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>           new DefaultChangelogEntryListener(this));<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>    }<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>    else<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>    {<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>      listener =<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>           new GetChangelogBatchIntermediateResponseListener(entryListener);<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>    }<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span><a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>    setIntermediateResponseListener(listener);<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span><a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>    ExtendedResult r;<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>    try<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>    {<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>      r = super.process(connection, depth);<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>    }<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>    catch (final LDAPException le)<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>    {<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>      Debug.debugException(le);<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span><a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>      r = new ExtendedResult(getLastMessageID(), le.getResultCode(),<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>           le.getDiagnosticMessage(), le.getMatchedDN(), le.getReferralURLs(),<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>           null, null, le.getResponseControls());<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>    }<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>    finally<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>    {<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>      setIntermediateResponseListener(null);<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>    }<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span><a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>    if (entryListener == null)<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>    {<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>      final DefaultChangelogEntryListener defaultEntryListener =<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>           (DefaultChangelogEntryListener) listener.getEntryListener();<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>      return new GetChangelogBatchExtendedResult(r,<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>           defaultEntryListener.getEntryList());<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>    }<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>    else<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>    {<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>      return new GetChangelogBatchExtendedResult(r, listener.getEntryCount());<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>    }<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>  }<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span><a name="line.1464"></a>
+<span class="sourceLineNo">1465</span><a name="line.1465"></a>
+<span class="sourceLineNo">1466</span><a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>  /**<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>   * {@inheritDoc}.<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>   */<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>  @Override()<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>  public GetChangelogBatchExtendedRequest duplicate()<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>  {<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>    return duplicate(getControls());<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>  }<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span><a name="line.1475"></a>
+<span class="sourceLineNo">1476</span><a name="line.1476"></a>
+<span class="sourceLineNo">1477</span><a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>  /**<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>   * {@inheritDoc}.<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>   */<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>  @Override()<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>  public GetChangelogBatchExtendedRequest duplicate(final Control[] controls)<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>  {<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>    final GetChangelogBatchExtendedRequest r =<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>         new GetChangelogBatchExtendedRequest(entryListener, startingPoint,<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>              maxChanges, maxWaitTimeMillis, waitForMaxChanges, includeBaseDNs,<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>              excludeBaseDNs, changeTypes, continueOnMissingChanges,<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>              pareEntriesForUserDN, changeSelectionCriteria,<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>              includeSoftDeletedEntryMods, includeSoftDeletedEntryDeletes,<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>              controls);<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>    r.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>    return r;<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>  }<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span><a name="line.1494"></a>
+<span class="sourceLineNo">1495</span><a name="line.1495"></a>
+<span class="sourceLineNo">1496</span><a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>  /**<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>   * {@inheritDoc}<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>   */<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>  @Override()<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>  public String getExtendedRequestName()<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>  {<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>    return INFO_GET_CHANGELOG_BATCH_REQ_NAME.get();<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>  }<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span><a name="line.1505"></a>
+<span class="sourceLineNo">1506</span><a name="line.1506"></a>
+<span class="sourceLineNo">1507</span><a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>  /**<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>   * {@inheritDoc}<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>   */<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>  @Override()<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>  public void toString(final StringBuilder buffer)<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>  {<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>    buffer.append("GetChangelogBatchExtendedRequest(startingPoint=");<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>    startingPoint.toString(buffer);<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span><a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>    buffer.append(", maxChanges=");<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>    buffer.append(maxChanges);<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>    buffer.append(", maxWaitTimeMillis=");<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>    buffer.append(maxWaitTimeMillis);<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>    buffer.append(", waitForMaxChanges=");<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>    buffer.append(waitForMaxChanges);<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>    buffer.append(", includeBase={");<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span><a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>    final Iterator&lt;String&gt; includeIterator = includeBaseDNs.iterator();<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>    while (includeIterator.hasNext())<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>    {<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>      buffer.append('"');<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>      buffer.append(includeIterator.next());<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>      buffer.append('"');<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>      if (includeIterator.hasNext())<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>      {<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>        buffer.append(", ");<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>      }<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>    }<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span><a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>    buffer.append("}, excludeBase={");<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span><a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>    final Iterator&lt;String&gt; excludeIterator = excludeBaseDNs.iterator();<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>    while (excludeIterator.hasNext())<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>    {<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>      buffer.append('"');<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>      buffer.append(excludeIterator.next());<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>      buffer.append('"');<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>      if (excludeIterator.hasNext())<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>      {<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>        buffer.append(", ");<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>      }<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>    }<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span><a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>    buffer.append("}, changeTypes={");<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span><a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>    final Iterator&lt;ChangeType&gt; typeIterator = changeTypes.iterator();<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>    while (typeIterator.hasNext())<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>    {<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>      buffer.append(typeIterator.next().getName());<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>      if (typeIterator.hasNext())<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>      {<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>        buffer.append(", ");<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>      }<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>    }<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span><a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>    buffer.append("}, continueOnMissingChanges=");<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>    buffer.append(continueOnMissingChanges);<a name="line.1564"></a>
 <span class="sourceLineNo">1565</span><a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>    buffer.append("}, continueOnMissingChanges=");<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>    buffer.append(continueOnMissingChanges);<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span><a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>    if (pareEntriesForUserDN != null)<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>    {<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>      buffer.append(", pareEntriesForUserDN='");<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>      buffer.append(pareEntriesForUserDN);<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>      buffer.append('\'');<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>    }<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span><a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>    if (changeSelectionCriteria != null)<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>    {<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>      buffer.append(", changeSelectionCriteria=");<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>      changeSelectionCriteria.toString(buffer);<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>    }<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span><a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>    buffer.append(", includeSoftDeletedEntryMods=");<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>    buffer.append(includeSoftDeletedEntryMods);<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span>    buffer.append(", includeSoftDeletedEntryDeletes=");<a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>    buffer.append(includeSoftDeletedEntryDeletes);<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span><a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>    final Control[] controls = getControls();<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>    if (controls.length &gt; 0)<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>    {<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>      buffer.append(", controls={");<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>      {<a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>        if (i &gt; 0)<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>        {<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>          buffer.append(", ");<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>        }<a name="line.1596"></a>
-<span class="sourceLineNo">1597</span><a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>        buffer.append(controls[i]);<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>      }<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>      buffer.append('}');<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>    }<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span><a name="line.1602"></a>
-<span class="sourceLineNo">1603</span>    buffer.append(')');<a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>  }<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>}<a name="line.1605"></a>
+<span class="sourceLineNo">1566</span>    if (pareEntriesForUserDN != null)<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>    {<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>      buffer.append(", pareEntriesForUserDN='");<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>      buffer.append(pareEntriesForUserDN);<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>      buffer.append('\'');<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>    }<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span><a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>    if (changeSelectionCriteria != null)<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>    {<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>      buffer.append(", changeSelectionCriteria=");<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>      changeSelectionCriteria.toString(buffer);<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>    }<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span><a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>    buffer.append(", includeSoftDeletedEntryMods=");<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>    buffer.append(includeSoftDeletedEntryMods);<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>    buffer.append(", includeSoftDeletedEntryDeletes=");<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>    buffer.append(includeSoftDeletedEntryDeletes);<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span><a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>    final Control[] controls = getControls();<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>    if (controls.length &gt; 0)<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>    {<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>      buffer.append(", controls={");<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>      {<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>        if (i &gt; 0)<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>        {<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>          buffer.append(", ");<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>        }<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span><a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>        buffer.append(controls[i]);<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>      }<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>      buffer.append('}');<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span>    }<a name="line.1598"></a>
+<span class="sourceLineNo">1599</span><a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>    buffer.append(')');<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>  }<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>}<a name="line.1602"></a>
 
 
 

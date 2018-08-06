@@ -37,14 +37,14 @@
 <span class="sourceLineNo">029</span>import com.unboundid.ldap.sdk.Control;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.StaticUtils.*;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.util.Validator.*;<a name="line.39"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.Debug;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.StaticUtils;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafety;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.Validator;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
@@ -584,8 +584,8 @@
 <span class="sourceLineNo">576</span><a name="line.576"></a>
 <span class="sourceLineNo">577</span>        default:<a name="line.577"></a>
 <span class="sourceLineNo">578</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.578"></a>
-<span class="sourceLineNo">579</span>                                  ERR_VLV_REQUEST_INVALID_ELEMENT_TYPE.get(<a name="line.579"></a>
-<span class="sourceLineNo">580</span>                                       toHex(elements[2].getType())));<a name="line.580"></a>
+<span class="sourceLineNo">579</span>               ERR_VLV_REQUEST_INVALID_ELEMENT_TYPE.get(<a name="line.579"></a>
+<span class="sourceLineNo">580</span>                    StaticUtils.toHex(elements[2].getType())));<a name="line.580"></a>
 <span class="sourceLineNo">581</span>      }<a name="line.581"></a>
 <span class="sourceLineNo">582</span><a name="line.582"></a>
 <span class="sourceLineNo">583</span>      if (elements.length == 4)<a name="line.583"></a>
@@ -599,14 +599,14 @@
 <span class="sourceLineNo">591</span>    }<a name="line.591"></a>
 <span class="sourceLineNo">592</span>    catch (final LDAPException le)<a name="line.592"></a>
 <span class="sourceLineNo">593</span>    {<a name="line.593"></a>
-<span class="sourceLineNo">594</span>      debugException(le);<a name="line.594"></a>
+<span class="sourceLineNo">594</span>      Debug.debugException(le);<a name="line.594"></a>
 <span class="sourceLineNo">595</span>      throw le;<a name="line.595"></a>
 <span class="sourceLineNo">596</span>    }<a name="line.596"></a>
 <span class="sourceLineNo">597</span>    catch (final Exception e)<a name="line.597"></a>
 <span class="sourceLineNo">598</span>    {<a name="line.598"></a>
-<span class="sourceLineNo">599</span>      debugException(e);<a name="line.599"></a>
+<span class="sourceLineNo">599</span>      Debug.debugException(e);<a name="line.599"></a>
 <span class="sourceLineNo">600</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.600"></a>
-<span class="sourceLineNo">601</span>                              ERR_VLV_REQUEST_CANNOT_DECODE.get(e), e);<a name="line.601"></a>
+<span class="sourceLineNo">601</span>           ERR_VLV_REQUEST_CANNOT_DECODE.get(e), e);<a name="line.601"></a>
 <span class="sourceLineNo">602</span>    }<a name="line.602"></a>
 <span class="sourceLineNo">603</span>  }<a name="line.603"></a>
 <span class="sourceLineNo">604</span><a name="line.604"></a>
@@ -713,7 +713,7 @@
 <span class="sourceLineNo">705</span>                                      final int afterCount,<a name="line.705"></a>
 <span class="sourceLineNo">706</span>                                      final ASN1OctetString contextID)<a name="line.706"></a>
 <span class="sourceLineNo">707</span>  {<a name="line.707"></a>
-<span class="sourceLineNo">708</span>    ensureNotNull(assertionValue);<a name="line.708"></a>
+<span class="sourceLineNo">708</span>    Validator.ensureNotNull(assertionValue);<a name="line.708"></a>
 <span class="sourceLineNo">709</span><a name="line.709"></a>
 <span class="sourceLineNo">710</span>    final ASN1Element[] vlvElements;<a name="line.710"></a>
 <span class="sourceLineNo">711</span>    if (contextID == null)<a name="line.711"></a>

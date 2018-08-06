@@ -246,9 +246,9 @@
 <span class="sourceLineNo">238</span>    // the transaction.  Store it in the connection state.<a name="line.238"></a>
 <span class="sourceLineNo">239</span>    final ASN1OctetString txnID =<a name="line.239"></a>
 <span class="sourceLineNo">240</span>         new ASN1OctetString(String.valueOf(TXN_ID_COUNTER.getAndIncrement()));<a name="line.240"></a>
-<span class="sourceLineNo">241</span>    final List&lt;LDAPMessage&gt; requestList = new ArrayList&lt;LDAPMessage&gt;(10);<a name="line.241"></a>
+<span class="sourceLineNo">241</span>    final List&lt;LDAPMessage&gt; requestList = new ArrayList&lt;&gt;(10);<a name="line.241"></a>
 <span class="sourceLineNo">242</span>    final ObjectPair&lt;ASN1OctetString,List&lt;LDAPMessage&gt;&gt; txnInfo =<a name="line.242"></a>
-<span class="sourceLineNo">243</span>         new ObjectPair&lt;ASN1OctetString,List&lt;LDAPMessage&gt;&gt;(txnID, requestList);<a name="line.243"></a>
+<span class="sourceLineNo">243</span>         new ObjectPair&lt;&gt;(txnID, requestList);<a name="line.243"></a>
 <span class="sourceLineNo">244</span>    connectionState.put(STATE_VARIABLE_TXN_INFO, txnInfo);<a name="line.244"></a>
 <span class="sourceLineNo">245</span><a name="line.245"></a>
 <span class="sourceLineNo">246</span><a name="line.246"></a>
@@ -372,7 +372,7 @@
 <span class="sourceLineNo">364</span>      // operations processed as part of the transaction.<a name="line.364"></a>
 <span class="sourceLineNo">365</span>      final List&lt;?&gt; requestMessages = (List&lt;?&gt;) txnInfo.getSecond();<a name="line.365"></a>
 <span class="sourceLineNo">366</span>      final Map&lt;Integer,Control[]&gt; opResponseControls =<a name="line.366"></a>
-<span class="sourceLineNo">367</span>           new LinkedHashMap&lt;Integer,Control[]&gt;(requestMessages.size());<a name="line.367"></a>
+<span class="sourceLineNo">367</span>           new LinkedHashMap&lt;&gt;(requestMessages.size());<a name="line.367"></a>
 <span class="sourceLineNo">368</span><a name="line.368"></a>
 <span class="sourceLineNo">369</span>      // Iterate through the requests that have been submitted as part of the<a name="line.369"></a>
 <span class="sourceLineNo">370</span>      // transaction and attempt to process them.<a name="line.370"></a>

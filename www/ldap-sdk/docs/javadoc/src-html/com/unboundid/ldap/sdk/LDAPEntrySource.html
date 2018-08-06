@@ -35,13 +35,13 @@
 <span class="sourceLineNo">027</span>import java.util.concurrent.atomic.AtomicBoolean;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import java.util.concurrent.atomic.AtomicReference;<a name="line.28"></a>
 <span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>import com.unboundid.util.InternalUseOnly;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import com.unboundid.util.ThreadSafety;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.32"></a>
-<span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import static com.unboundid.util.Debug.*;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.util.Validator.*;<a name="line.36"></a>
+<span class="sourceLineNo">030</span>import com.unboundid.util.Debug;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import com.unboundid.util.InternalUseOnly;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.ThreadSafety;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.Validator;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.36"></a>
 <span class="sourceLineNo">037</span><a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
@@ -215,9 +215,9 @@
 <span class="sourceLineNo">207</span>                         final int queueSize)<a name="line.207"></a>
 <span class="sourceLineNo">208</span>         throws LDAPException<a name="line.208"></a>
 <span class="sourceLineNo">209</span>  {<a name="line.209"></a>
-<span class="sourceLineNo">210</span>    ensureNotNull(connection, searchRequest);<a name="line.210"></a>
-<span class="sourceLineNo">211</span>    ensureTrue(queueSize &gt; 0,<a name="line.211"></a>
-<span class="sourceLineNo">212</span>               "LDAPEntrySource.queueSize must be greater than 0.");<a name="line.212"></a>
+<span class="sourceLineNo">210</span>    Validator.ensureNotNull(connection, searchRequest);<a name="line.210"></a>
+<span class="sourceLineNo">211</span>    Validator.ensureTrue(queueSize &gt; 0,<a name="line.211"></a>
+<span class="sourceLineNo">212</span>         "LDAPEntrySource.queueSize must be greater than 0.");<a name="line.212"></a>
 <span class="sourceLineNo">213</span><a name="line.213"></a>
 <span class="sourceLineNo">214</span>    this.connection      = connection;<a name="line.214"></a>
 <span class="sourceLineNo">215</span>    this.closeConnection = closeConnection;<a name="line.215"></a>
@@ -229,8 +229,8 @@
 <span class="sourceLineNo">221</span>    }<a name="line.221"></a>
 <span class="sourceLineNo">222</span><a name="line.222"></a>
 <span class="sourceLineNo">223</span>    closed       = new AtomicBoolean(false);<a name="line.223"></a>
-<span class="sourceLineNo">224</span>    searchResult = new AtomicReference&lt;SearchResult&gt;();<a name="line.224"></a>
-<span class="sourceLineNo">225</span>    queue        = new LinkedBlockingQueue&lt;Object&gt;(queueSize);<a name="line.225"></a>
+<span class="sourceLineNo">224</span>    searchResult = new AtomicReference&lt;&gt;();<a name="line.224"></a>
+<span class="sourceLineNo">225</span>    queue        = new LinkedBlockingQueue&lt;&gt;(queueSize);<a name="line.225"></a>
 <span class="sourceLineNo">226</span><a name="line.226"></a>
 <span class="sourceLineNo">227</span>    final SearchRequest r = new SearchRequest(this, searchRequest.getControls(),<a name="line.227"></a>
 <span class="sourceLineNo">228</span>         searchRequest.getBaseDN(), searchRequest.getScope(),<a name="line.228"></a>
@@ -263,7 +263,7 @@
 <span class="sourceLineNo">255</span>      }<a name="line.255"></a>
 <span class="sourceLineNo">256</span>      catch (final InterruptedException ie)<a name="line.256"></a>
 <span class="sourceLineNo">257</span>      {<a name="line.257"></a>
-<span class="sourceLineNo">258</span>        debugException(ie);<a name="line.258"></a>
+<span class="sourceLineNo">258</span>        Debug.debugException(ie);<a name="line.258"></a>
 <span class="sourceLineNo">259</span>        Thread.currentThread().interrupt();<a name="line.259"></a>
 <span class="sourceLineNo">260</span>        throw new EntrySourceException(true,<a name="line.260"></a>
 <span class="sourceLineNo">261</span>             ERR_LDAP_ENTRY_SOURCE_NEXT_ENTRY_INTERRUPTED.get(), ie);<a name="line.261"></a>
@@ -319,7 +319,7 @@
 <span class="sourceLineNo">311</span>        }<a name="line.311"></a>
 <span class="sourceLineNo">312</span>        catch (final Exception e)<a name="line.312"></a>
 <span class="sourceLineNo">313</span>        {<a name="line.313"></a>
-<span class="sourceLineNo">314</span>          debugException(e);<a name="line.314"></a>
+<span class="sourceLineNo">314</span>          Debug.debugException(e);<a name="line.314"></a>
 <span class="sourceLineNo">315</span>        }<a name="line.315"></a>
 <span class="sourceLineNo">316</span>      }<a name="line.316"></a>
 <span class="sourceLineNo">317</span><a name="line.317"></a>
@@ -420,7 +420,7 @@
 <span class="sourceLineNo">412</span>      }<a name="line.412"></a>
 <span class="sourceLineNo">413</span>      catch (final InterruptedException ie)<a name="line.413"></a>
 <span class="sourceLineNo">414</span>      {<a name="line.414"></a>
-<span class="sourceLineNo">415</span>        debugException(ie);<a name="line.415"></a>
+<span class="sourceLineNo">415</span>        Debug.debugException(ie);<a name="line.415"></a>
 <span class="sourceLineNo">416</span>      }<a name="line.416"></a>
 <span class="sourceLineNo">417</span>    }<a name="line.417"></a>
 <span class="sourceLineNo">418</span>  }<a name="line.418"></a>

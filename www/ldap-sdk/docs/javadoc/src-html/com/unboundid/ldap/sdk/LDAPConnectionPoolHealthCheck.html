@@ -31,11 +31,11 @@
 <span class="sourceLineNo">023</span><a name="line.23"></a>
 <span class="sourceLineNo">024</span><a name="line.24"></a>
 <span class="sourceLineNo">025</span>import com.unboundid.util.Extensible;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import com.unboundid.util.ThreadSafety;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.27"></a>
-<span class="sourceLineNo">028</span><a name="line.28"></a>
-<span class="sourceLineNo">029</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import static com.unboundid.util.StaticUtils.*;<a name="line.30"></a>
+<span class="sourceLineNo">026</span>import com.unboundid.util.StaticUtils;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.unboundid.util.ThreadSafety;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.28"></a>
+<span class="sourceLineNo">029</span><a name="line.29"></a>
+<span class="sourceLineNo">030</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.30"></a>
 <span class="sourceLineNo">031</span><a name="line.31"></a>
 <span class="sourceLineNo">032</span><a name="line.32"></a>
 <span class="sourceLineNo">033</span><a name="line.33"></a>
@@ -262,68 +262,88 @@
 <span class="sourceLineNo">254</span><a name="line.254"></a>
 <span class="sourceLineNo">255</span><a name="line.255"></a>
 <span class="sourceLineNo">256</span>  /**<a name="line.256"></a>
-<span class="sourceLineNo">257</span>   * Indicates whether the provided connection may still be considered valid<a name="line.257"></a>
-<span class="sourceLineNo">258</span>   * after an attempt to process an operation yielded the given exception.  This<a name="line.258"></a>
-<span class="sourceLineNo">259</span>   * method will be invoked by the<a name="line.259"></a>
-<span class="sourceLineNo">260</span>   * {@link LDAPConnectionPool#releaseConnectionAfterException} method, and it<a name="line.260"></a>
-<span class="sourceLineNo">261</span>   * may also be manually invoked by external callers if an exception is<a name="line.261"></a>
-<span class="sourceLineNo">262</span>   * encountered while processing an operation on a connection checked out from<a name="line.262"></a>
-<span class="sourceLineNo">263</span>   * the pool.  It may make a determination based solely on the provided<a name="line.263"></a>
-<span class="sourceLineNo">264</span>   * exception, or it may also attempt to use the provided connection to further<a name="line.264"></a>
-<span class="sourceLineNo">265</span>   * test its validity.  This method should return normally if the connection is<a name="line.265"></a>
-<span class="sourceLineNo">266</span>   * believed to be valid, or should throw an {@code LDAPException} if a problem<a name="line.266"></a>
-<span class="sourceLineNo">267</span>   * is detected.<a name="line.267"></a>
-<span class="sourceLineNo">268</span>   *<a name="line.268"></a>
-<span class="sourceLineNo">269</span>   * @param  connection  The connection to be examined.<a name="line.269"></a>
-<span class="sourceLineNo">270</span>   * @param  exception   The exception that was caught while processing an<a name="line.270"></a>
-<span class="sourceLineNo">271</span>   *                     operation on the connection.<a name="line.271"></a>
-<span class="sourceLineNo">272</span>   *<a name="line.272"></a>
-<span class="sourceLineNo">273</span>   * @throws  LDAPException  If a problem is detected that suggests that the<a name="line.273"></a>
-<span class="sourceLineNo">274</span>   *                         provided connection is not suitable for use.<a name="line.274"></a>
-<span class="sourceLineNo">275</span>   */<a name="line.275"></a>
-<span class="sourceLineNo">276</span>  public void ensureConnectionValidAfterException(<a name="line.276"></a>
-<span class="sourceLineNo">277</span>                   final LDAPConnection connection,<a name="line.277"></a>
-<span class="sourceLineNo">278</span>                   final LDAPException exception)<a name="line.278"></a>
-<span class="sourceLineNo">279</span>         throws LDAPException<a name="line.279"></a>
-<span class="sourceLineNo">280</span>  {<a name="line.280"></a>
-<span class="sourceLineNo">281</span>    if (! ResultCode.isConnectionUsable(exception.getResultCode()))<a name="line.281"></a>
-<span class="sourceLineNo">282</span>    {<a name="line.282"></a>
-<span class="sourceLineNo">283</span>      throw new LDAPException(ResultCode.SERVER_DOWN,<a name="line.283"></a>
-<span class="sourceLineNo">284</span>           ERR_POOL_HEALTH_CHECK_CONN_INVALID_AFTER_EXCEPTION.get(<a name="line.284"></a>
-<span class="sourceLineNo">285</span>                getExceptionMessage(exception)),<a name="line.285"></a>
-<span class="sourceLineNo">286</span>           exception);<a name="line.286"></a>
-<span class="sourceLineNo">287</span>    }<a name="line.287"></a>
-<span class="sourceLineNo">288</span>  }<a name="line.288"></a>
-<span class="sourceLineNo">289</span><a name="line.289"></a>
-<span class="sourceLineNo">290</span><a name="line.290"></a>
-<span class="sourceLineNo">291</span><a name="line.291"></a>
-<span class="sourceLineNo">292</span>  /**<a name="line.292"></a>
-<span class="sourceLineNo">293</span>   * Retrieves a string representation of this LDAP connection pool health<a name="line.293"></a>
-<span class="sourceLineNo">294</span>   * check.<a name="line.294"></a>
-<span class="sourceLineNo">295</span>   *<a name="line.295"></a>
-<span class="sourceLineNo">296</span>   * @return  A string representation of this LDAP connection pool health check.<a name="line.296"></a>
-<span class="sourceLineNo">297</span>   */<a name="line.297"></a>
-<span class="sourceLineNo">298</span>  @Override()<a name="line.298"></a>
-<span class="sourceLineNo">299</span>  public final String toString()<a name="line.299"></a>
+<span class="sourceLineNo">257</span>   * Performs any processing that may be appropriate on an ongoing basis for the<a name="line.257"></a>
+<span class="sourceLineNo">258</span>   * connection pool that is not related to the pool itself rather than any<a name="line.258"></a>
+<span class="sourceLineNo">259</span>   * individual connection.  This method will be invoked by the pool's<a name="line.259"></a>
+<span class="sourceLineNo">260</span>   * {@link LDAPConnectionPoolHealthCheckThread} at an interval specified by the<a name="line.260"></a>
+<span class="sourceLineNo">261</span>   * pool's {@link AbstractConnectionPool#getHealthCheckIntervalMillis()}<a name="line.261"></a>
+<span class="sourceLineNo">262</span>   * method.  This method will be invoked after all other periodic processing<a name="line.262"></a>
+<span class="sourceLineNo">263</span>   * (for example, after calling {@link #ensureConnectionValidForContinuedUse}<a name="line.263"></a>
+<span class="sourceLineNo">264</span>   * on each available connection, if appropriate for the pool implementation)<a name="line.264"></a>
+<span class="sourceLineNo">265</span>   * has been performed during the interval.<a name="line.265"></a>
+<span class="sourceLineNo">266</span>   *<a name="line.266"></a>
+<span class="sourceLineNo">267</span>   * @param  pool  The connection pool on which to perform maintenance.<a name="line.267"></a>
+<span class="sourceLineNo">268</span>   */<a name="line.268"></a>
+<span class="sourceLineNo">269</span>  public void performPoolMaintenance(final AbstractConnectionPool pool)<a name="line.269"></a>
+<span class="sourceLineNo">270</span>  {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>    // No processing is performed in this default implementation.<a name="line.271"></a>
+<span class="sourceLineNo">272</span>  }<a name="line.272"></a>
+<span class="sourceLineNo">273</span><a name="line.273"></a>
+<span class="sourceLineNo">274</span><a name="line.274"></a>
+<span class="sourceLineNo">275</span><a name="line.275"></a>
+<span class="sourceLineNo">276</span>  /**<a name="line.276"></a>
+<span class="sourceLineNo">277</span>   * Indicates whether the provided connection may still be considered valid<a name="line.277"></a>
+<span class="sourceLineNo">278</span>   * after an attempt to process an operation yielded the given exception.  This<a name="line.278"></a>
+<span class="sourceLineNo">279</span>   * method will be invoked by the<a name="line.279"></a>
+<span class="sourceLineNo">280</span>   * {@link LDAPConnectionPool#releaseConnectionAfterException} method, and it<a name="line.280"></a>
+<span class="sourceLineNo">281</span>   * may also be manually invoked by external callers if an exception is<a name="line.281"></a>
+<span class="sourceLineNo">282</span>   * encountered while processing an operation on a connection checked out from<a name="line.282"></a>
+<span class="sourceLineNo">283</span>   * the pool.  It may make a determination based solely on the provided<a name="line.283"></a>
+<span class="sourceLineNo">284</span>   * exception, or it may also attempt to use the provided connection to further<a name="line.284"></a>
+<span class="sourceLineNo">285</span>   * test its validity.  This method should return normally if the connection is<a name="line.285"></a>
+<span class="sourceLineNo">286</span>   * believed to be valid, or should throw an {@code LDAPException} if a problem<a name="line.286"></a>
+<span class="sourceLineNo">287</span>   * is detected.<a name="line.287"></a>
+<span class="sourceLineNo">288</span>   *<a name="line.288"></a>
+<span class="sourceLineNo">289</span>   * @param  connection  The connection to be examined.<a name="line.289"></a>
+<span class="sourceLineNo">290</span>   * @param  exception   The exception that was caught while processing an<a name="line.290"></a>
+<span class="sourceLineNo">291</span>   *                     operation on the connection.<a name="line.291"></a>
+<span class="sourceLineNo">292</span>   *<a name="line.292"></a>
+<span class="sourceLineNo">293</span>   * @throws  LDAPException  If a problem is detected that suggests that the<a name="line.293"></a>
+<span class="sourceLineNo">294</span>   *                         provided connection is not suitable for use.<a name="line.294"></a>
+<span class="sourceLineNo">295</span>   */<a name="line.295"></a>
+<span class="sourceLineNo">296</span>  public void ensureConnectionValidAfterException(<a name="line.296"></a>
+<span class="sourceLineNo">297</span>                   final LDAPConnection connection,<a name="line.297"></a>
+<span class="sourceLineNo">298</span>                   final LDAPException exception)<a name="line.298"></a>
+<span class="sourceLineNo">299</span>         throws LDAPException<a name="line.299"></a>
 <span class="sourceLineNo">300</span>  {<a name="line.300"></a>
-<span class="sourceLineNo">301</span>    final StringBuilder buffer = new StringBuilder();<a name="line.301"></a>
-<span class="sourceLineNo">302</span>    toString(buffer);<a name="line.302"></a>
-<span class="sourceLineNo">303</span>    return buffer.toString();<a name="line.303"></a>
-<span class="sourceLineNo">304</span>  }<a name="line.304"></a>
-<span class="sourceLineNo">305</span><a name="line.305"></a>
-<span class="sourceLineNo">306</span><a name="line.306"></a>
-<span class="sourceLineNo">307</span><a name="line.307"></a>
-<span class="sourceLineNo">308</span>  /**<a name="line.308"></a>
-<span class="sourceLineNo">309</span>   * Appends a string representation of this LDAP connection pool health check<a name="line.309"></a>
-<span class="sourceLineNo">310</span>   * to the provided buffer.<a name="line.310"></a>
-<span class="sourceLineNo">311</span>   *<a name="line.311"></a>
-<span class="sourceLineNo">312</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.312"></a>
-<span class="sourceLineNo">313</span>   */<a name="line.313"></a>
-<span class="sourceLineNo">314</span>  public void toString(final StringBuilder buffer)<a name="line.314"></a>
-<span class="sourceLineNo">315</span>  {<a name="line.315"></a>
-<span class="sourceLineNo">316</span>    buffer.append("LDAPConnectionPoolHealthCheck()");<a name="line.316"></a>
-<span class="sourceLineNo">317</span>  }<a name="line.317"></a>
-<span class="sourceLineNo">318</span>}<a name="line.318"></a>
+<span class="sourceLineNo">301</span>    if (! ResultCode.isConnectionUsable(exception.getResultCode()))<a name="line.301"></a>
+<span class="sourceLineNo">302</span>    {<a name="line.302"></a>
+<span class="sourceLineNo">303</span>      throw new LDAPException(ResultCode.SERVER_DOWN,<a name="line.303"></a>
+<span class="sourceLineNo">304</span>           ERR_POOL_HEALTH_CHECK_CONN_INVALID_AFTER_EXCEPTION.get(<a name="line.304"></a>
+<span class="sourceLineNo">305</span>                StaticUtils.getExceptionMessage(exception)),<a name="line.305"></a>
+<span class="sourceLineNo">306</span>           exception);<a name="line.306"></a>
+<span class="sourceLineNo">307</span>    }<a name="line.307"></a>
+<span class="sourceLineNo">308</span>  }<a name="line.308"></a>
+<span class="sourceLineNo">309</span><a name="line.309"></a>
+<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">311</span><a name="line.311"></a>
+<span class="sourceLineNo">312</span>  /**<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   * Retrieves a string representation of this LDAP connection pool health<a name="line.313"></a>
+<span class="sourceLineNo">314</span>   * check.<a name="line.314"></a>
+<span class="sourceLineNo">315</span>   *<a name="line.315"></a>
+<span class="sourceLineNo">316</span>   * @return  A string representation of this LDAP connection pool health check.<a name="line.316"></a>
+<span class="sourceLineNo">317</span>   */<a name="line.317"></a>
+<span class="sourceLineNo">318</span>  @Override()<a name="line.318"></a>
+<span class="sourceLineNo">319</span>  public final String toString()<a name="line.319"></a>
+<span class="sourceLineNo">320</span>  {<a name="line.320"></a>
+<span class="sourceLineNo">321</span>    final StringBuilder buffer = new StringBuilder();<a name="line.321"></a>
+<span class="sourceLineNo">322</span>    toString(buffer);<a name="line.322"></a>
+<span class="sourceLineNo">323</span>    return buffer.toString();<a name="line.323"></a>
+<span class="sourceLineNo">324</span>  }<a name="line.324"></a>
+<span class="sourceLineNo">325</span><a name="line.325"></a>
+<span class="sourceLineNo">326</span><a name="line.326"></a>
+<span class="sourceLineNo">327</span><a name="line.327"></a>
+<span class="sourceLineNo">328</span>  /**<a name="line.328"></a>
+<span class="sourceLineNo">329</span>   * Appends a string representation of this LDAP connection pool health check<a name="line.329"></a>
+<span class="sourceLineNo">330</span>   * to the provided buffer.<a name="line.330"></a>
+<span class="sourceLineNo">331</span>   *<a name="line.331"></a>
+<span class="sourceLineNo">332</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.332"></a>
+<span class="sourceLineNo">333</span>   */<a name="line.333"></a>
+<span class="sourceLineNo">334</span>  public void toString(final StringBuilder buffer)<a name="line.334"></a>
+<span class="sourceLineNo">335</span>  {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>    buffer.append("LDAPConnectionPoolHealthCheck()");<a name="line.336"></a>
+<span class="sourceLineNo">337</span>  }<a name="line.337"></a>
+<span class="sourceLineNo">338</span>}<a name="line.338"></a>
 
 
 

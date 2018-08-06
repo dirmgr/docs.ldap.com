@@ -34,12 +34,12 @@
 <span class="sourceLineNo">026</span>import com.unboundid.ldap.sdk.DN;<a name="line.26"></a>
 <span class="sourceLineNo">027</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import com.unboundid.util.ThreadSafety;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>import static com.unboundid.ldap.matchingrules.MatchingRuleMessages.*;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import static com.unboundid.util.Debug.*;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import static com.unboundid.util.StaticUtils.*;<a name="line.34"></a>
+<span class="sourceLineNo">029</span>import com.unboundid.util.Debug;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import com.unboundid.util.StaticUtils;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import com.unboundid.util.ThreadSafety;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.32"></a>
+<span class="sourceLineNo">033</span><a name="line.33"></a>
+<span class="sourceLineNo">034</span>import static com.unboundid.ldap.matchingrules.MatchingRuleMessages.*;<a name="line.34"></a>
 <span class="sourceLineNo">035</span><a name="line.35"></a>
 <span class="sourceLineNo">036</span><a name="line.36"></a>
 <span class="sourceLineNo">037</span><a name="line.37"></a>
@@ -73,7 +73,7 @@
 <span class="sourceLineNo">065</span>   * in all lowercase characters.<a name="line.65"></a>
 <span class="sourceLineNo">066</span>   */<a name="line.66"></a>
 <span class="sourceLineNo">067</span>  static final String LOWER_EQUALITY_RULE_NAME =<a name="line.67"></a>
-<span class="sourceLineNo">068</span>       toLowerCase(EQUALITY_RULE_NAME);<a name="line.68"></a>
+<span class="sourceLineNo">068</span>       StaticUtils.toLowerCase(EQUALITY_RULE_NAME);<a name="line.68"></a>
 <span class="sourceLineNo">069</span><a name="line.69"></a>
 <span class="sourceLineNo">070</span><a name="line.70"></a>
 <span class="sourceLineNo">071</span><a name="line.71"></a>
@@ -194,7 +194,7 @@
 <span class="sourceLineNo">186</span>    }<a name="line.186"></a>
 <span class="sourceLineNo">187</span>    catch (final LDAPException le)<a name="line.187"></a>
 <span class="sourceLineNo">188</span>    {<a name="line.188"></a>
-<span class="sourceLineNo">189</span>      debugException(le);<a name="line.189"></a>
+<span class="sourceLineNo">189</span>      Debug.debugException(le);<a name="line.189"></a>
 <span class="sourceLineNo">190</span>      throw new LDAPException(ResultCode.INVALID_ATTRIBUTE_SYNTAX,<a name="line.190"></a>
 <span class="sourceLineNo">191</span>                              le.getMessage(), le);<a name="line.191"></a>
 <span class="sourceLineNo">192</span>    }<a name="line.192"></a>
@@ -206,7 +206,7 @@
 <span class="sourceLineNo">198</span>    }<a name="line.198"></a>
 <span class="sourceLineNo">199</span>    catch (final LDAPException le)<a name="line.199"></a>
 <span class="sourceLineNo">200</span>    {<a name="line.200"></a>
-<span class="sourceLineNo">201</span>      debugException(le);<a name="line.201"></a>
+<span class="sourceLineNo">201</span>      Debug.debugException(le);<a name="line.201"></a>
 <span class="sourceLineNo">202</span>      throw new LDAPException(ResultCode.INVALID_ATTRIBUTE_SYNTAX,<a name="line.202"></a>
 <span class="sourceLineNo">203</span>                              le.getMessage(), le);<a name="line.203"></a>
 <span class="sourceLineNo">204</span>    }<a name="line.204"></a>
@@ -237,7 +237,7 @@
 <span class="sourceLineNo">229</span>    }<a name="line.229"></a>
 <span class="sourceLineNo">230</span>    catch (final LDAPException le)<a name="line.230"></a>
 <span class="sourceLineNo">231</span>    {<a name="line.231"></a>
-<span class="sourceLineNo">232</span>      debugException(le);<a name="line.232"></a>
+<span class="sourceLineNo">232</span>      Debug.debugException(le);<a name="line.232"></a>
 <span class="sourceLineNo">233</span>      throw new LDAPException(ResultCode.INVALID_ATTRIBUTE_SYNTAX,<a name="line.233"></a>
 <span class="sourceLineNo">234</span>           le.getMessage(), le);<a name="line.234"></a>
 <span class="sourceLineNo">235</span>    }<a name="line.235"></a>
@@ -253,7 +253,7 @@
 <span class="sourceLineNo">245</span>      }<a name="line.245"></a>
 <span class="sourceLineNo">246</span>      catch (final Exception e)<a name="line.246"></a>
 <span class="sourceLineNo">247</span>      {<a name="line.247"></a>
-<span class="sourceLineNo">248</span>        debugException(e);<a name="line.248"></a>
+<span class="sourceLineNo">248</span>        Debug.debugException(e);<a name="line.248"></a>
 <span class="sourceLineNo">249</span>      }<a name="line.249"></a>
 <span class="sourceLineNo">250</span>    }<a name="line.250"></a>
 <span class="sourceLineNo">251</span><a name="line.251"></a>
@@ -306,7 +306,7 @@
 <span class="sourceLineNo">298</span>    }<a name="line.298"></a>
 <span class="sourceLineNo">299</span>    catch (final LDAPException le)<a name="line.299"></a>
 <span class="sourceLineNo">300</span>    {<a name="line.300"></a>
-<span class="sourceLineNo">301</span>      debugException(le);<a name="line.301"></a>
+<span class="sourceLineNo">301</span>      Debug.debugException(le);<a name="line.301"></a>
 <span class="sourceLineNo">302</span>      throw new LDAPException(ResultCode.INVALID_ATTRIBUTE_SYNTAX,<a name="line.302"></a>
 <span class="sourceLineNo">303</span>                              le.getMessage(), le);<a name="line.303"></a>
 <span class="sourceLineNo">304</span>    }<a name="line.304"></a>

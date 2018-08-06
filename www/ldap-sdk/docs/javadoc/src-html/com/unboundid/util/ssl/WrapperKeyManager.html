@@ -139,7 +139,7 @@
 <span class="sourceLineNo">131</span>  public final synchronized String[] getClientAliases(final String keyType,<a name="line.131"></a>
 <span class="sourceLineNo">132</span>                                          final Principal[] issuers)<a name="line.132"></a>
 <span class="sourceLineNo">133</span>  {<a name="line.133"></a>
-<span class="sourceLineNo">134</span>    final LinkedHashSet&lt;String&gt; clientAliases = new LinkedHashSet&lt;String&gt;();<a name="line.134"></a>
+<span class="sourceLineNo">134</span>    final LinkedHashSet&lt;String&gt; clientAliases = new LinkedHashSet&lt;&gt;(10);<a name="line.134"></a>
 <span class="sourceLineNo">135</span><a name="line.135"></a>
 <span class="sourceLineNo">136</span>    for (final X509KeyManager m : keyManagers)<a name="line.136"></a>
 <span class="sourceLineNo">137</span>    {<a name="line.137"></a>
@@ -307,7 +307,7 @@
 <span class="sourceLineNo">299</span>  public final synchronized String[] getServerAliases(final String keyType,<a name="line.299"></a>
 <span class="sourceLineNo">300</span>                                          final Principal[] issuers)<a name="line.300"></a>
 <span class="sourceLineNo">301</span>  {<a name="line.301"></a>
-<span class="sourceLineNo">302</span>    final LinkedHashSet&lt;String&gt; serverAliases = new LinkedHashSet&lt;String&gt;();<a name="line.302"></a>
+<span class="sourceLineNo">302</span>    final LinkedHashSet&lt;String&gt; serverAliases = new LinkedHashSet&lt;&gt;(10);<a name="line.302"></a>
 <span class="sourceLineNo">303</span><a name="line.303"></a>
 <span class="sourceLineNo">304</span>    for (final X509KeyManager m : keyManagers)<a name="line.304"></a>
 <span class="sourceLineNo">305</span>    {<a name="line.305"></a>

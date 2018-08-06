@@ -47,17 +47,17 @@
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span>/**<a name="line.40"></a>
 <span class="sourceLineNo">041</span> * This class represents a data structure with information about a notification<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * destination defined in a Ping Identity, UnboundID, or Alcatel-Lucent 8661<a name="line.42"></a>
-<span class="sourceLineNo">043</span> * server instance.<a name="line.43"></a>
+<span class="sourceLineNo">042</span> * destination defined in a Ping Identity, UnboundID, or Nokia/Alcatel-Lucent<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * 8661 server instance.<a name="line.43"></a>
 <span class="sourceLineNo">044</span> * &lt;BR&gt;<a name="line.44"></a>
 <span class="sourceLineNo">045</span> * &lt;BLOCKQUOTE&gt;<a name="line.45"></a>
 <span class="sourceLineNo">046</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.46"></a>
 <span class="sourceLineNo">047</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   server products.  These classes provide support for proprietary<a name="line.49"></a>
-<span class="sourceLineNo">050</span> *   functionality or for external specifications that are not considered stable<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *   other types of LDAP servers.<a name="line.52"></a>
+<span class="sourceLineNo">048</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *   for proprietary functionality or for external specifications that are not<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *   interoperable way with other types of LDAP servers.<a name="line.52"></a>
 <span class="sourceLineNo">053</span> * &lt;/BLOCKQUOTE&gt;<a name="line.53"></a>
 <span class="sourceLineNo">054</span> */<a name="line.54"></a>
 <span class="sourceLineNo">055</span>@NotMutable()<a name="line.55"></a>
@@ -105,7 +105,7 @@
 <span class="sourceLineNo">097</span><a name="line.97"></a>
 <span class="sourceLineNo">098</span>    this.id = id;<a name="line.98"></a>
 <span class="sourceLineNo">099</span>    this.details =<a name="line.99"></a>
-<span class="sourceLineNo">100</span>         Collections.unmodifiableList(new ArrayList&lt;ASN1OctetString&gt;(details));<a name="line.100"></a>
+<span class="sourceLineNo">100</span>         Collections.unmodifiableList(new ArrayList&lt;&gt;(details));<a name="line.100"></a>
 <span class="sourceLineNo">101</span><a name="line.101"></a>
 <span class="sourceLineNo">102</span>    if (subscriptions == null)<a name="line.102"></a>
 <span class="sourceLineNo">103</span>    {<a name="line.103"></a>
@@ -113,8 +113,8 @@
 <span class="sourceLineNo">105</span>    }<a name="line.105"></a>
 <span class="sourceLineNo">106</span>    else<a name="line.106"></a>
 <span class="sourceLineNo">107</span>    {<a name="line.107"></a>
-<span class="sourceLineNo">108</span>      this.subscriptions = Collections.unmodifiableList(<a name="line.108"></a>
-<span class="sourceLineNo">109</span>           new ArrayList&lt;NotificationSubscriptionDetails&gt;(subscriptions));<a name="line.109"></a>
+<span class="sourceLineNo">108</span>      this.subscriptions =<a name="line.108"></a>
+<span class="sourceLineNo">109</span>           Collections.unmodifiableList(new ArrayList&lt;&gt;(subscriptions));<a name="line.109"></a>
 <span class="sourceLineNo">110</span>    }<a name="line.110"></a>
 <span class="sourceLineNo">111</span>  }<a name="line.111"></a>
 <span class="sourceLineNo">112</span><a name="line.112"></a>

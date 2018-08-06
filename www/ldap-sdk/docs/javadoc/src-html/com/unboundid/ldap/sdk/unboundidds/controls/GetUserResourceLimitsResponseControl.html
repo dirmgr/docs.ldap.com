@@ -66,11 +66,11 @@
 <span class="sourceLineNo">058</span> * &lt;BLOCKQUOTE&gt;<a name="line.58"></a>
 <span class="sourceLineNo">059</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.59"></a>
 <span class="sourceLineNo">060</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.60"></a>
-<span class="sourceLineNo">061</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.61"></a>
-<span class="sourceLineNo">062</span> *   server products.  These classes provide support for proprietary<a name="line.62"></a>
-<span class="sourceLineNo">063</span> *   functionality or for external specifications that are not considered stable<a name="line.63"></a>
-<span class="sourceLineNo">064</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.64"></a>
-<span class="sourceLineNo">065</span> *   other types of LDAP servers.<a name="line.65"></a>
+<span class="sourceLineNo">061</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.61"></a>
+<span class="sourceLineNo">062</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.62"></a>
+<span class="sourceLineNo">063</span> *   for proprietary functionality or for external specifications that are not<a name="line.63"></a>
+<span class="sourceLineNo">064</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.64"></a>
+<span class="sourceLineNo">065</span> *   interoperable way with other types of LDAP servers.<a name="line.65"></a>
 <span class="sourceLineNo">066</span> * &lt;/BLOCKQUOTE&gt;<a name="line.66"></a>
 <span class="sourceLineNo">067</span> * &lt;BR&gt;<a name="line.67"></a>
 <span class="sourceLineNo">068</span> * The criticality for this control should be {@code false}.  It must have a<a name="line.68"></a>
@@ -408,7 +408,7 @@
 <span class="sourceLineNo">400</span>    else<a name="line.400"></a>
 <span class="sourceLineNo">401</span>    {<a name="line.401"></a>
 <span class="sourceLineNo">402</span>      this.groupDNs =<a name="line.402"></a>
-<span class="sourceLineNo">403</span>           Collections.unmodifiableList(new ArrayList&lt;String&gt;(groupDNs));<a name="line.403"></a>
+<span class="sourceLineNo">403</span>           Collections.unmodifiableList(new ArrayList&lt;&gt;(groupDNs));<a name="line.403"></a>
 <span class="sourceLineNo">404</span>    }<a name="line.404"></a>
 <span class="sourceLineNo">405</span><a name="line.405"></a>
 <span class="sourceLineNo">406</span>    if (privilegeNames == null)<a name="line.406"></a>
@@ -418,7 +418,7 @@
 <span class="sourceLineNo">410</span>    else<a name="line.410"></a>
 <span class="sourceLineNo">411</span>    {<a name="line.411"></a>
 <span class="sourceLineNo">412</span>      this.privilegeNames =<a name="line.412"></a>
-<span class="sourceLineNo">413</span>           Collections.unmodifiableList(new ArrayList&lt;String&gt;(privilegeNames));<a name="line.413"></a>
+<span class="sourceLineNo">413</span>           Collections.unmodifiableList(new ArrayList&lt;&gt;(privilegeNames));<a name="line.413"></a>
 <span class="sourceLineNo">414</span>    }<a name="line.414"></a>
 <span class="sourceLineNo">415</span><a name="line.415"></a>
 <span class="sourceLineNo">416</span>    if (otherAttributes == null)<a name="line.416"></a>
@@ -427,8 +427,8 @@
 <span class="sourceLineNo">419</span>    }<a name="line.419"></a>
 <span class="sourceLineNo">420</span>    else<a name="line.420"></a>
 <span class="sourceLineNo">421</span>    {<a name="line.421"></a>
-<span class="sourceLineNo">422</span>      this.otherAttributes = Collections.unmodifiableList(<a name="line.422"></a>
-<span class="sourceLineNo">423</span>           new ArrayList&lt;Attribute&gt;(otherAttributes));<a name="line.423"></a>
+<span class="sourceLineNo">422</span>      this.otherAttributes =<a name="line.422"></a>
+<span class="sourceLineNo">423</span>           Collections.unmodifiableList(new ArrayList&lt;&gt;(otherAttributes));<a name="line.423"></a>
 <span class="sourceLineNo">424</span>    }<a name="line.424"></a>
 <span class="sourceLineNo">425</span>  }<a name="line.425"></a>
 <span class="sourceLineNo">426</span><a name="line.426"></a>
@@ -499,7 +499,7 @@
 <span class="sourceLineNo">491</span>              final List&lt;String&gt; groupDNs, final List&lt;String&gt; privilegeNames,<a name="line.491"></a>
 <span class="sourceLineNo">492</span>              final List&lt;Attribute&gt; otherAttributes)<a name="line.492"></a>
 <span class="sourceLineNo">493</span>  {<a name="line.493"></a>
-<span class="sourceLineNo">494</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(10);<a name="line.494"></a>
+<span class="sourceLineNo">494</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;&gt;(10);<a name="line.494"></a>
 <span class="sourceLineNo">495</span><a name="line.495"></a>
 <span class="sourceLineNo">496</span>    if (sizeLimit != null)<a name="line.496"></a>
 <span class="sourceLineNo">497</span>    {<a name="line.497"></a>
@@ -564,7 +564,7 @@
 <span class="sourceLineNo">556</span>    if (groupDNs != null)<a name="line.556"></a>
 <span class="sourceLineNo">557</span>    {<a name="line.557"></a>
 <span class="sourceLineNo">558</span>      final ArrayList&lt;ASN1Element&gt; dnElements =<a name="line.558"></a>
-<span class="sourceLineNo">559</span>           new ArrayList&lt;ASN1Element&gt;(groupDNs.size());<a name="line.559"></a>
+<span class="sourceLineNo">559</span>           new ArrayList&lt;&gt;(groupDNs.size());<a name="line.559"></a>
 <span class="sourceLineNo">560</span>      for (final String s : groupDNs)<a name="line.560"></a>
 <span class="sourceLineNo">561</span>      {<a name="line.561"></a>
 <span class="sourceLineNo">562</span>        dnElements.add(new ASN1OctetString(s));<a name="line.562"></a>
@@ -576,7 +576,7 @@
 <span class="sourceLineNo">568</span>    if (privilegeNames != null)<a name="line.568"></a>
 <span class="sourceLineNo">569</span>    {<a name="line.569"></a>
 <span class="sourceLineNo">570</span>      final ArrayList&lt;ASN1Element&gt; privElements =<a name="line.570"></a>
-<span class="sourceLineNo">571</span>           new ArrayList&lt;ASN1Element&gt;(privilegeNames.size());<a name="line.571"></a>
+<span class="sourceLineNo">571</span>           new ArrayList&lt;&gt;(privilegeNames.size());<a name="line.571"></a>
 <span class="sourceLineNo">572</span>      for (final String s : privilegeNames)<a name="line.572"></a>
 <span class="sourceLineNo">573</span>      {<a name="line.573"></a>
 <span class="sourceLineNo">574</span>        privElements.add(new ASN1OctetString(s));<a name="line.574"></a>
@@ -588,7 +588,7 @@
 <span class="sourceLineNo">580</span>    if ((otherAttributes != null) &amp;&amp; (! otherAttributes.isEmpty()))<a name="line.580"></a>
 <span class="sourceLineNo">581</span>    {<a name="line.581"></a>
 <span class="sourceLineNo">582</span>      final ArrayList&lt;ASN1Element&gt; attrElements =<a name="line.582"></a>
-<span class="sourceLineNo">583</span>           new ArrayList&lt;ASN1Element&gt;(otherAttributes.size());<a name="line.583"></a>
+<span class="sourceLineNo">583</span>           new ArrayList&lt;&gt;(otherAttributes.size());<a name="line.583"></a>
 <span class="sourceLineNo">584</span>      for (final Attribute a : otherAttributes)<a name="line.584"></a>
 <span class="sourceLineNo">585</span>      {<a name="line.585"></a>
 <span class="sourceLineNo">586</span>        attrElements.add(a.encode());<a name="line.586"></a>
@@ -669,7 +669,7 @@
 <span class="sourceLineNo">661</span>          case TYPE_GROUP_DNS:<a name="line.661"></a>
 <span class="sourceLineNo">662</span>            final ASN1Element[] groupElements =<a name="line.662"></a>
 <span class="sourceLineNo">663</span>                 ASN1Set.decodeAsSet(e).elements();<a name="line.663"></a>
-<span class="sourceLineNo">664</span>            gd = new ArrayList&lt;String&gt;(groupElements.length);<a name="line.664"></a>
+<span class="sourceLineNo">664</span>            gd = new ArrayList&lt;&gt;(groupElements.length);<a name="line.664"></a>
 <span class="sourceLineNo">665</span>            for (final ASN1Element pe : groupElements)<a name="line.665"></a>
 <span class="sourceLineNo">666</span>            {<a name="line.666"></a>
 <span class="sourceLineNo">667</span>              gd.add(ASN1OctetString.decodeAsOctetString(pe).stringValue());<a name="line.667"></a>
@@ -679,7 +679,7 @@
 <span class="sourceLineNo">671</span>          case TYPE_PRIVILEGE_NAMES:<a name="line.671"></a>
 <span class="sourceLineNo">672</span>            final ASN1Element[] privElements =<a name="line.672"></a>
 <span class="sourceLineNo">673</span>                 ASN1Set.decodeAsSet(e).elements();<a name="line.673"></a>
-<span class="sourceLineNo">674</span>            pn = new ArrayList&lt;String&gt;(privElements.length);<a name="line.674"></a>
+<span class="sourceLineNo">674</span>            pn = new ArrayList&lt;&gt;(privElements.length);<a name="line.674"></a>
 <span class="sourceLineNo">675</span>            for (final ASN1Element pe : privElements)<a name="line.675"></a>
 <span class="sourceLineNo">676</span>            {<a name="line.676"></a>
 <span class="sourceLineNo">677</span>              pn.add(ASN1OctetString.decodeAsOctetString(pe).stringValue());<a name="line.677"></a>
@@ -689,7 +689,7 @@
 <span class="sourceLineNo">681</span>          case TYPE_OTHER_ATTRIBUTES:<a name="line.681"></a>
 <span class="sourceLineNo">682</span>            final ASN1Element[] attrElemnets =<a name="line.682"></a>
 <span class="sourceLineNo">683</span>                 ASN1Sequence.decodeAsSequence(e).elements();<a name="line.683"></a>
-<span class="sourceLineNo">684</span>            oa = new ArrayList&lt;Attribute&gt;(attrElemnets.length);<a name="line.684"></a>
+<span class="sourceLineNo">684</span>            oa = new ArrayList&lt;&gt;(attrElemnets.length);<a name="line.684"></a>
 <span class="sourceLineNo">685</span>            for (final ASN1Element ae : attrElemnets)<a name="line.685"></a>
 <span class="sourceLineNo">686</span>            {<a name="line.686"></a>
 <span class="sourceLineNo">687</span>              oa.add(Attribute.decode(ASN1Sequence.decodeAsSequence(ae)));<a name="line.687"></a>

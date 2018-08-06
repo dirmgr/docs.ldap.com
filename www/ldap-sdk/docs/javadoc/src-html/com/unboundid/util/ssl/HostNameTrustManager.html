@@ -136,7 +136,7 @@
 <span class="sourceLineNo">128</span>    this.allowWildcards = allowWildcards;<a name="line.128"></a>
 <span class="sourceLineNo">129</span><a name="line.129"></a>
 <span class="sourceLineNo">130</span>    final LinkedHashSet&lt;String&gt; nameSet =<a name="line.130"></a>
-<span class="sourceLineNo">131</span>         new LinkedHashSet&lt;String&gt;(acceptableHostNames.size());<a name="line.131"></a>
+<span class="sourceLineNo">131</span>         new LinkedHashSet&lt;&gt;(acceptableHostNames.size());<a name="line.131"></a>
 <span class="sourceLineNo">132</span>    for (final String s : acceptableHostNames)<a name="line.132"></a>
 <span class="sourceLineNo">133</span>    {<a name="line.133"></a>
 <span class="sourceLineNo">134</span>      nameSet.add(StaticUtils.toLowerCase(s));<a name="line.134"></a>

@@ -292,7 +292,7 @@
 <span class="sourceLineNo">284</span>  // The argument used to specify the server vendor name.<a name="line.284"></a>
 <span class="sourceLineNo">285</span>  private StringArgument vendorNameArgument;<a name="line.285"></a>
 <span class="sourceLineNo">286</span><a name="line.286"></a>
-<span class="sourceLineNo">287</span>  // The argument used to specify the server vendor veresion.<a name="line.287"></a>
+<span class="sourceLineNo">287</span>  // The argument used to specify the server vendor version.<a name="line.287"></a>
 <span class="sourceLineNo">288</span>  private StringArgument vendorVersionArgument;<a name="line.288"></a>
 <span class="sourceLineNo">289</span><a name="line.289"></a>
 <span class="sourceLineNo">290</span><a name="line.290"></a>
@@ -432,7 +432,7 @@
 <span class="sourceLineNo">424</span>  {<a name="line.424"></a>
 <span class="sourceLineNo">425</span>    portArgument = new IntegerArgument('p', "port", false, 1,<a name="line.425"></a>
 <span class="sourceLineNo">426</span>         INFO_MEM_DS_TOOL_ARG_PLACEHOLDER_PORT.get(),<a name="line.426"></a>
-<span class="sourceLineNo">427</span>         INFO_MEM_DS_TOOL_ARG_DESC_PORT.get(), 0, 65535);<a name="line.427"></a>
+<span class="sourceLineNo">427</span>         INFO_MEM_DS_TOOL_ARG_DESC_PORT.get(), 0, 65_535);<a name="line.427"></a>
 <span class="sourceLineNo">428</span>    portArgument.setArgumentGroupName(<a name="line.428"></a>
 <span class="sourceLineNo">429</span>         INFO_MEM_DS_TOOL_GROUP_CONNECTIVITY.get());<a name="line.429"></a>
 <span class="sourceLineNo">430</span>    parser.addArgument(portArgument);<a name="line.430"></a>
@@ -830,7 +830,7 @@
 <span class="sourceLineNo">822</span>    }<a name="line.822"></a>
 <span class="sourceLineNo">823</span>    else if (useSchemaFileArgument.isPresent())<a name="line.823"></a>
 <span class="sourceLineNo">824</span>    {<a name="line.824"></a>
-<span class="sourceLineNo">825</span>      final ArrayList&lt;File&gt; schemaFiles = new ArrayList&lt;File&gt;(10);<a name="line.825"></a>
+<span class="sourceLineNo">825</span>      final ArrayList&lt;File&gt; schemaFiles = new ArrayList&lt;&gt;(10);<a name="line.825"></a>
 <span class="sourceLineNo">826</span>      for (final File f : useSchemaFileArgument.getValues())<a name="line.826"></a>
 <span class="sourceLineNo">827</span>      {<a name="line.827"></a>
 <span class="sourceLineNo">828</span>        if (f.exists())<a name="line.828"></a>
@@ -1078,71 +1078,70 @@
 <span class="sourceLineNo">1070</span>  @Override()<a name="line.1070"></a>
 <span class="sourceLineNo">1071</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1071"></a>
 <span class="sourceLineNo">1072</span>  {<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>    final LinkedHashMap&lt;String[],String&gt; exampleUsages =<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>         new LinkedHashMap&lt;String[],String&gt;(2);<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span><a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>    final String[] example1Args =<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>    {<a name="line.1077"></a>
-<span class="sourceLineNo">1078</span>      "--baseDN", "dc=example,dc=com"<a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>    };<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>    exampleUsages.put(example1Args, INFO_MEM_DS_TOOL_EXAMPLE_1.get());<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span><a name="line.1081"></a>
-<span class="sourceLineNo">1082</span>    final String[] example2Args =<a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>    {<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>      "--baseDN", "dc=example,dc=com",<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>      "--port", "1389",<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>      "--ldifFile", "test.ldif",<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>      "--accessLogFile", "access.log",<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>      "--useDefaultSchema"<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>    };<a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>    exampleUsages.put(example2Args, INFO_MEM_DS_TOOL_EXAMPLE_2.get());<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span><a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>    return exampleUsages;<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>  }<a name="line.1093"></a>
+<span class="sourceLineNo">1073</span>    final LinkedHashMap&lt;String[],String&gt; exampleUsages = new LinkedHashMap&lt;&gt;(2);<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span><a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>    final String[] example1Args =<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>    {<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>      "--baseDN", "dc=example,dc=com"<a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>    };<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>    exampleUsages.put(example1Args, INFO_MEM_DS_TOOL_EXAMPLE_1.get());<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span><a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>    final String[] example2Args =<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>    {<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>      "--baseDN", "dc=example,dc=com",<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>      "--port", "1389",<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>      "--ldifFile", "test.ldif",<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>      "--accessLogFile", "access.log",<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>      "--useDefaultSchema"<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>    };<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>    exampleUsages.put(example2Args, INFO_MEM_DS_TOOL_EXAMPLE_2.get());<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span><a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>    return exampleUsages;<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>  }<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span><a name="line.1093"></a>
 <span class="sourceLineNo">1094</span><a name="line.1094"></a>
 <span class="sourceLineNo">1095</span><a name="line.1095"></a>
-<span class="sourceLineNo">1096</span><a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>  /**<a name="line.1097"></a>
-<span class="sourceLineNo">1098</span>   * Retrieves the in-memory directory server instance that has been created by<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>   * this tool.  It will only be valid after the {@link #doToolProcessing()}<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>   * method has been called.<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>   *<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>   * @return  The in-memory directory server instance that has been created by<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>   *          this tool, or {@code null} if the directory server instance has<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span>   *          not been successfully created.<a name="line.1104"></a>
-<span class="sourceLineNo">1105</span>   */<a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>  public InMemoryDirectoryServer getDirectoryServer()<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>  {<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>    return directoryServer;<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>  }<a name="line.1109"></a>
+<span class="sourceLineNo">1096</span>  /**<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span>   * Retrieves the in-memory directory server instance that has been created by<a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>   * this tool.  It will only be valid after the {@link #doToolProcessing()}<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>   * method has been called.<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>   *<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>   * @return  The in-memory directory server instance that has been created by<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>   *          this tool, or {@code null} if the directory server instance has<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>   *          not been successfully created.<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>   */<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>  public InMemoryDirectoryServer getDirectoryServer()<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>  {<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>    return directoryServer;<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>  }<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span><a name="line.1109"></a>
 <span class="sourceLineNo">1110</span><a name="line.1110"></a>
 <span class="sourceLineNo">1111</span><a name="line.1111"></a>
-<span class="sourceLineNo">1112</span><a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>  /**<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span>   * {@inheritDoc}<a name="line.1114"></a>
-<span class="sourceLineNo">1115</span>   */<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>  @Override()<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>  public void connectionCreationFailure(final Socket socket,<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>                                        final Throwable cause)<a name="line.1118"></a>
-<span class="sourceLineNo">1119</span>  {<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span>    err(ERR_MEM_DS_TOOL_ERROR_ACCEPTING_CONNECTION.get(<a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>         StaticUtils.getExceptionMessage(cause)));<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>  }<a name="line.1122"></a>
+<span class="sourceLineNo">1112</span>  /**<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>   * {@inheritDoc}<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>   */<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>  @Override()<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>  public void connectionCreationFailure(final Socket socket,<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>                                        final Throwable cause)<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>  {<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>    err(ERR_MEM_DS_TOOL_ERROR_ACCEPTING_CONNECTION.get(<a name="line.1119"></a>
+<span class="sourceLineNo">1120</span>         StaticUtils.getExceptionMessage(cause)));<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span>  }<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span><a name="line.1122"></a>
 <span class="sourceLineNo">1123</span><a name="line.1123"></a>
 <span class="sourceLineNo">1124</span><a name="line.1124"></a>
-<span class="sourceLineNo">1125</span><a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>  /**<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>   * {@inheritDoc}<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>   */<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>  @Override()<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>  public void connectionTerminated(<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span>                   final LDAPListenerClientConnection connection,<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>                   final LDAPException cause)<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>  {<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>    err(ERR_MEM_DS_TOOL_CONNECTION_TERMINATED_BY_EXCEPTION.get(<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>         StaticUtils.getExceptionMessage(cause)));<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>  }<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>}<a name="line.1137"></a>
+<span class="sourceLineNo">1125</span>  /**<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>   * {@inheritDoc}<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>   */<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>  @Override()<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>  public void connectionTerminated(<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>                   final LDAPListenerClientConnection connection,<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>                   final LDAPException cause)<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>  {<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>    err(ERR_MEM_DS_TOOL_CONNECTION_TERMINATED_BY_EXCEPTION.get(<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>         StaticUtils.getExceptionMessage(cause)));<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>  }<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>}<a name="line.1136"></a>
 
 
 

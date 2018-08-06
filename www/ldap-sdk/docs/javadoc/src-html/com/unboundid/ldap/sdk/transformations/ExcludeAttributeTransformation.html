@@ -124,7 +124,7 @@
 <span class="sourceLineNo">116</span><a name="line.116"></a>
 <span class="sourceLineNo">117</span>    // Identify all of the names that may be used to reference the attributes<a name="line.117"></a>
 <span class="sourceLineNo">118</span>    // to suppress.<a name="line.118"></a>
-<span class="sourceLineNo">119</span>    final HashSet&lt;String&gt; attrNames = new HashSet&lt;String&gt;(3*attributes.size());<a name="line.119"></a>
+<span class="sourceLineNo">119</span>    final HashSet&lt;String&gt; attrNames = new HashSet&lt;&gt;(3*attributes.size());<a name="line.119"></a>
 <span class="sourceLineNo">120</span>    for (final String attrName : attributes)<a name="line.120"></a>
 <span class="sourceLineNo">121</span>    {<a name="line.121"></a>
 <span class="sourceLineNo">122</span>      final String baseName =<a name="line.122"></a>
@@ -182,7 +182,7 @@
 <span class="sourceLineNo">174</span><a name="line.174"></a>
 <span class="sourceLineNo">175</span>    // Create a copy of the entry with all appropriate attributes removed.<a name="line.175"></a>
 <span class="sourceLineNo">176</span>    final ArrayList&lt;Attribute&gt; attributesToKeep =<a name="line.176"></a>
-<span class="sourceLineNo">177</span>         new ArrayList&lt;Attribute&gt;(originalAttributes.size());<a name="line.177"></a>
+<span class="sourceLineNo">177</span>         new ArrayList&lt;&gt;(originalAttributes.size());<a name="line.177"></a>
 <span class="sourceLineNo">178</span>    for (final Attribute a : originalAttributes)<a name="line.178"></a>
 <span class="sourceLineNo">179</span>    {<a name="line.179"></a>
 <span class="sourceLineNo">180</span>      if (! attributes.contains(StaticUtils.toLowerCase(a.getBaseName())))<a name="line.180"></a>
@@ -233,7 +233,7 @@
 <span class="sourceLineNo">225</span><a name="line.225"></a>
 <span class="sourceLineNo">226</span>      final Modification[] originalMods = modifyRecord.getModifications();<a name="line.226"></a>
 <span class="sourceLineNo">227</span>      final ArrayList&lt;Modification&gt; modsToKeep =<a name="line.227"></a>
-<span class="sourceLineNo">228</span>           new ArrayList&lt;Modification&gt;(originalMods.length);<a name="line.228"></a>
+<span class="sourceLineNo">228</span>           new ArrayList&lt;&gt;(originalMods.length);<a name="line.228"></a>
 <span class="sourceLineNo">229</span>      for (final Modification m : originalMods)<a name="line.229"></a>
 <span class="sourceLineNo">230</span>      {<a name="line.230"></a>
 <span class="sourceLineNo">231</span>        final String attrName = StaticUtils.toLowerCase(<a name="line.231"></a>

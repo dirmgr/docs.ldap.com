@@ -44,14 +44,14 @@
 <span class="sourceLineNo">036</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.36"></a>
 <span class="sourceLineNo">037</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.37"></a>
 <span class="sourceLineNo">038</span>import com.unboundid.ldap.sdk.SearchScope;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import com.unboundid.util.NotMutable;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import com.unboundid.util.ThreadSafety;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.41"></a>
-<span class="sourceLineNo">042</span><a name="line.42"></a>
-<span class="sourceLineNo">043</span>import static com.unboundid.ldap.sdk.unboundidds.controls.ControlMessages.*;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import static com.unboundid.util.Debug.*;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import static com.unboundid.util.StaticUtils.*;<a name="line.45"></a>
-<span class="sourceLineNo">046</span>import static com.unboundid.util.Validator.*;<a name="line.46"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.Debug;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import com.unboundid.util.NotMutable;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import com.unboundid.util.StaticUtils;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import com.unboundid.util.ThreadSafety;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import com.unboundid.util.Validator;<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>import static com.unboundid.ldap.sdk.unboundidds.controls.ControlMessages.*;<a name="line.46"></a>
 <span class="sourceLineNo">047</span><a name="line.47"></a>
 <span class="sourceLineNo">048</span><a name="line.48"></a>
 <span class="sourceLineNo">049</span><a name="line.49"></a>
@@ -64,11 +64,11 @@
 <span class="sourceLineNo">056</span> * &lt;BLOCKQUOTE&gt;<a name="line.56"></a>
 <span class="sourceLineNo">057</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.57"></a>
 <span class="sourceLineNo">058</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.59"></a>
-<span class="sourceLineNo">060</span> *   server products.  These classes provide support for proprietary<a name="line.60"></a>
-<span class="sourceLineNo">061</span> *   functionality or for external specifications that are not considered stable<a name="line.61"></a>
-<span class="sourceLineNo">062</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.62"></a>
-<span class="sourceLineNo">063</span> *   other types of LDAP servers.<a name="line.63"></a>
+<span class="sourceLineNo">059</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.59"></a>
+<span class="sourceLineNo">060</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.60"></a>
+<span class="sourceLineNo">061</span> *   for proprietary functionality or for external specifications that are not<a name="line.61"></a>
+<span class="sourceLineNo">062</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.62"></a>
+<span class="sourceLineNo">063</span> *   interoperable way with other types of LDAP servers.<a name="line.63"></a>
 <span class="sourceLineNo">064</span> * &lt;/BLOCKQUOTE&gt;<a name="line.64"></a>
 <span class="sourceLineNo">065</span> * &lt;BR&gt;<a name="line.65"></a>
 <span class="sourceLineNo">066</span> * The value of the join request control is encoded as follows:<a name="line.66"></a>
@@ -109,7 +109,7 @@
 <span class="sourceLineNo">101</span>   * The set of attributes that will be used if all user attributes should be<a name="line.101"></a>
 <span class="sourceLineNo">102</span>   * requested.<a name="line.102"></a>
 <span class="sourceLineNo">103</span>   */<a name="line.103"></a>
-<span class="sourceLineNo">104</span>  private static final String[] NO_ATTRIBUTES = NO_STRINGS;<a name="line.104"></a>
+<span class="sourceLineNo">104</span>  private static final String[] NO_ATTRIBUTES = StaticUtils.NO_STRINGS;<a name="line.104"></a>
 <span class="sourceLineNo">105</span><a name="line.105"></a>
 <span class="sourceLineNo">106</span><a name="line.106"></a>
 <span class="sourceLineNo">107</span><a name="line.107"></a>
@@ -249,7 +249,7 @@
 <span class="sourceLineNo">241</span>              final String[] attributes, final boolean requireMatch,<a name="line.241"></a>
 <span class="sourceLineNo">242</span>              final JoinRequestValue nestedJoin)<a name="line.242"></a>
 <span class="sourceLineNo">243</span>  {<a name="line.243"></a>
-<span class="sourceLineNo">244</span>    ensureNotNull(joinRule, baseDN);<a name="line.244"></a>
+<span class="sourceLineNo">244</span>    Validator.ensureNotNull(joinRule, baseDN);<a name="line.244"></a>
 <span class="sourceLineNo">245</span><a name="line.245"></a>
 <span class="sourceLineNo">246</span>    this.joinRule     = joinRule;<a name="line.246"></a>
 <span class="sourceLineNo">247</span>    this.baseDN       = baseDN;<a name="line.247"></a>
@@ -406,7 +406,7 @@
 <span class="sourceLineNo">398</span>   */<a name="line.398"></a>
 <span class="sourceLineNo">399</span>  ASN1Element encode()<a name="line.399"></a>
 <span class="sourceLineNo">400</span>  {<a name="line.400"></a>
-<span class="sourceLineNo">401</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(9);<a name="line.401"></a>
+<span class="sourceLineNo">401</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;&gt;(9);<a name="line.401"></a>
 <span class="sourceLineNo">402</span><a name="line.402"></a>
 <span class="sourceLineNo">403</span>    elements.add(joinRule.encode());<a name="line.403"></a>
 <span class="sourceLineNo">404</span>    elements.add(baseDN.encode());<a name="line.404"></a>
@@ -509,121 +509,125 @@
 <span class="sourceLineNo">501</span>            break;<a name="line.501"></a>
 <span class="sourceLineNo">502</span><a name="line.502"></a>
 <span class="sourceLineNo">503</span>          case TYPE_ATTRIBUTES:<a name="line.503"></a>
-<span class="sourceLineNo">504</span>            final ArrayList&lt;String&gt; attrList = new ArrayList&lt;String&gt;();<a name="line.504"></a>
-<span class="sourceLineNo">505</span>            for (final ASN1Element e :<a name="line.505"></a>
-<span class="sourceLineNo">506</span>                 ASN1Sequence.decodeAsSequence(elements[i]).elements())<a name="line.506"></a>
-<span class="sourceLineNo">507</span>            {<a name="line.507"></a>
-<span class="sourceLineNo">508</span>              attrList.add(<a name="line.508"></a>
-<span class="sourceLineNo">509</span>                   ASN1OctetString.decodeAsOctetString(e).stringValue());<a name="line.509"></a>
-<span class="sourceLineNo">510</span>            }<a name="line.510"></a>
-<span class="sourceLineNo">511</span><a name="line.511"></a>
-<span class="sourceLineNo">512</span>            attributes = new String[attrList.size()];<a name="line.512"></a>
-<span class="sourceLineNo">513</span>            attrList.toArray(attributes);<a name="line.513"></a>
-<span class="sourceLineNo">514</span>            break;<a name="line.514"></a>
-<span class="sourceLineNo">515</span><a name="line.515"></a>
-<span class="sourceLineNo">516</span>          case TYPE_REQUIRE_MATCH:<a name="line.516"></a>
-<span class="sourceLineNo">517</span>            requireMatch =<a name="line.517"></a>
-<span class="sourceLineNo">518</span>                 ASN1Boolean.decodeAsBoolean(elements[i]).booleanValue();<a name="line.518"></a>
-<span class="sourceLineNo">519</span>            break;<a name="line.519"></a>
-<span class="sourceLineNo">520</span><a name="line.520"></a>
-<span class="sourceLineNo">521</span>          case TYPE_NESTED_JOIN:<a name="line.521"></a>
-<span class="sourceLineNo">522</span>            nestedJoin = decode(elements[i]);<a name="line.522"></a>
-<span class="sourceLineNo">523</span>            break;<a name="line.523"></a>
-<span class="sourceLineNo">524</span><a name="line.524"></a>
-<span class="sourceLineNo">525</span>          default:<a name="line.525"></a>
-<span class="sourceLineNo">526</span>            throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.526"></a>
-<span class="sourceLineNo">527</span>                 ERR_JOIN_REQUEST_VALUE_INVALID_ELEMENT_TYPE.get(<a name="line.527"></a>
-<span class="sourceLineNo">528</span>                      elements[i].getType()));<a name="line.528"></a>
-<span class="sourceLineNo">529</span>        }<a name="line.529"></a>
-<span class="sourceLineNo">530</span>      }<a name="line.530"></a>
-<span class="sourceLineNo">531</span><a name="line.531"></a>
-<span class="sourceLineNo">532</span>      return new JoinRequestValue(joinRule, baseDN, scope, derefPolicy,<a name="line.532"></a>
-<span class="sourceLineNo">533</span>           sizeLimit, filter, attributes, requireMatch, nestedJoin);<a name="line.533"></a>
-<span class="sourceLineNo">534</span>    }<a name="line.534"></a>
-<span class="sourceLineNo">535</span>    catch (final Exception e)<a name="line.535"></a>
-<span class="sourceLineNo">536</span>    {<a name="line.536"></a>
-<span class="sourceLineNo">537</span>      debugException(e);<a name="line.537"></a>
-<span class="sourceLineNo">538</span><a name="line.538"></a>
-<span class="sourceLineNo">539</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.539"></a>
-<span class="sourceLineNo">540</span>           ERR_JOIN_REQUEST_VALUE_CANNOT_DECODE.get(getExceptionMessage(e)), e);<a name="line.540"></a>
-<span class="sourceLineNo">541</span>    }<a name="line.541"></a>
-<span class="sourceLineNo">542</span>  }<a name="line.542"></a>
-<span class="sourceLineNo">543</span><a name="line.543"></a>
-<span class="sourceLineNo">544</span><a name="line.544"></a>
-<span class="sourceLineNo">545</span><a name="line.545"></a>
-<span class="sourceLineNo">546</span>  /**<a name="line.546"></a>
-<span class="sourceLineNo">547</span>   * Retrieves a string representation of this join request value.<a name="line.547"></a>
-<span class="sourceLineNo">548</span>   *<a name="line.548"></a>
-<span class="sourceLineNo">549</span>   * @return  A string representation of this join request value.<a name="line.549"></a>
-<span class="sourceLineNo">550</span>   */<a name="line.550"></a>
-<span class="sourceLineNo">551</span>  @Override()<a name="line.551"></a>
-<span class="sourceLineNo">552</span>  public String toString()<a name="line.552"></a>
-<span class="sourceLineNo">553</span>  {<a name="line.553"></a>
-<span class="sourceLineNo">554</span>    final StringBuilder buffer = new StringBuilder();<a name="line.554"></a>
-<span class="sourceLineNo">555</span>    toString(buffer);<a name="line.555"></a>
-<span class="sourceLineNo">556</span>    return buffer.toString();<a name="line.556"></a>
-<span class="sourceLineNo">557</span>  }<a name="line.557"></a>
-<span class="sourceLineNo">558</span><a name="line.558"></a>
-<span class="sourceLineNo">559</span><a name="line.559"></a>
-<span class="sourceLineNo">560</span><a name="line.560"></a>
-<span class="sourceLineNo">561</span>  /**<a name="line.561"></a>
-<span class="sourceLineNo">562</span>   * Appends a string representation of this join request value to the provided<a name="line.562"></a>
-<span class="sourceLineNo">563</span>   * buffer.<a name="line.563"></a>
-<span class="sourceLineNo">564</span>   *<a name="line.564"></a>
-<span class="sourceLineNo">565</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.565"></a>
-<span class="sourceLineNo">566</span>   */<a name="line.566"></a>
-<span class="sourceLineNo">567</span>  public void toString(final StringBuilder buffer)<a name="line.567"></a>
-<span class="sourceLineNo">568</span>  {<a name="line.568"></a>
-<span class="sourceLineNo">569</span>    buffer.append("JoinRequestValue(joinRule=");<a name="line.569"></a>
-<span class="sourceLineNo">570</span>    joinRule.toString(buffer);<a name="line.570"></a>
-<span class="sourceLineNo">571</span>    buffer.append(", baseDN=");<a name="line.571"></a>
-<span class="sourceLineNo">572</span>    baseDN.toString(buffer);<a name="line.572"></a>
-<span class="sourceLineNo">573</span>    buffer.append(", scope=");<a name="line.573"></a>
-<span class="sourceLineNo">574</span>    buffer.append(String.valueOf(scope));<a name="line.574"></a>
-<span class="sourceLineNo">575</span>    buffer.append(", derefPolicy=");<a name="line.575"></a>
-<span class="sourceLineNo">576</span>    buffer.append(String.valueOf(derefPolicy));<a name="line.576"></a>
-<span class="sourceLineNo">577</span>    buffer.append(", sizeLimit=");<a name="line.577"></a>
-<span class="sourceLineNo">578</span>    buffer.append(sizeLimit);<a name="line.578"></a>
-<span class="sourceLineNo">579</span>    buffer.append(", filter=");<a name="line.579"></a>
-<span class="sourceLineNo">580</span><a name="line.580"></a>
-<span class="sourceLineNo">581</span>    if (filter == null)<a name="line.581"></a>
-<span class="sourceLineNo">582</span>    {<a name="line.582"></a>
-<span class="sourceLineNo">583</span>      buffer.append("null");<a name="line.583"></a>
-<span class="sourceLineNo">584</span>    }<a name="line.584"></a>
-<span class="sourceLineNo">585</span>    else<a name="line.585"></a>
+<span class="sourceLineNo">504</span>            final ASN1Element[] attrElements =<a name="line.504"></a>
+<span class="sourceLineNo">505</span>                 ASN1Sequence.decodeAsSequence(elements[i]).elements();<a name="line.505"></a>
+<span class="sourceLineNo">506</span>            final ArrayList&lt;String&gt; attrList =<a name="line.506"></a>
+<span class="sourceLineNo">507</span>                 new ArrayList&lt;&gt;(attrElements.length);<a name="line.507"></a>
+<span class="sourceLineNo">508</span>            for (final ASN1Element e : attrElements)<a name="line.508"></a>
+<span class="sourceLineNo">509</span>            {<a name="line.509"></a>
+<span class="sourceLineNo">510</span>              attrList.add(<a name="line.510"></a>
+<span class="sourceLineNo">511</span>                   ASN1OctetString.decodeAsOctetString(e).stringValue());<a name="line.511"></a>
+<span class="sourceLineNo">512</span>            }<a name="line.512"></a>
+<span class="sourceLineNo">513</span><a name="line.513"></a>
+<span class="sourceLineNo">514</span>            attributes = new String[attrList.size()];<a name="line.514"></a>
+<span class="sourceLineNo">515</span>            attrList.toArray(attributes);<a name="line.515"></a>
+<span class="sourceLineNo">516</span>            break;<a name="line.516"></a>
+<span class="sourceLineNo">517</span><a name="line.517"></a>
+<span class="sourceLineNo">518</span>          case TYPE_REQUIRE_MATCH:<a name="line.518"></a>
+<span class="sourceLineNo">519</span>            requireMatch =<a name="line.519"></a>
+<span class="sourceLineNo">520</span>                 ASN1Boolean.decodeAsBoolean(elements[i]).booleanValue();<a name="line.520"></a>
+<span class="sourceLineNo">521</span>            break;<a name="line.521"></a>
+<span class="sourceLineNo">522</span><a name="line.522"></a>
+<span class="sourceLineNo">523</span>          case TYPE_NESTED_JOIN:<a name="line.523"></a>
+<span class="sourceLineNo">524</span>            nestedJoin = decode(elements[i]);<a name="line.524"></a>
+<span class="sourceLineNo">525</span>            break;<a name="line.525"></a>
+<span class="sourceLineNo">526</span><a name="line.526"></a>
+<span class="sourceLineNo">527</span>          default:<a name="line.527"></a>
+<span class="sourceLineNo">528</span>            throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.528"></a>
+<span class="sourceLineNo">529</span>                 ERR_JOIN_REQUEST_VALUE_INVALID_ELEMENT_TYPE.get(<a name="line.529"></a>
+<span class="sourceLineNo">530</span>                      elements[i].getType()));<a name="line.530"></a>
+<span class="sourceLineNo">531</span>        }<a name="line.531"></a>
+<span class="sourceLineNo">532</span>      }<a name="line.532"></a>
+<span class="sourceLineNo">533</span><a name="line.533"></a>
+<span class="sourceLineNo">534</span>      return new JoinRequestValue(joinRule, baseDN, scope, derefPolicy,<a name="line.534"></a>
+<span class="sourceLineNo">535</span>           sizeLimit, filter, attributes, requireMatch, nestedJoin);<a name="line.535"></a>
+<span class="sourceLineNo">536</span>    }<a name="line.536"></a>
+<span class="sourceLineNo">537</span>    catch (final Exception e)<a name="line.537"></a>
+<span class="sourceLineNo">538</span>    {<a name="line.538"></a>
+<span class="sourceLineNo">539</span>      Debug.debugException(e);<a name="line.539"></a>
+<span class="sourceLineNo">540</span><a name="line.540"></a>
+<span class="sourceLineNo">541</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.541"></a>
+<span class="sourceLineNo">542</span>           ERR_JOIN_REQUEST_VALUE_CANNOT_DECODE.get(<a name="line.542"></a>
+<span class="sourceLineNo">543</span>                StaticUtils.getExceptionMessage(e)),<a name="line.543"></a>
+<span class="sourceLineNo">544</span>           e);<a name="line.544"></a>
+<span class="sourceLineNo">545</span>    }<a name="line.545"></a>
+<span class="sourceLineNo">546</span>  }<a name="line.546"></a>
+<span class="sourceLineNo">547</span><a name="line.547"></a>
+<span class="sourceLineNo">548</span><a name="line.548"></a>
+<span class="sourceLineNo">549</span><a name="line.549"></a>
+<span class="sourceLineNo">550</span>  /**<a name="line.550"></a>
+<span class="sourceLineNo">551</span>   * Retrieves a string representation of this join request value.<a name="line.551"></a>
+<span class="sourceLineNo">552</span>   *<a name="line.552"></a>
+<span class="sourceLineNo">553</span>   * @return  A string representation of this join request value.<a name="line.553"></a>
+<span class="sourceLineNo">554</span>   */<a name="line.554"></a>
+<span class="sourceLineNo">555</span>  @Override()<a name="line.555"></a>
+<span class="sourceLineNo">556</span>  public String toString()<a name="line.556"></a>
+<span class="sourceLineNo">557</span>  {<a name="line.557"></a>
+<span class="sourceLineNo">558</span>    final StringBuilder buffer = new StringBuilder();<a name="line.558"></a>
+<span class="sourceLineNo">559</span>    toString(buffer);<a name="line.559"></a>
+<span class="sourceLineNo">560</span>    return buffer.toString();<a name="line.560"></a>
+<span class="sourceLineNo">561</span>  }<a name="line.561"></a>
+<span class="sourceLineNo">562</span><a name="line.562"></a>
+<span class="sourceLineNo">563</span><a name="line.563"></a>
+<span class="sourceLineNo">564</span><a name="line.564"></a>
+<span class="sourceLineNo">565</span>  /**<a name="line.565"></a>
+<span class="sourceLineNo">566</span>   * Appends a string representation of this join request value to the provided<a name="line.566"></a>
+<span class="sourceLineNo">567</span>   * buffer.<a name="line.567"></a>
+<span class="sourceLineNo">568</span>   *<a name="line.568"></a>
+<span class="sourceLineNo">569</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.569"></a>
+<span class="sourceLineNo">570</span>   */<a name="line.570"></a>
+<span class="sourceLineNo">571</span>  public void toString(final StringBuilder buffer)<a name="line.571"></a>
+<span class="sourceLineNo">572</span>  {<a name="line.572"></a>
+<span class="sourceLineNo">573</span>    buffer.append("JoinRequestValue(joinRule=");<a name="line.573"></a>
+<span class="sourceLineNo">574</span>    joinRule.toString(buffer);<a name="line.574"></a>
+<span class="sourceLineNo">575</span>    buffer.append(", baseDN=");<a name="line.575"></a>
+<span class="sourceLineNo">576</span>    baseDN.toString(buffer);<a name="line.576"></a>
+<span class="sourceLineNo">577</span>    buffer.append(", scope=");<a name="line.577"></a>
+<span class="sourceLineNo">578</span>    buffer.append(String.valueOf(scope));<a name="line.578"></a>
+<span class="sourceLineNo">579</span>    buffer.append(", derefPolicy=");<a name="line.579"></a>
+<span class="sourceLineNo">580</span>    buffer.append(String.valueOf(derefPolicy));<a name="line.580"></a>
+<span class="sourceLineNo">581</span>    buffer.append(", sizeLimit=");<a name="line.581"></a>
+<span class="sourceLineNo">582</span>    buffer.append(sizeLimit);<a name="line.582"></a>
+<span class="sourceLineNo">583</span>    buffer.append(", filter=");<a name="line.583"></a>
+<span class="sourceLineNo">584</span><a name="line.584"></a>
+<span class="sourceLineNo">585</span>    if (filter == null)<a name="line.585"></a>
 <span class="sourceLineNo">586</span>    {<a name="line.586"></a>
-<span class="sourceLineNo">587</span>      buffer.append('\'');<a name="line.587"></a>
-<span class="sourceLineNo">588</span>      filter.toString(buffer);<a name="line.588"></a>
-<span class="sourceLineNo">589</span>      buffer.append('\'');<a name="line.589"></a>
-<span class="sourceLineNo">590</span>    }<a name="line.590"></a>
-<span class="sourceLineNo">591</span><a name="line.591"></a>
-<span class="sourceLineNo">592</span>    buffer.append(", attributes={");<a name="line.592"></a>
-<span class="sourceLineNo">593</span><a name="line.593"></a>
-<span class="sourceLineNo">594</span>    for (int i=0; i &lt; attributes.length; i++)<a name="line.594"></a>
-<span class="sourceLineNo">595</span>    {<a name="line.595"></a>
-<span class="sourceLineNo">596</span>      if (i &gt; 0)<a name="line.596"></a>
-<span class="sourceLineNo">597</span>      {<a name="line.597"></a>
-<span class="sourceLineNo">598</span>        buffer.append(", ");<a name="line.598"></a>
-<span class="sourceLineNo">599</span>      }<a name="line.599"></a>
-<span class="sourceLineNo">600</span>      buffer.append(attributes[i]);<a name="line.600"></a>
-<span class="sourceLineNo">601</span>    }<a name="line.601"></a>
-<span class="sourceLineNo">602</span><a name="line.602"></a>
-<span class="sourceLineNo">603</span>    buffer.append("}, requireMatch=");<a name="line.603"></a>
-<span class="sourceLineNo">604</span>    buffer.append(requireMatch);<a name="line.604"></a>
-<span class="sourceLineNo">605</span>    buffer.append(", nestedJoin=");<a name="line.605"></a>
+<span class="sourceLineNo">587</span>      buffer.append("null");<a name="line.587"></a>
+<span class="sourceLineNo">588</span>    }<a name="line.588"></a>
+<span class="sourceLineNo">589</span>    else<a name="line.589"></a>
+<span class="sourceLineNo">590</span>    {<a name="line.590"></a>
+<span class="sourceLineNo">591</span>      buffer.append('\'');<a name="line.591"></a>
+<span class="sourceLineNo">592</span>      filter.toString(buffer);<a name="line.592"></a>
+<span class="sourceLineNo">593</span>      buffer.append('\'');<a name="line.593"></a>
+<span class="sourceLineNo">594</span>    }<a name="line.594"></a>
+<span class="sourceLineNo">595</span><a name="line.595"></a>
+<span class="sourceLineNo">596</span>    buffer.append(", attributes={");<a name="line.596"></a>
+<span class="sourceLineNo">597</span><a name="line.597"></a>
+<span class="sourceLineNo">598</span>    for (int i=0; i &lt; attributes.length; i++)<a name="line.598"></a>
+<span class="sourceLineNo">599</span>    {<a name="line.599"></a>
+<span class="sourceLineNo">600</span>      if (i &gt; 0)<a name="line.600"></a>
+<span class="sourceLineNo">601</span>      {<a name="line.601"></a>
+<span class="sourceLineNo">602</span>        buffer.append(", ");<a name="line.602"></a>
+<span class="sourceLineNo">603</span>      }<a name="line.603"></a>
+<span class="sourceLineNo">604</span>      buffer.append(attributes[i]);<a name="line.604"></a>
+<span class="sourceLineNo">605</span>    }<a name="line.605"></a>
 <span class="sourceLineNo">606</span><a name="line.606"></a>
-<span class="sourceLineNo">607</span>    if (nestedJoin == null)<a name="line.607"></a>
-<span class="sourceLineNo">608</span>    {<a name="line.608"></a>
-<span class="sourceLineNo">609</span>      buffer.append("null");<a name="line.609"></a>
-<span class="sourceLineNo">610</span>    }<a name="line.610"></a>
-<span class="sourceLineNo">611</span>    else<a name="line.611"></a>
+<span class="sourceLineNo">607</span>    buffer.append("}, requireMatch=");<a name="line.607"></a>
+<span class="sourceLineNo">608</span>    buffer.append(requireMatch);<a name="line.608"></a>
+<span class="sourceLineNo">609</span>    buffer.append(", nestedJoin=");<a name="line.609"></a>
+<span class="sourceLineNo">610</span><a name="line.610"></a>
+<span class="sourceLineNo">611</span>    if (nestedJoin == null)<a name="line.611"></a>
 <span class="sourceLineNo">612</span>    {<a name="line.612"></a>
-<span class="sourceLineNo">613</span>      nestedJoin.toString(buffer);<a name="line.613"></a>
+<span class="sourceLineNo">613</span>      buffer.append("null");<a name="line.613"></a>
 <span class="sourceLineNo">614</span>    }<a name="line.614"></a>
-<span class="sourceLineNo">615</span><a name="line.615"></a>
-<span class="sourceLineNo">616</span>    buffer.append(')');<a name="line.616"></a>
-<span class="sourceLineNo">617</span>  }<a name="line.617"></a>
-<span class="sourceLineNo">618</span>}<a name="line.618"></a>
+<span class="sourceLineNo">615</span>    else<a name="line.615"></a>
+<span class="sourceLineNo">616</span>    {<a name="line.616"></a>
+<span class="sourceLineNo">617</span>      nestedJoin.toString(buffer);<a name="line.617"></a>
+<span class="sourceLineNo">618</span>    }<a name="line.618"></a>
+<span class="sourceLineNo">619</span><a name="line.619"></a>
+<span class="sourceLineNo">620</span>    buffer.append(')');<a name="line.620"></a>
+<span class="sourceLineNo">621</span>  }<a name="line.621"></a>
+<span class="sourceLineNo">622</span>}<a name="line.622"></a>
 
 
 

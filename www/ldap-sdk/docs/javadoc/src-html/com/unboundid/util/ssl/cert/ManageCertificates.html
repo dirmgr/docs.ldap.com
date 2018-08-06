@@ -3374,7 +3374,7 @@
 <span class="sourceLineNo">3366</span><a name="line.3366"></a>
 <span class="sourceLineNo">3367</span>    final IntegerArgument trustServerPort = new IntegerArgument('p',<a name="line.3367"></a>
 <span class="sourceLineNo">3368</span>         "port", true, 1, INFO_MANAGE_CERTS_PLACEHOLDER_PORT.get(),<a name="line.3368"></a>
-<span class="sourceLineNo">3369</span>         INFO_MANAGE_CERTS_SC_TRUST_SERVER_ARG_PORT_DESC.get(), 1, 65535);<a name="line.3369"></a>
+<span class="sourceLineNo">3369</span>         INFO_MANAGE_CERTS_SC_TRUST_SERVER_ARG_PORT_DESC.get(), 1, 65_535);<a name="line.3369"></a>
 <span class="sourceLineNo">3370</span>    trustServerPort.addLongIdentifier("server-port", true);<a name="line.3370"></a>
 <span class="sourceLineNo">3371</span>    trustServerPort.addLongIdentifier("serverPort", true);<a name="line.3371"></a>
 <span class="sourceLineNo">3372</span>    trustServerParser.addArgument(trustServerPort);<a name="line.3372"></a>
@@ -9207,9 +9207,9 @@
 <span class="sourceLineNo">9199</span>   * @return  A short summary of the provided public key, or {@code null} if<a name="line.9199"></a>
 <span class="sourceLineNo">9200</span>   *          no summary is available.<a name="line.9200"></a>
 <span class="sourceLineNo">9201</span>   */<a name="line.9201"></a>
-<span class="sourceLineNo">9202</span>  static String getPublicKeySummary(final OID publicKeyAlgorithmOID,<a name="line.9202"></a>
-<span class="sourceLineNo">9203</span>                                    final DecodedPublicKey publicKey,<a name="line.9203"></a>
-<span class="sourceLineNo">9204</span>                                    final ASN1Element parameters)<a name="line.9204"></a>
+<span class="sourceLineNo">9202</span>  private static String getPublicKeySummary(final OID publicKeyAlgorithmOID,<a name="line.9202"></a>
+<span class="sourceLineNo">9203</span>                                            final DecodedPublicKey publicKey,<a name="line.9203"></a>
+<span class="sourceLineNo">9204</span>                                            final ASN1Element parameters)<a name="line.9204"></a>
 <span class="sourceLineNo">9205</span>  {<a name="line.9205"></a>
 <span class="sourceLineNo">9206</span>    if (publicKey instanceof RSAPublicKey)<a name="line.9206"></a>
 <span class="sourceLineNo">9207</span>    {<a name="line.9207"></a>
@@ -9831,7 +9831,7 @@
 <span class="sourceLineNo">9823</span>        keystorePasswordFileArgument.isPresent())<a name="line.9823"></a>
 <span class="sourceLineNo">9824</span>    {<a name="line.9824"></a>
 <span class="sourceLineNo">9825</span>      final File f = keystorePasswordFileArgument.getValue();<a name="line.9825"></a>
-<span class="sourceLineNo">9826</span>      try (BufferedReader r = new BufferedReader(new FileReader(f)))<a name="line.9826"></a>
+<span class="sourceLineNo">9826</span>      try (final BufferedReader r = new BufferedReader(new FileReader(f)))<a name="line.9826"></a>
 <span class="sourceLineNo">9827</span>      {<a name="line.9827"></a>
 <span class="sourceLineNo">9828</span>        final String line = r.readLine();<a name="line.9828"></a>
 <span class="sourceLineNo">9829</span>        if (line == null)<a name="line.9829"></a>
@@ -10197,7 +10197,7 @@
 <span class="sourceLineNo">10189</span>        privateKeyPasswordFileArgument.isPresent())<a name="line.10189"></a>
 <span class="sourceLineNo">10190</span>    {<a name="line.10190"></a>
 <span class="sourceLineNo">10191</span>      final File f = privateKeyPasswordFileArgument.getValue();<a name="line.10191"></a>
-<span class="sourceLineNo">10192</span>      try (BufferedReader r = new BufferedReader(new FileReader(f)))<a name="line.10192"></a>
+<span class="sourceLineNo">10192</span>      try (final BufferedReader r = new BufferedReader(new FileReader(f)))<a name="line.10192"></a>
 <span class="sourceLineNo">10193</span>      {<a name="line.10193"></a>
 <span class="sourceLineNo">10194</span>        final String line = r.readLine();<a name="line.10194"></a>
 <span class="sourceLineNo">10195</span>        if (line == null)<a name="line.10195"></a>
@@ -10375,7 +10375,7 @@
 <span class="sourceLineNo">10367</span>    }<a name="line.10367"></a>
 <span class="sourceLineNo">10368</span><a name="line.10368"></a>
 <span class="sourceLineNo">10369</span><a name="line.10369"></a>
-<span class="sourceLineNo">10370</span>    try (FileInputStream inputStream = new FileInputStream(keystorePath))<a name="line.10370"></a>
+<span class="sourceLineNo">10370</span>    try (final FileInputStream inputStream = new FileInputStream(keystorePath))<a name="line.10370"></a>
 <span class="sourceLineNo">10371</span>    {<a name="line.10371"></a>
 <span class="sourceLineNo">10372</span>      final int firstByte = inputStream.read();<a name="line.10372"></a>
 <span class="sourceLineNo">10373</span>      if (firstByte &lt; 0)<a name="line.10373"></a>
@@ -10575,7 +10575,7 @@
 <span class="sourceLineNo">10567</span>  {<a name="line.10567"></a>
 <span class="sourceLineNo">10568</span>    // Read the first byte of the file to see if it contains DER-formatted data,<a name="line.10568"></a>
 <span class="sourceLineNo">10569</span>    // which we can determine by seeing if the first byte is 0x30.<a name="line.10569"></a>
-<span class="sourceLineNo">10570</span>    try (BufferedInputStream inputStream =<a name="line.10570"></a>
+<span class="sourceLineNo">10570</span>    try (final BufferedInputStream inputStream =<a name="line.10570"></a>
 <span class="sourceLineNo">10571</span>              new BufferedInputStream(new FileInputStream(f)))<a name="line.10571"></a>
 <span class="sourceLineNo">10572</span>    {<a name="line.10572"></a>
 <span class="sourceLineNo">10573</span>      inputStream.mark(1);<a name="line.10573"></a>
@@ -10634,7 +10634,7 @@
 <span class="sourceLineNo">10626</span>      }<a name="line.10626"></a>
 <span class="sourceLineNo">10627</span>      else<a name="line.10627"></a>
 <span class="sourceLineNo">10628</span>      {<a name="line.10628"></a>
-<span class="sourceLineNo">10629</span>        try (BufferedReader reader =<a name="line.10629"></a>
+<span class="sourceLineNo">10629</span>        try (final BufferedReader reader =<a name="line.10629"></a>
 <span class="sourceLineNo">10630</span>                  new BufferedReader(new InputStreamReader(inputStream)))<a name="line.10630"></a>
 <span class="sourceLineNo">10631</span>        {<a name="line.10631"></a>
 <span class="sourceLineNo">10632</span>          boolean inCert = false;<a name="line.10632"></a>
@@ -10761,7 +10761,7 @@
 <span class="sourceLineNo">10753</span>  {<a name="line.10753"></a>
 <span class="sourceLineNo">10754</span>    // Read the first byte of the file to see if it contains DER-formatted data,<a name="line.10754"></a>
 <span class="sourceLineNo">10755</span>    // which we can determine by seeing if the first byte is 0x30.<a name="line.10755"></a>
-<span class="sourceLineNo">10756</span>    try (BufferedInputStream inputStream =<a name="line.10756"></a>
+<span class="sourceLineNo">10756</span>    try (final BufferedInputStream inputStream =<a name="line.10756"></a>
 <span class="sourceLineNo">10757</span>              new BufferedInputStream(new FileInputStream(f)))<a name="line.10757"></a>
 <span class="sourceLineNo">10758</span>    {<a name="line.10758"></a>
 <span class="sourceLineNo">10759</span>      inputStream.mark(1);<a name="line.10759"></a>
@@ -10839,7 +10839,7 @@
 <span class="sourceLineNo">10831</span>      }<a name="line.10831"></a>
 <span class="sourceLineNo">10832</span>      else<a name="line.10832"></a>
 <span class="sourceLineNo">10833</span>      {<a name="line.10833"></a>
-<span class="sourceLineNo">10834</span>        try (BufferedReader reader =<a name="line.10834"></a>
+<span class="sourceLineNo">10834</span>        try (final BufferedReader reader =<a name="line.10834"></a>
 <span class="sourceLineNo">10835</span>                  new BufferedReader(new InputStreamReader(inputStream)))<a name="line.10835"></a>
 <span class="sourceLineNo">10836</span>        {<a name="line.10836"></a>
 <span class="sourceLineNo">10837</span>          boolean inKey = false;<a name="line.10837"></a>
@@ -10995,7 +10995,7 @@
 <span class="sourceLineNo">10987</span>  {<a name="line.10987"></a>
 <span class="sourceLineNo">10988</span>    // Read the first byte of the file to see if it contains DER-formatted data,<a name="line.10988"></a>
 <span class="sourceLineNo">10989</span>    // which we can determine by seeing if the first byte is 0x30.<a name="line.10989"></a>
-<span class="sourceLineNo">10990</span>    try (BufferedInputStream inputStream =<a name="line.10990"></a>
+<span class="sourceLineNo">10990</span>    try (final BufferedInputStream inputStream =<a name="line.10990"></a>
 <span class="sourceLineNo">10991</span>              new BufferedInputStream(new FileInputStream(f)))<a name="line.10991"></a>
 <span class="sourceLineNo">10992</span>    {<a name="line.10992"></a>
 <span class="sourceLineNo">10993</span>      inputStream.mark(1);<a name="line.10993"></a>
@@ -11073,7 +11073,7 @@
 <span class="sourceLineNo">11065</span>      }<a name="line.11065"></a>
 <span class="sourceLineNo">11066</span>      else<a name="line.11066"></a>
 <span class="sourceLineNo">11067</span>      {<a name="line.11067"></a>
-<span class="sourceLineNo">11068</span>        try (BufferedReader reader =<a name="line.11068"></a>
+<span class="sourceLineNo">11068</span>        try (final BufferedReader reader =<a name="line.11068"></a>
 <span class="sourceLineNo">11069</span>                  new BufferedReader(new InputStreamReader(inputStream)))<a name="line.11069"></a>
 <span class="sourceLineNo">11070</span>        {<a name="line.11070"></a>
 <span class="sourceLineNo">11071</span>          boolean inCSR = false;<a name="line.11071"></a>
@@ -11429,7 +11429,7 @@
 <span class="sourceLineNo">11421</span>      for (final String keystoreType : new String[] { "JKS", "PKCS12" })<a name="line.11421"></a>
 <span class="sourceLineNo">11422</span>      {<a name="line.11422"></a>
 <span class="sourceLineNo">11423</span>        final KeyStore ks = KeyStore.getInstance(keystoreType);<a name="line.11423"></a>
-<span class="sourceLineNo">11424</span>        try (FileInputStream inputStream =<a name="line.11424"></a>
+<span class="sourceLineNo">11424</span>        try (final FileInputStream inputStream =<a name="line.11424"></a>
 <span class="sourceLineNo">11425</span>                  new FileInputStream(JVM_DEFAULT_CACERTS_FILE))<a name="line.11425"></a>
 <span class="sourceLineNo">11426</span>        {<a name="line.11426"></a>
 <span class="sourceLineNo">11427</span>          ks.load(inputStream, null);<a name="line.11427"></a>

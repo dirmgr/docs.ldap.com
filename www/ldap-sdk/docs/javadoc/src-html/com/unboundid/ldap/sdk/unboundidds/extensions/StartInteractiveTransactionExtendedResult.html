@@ -41,13 +41,13 @@
 <span class="sourceLineNo">033</span>import com.unboundid.ldap.sdk.ExtendedResult;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.34"></a>
 <span class="sourceLineNo">035</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import com.unboundid.util.NotMutable;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafety;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import static com.unboundid.util.Debug.*;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>import static com.unboundid.util.StaticUtils.*;<a name="line.42"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.Debug;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.NotMutable;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.StaticUtils;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.ThreadSafety;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.40"></a>
+<span class="sourceLineNo">041</span><a name="line.41"></a>
+<span class="sourceLineNo">042</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
 <span class="sourceLineNo">044</span><a name="line.44"></a>
 <span class="sourceLineNo">045</span><a name="line.45"></a>
@@ -78,11 +78,11 @@
 <span class="sourceLineNo">070</span> * &lt;BLOCKQUOTE&gt;<a name="line.70"></a>
 <span class="sourceLineNo">071</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.71"></a>
 <span class="sourceLineNo">072</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.72"></a>
-<span class="sourceLineNo">073</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.73"></a>
-<span class="sourceLineNo">074</span> *   server products.  These classes provide support for proprietary<a name="line.74"></a>
-<span class="sourceLineNo">075</span> *   functionality or for external specifications that are not considered stable<a name="line.75"></a>
-<span class="sourceLineNo">076</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.76"></a>
-<span class="sourceLineNo">077</span> *   other types of LDAP servers.<a name="line.77"></a>
+<span class="sourceLineNo">073</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.73"></a>
+<span class="sourceLineNo">074</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.74"></a>
+<span class="sourceLineNo">075</span> *   for proprietary functionality or for external specifications that are not<a name="line.75"></a>
+<span class="sourceLineNo">076</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.76"></a>
+<span class="sourceLineNo">077</span> *   interoperable way with other types of LDAP servers.<a name="line.77"></a>
 <span class="sourceLineNo">078</span> * &lt;/BLOCKQUOTE&gt;<a name="line.78"></a>
 <span class="sourceLineNo">079</span> * &lt;BR&gt;<a name="line.79"></a>
 <span class="sourceLineNo">080</span> * See the documentation for the<a name="line.80"></a>
@@ -157,7 +157,7 @@
 <span class="sourceLineNo">149</span>    }<a name="line.149"></a>
 <span class="sourceLineNo">150</span>    catch (final Exception e)<a name="line.150"></a>
 <span class="sourceLineNo">151</span>    {<a name="line.151"></a>
-<span class="sourceLineNo">152</span>      debugException(e);<a name="line.152"></a>
+<span class="sourceLineNo">152</span>      Debug.debugException(e);<a name="line.152"></a>
 <span class="sourceLineNo">153</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.153"></a>
 <span class="sourceLineNo">154</span>           ERR_START_INT_TXN_RESULT_VALUE_NOT_SEQUENCE.get(e.getMessage()), e);<a name="line.154"></a>
 <span class="sourceLineNo">155</span>    }<a name="line.155"></a>
@@ -177,7 +177,7 @@
 <span class="sourceLineNo">169</span>            final ASN1Sequence baseDNsSequence =<a name="line.169"></a>
 <span class="sourceLineNo">170</span>                 ASN1Sequence.decodeAsSequence(element);<a name="line.170"></a>
 <span class="sourceLineNo">171</span>            final ArrayList&lt;String&gt; dnList =<a name="line.171"></a>
-<span class="sourceLineNo">172</span>                 new ArrayList&lt;String&gt;(baseDNsSequence.elements().length);<a name="line.172"></a>
+<span class="sourceLineNo">172</span>                 new ArrayList&lt;&gt;(baseDNsSequence.elements().length);<a name="line.172"></a>
 <span class="sourceLineNo">173</span>            for (final ASN1Element e : baseDNsSequence.elements())<a name="line.173"></a>
 <span class="sourceLineNo">174</span>            {<a name="line.174"></a>
 <span class="sourceLineNo">175</span>              dnList.add(ASN1OctetString.decodeAsOctetString(e).stringValue());<a name="line.175"></a>
@@ -186,7 +186,7 @@
 <span class="sourceLineNo">178</span>          }<a name="line.178"></a>
 <span class="sourceLineNo">179</span>          catch (final Exception e)<a name="line.179"></a>
 <span class="sourceLineNo">180</span>          {<a name="line.180"></a>
-<span class="sourceLineNo">181</span>            debugException(e);<a name="line.181"></a>
+<span class="sourceLineNo">181</span>            Debug.debugException(e);<a name="line.181"></a>
 <span class="sourceLineNo">182</span>            throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.182"></a>
 <span class="sourceLineNo">183</span>                 ERR_START_INT_TXN_RESULT_BASE_DNS_NOT_SEQUENCE.get(<a name="line.183"></a>
 <span class="sourceLineNo">184</span>                      e.getMessage()), e);<a name="line.184"></a>
@@ -195,7 +195,7 @@
 <span class="sourceLineNo">187</span>        default:<a name="line.187"></a>
 <span class="sourceLineNo">188</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.188"></a>
 <span class="sourceLineNo">189</span>               ERR_START_INT_TXN_RESULT_INVALID_ELEMENT.get(<a name="line.189"></a>
-<span class="sourceLineNo">190</span>                    toHex(element.getType())));<a name="line.190"></a>
+<span class="sourceLineNo">190</span>                    StaticUtils.toHex(element.getType())));<a name="line.190"></a>
 <span class="sourceLineNo">191</span>      }<a name="line.191"></a>
 <span class="sourceLineNo">192</span>    }<a name="line.192"></a>
 <span class="sourceLineNo">193</span><a name="line.193"></a>
@@ -248,7 +248,7 @@
 <span class="sourceLineNo">240</span>    else<a name="line.240"></a>
 <span class="sourceLineNo">241</span>    {<a name="line.241"></a>
 <span class="sourceLineNo">242</span>      this.baseDNs =<a name="line.242"></a>
-<span class="sourceLineNo">243</span>           Collections.unmodifiableList(new ArrayList&lt;String&gt;(baseDNs));<a name="line.243"></a>
+<span class="sourceLineNo">243</span>           Collections.unmodifiableList(new ArrayList&lt;&gt;(baseDNs));<a name="line.243"></a>
 <span class="sourceLineNo">244</span>    }<a name="line.244"></a>
 <span class="sourceLineNo">245</span>  }<a name="line.245"></a>
 <span class="sourceLineNo">246</span><a name="line.246"></a>
@@ -274,7 +274,7 @@
 <span class="sourceLineNo">266</span>      return null;<a name="line.266"></a>
 <span class="sourceLineNo">267</span>    }<a name="line.267"></a>
 <span class="sourceLineNo">268</span><a name="line.268"></a>
-<span class="sourceLineNo">269</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(2);<a name="line.269"></a>
+<span class="sourceLineNo">269</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;&gt;(2);<a name="line.269"></a>
 <span class="sourceLineNo">270</span>    if (transactionID != null)<a name="line.270"></a>
 <span class="sourceLineNo">271</span>    {<a name="line.271"></a>
 <span class="sourceLineNo">272</span>      elements.add(new ASN1OctetString(TYPE_TXN_ID, transactionID.getValue()));<a name="line.272"></a>
@@ -283,7 +283,7 @@
 <span class="sourceLineNo">275</span>    if ((baseDNs != null) &amp;&amp; (! baseDNs.isEmpty()))<a name="line.275"></a>
 <span class="sourceLineNo">276</span>    {<a name="line.276"></a>
 <span class="sourceLineNo">277</span>      final ArrayList&lt;ASN1Element&gt; baseDNElements =<a name="line.277"></a>
-<span class="sourceLineNo">278</span>           new ArrayList&lt;ASN1Element&gt;(baseDNs.size());<a name="line.278"></a>
+<span class="sourceLineNo">278</span>           new ArrayList&lt;&gt;(baseDNs.size());<a name="line.278"></a>
 <span class="sourceLineNo">279</span>      for (final String s : baseDNs)<a name="line.279"></a>
 <span class="sourceLineNo">280</span>      {<a name="line.280"></a>
 <span class="sourceLineNo">281</span>        baseDNElements.add(new ASN1OctetString(s));<a name="line.281"></a>

@@ -50,11 +50,11 @@
 <span class="sourceLineNo">042</span> * &lt;BLOCKQUOTE&gt;<a name="line.42"></a>
 <span class="sourceLineNo">043</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.43"></a>
 <span class="sourceLineNo">044</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.44"></a>
-<span class="sourceLineNo">045</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.45"></a>
-<span class="sourceLineNo">046</span> *   server products.  These classes provide support for proprietary<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *   functionality or for external specifications that are not considered stable<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   other types of LDAP servers.<a name="line.49"></a>
+<span class="sourceLineNo">045</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *   for proprietary functionality or for external specifications that are not<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *   interoperable way with other types of LDAP servers.<a name="line.49"></a>
 <span class="sourceLineNo">050</span> * &lt;/BLOCKQUOTE&gt;<a name="line.50"></a>
 <span class="sourceLineNo">051</span> * &lt;BR&gt;<a name="line.51"></a>
 <span class="sourceLineNo">052</span> * The information that may be available about the entry cache includes:<a name="line.52"></a>
@@ -731,7 +731,7 @@
 <span class="sourceLineNo">723</span>  public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()<a name="line.723"></a>
 <span class="sourceLineNo">724</span>  {<a name="line.724"></a>
 <span class="sourceLineNo">725</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs =<a name="line.725"></a>
-<span class="sourceLineNo">726</span>         new LinkedHashMap&lt;String,MonitorAttribute&gt;(30);<a name="line.726"></a>
+<span class="sourceLineNo">726</span>         new LinkedHashMap&lt;&gt;(30);<a name="line.726"></a>
 <span class="sourceLineNo">727</span><a name="line.727"></a>
 <span class="sourceLineNo">728</span>    if (cacheName != null)<a name="line.728"></a>
 <span class="sourceLineNo">729</span>    {<a name="line.729"></a>

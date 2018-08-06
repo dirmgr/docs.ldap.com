@@ -1643,7 +1643,7 @@
 <span class="sourceLineNo">1635</span>                                    final String... a)<a name="line.1635"></a>
 <span class="sourceLineNo">1636</span>         throws LDAPException<a name="line.1636"></a>
 <span class="sourceLineNo">1637</span>  {<a name="line.1637"></a>
-<span class="sourceLineNo">1638</span>    final HashSet&lt;String&gt; s = new HashSet&lt;String&gt;(Arrays.asList(a));<a name="line.1638"></a>
+<span class="sourceLineNo">1638</span>    final HashSet&lt;String&gt; s = new HashSet&lt;&gt;(Arrays.asList(a));<a name="line.1638"></a>
 <span class="sourceLineNo">1639</span>    for (final String n : o.getFields().keySet())<a name="line.1639"></a>
 <span class="sourceLineNo">1640</span>    {<a name="line.1640"></a>
 <span class="sourceLineNo">1641</span>      if (! s.contains(n))<a name="line.1641"></a>
@@ -1920,7 +1920,7 @@
 <span class="sourceLineNo">1912</span>             ERR_LDAP_SPEC_READ_FILE_MULTIPLE_LINES.get(path, fieldName));<a name="line.1912"></a>
 <span class="sourceLineNo">1913</span>      }<a name="line.1913"></a>
 <span class="sourceLineNo">1914</span><a name="line.1914"></a>
-<span class="sourceLineNo">1915</span>      if (line.length() == 0)<a name="line.1915"></a>
+<span class="sourceLineNo">1915</span>      if (line.isEmpty())<a name="line.1915"></a>
 <span class="sourceLineNo">1916</span>      {<a name="line.1916"></a>
 <span class="sourceLineNo">1917</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1917"></a>
 <span class="sourceLineNo">1918</span>             ERR_LDAP_SPEC_READ_FILE_EMPTY_LINE.get(path, fieldName));<a name="line.1918"></a>

@@ -64,11 +64,11 @@ import com.unboundid.util.args.StringArgument;
  * <BLOCKQUOTE>
  *   <B>NOTE:</B>  This class, and other classes within the
  *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only
- *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661
- *   server products.  These classes provide support for proprietary
- *   functionality or for external specifications that are not considered stable
- *   or mature enough to be guaranteed to work in an interoperable way with
- *   other types of LDAP servers.
+ *   supported for use against Ping Identity, UnboundID, and
+ *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support
+ *   for proprietary functionality or for external specifications that are not
+ *   considered stable or mature enough to be guaranteed to work in an
+ *   interoperable way with other types of LDAP servers.
  * </BLOCKQUOTE>
  * <BR>
  * The APIs demonstrated by this example include:
@@ -89,7 +89,7 @@ public final class SubtreeAccessibility
   private static final Set<String> ALLOWED_ACCESSIBILITY_STATES;
   static
   {
-    final LinkedHashSet<String> stateValues = new LinkedHashSet<String>(4);
+    final LinkedHashSet<String> stateValues = new LinkedHashSet<>(4);
 
     stateValues.add(SubtreeAccessibilityState.ACCESSIBLE.getStateName());
     stateValues.add(
@@ -189,7 +189,6 @@ public final class SubtreeAccessibility
     bypassUserDN       = null;
     accessibilityState = null;
   }
-
 
 
 
@@ -620,8 +619,7 @@ public final class SubtreeAccessibility
   @Override()
   public LinkedHashMap<String[],String> getExampleUsages()
   {
-    final LinkedHashMap<String[],String> exampleMap =
-         new LinkedHashMap<String[],String>(2);
+    final LinkedHashMap<String[],String> exampleMap = new LinkedHashMap<>(2);
 
     final String[] getArgs =
     {

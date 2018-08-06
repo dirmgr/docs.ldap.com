@@ -37,12 +37,12 @@
 <span class="sourceLineNo">029</span>import com.unboundid.ldap.sdk.ExtendedResult;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.Debug;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
@@ -54,11 +54,11 @@
 <span class="sourceLineNo">046</span> * &lt;BLOCKQUOTE&gt;<a name="line.46"></a>
 <span class="sourceLineNo">047</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.47"></a>
 <span class="sourceLineNo">048</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.49"></a>
-<span class="sourceLineNo">050</span> *   server products.  These classes provide support for proprietary<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *   functionality or for external specifications that are not considered stable<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *   other types of LDAP servers.<a name="line.53"></a>
+<span class="sourceLineNo">049</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *   for proprietary functionality or for external specifications that are not<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *   interoperable way with other types of LDAP servers.<a name="line.53"></a>
 <span class="sourceLineNo">054</span> * &lt;/BLOCKQUOTE&gt;<a name="line.54"></a>
 <span class="sourceLineNo">055</span> * &lt;BR&gt;<a name="line.55"></a>
 <span class="sourceLineNo">056</span> * This extended result does not have an OID.  If the request was processed<a name="line.56"></a>
@@ -111,7 +111,7 @@
 <span class="sourceLineNo">103</span>    }<a name="line.103"></a>
 <span class="sourceLineNo">104</span>    catch (final Exception e)<a name="line.104"></a>
 <span class="sourceLineNo">105</span>    {<a name="line.105"></a>
-<span class="sourceLineNo">106</span>      debugException(e);<a name="line.106"></a>
+<span class="sourceLineNo">106</span>      Debug.debugException(e);<a name="line.106"></a>
 <span class="sourceLineNo">107</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.107"></a>
 <span class="sourceLineNo">108</span>                              ERR_GET_CONN_ID_RESPONSE_VALUE_NOT_INT.get(), e);<a name="line.108"></a>
 <span class="sourceLineNo">109</span>    }<a name="line.109"></a>

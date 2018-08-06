@@ -130,13 +130,13 @@
 <span class="sourceLineNo">122</span>                                final SSLSocketFactory startTLSSocketFactory)<a name="line.122"></a>
 <span class="sourceLineNo">123</span>         throws LDAPException<a name="line.123"></a>
 <span class="sourceLineNo">124</span>  {<a name="line.124"></a>
-<span class="sourceLineNo">125</span>    if ((listenerName == null) || (listenerName.length() == 0))<a name="line.125"></a>
+<span class="sourceLineNo">125</span>    if ((listenerName == null) || listenerName.isEmpty())<a name="line.125"></a>
 <span class="sourceLineNo">126</span>    {<a name="line.126"></a>
 <span class="sourceLineNo">127</span>      throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.127"></a>
 <span class="sourceLineNo">128</span>           ERR_LISTENER_CFG_NO_NAME.get());<a name="line.128"></a>
 <span class="sourceLineNo">129</span>    }<a name="line.129"></a>
 <span class="sourceLineNo">130</span><a name="line.130"></a>
-<span class="sourceLineNo">131</span>    if ((listenPort &lt; 0) || (listenPort &gt; 65535))<a name="line.131"></a>
+<span class="sourceLineNo">131</span>    if ((listenPort &lt; 0) || (listenPort &gt; 65_535))<a name="line.131"></a>
 <span class="sourceLineNo">132</span>    {<a name="line.132"></a>
 <span class="sourceLineNo">133</span>      throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.133"></a>
 <span class="sourceLineNo">134</span>           ERR_LISTENER_CFG_INVALID_PORT.get(listenPort));<a name="line.134"></a>

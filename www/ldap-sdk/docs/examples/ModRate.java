@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -46,6 +45,7 @@ import com.unboundid.ldap.sdk.controls.PermissiveModifyRequestControl;
 import com.unboundid.ldap.sdk.controls.PostReadRequestControl;
 import com.unboundid.ldap.sdk.controls.PreReadRequestControl;
 import com.unboundid.util.ColumnFormatter;
+import com.unboundid.util.Debug;
 import com.unboundid.util.FixedRateBarrier;
 import com.unboundid.util.FormattableColumn;
 import com.unboundid.util.HorizontalAlignment;
@@ -54,6 +54,7 @@ import com.unboundid.util.ObjectPair;
 import com.unboundid.util.OutputFormat;
 import com.unboundid.util.RateAdjustor;
 import com.unboundid.util.ResultCodeCounter;
+import com.unboundid.util.StaticUtils;
 import com.unboundid.util.ThreadSafety;
 import com.unboundid.util.ThreadSafetyLevel;
 import com.unboundid.util.ValuePattern;
@@ -66,9 +67,6 @@ import com.unboundid.util.args.FileArgument;
 import com.unboundid.util.args.FilterArgument;
 import com.unboundid.util.args.IntegerArgument;
 import com.unboundid.util.args.StringArgument;
-
-import static com.unboundid.util.Debug.*;
-import static com.unboundid.util.StaticUtils.*;
 
 
 
@@ -102,6 +100,10 @@ import static com.unboundid.util.StaticUtils.*;
  *       attribute to modify.  Multiple attributes may be modified by providing
  *       multiple instances of this argument.  At least one attribute must be
  *       provided.</LI>
+ *   <LI>"--valuePattern {pattern}" -- specifies the pattern to use to generate
+ *       the value to use for each modification.  If this argument is provided,
+ *       then neither the "--valueLength" nor "--characterSet" arguments may be
+ *       given.</LI>
  *   <LI>"-l {num}" or "--valueLength {num}" -- specifies the length in bytes to
  *       use for the values of the target attributes.  If this is not provided,
  *       then a default length of 10 bytes will be used.</LI>
@@ -255,6 +257,9 @@ public final class ModRate
 
   // The argument used to specify the timestamp format.
   private StringArgument timestampFormat;
+
+  // The argument used to specify the pattern to use to generate values.
+  private StringArgument valuePattern;
 
   // The thread currently being used to run the searchrate tool.
   private volatile Thread runningThread;
@@ -516,11 +521,22 @@ public final class ModRate
     parser.addArgument(attribute);
 
 
+    description = "The pattern to use to generate values for the replace " +
+                  "modifications.  If this is provided, then neither the " +
+                  "--valueLength argument nor the --characterSet arguments " +
+                  "may be provided.";
+    valuePattern = new StringArgument(null, "valuePattern", false, 1,
+                                     "{pattern}", description);
+    valuePattern.setArgumentGroupName("Modification Arguments");
+    valuePattern.addLongIdentifier("value-pattern", true);
+    parser.addArgument(valuePattern);
+
+
     description = "The length in bytes to use when generating values for the " +
                   "replace modifications.  If this is not provided, then a " +
                   "default length of ten bytes will be used.";
-    valueLength = new IntegerArgument('l', "valueLength", true, 1, "{num}",
-                                      description, 1, Integer.MAX_VALUE, 10);
+    valueLength = new IntegerArgument('l', "valueLength", false, 1, "{num}",
+                                      description, 1, Integer.MAX_VALUE);
     valueLength.setArgumentGroupName("Modification Arguments");
     valueLength.addLongIdentifier("value-length", true);
     parser.addArgument(valueLength);
@@ -561,9 +577,8 @@ public final class ModRate
                   "the modifications.  It should only include ASCII " +
                   "characters.  If this is not provided, then a default set " +
                   "of lowercase alphabetic characters will be used.";
-    characterSet = new StringArgument('C', "characterSet", true, 1, "{chars}",
-                                      description,
-                                      "abcdefghijklmnopqrstuvwxyz");
+    characterSet = new StringArgument('C', "characterSet", false, 1, "{chars}",
+                                      description);
     characterSet.setArgumentGroupName("Modification Arguments");
     characterSet.addLongIdentifier("character-set", true);
     parser.addArgument(characterSet);
@@ -728,7 +743,7 @@ public final class ModRate
                   "indicates that both the date and the time should be " +
                   "included.  A value of 'without-date' indicates that only " +
                   "the time should be included.";
-    final LinkedHashSet<String> allowedFormats = new LinkedHashSet<String>(3);
+    final LinkedHashSet<String> allowedFormats = new LinkedHashSet<>(3);
     allowedFormats.add("none");
     allowedFormats.add("with-date");
     allowedFormats.add("without-date");
@@ -762,10 +777,18 @@ public final class ModRate
     parser.addDependentArgumentSet(incrementAmount, increment);
 
 
-    // Neither the valueLength nor valueCount arguments can be used if the
-    // increment argument is provided.
+    // None of the valueLength, valueCount, characterSet, or valuePattern
+    // arguments can be used if the increment argument is provided.
     parser.addExclusiveArgumentSet(increment, valueLength);
     parser.addExclusiveArgumentSet(increment, valueCount);
+    parser.addExclusiveArgumentSet(increment, characterSet);
+    parser.addExclusiveArgumentSet(increment, valuePattern);
+
+
+    // The valuePattern argument cannot be used with either the valueLength or
+    // characterSet arguments.
+    parser.addExclusiveArgumentSet(valuePattern, valueLength);
+    parser.addExclusiveArgumentSet(valuePattern, characterSet);
   }
 
 
@@ -849,10 +872,10 @@ public final class ModRate
       }
       catch (final Exception e)
       {
-        debugException(e);
+        Debug.debugException(e);
         err("An error occurred while trying to write sample variable data " +
              "rate file '", sampleRateFile.getValue().getAbsolutePath(),
-             "':  ", getExceptionMessage(e));
+             "':  ", StaticUtils.getExceptionMessage(e));
         return ResultCode.LOCAL_ERROR;
       }
     }
@@ -878,7 +901,7 @@ public final class ModRate
     }
     catch (final ParseException pe)
     {
-      debugException(pe);
+      Debug.debugException(pe);
       err("Unable to parse the entry DN value pattern:  ", pe.getMessage());
       return ResultCode.PARAM_ERROR;
     }
@@ -892,7 +915,7 @@ public final class ModRate
       }
       catch (final ParseException pe)
       {
-        debugException(pe);
+        Debug.debugException(pe);
         err("Unable to parse the proxied authorization pattern:  ",
             pe.getMessage());
         return ResultCode.PARAM_ERROR;
@@ -905,7 +928,7 @@ public final class ModRate
 
 
     // Get the set of controls to include in modify requests.
-    final ArrayList<Control> controlList = new ArrayList<Control>(5);
+    final ArrayList<Control> controlList = new ArrayList<>(5);
     if (assertionFilter.isPresent())
     {
       controlList.add(new AssertionRequestControl(assertionFilter.getValue()));
@@ -946,10 +969,6 @@ public final class ModRate
     attribute.getValues().toArray(attrs);
 
 
-    // Get the character set as a byte array.
-    final byte[] charSet = getBytes(characterSet.getValue());
-
-
     // If the --ratePerSecond option was specified, then limit the rate
     // accordingly.
     FixedRateBarrier fixedRateBarrier = null;
@@ -977,15 +996,9 @@ public final class ModRate
         rateAdjustor = RateAdjustor.newInstance(fixedRateBarrier,
              ratePerSecond.getValue(), variableRateData.getValue());
       }
-      catch (final IOException e)
+      catch (final IOException | IllegalArgumentException e)
       {
-        debugException(e);
-        err("Initializing the variable rates failed: " + e.getMessage());
-        return ResultCode.PARAM_ERROR;
-      }
-      catch (final IllegalArgumentException e)
-      {
-        debugException(e);
+        Debug.debugException(e);
         err("Initializing the variable rates failed: " + e.getMessage());
         return ResultCode.PARAM_ERROR;
       }
@@ -1065,11 +1078,6 @@ public final class ModRate
     final long intervalMillis = 1000L * collectionInterval.getValue();
 
 
-    // Create a random number generator to use for seeding the per-thread
-    // generators.
-    final Random random = new Random();
-
-
     // Create the threads to use for the modifications.
     final CyclicBarrier barrier = new CyclicBarrier(numThreads.getValue() + 1);
     final ModRateThread[] threads = new ModRateThread[numThreads.getValue()];
@@ -1082,18 +1090,60 @@ public final class ModRate
       }
       catch (final LDAPException le)
       {
-        debugException(le);
+        Debug.debugException(le);
         err("Unable to connect to the directory server:  ",
-            getExceptionMessage(le));
+            StaticUtils.getExceptionMessage(le));
         return le.getResultCode();
       }
 
+      final String valuePatternString;
+      if (valuePattern.isPresent())
+      {
+        valuePatternString = valuePattern.getValue();
+      }
+      else
+      {
+        final int length;
+        if (valueLength.isPresent())
+        {
+          length = valueLength.getValue();
+        }
+        else
+        {
+          length = 10;
+        }
+
+        final String charSet;
+        if (characterSet.isPresent())
+        {
+          charSet =
+               characterSet.getValue().replace("]", "]]").replace("[", "[[");
+        }
+        else
+        {
+          charSet = "abcdefghijklmnopqrstuvwxyz";
+        }
+
+        valuePatternString = "random:" + length + ':' + charSet;
+      }
+
+      final ValuePattern parsedValuePattern;
+      try
+      {
+        parsedValuePattern = new ValuePattern(valuePatternString);
+      }
+      catch (final ParseException e)
+      {
+        Debug.debugException(e);
+        err(e.getMessage());
+        return ResultCode.PARAM_ERROR;
+      }
+
       threads[i] = new ModRateThread(this, i, connection, dnPattern, attrs,
-           charSet, valueLength.getValue(), valueCount.getValue(),
-           increment.isPresent(), incrementAmount.getValue(), controlArray,
-           authzIDPattern, random.nextLong(),
-           iterationsBeforeReconnect.getValue(), barrier, modCounter,
-           modDurations, errorCounter, rcCounter, fixedRateBarrier);
+           parsedValuePattern, valueCount.getValue(), increment.isPresent(),
+           incrementAmount.getValue(), controlArray, authzIDPattern,
+           iterationsBeforeReconnect.getValue(), barrier,
+           modCounter, modDurations, errorCounter, rcCounter, fixedRateBarrier);
       threads[i].start();
     }
 
@@ -1121,7 +1171,7 @@ public final class ModRate
     }
     catch (final Exception e)
     {
-      debugException(e);
+      Debug.debugException(e);
     }
 
     long overallStartTime = System.nanoTime();
@@ -1181,14 +1231,14 @@ public final class ModRate
       final long recentNumErrors = numErrors - lastNumErrors;
       final long recentDuration = totalDuration - lastDuration;
 
-      final double numSeconds = intervalDuration / 1000000000.0d;
+      final double numSeconds = intervalDuration / 1_000_000_000.0d;
       final double recentModRate = recentNumMods / numSeconds;
       final double recentErrorRate  = recentNumErrors / numSeconds;
 
       final double recentAvgDuration;
       if (recentNumMods > 0L)
       {
-        recentAvgDuration = 1.0d * recentDuration / recentNumMods / 1000000;
+        recentAvgDuration = 1.0d * recentDuration / recentNumMods / 1_000_000;
       }
       else
       {
@@ -1220,13 +1270,13 @@ public final class ModRate
         }
 
         final double numOverallSeconds =
-             (endTime - overallStartTime) / 1000000000.0d;
+             (endTime - overallStartTime) / 1_000_000_000.0d;
         final double overallAuthRate = numMods / numOverallSeconds;
 
         final double overallAvgDuration;
         if (numMods > 0L)
         {
-          overallAvgDuration = 1.0d * totalDuration / numMods / 1000000;
+          overallAvgDuration = 1.0d * totalDuration / numMods / 1_000_000;
         }
         else
         {
@@ -1295,7 +1345,7 @@ public final class ModRate
       }
       catch (final Exception e)
       {
-        debugException(e);
+        Debug.debugException(e);
 
         if (e instanceof InterruptedException)
         {
@@ -1313,8 +1363,7 @@ public final class ModRate
   @Override()
   public LinkedHashMap<String[],String> getExampleUsages()
   {
-    final LinkedHashMap<String[],String> examples =
-         new LinkedHashMap<String[],String>(2);
+    final LinkedHashMap<String[],String> examples = new LinkedHashMap<>(2);
 
     String[] args =
     {

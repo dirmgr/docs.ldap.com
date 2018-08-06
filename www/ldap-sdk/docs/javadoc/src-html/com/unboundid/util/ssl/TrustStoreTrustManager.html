@@ -41,13 +41,13 @@
 <span class="sourceLineNo">033</span>import javax.net.ssl.TrustManagerFactory;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import javax.net.ssl.X509TrustManager;<a name="line.34"></a>
 <span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import com.unboundid.util.NotMutable;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import com.unboundid.util.StaticUtils;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import com.unboundid.util.ThreadSafety;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.39"></a>
-<span class="sourceLineNo">040</span><a name="line.40"></a>
-<span class="sourceLineNo">041</span>import static com.unboundid.util.Debug.*;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>import static com.unboundid.util.Validator.*;<a name="line.42"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.Debug;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.NotMutable;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.StaticUtils;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.ThreadSafety;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import com.unboundid.util.Validator;<a name="line.41"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span>import static com.unboundid.util.ssl.SSLMessages.*;<a name="line.43"></a>
 <span class="sourceLineNo">044</span><a name="line.44"></a>
 <span class="sourceLineNo">045</span><a name="line.45"></a>
@@ -174,7 +174,7 @@
 <span class="sourceLineNo">166</span>                                final String trustStoreFormat,<a name="line.166"></a>
 <span class="sourceLineNo">167</span>                                final boolean examineValidityDates)<a name="line.167"></a>
 <span class="sourceLineNo">168</span>  {<a name="line.168"></a>
-<span class="sourceLineNo">169</span>    ensureNotNull(trustStoreFile);<a name="line.169"></a>
+<span class="sourceLineNo">169</span>    Validator.ensureNotNull(trustStoreFile);<a name="line.169"></a>
 <span class="sourceLineNo">170</span><a name="line.170"></a>
 <span class="sourceLineNo">171</span>    this.trustStoreFile       = trustStoreFile;<a name="line.171"></a>
 <span class="sourceLineNo">172</span>    this.trustStorePIN        = trustStorePIN;<a name="line.172"></a>
@@ -272,7 +272,7 @@
 <span class="sourceLineNo">264</span>    }<a name="line.264"></a>
 <span class="sourceLineNo">265</span>    catch (final Exception e)<a name="line.265"></a>
 <span class="sourceLineNo">266</span>    {<a name="line.266"></a>
-<span class="sourceLineNo">267</span>      debugException(e);<a name="line.267"></a>
+<span class="sourceLineNo">267</span>      Debug.debugException(e);<a name="line.267"></a>
 <span class="sourceLineNo">268</span><a name="line.268"></a>
 <span class="sourceLineNo">269</span>      throw new CertificateException(<a name="line.269"></a>
 <span class="sourceLineNo">270</span>           ERR_TRUSTSTORE_UNSUPPORTED_FORMAT.get(trustStoreFormat), e);<a name="line.270"></a>
@@ -286,7 +286,7 @@
 <span class="sourceLineNo">278</span>    }<a name="line.278"></a>
 <span class="sourceLineNo">279</span>    catch (final Exception e)<a name="line.279"></a>
 <span class="sourceLineNo">280</span>    {<a name="line.280"></a>
-<span class="sourceLineNo">281</span>      debugException(e);<a name="line.281"></a>
+<span class="sourceLineNo">281</span>      Debug.debugException(e);<a name="line.281"></a>
 <span class="sourceLineNo">282</span><a name="line.282"></a>
 <span class="sourceLineNo">283</span>      throw new CertificateException(<a name="line.283"></a>
 <span class="sourceLineNo">284</span>           ERR_TRUSTSTORE_CANNOT_LOAD.get(trustStoreFile, trustStoreFormat,<a name="line.284"></a>
@@ -303,7 +303,7 @@
 <span class="sourceLineNo">295</span>        }<a name="line.295"></a>
 <span class="sourceLineNo">296</span>        catch (final Exception e)<a name="line.296"></a>
 <span class="sourceLineNo">297</span>        {<a name="line.297"></a>
-<span class="sourceLineNo">298</span>          debugException(e);<a name="line.298"></a>
+<span class="sourceLineNo">298</span>          Debug.debugException(e);<a name="line.298"></a>
 <span class="sourceLineNo">299</span>        }<a name="line.299"></a>
 <span class="sourceLineNo">300</span>      }<a name="line.300"></a>
 <span class="sourceLineNo">301</span>    }<a name="line.301"></a>
@@ -324,7 +324,7 @@
 <span class="sourceLineNo">316</span>    }<a name="line.316"></a>
 <span class="sourceLineNo">317</span>    catch (final Exception e)<a name="line.317"></a>
 <span class="sourceLineNo">318</span>    {<a name="line.318"></a>
-<span class="sourceLineNo">319</span>      debugException(e);<a name="line.319"></a>
+<span class="sourceLineNo">319</span>      Debug.debugException(e);<a name="line.319"></a>
 <span class="sourceLineNo">320</span><a name="line.320"></a>
 <span class="sourceLineNo">321</span>      throw new CertificateException(<a name="line.321"></a>
 <span class="sourceLineNo">322</span>           ERR_TRUSTSTORE_CANNOT_GET_TRUST_MANAGERS.get(trustStoreFile,<a name="line.322"></a>

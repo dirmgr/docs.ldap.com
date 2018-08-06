@@ -61,11 +61,11 @@
 <span class="sourceLineNo">053</span> * &lt;BLOCKQUOTE&gt;<a name="line.53"></a>
 <span class="sourceLineNo">054</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.54"></a>
 <span class="sourceLineNo">055</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.55"></a>
-<span class="sourceLineNo">056</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.56"></a>
-<span class="sourceLineNo">057</span> *   server products.  These classes provide support for proprietary<a name="line.57"></a>
-<span class="sourceLineNo">058</span> *   functionality or for external specifications that are not considered stable<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.59"></a>
-<span class="sourceLineNo">060</span> *   other types of LDAP servers.<a name="line.60"></a>
+<span class="sourceLineNo">056</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.56"></a>
+<span class="sourceLineNo">057</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *   for proprietary functionality or for external specifications that are not<a name="line.58"></a>
+<span class="sourceLineNo">059</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.59"></a>
+<span class="sourceLineNo">060</span> *   interoperable way with other types of LDAP servers.<a name="line.60"></a>
 <span class="sourceLineNo">061</span> * &lt;/BLOCKQUOTE&gt;<a name="line.61"></a>
 <span class="sourceLineNo">062</span> * &lt;BR&gt;<a name="line.62"></a>
 <span class="sourceLineNo">063</span> * The OID for this extended result is 1.3.6.1.4.1.30221.2.6.33.  If the request<a name="line.63"></a>
@@ -162,7 +162,7 @@
 <span class="sourceLineNo">154</span>            final ASN1Element[] errorElements =<a name="line.154"></a>
 <span class="sourceLineNo">155</span>                 ASN1Sequence.decodeAsSequence(e).elements();<a name="line.155"></a>
 <span class="sourceLineNo">156</span>            final ArrayList&lt;String&gt; errorStrings =<a name="line.156"></a>
-<span class="sourceLineNo">157</span>                 new ArrayList&lt;String&gt;(errorElements.length);<a name="line.157"></a>
+<span class="sourceLineNo">157</span>                 new ArrayList&lt;&gt;(errorElements.length);<a name="line.157"></a>
 <span class="sourceLineNo">158</span>            for (final ASN1Element errorElement : errorElements)<a name="line.158"></a>
 <span class="sourceLineNo">159</span>            {<a name="line.159"></a>
 <span class="sourceLineNo">160</span>              errorStrings.add(ASN1OctetString.decodeAsOctetString(<a name="line.160"></a>
@@ -175,7 +175,7 @@
 <span class="sourceLineNo">167</span>            final ASN1Element[] warningElements =<a name="line.167"></a>
 <span class="sourceLineNo">168</span>                 ASN1Sequence.decodeAsSequence(e).elements();<a name="line.168"></a>
 <span class="sourceLineNo">169</span>            final ArrayList&lt;String&gt; warningStrings =<a name="line.169"></a>
-<span class="sourceLineNo">170</span>                 new ArrayList&lt;String&gt;(warningElements.length);<a name="line.170"></a>
+<span class="sourceLineNo">170</span>                 new ArrayList&lt;&gt;(warningElements.length);<a name="line.170"></a>
 <span class="sourceLineNo">171</span>            for (final ASN1Element warningElement : warningElements)<a name="line.171"></a>
 <span class="sourceLineNo">172</span>            {<a name="line.172"></a>
 <span class="sourceLineNo">173</span>              warningStrings.add(ASN1OctetString.decodeAsOctetString(<a name="line.173"></a>
@@ -253,7 +253,7 @@
 <span class="sourceLineNo">245</span>    else<a name="line.245"></a>
 <span class="sourceLineNo">246</span>    {<a name="line.246"></a>
 <span class="sourceLineNo">247</span>      this.errorMessages =<a name="line.247"></a>
-<span class="sourceLineNo">248</span>           Collections.unmodifiableList(new ArrayList&lt;String&gt;(errorMessages));<a name="line.248"></a>
+<span class="sourceLineNo">248</span>           Collections.unmodifiableList(new ArrayList&lt;&gt;(errorMessages));<a name="line.248"></a>
 <span class="sourceLineNo">249</span>    }<a name="line.249"></a>
 <span class="sourceLineNo">250</span><a name="line.250"></a>
 <span class="sourceLineNo">251</span>    if (warningMessages == null)<a name="line.251"></a>
@@ -263,7 +263,7 @@
 <span class="sourceLineNo">255</span>    else<a name="line.255"></a>
 <span class="sourceLineNo">256</span>    {<a name="line.256"></a>
 <span class="sourceLineNo">257</span>      this.warningMessages =<a name="line.257"></a>
-<span class="sourceLineNo">258</span>           Collections.unmodifiableList(new ArrayList&lt;String&gt;(warningMessages));<a name="line.258"></a>
+<span class="sourceLineNo">258</span>           Collections.unmodifiableList(new ArrayList&lt;&gt;(warningMessages));<a name="line.258"></a>
 <span class="sourceLineNo">259</span>    }<a name="line.259"></a>
 <span class="sourceLineNo">260</span>  }<a name="line.260"></a>
 <span class="sourceLineNo">261</span><a name="line.261"></a>
@@ -301,12 +301,12 @@
 <span class="sourceLineNo">293</span>      return null;<a name="line.293"></a>
 <span class="sourceLineNo">294</span>    }<a name="line.294"></a>
 <span class="sourceLineNo">295</span><a name="line.295"></a>
-<span class="sourceLineNo">296</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(2);<a name="line.296"></a>
+<span class="sourceLineNo">296</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;&gt;(2);<a name="line.296"></a>
 <span class="sourceLineNo">297</span><a name="line.297"></a>
 <span class="sourceLineNo">298</span>    if ((errorMessages != null) &amp;&amp; (! errorMessages.isEmpty()))<a name="line.298"></a>
 <span class="sourceLineNo">299</span>    {<a name="line.299"></a>
 <span class="sourceLineNo">300</span>      final ArrayList&lt;ASN1Element&gt; msgElements =<a name="line.300"></a>
-<span class="sourceLineNo">301</span>           new ArrayList&lt;ASN1Element&gt;(errorMessages.size());<a name="line.301"></a>
+<span class="sourceLineNo">301</span>           new ArrayList&lt;&gt;(errorMessages.size());<a name="line.301"></a>
 <span class="sourceLineNo">302</span>      for (final String s : errorMessages)<a name="line.302"></a>
 <span class="sourceLineNo">303</span>      {<a name="line.303"></a>
 <span class="sourceLineNo">304</span>        msgElements.add(new ASN1OctetString(s));<a name="line.304"></a>
@@ -317,7 +317,7 @@
 <span class="sourceLineNo">309</span>    if ((warningMessages != null) &amp;&amp; (! warningMessages.isEmpty()))<a name="line.309"></a>
 <span class="sourceLineNo">310</span>    {<a name="line.310"></a>
 <span class="sourceLineNo">311</span>      final ArrayList&lt;ASN1Element&gt; msgElements =<a name="line.311"></a>
-<span class="sourceLineNo">312</span>           new ArrayList&lt;ASN1Element&gt;(warningMessages.size());<a name="line.312"></a>
+<span class="sourceLineNo">312</span>           new ArrayList&lt;&gt;(warningMessages.size());<a name="line.312"></a>
 <span class="sourceLineNo">313</span>      for (final String s : warningMessages)<a name="line.313"></a>
 <span class="sourceLineNo">314</span>      {<a name="line.314"></a>
 <span class="sourceLineNo">315</span>        msgElements.add(new ASN1OctetString(s));<a name="line.315"></a>

@@ -37,13 +37,13 @@
 <span class="sourceLineNo">029</span><a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.Attribute;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.schema.AttributeTypeDefinition;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.Extensible;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.persist.PersistMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.StaticUtils.*;<a name="line.38"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.Debug;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.Extensible;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.StaticUtils;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafety;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>import static com.unboundid.ldap.sdk.persist.PersistMessages.*;<a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
@@ -322,105 +322,107 @@
 <span class="sourceLineNo">314</span>    }<a name="line.314"></a>
 <span class="sourceLineNo">315</span>    catch (final Exception e)<a name="line.315"></a>
 <span class="sourceLineNo">316</span>    {<a name="line.316"></a>
-<span class="sourceLineNo">317</span>      debugException(e);<a name="line.317"></a>
+<span class="sourceLineNo">317</span>      Debug.debugException(e);<a name="line.317"></a>
 <span class="sourceLineNo">318</span>      throw new LDAPPersistException(<a name="line.318"></a>
 <span class="sourceLineNo">319</span>           ERR_ENCODER_CANNOT_SET_NULL_FIELD_VALUE.get(f.getName(),<a name="line.319"></a>
-<span class="sourceLineNo">320</span>                o.getClass().getName(), getExceptionMessage(e)), e);<a name="line.320"></a>
-<span class="sourceLineNo">321</span>    }<a name="line.321"></a>
-<span class="sourceLineNo">322</span>  }<a name="line.322"></a>
-<span class="sourceLineNo">323</span><a name="line.323"></a>
+<span class="sourceLineNo">320</span>                o.getClass().getName(), StaticUtils.getExceptionMessage(e)),<a name="line.320"></a>
+<span class="sourceLineNo">321</span>           e);<a name="line.321"></a>
+<span class="sourceLineNo">322</span>    }<a name="line.322"></a>
+<span class="sourceLineNo">323</span>  }<a name="line.323"></a>
 <span class="sourceLineNo">324</span><a name="line.324"></a>
 <span class="sourceLineNo">325</span><a name="line.325"></a>
-<span class="sourceLineNo">326</span>  /**<a name="line.326"></a>
-<span class="sourceLineNo">327</span>   * Invokes the provided setter method with a single argument that will set a<a name="line.327"></a>
-<span class="sourceLineNo">328</span>   * {@code null} value for that method, if possible.  If the argument type is<a name="line.328"></a>
-<span class="sourceLineNo">329</span>   * and cannot be assigned a {@code null} value, then a default primitive value<a name="line.329"></a>
-<span class="sourceLineNo">330</span>   * will be assigned instead (0 for numeric values, false for {@code boolean}<a name="line.330"></a>
-<span class="sourceLineNo">331</span>   * values, and the null character for {@code char} values).<a name="line.331"></a>
-<span class="sourceLineNo">332</span>   *<a name="line.332"></a>
-<span class="sourceLineNo">333</span>   * @param  m  The setter method that should be used to set the {@code null}<a name="line.333"></a>
-<span class="sourceLineNo">334</span>   *            value.  It must not be {@code null}, and must have the<a name="line.334"></a>
-<span class="sourceLineNo">335</span>   *            {@code LDAPSetter} annotation.<a name="line.335"></a>
-<span class="sourceLineNo">336</span>   * @param  o  The object to be updated.  It must not be {@code null}, and the<a name="line.336"></a>
-<span class="sourceLineNo">337</span>   *            class must be marked with the {@link LDAPObject annotation}.<a name="line.337"></a>
-<span class="sourceLineNo">338</span>   *<a name="line.338"></a>
-<span class="sourceLineNo">339</span>   * @throws  LDAPPersistException  If a problem occurs while attempting to<a name="line.339"></a>
-<span class="sourceLineNo">340</span>   *                                assign a {@code null} value to the specified<a name="line.340"></a>
-<span class="sourceLineNo">341</span>   *                                field.<a name="line.341"></a>
-<span class="sourceLineNo">342</span>   */<a name="line.342"></a>
-<span class="sourceLineNo">343</span>  public void setNull(final Method m, final Object o)<a name="line.343"></a>
-<span class="sourceLineNo">344</span>         throws LDAPPersistException<a name="line.344"></a>
-<span class="sourceLineNo">345</span>  {<a name="line.345"></a>
-<span class="sourceLineNo">346</span>    try<a name="line.346"></a>
-<span class="sourceLineNo">347</span>    {<a name="line.347"></a>
-<span class="sourceLineNo">348</span>      m.setAccessible(true);<a name="line.348"></a>
-<span class="sourceLineNo">349</span><a name="line.349"></a>
-<span class="sourceLineNo">350</span>      final Class&lt;?&gt; type = m.getParameterTypes()[0];<a name="line.350"></a>
-<span class="sourceLineNo">351</span>      if (type.equals(Boolean.TYPE))<a name="line.351"></a>
-<span class="sourceLineNo">352</span>      {<a name="line.352"></a>
-<span class="sourceLineNo">353</span>        m.invoke(o, Boolean.FALSE);<a name="line.353"></a>
-<span class="sourceLineNo">354</span>      }<a name="line.354"></a>
-<span class="sourceLineNo">355</span>      else if (type.equals(Byte.TYPE))<a name="line.355"></a>
-<span class="sourceLineNo">356</span>      {<a name="line.356"></a>
-<span class="sourceLineNo">357</span>        m.invoke(o, (byte) 0);<a name="line.357"></a>
-<span class="sourceLineNo">358</span>      }<a name="line.358"></a>
-<span class="sourceLineNo">359</span>      else if (type.equals(Character.TYPE))<a name="line.359"></a>
-<span class="sourceLineNo">360</span>      {<a name="line.360"></a>
-<span class="sourceLineNo">361</span>        m.invoke(o, '\u0000');<a name="line.361"></a>
-<span class="sourceLineNo">362</span>      }<a name="line.362"></a>
-<span class="sourceLineNo">363</span>      else if (type.equals(Double.TYPE))<a name="line.363"></a>
-<span class="sourceLineNo">364</span>      {<a name="line.364"></a>
-<span class="sourceLineNo">365</span>        m.invoke(o, 0.0d);<a name="line.365"></a>
-<span class="sourceLineNo">366</span>      }<a name="line.366"></a>
-<span class="sourceLineNo">367</span>      else if (type.equals(Float.TYPE))<a name="line.367"></a>
-<span class="sourceLineNo">368</span>      {<a name="line.368"></a>
-<span class="sourceLineNo">369</span>        m.invoke(o, 0.0f);<a name="line.369"></a>
-<span class="sourceLineNo">370</span>      }<a name="line.370"></a>
-<span class="sourceLineNo">371</span>      else if (type.equals(Integer.TYPE))<a name="line.371"></a>
-<span class="sourceLineNo">372</span>      {<a name="line.372"></a>
-<span class="sourceLineNo">373</span>        m.invoke(o, 0);<a name="line.373"></a>
-<span class="sourceLineNo">374</span>      }<a name="line.374"></a>
-<span class="sourceLineNo">375</span>      else if (type.equals(Long.TYPE))<a name="line.375"></a>
-<span class="sourceLineNo">376</span>      {<a name="line.376"></a>
-<span class="sourceLineNo">377</span>        m.invoke(o, 0L);<a name="line.377"></a>
-<span class="sourceLineNo">378</span>      }<a name="line.378"></a>
-<span class="sourceLineNo">379</span>      else if (type.equals(Short.TYPE))<a name="line.379"></a>
-<span class="sourceLineNo">380</span>      {<a name="line.380"></a>
-<span class="sourceLineNo">381</span>        m.invoke(o, (short) 0);<a name="line.381"></a>
-<span class="sourceLineNo">382</span>      }<a name="line.382"></a>
-<span class="sourceLineNo">383</span>      else<a name="line.383"></a>
-<span class="sourceLineNo">384</span>      {<a name="line.384"></a>
-<span class="sourceLineNo">385</span>        m.invoke(o, type.cast(null));<a name="line.385"></a>
-<span class="sourceLineNo">386</span>      }<a name="line.386"></a>
-<span class="sourceLineNo">387</span>    }<a name="line.387"></a>
-<span class="sourceLineNo">388</span>    catch (final Exception e)<a name="line.388"></a>
-<span class="sourceLineNo">389</span>    {<a name="line.389"></a>
-<span class="sourceLineNo">390</span>      debugException(e);<a name="line.390"></a>
-<span class="sourceLineNo">391</span>      throw new LDAPPersistException(<a name="line.391"></a>
-<span class="sourceLineNo">392</span>           ERR_ENCODER_CANNOT_SET_NULL_METHOD_VALUE.get(m.getName(),<a name="line.392"></a>
-<span class="sourceLineNo">393</span>                o.getClass().getName(), getExceptionMessage(e)), e);<a name="line.393"></a>
-<span class="sourceLineNo">394</span>    }<a name="line.394"></a>
-<span class="sourceLineNo">395</span>  }<a name="line.395"></a>
-<span class="sourceLineNo">396</span><a name="line.396"></a>
-<span class="sourceLineNo">397</span><a name="line.397"></a>
+<span class="sourceLineNo">326</span><a name="line.326"></a>
+<span class="sourceLineNo">327</span>  /**<a name="line.327"></a>
+<span class="sourceLineNo">328</span>   * Invokes the provided setter method with a single argument that will set a<a name="line.328"></a>
+<span class="sourceLineNo">329</span>   * {@code null} value for that method, if possible.  If the argument type is<a name="line.329"></a>
+<span class="sourceLineNo">330</span>   * and cannot be assigned a {@code null} value, then a default primitive value<a name="line.330"></a>
+<span class="sourceLineNo">331</span>   * will be assigned instead (0 for numeric values, false for {@code boolean}<a name="line.331"></a>
+<span class="sourceLineNo">332</span>   * values, and the null character for {@code char} values).<a name="line.332"></a>
+<span class="sourceLineNo">333</span>   *<a name="line.333"></a>
+<span class="sourceLineNo">334</span>   * @param  m  The setter method that should be used to set the {@code null}<a name="line.334"></a>
+<span class="sourceLineNo">335</span>   *            value.  It must not be {@code null}, and must have the<a name="line.335"></a>
+<span class="sourceLineNo">336</span>   *            {@code LDAPSetter} annotation.<a name="line.336"></a>
+<span class="sourceLineNo">337</span>   * @param  o  The object to be updated.  It must not be {@code null}, and the<a name="line.337"></a>
+<span class="sourceLineNo">338</span>   *            class must be marked with the {@link LDAPObject annotation}.<a name="line.338"></a>
+<span class="sourceLineNo">339</span>   *<a name="line.339"></a>
+<span class="sourceLineNo">340</span>   * @throws  LDAPPersistException  If a problem occurs while attempting to<a name="line.340"></a>
+<span class="sourceLineNo">341</span>   *                                assign a {@code null} value to the specified<a name="line.341"></a>
+<span class="sourceLineNo">342</span>   *                                field.<a name="line.342"></a>
+<span class="sourceLineNo">343</span>   */<a name="line.343"></a>
+<span class="sourceLineNo">344</span>  public void setNull(final Method m, final Object o)<a name="line.344"></a>
+<span class="sourceLineNo">345</span>         throws LDAPPersistException<a name="line.345"></a>
+<span class="sourceLineNo">346</span>  {<a name="line.346"></a>
+<span class="sourceLineNo">347</span>    try<a name="line.347"></a>
+<span class="sourceLineNo">348</span>    {<a name="line.348"></a>
+<span class="sourceLineNo">349</span>      m.setAccessible(true);<a name="line.349"></a>
+<span class="sourceLineNo">350</span><a name="line.350"></a>
+<span class="sourceLineNo">351</span>      final Class&lt;?&gt; type = m.getParameterTypes()[0];<a name="line.351"></a>
+<span class="sourceLineNo">352</span>      if (type.equals(Boolean.TYPE))<a name="line.352"></a>
+<span class="sourceLineNo">353</span>      {<a name="line.353"></a>
+<span class="sourceLineNo">354</span>        m.invoke(o, Boolean.FALSE);<a name="line.354"></a>
+<span class="sourceLineNo">355</span>      }<a name="line.355"></a>
+<span class="sourceLineNo">356</span>      else if (type.equals(Byte.TYPE))<a name="line.356"></a>
+<span class="sourceLineNo">357</span>      {<a name="line.357"></a>
+<span class="sourceLineNo">358</span>        m.invoke(o, (byte) 0);<a name="line.358"></a>
+<span class="sourceLineNo">359</span>      }<a name="line.359"></a>
+<span class="sourceLineNo">360</span>      else if (type.equals(Character.TYPE))<a name="line.360"></a>
+<span class="sourceLineNo">361</span>      {<a name="line.361"></a>
+<span class="sourceLineNo">362</span>        m.invoke(o, '\u0000');<a name="line.362"></a>
+<span class="sourceLineNo">363</span>      }<a name="line.363"></a>
+<span class="sourceLineNo">364</span>      else if (type.equals(Double.TYPE))<a name="line.364"></a>
+<span class="sourceLineNo">365</span>      {<a name="line.365"></a>
+<span class="sourceLineNo">366</span>        m.invoke(o, 0.0d);<a name="line.366"></a>
+<span class="sourceLineNo">367</span>      }<a name="line.367"></a>
+<span class="sourceLineNo">368</span>      else if (type.equals(Float.TYPE))<a name="line.368"></a>
+<span class="sourceLineNo">369</span>      {<a name="line.369"></a>
+<span class="sourceLineNo">370</span>        m.invoke(o, 0.0f);<a name="line.370"></a>
+<span class="sourceLineNo">371</span>      }<a name="line.371"></a>
+<span class="sourceLineNo">372</span>      else if (type.equals(Integer.TYPE))<a name="line.372"></a>
+<span class="sourceLineNo">373</span>      {<a name="line.373"></a>
+<span class="sourceLineNo">374</span>        m.invoke(o, 0);<a name="line.374"></a>
+<span class="sourceLineNo">375</span>      }<a name="line.375"></a>
+<span class="sourceLineNo">376</span>      else if (type.equals(Long.TYPE))<a name="line.376"></a>
+<span class="sourceLineNo">377</span>      {<a name="line.377"></a>
+<span class="sourceLineNo">378</span>        m.invoke(o, 0L);<a name="line.378"></a>
+<span class="sourceLineNo">379</span>      }<a name="line.379"></a>
+<span class="sourceLineNo">380</span>      else if (type.equals(Short.TYPE))<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      {<a name="line.381"></a>
+<span class="sourceLineNo">382</span>        m.invoke(o, (short) 0);<a name="line.382"></a>
+<span class="sourceLineNo">383</span>      }<a name="line.383"></a>
+<span class="sourceLineNo">384</span>      else<a name="line.384"></a>
+<span class="sourceLineNo">385</span>      {<a name="line.385"></a>
+<span class="sourceLineNo">386</span>        m.invoke(o, type.cast(null));<a name="line.386"></a>
+<span class="sourceLineNo">387</span>      }<a name="line.387"></a>
+<span class="sourceLineNo">388</span>    }<a name="line.388"></a>
+<span class="sourceLineNo">389</span>    catch (final Exception e)<a name="line.389"></a>
+<span class="sourceLineNo">390</span>    {<a name="line.390"></a>
+<span class="sourceLineNo">391</span>      Debug.debugException(e);<a name="line.391"></a>
+<span class="sourceLineNo">392</span>      throw new LDAPPersistException(<a name="line.392"></a>
+<span class="sourceLineNo">393</span>           ERR_ENCODER_CANNOT_SET_NULL_METHOD_VALUE.get(m.getName(),<a name="line.393"></a>
+<span class="sourceLineNo">394</span>                o.getClass().getName(), StaticUtils.getExceptionMessage(e)),<a name="line.394"></a>
+<span class="sourceLineNo">395</span>           e);<a name="line.395"></a>
+<span class="sourceLineNo">396</span>    }<a name="line.396"></a>
+<span class="sourceLineNo">397</span>  }<a name="line.397"></a>
 <span class="sourceLineNo">398</span><a name="line.398"></a>
-<span class="sourceLineNo">399</span>  /**<a name="line.399"></a>
-<span class="sourceLineNo">400</span>   * Updates the provided object to invoke the specified method to set a value<a name="line.400"></a>
-<span class="sourceLineNo">401</span>   * from the contents of the given attribute.<a name="line.401"></a>
-<span class="sourceLineNo">402</span>   *<a name="line.402"></a>
-<span class="sourceLineNo">403</span>   * @param  method     The method to invoke in the provided object.<a name="line.403"></a>
-<span class="sourceLineNo">404</span>   * @param  object     The object to be updated.<a name="line.404"></a>
-<span class="sourceLineNo">405</span>   * @param  attribute  The attribute whose value(s) should be used to update<a name="line.405"></a>
-<span class="sourceLineNo">406</span>   *                    the specified method in the given object.<a name="line.406"></a>
-<span class="sourceLineNo">407</span>   *<a name="line.407"></a>
-<span class="sourceLineNo">408</span>   * @throws  LDAPPersistException  If a problem occurs while attempting to<a name="line.408"></a>
-<span class="sourceLineNo">409</span>   *                                determine the value or invoke the specified<a name="line.409"></a>
-<span class="sourceLineNo">410</span>   *                                method.<a name="line.410"></a>
-<span class="sourceLineNo">411</span>   */<a name="line.411"></a>
-<span class="sourceLineNo">412</span>  public abstract void invokeSetter(Method method, Object object,<a name="line.412"></a>
-<span class="sourceLineNo">413</span>                                    Attribute attribute)<a name="line.413"></a>
-<span class="sourceLineNo">414</span>         throws LDAPPersistException;<a name="line.414"></a>
-<span class="sourceLineNo">415</span>}<a name="line.415"></a>
+<span class="sourceLineNo">399</span><a name="line.399"></a>
+<span class="sourceLineNo">400</span><a name="line.400"></a>
+<span class="sourceLineNo">401</span>  /**<a name="line.401"></a>
+<span class="sourceLineNo">402</span>   * Updates the provided object to invoke the specified method to set a value<a name="line.402"></a>
+<span class="sourceLineNo">403</span>   * from the contents of the given attribute.<a name="line.403"></a>
+<span class="sourceLineNo">404</span>   *<a name="line.404"></a>
+<span class="sourceLineNo">405</span>   * @param  method     The method to invoke in the provided object.<a name="line.405"></a>
+<span class="sourceLineNo">406</span>   * @param  object     The object to be updated.<a name="line.406"></a>
+<span class="sourceLineNo">407</span>   * @param  attribute  The attribute whose value(s) should be used to update<a name="line.407"></a>
+<span class="sourceLineNo">408</span>   *                    the specified method in the given object.<a name="line.408"></a>
+<span class="sourceLineNo">409</span>   *<a name="line.409"></a>
+<span class="sourceLineNo">410</span>   * @throws  LDAPPersistException  If a problem occurs while attempting to<a name="line.410"></a>
+<span class="sourceLineNo">411</span>   *                                determine the value or invoke the specified<a name="line.411"></a>
+<span class="sourceLineNo">412</span>   *                                method.<a name="line.412"></a>
+<span class="sourceLineNo">413</span>   */<a name="line.413"></a>
+<span class="sourceLineNo">414</span>  public abstract void invokeSetter(Method method, Object object,<a name="line.414"></a>
+<span class="sourceLineNo">415</span>                                    Attribute attribute)<a name="line.415"></a>
+<span class="sourceLineNo">416</span>         throws LDAPPersistException;<a name="line.416"></a>
+<span class="sourceLineNo">417</span>}<a name="line.417"></a>
 
 
 

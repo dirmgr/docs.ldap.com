@@ -38,12 +38,12 @@
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.schema.SchemaMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.StaticUtils.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.Validator.*;<a name="line.38"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.StaticUtils;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.Validator;<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>import static com.unboundid.ldap.sdk.schema.SchemaMessages.*;<a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
@@ -99,7 +99,7 @@
 <span class="sourceLineNo">091</span>  public MatchingRuleDefinition(final String s)<a name="line.91"></a>
 <span class="sourceLineNo">092</span>         throws LDAPException<a name="line.92"></a>
 <span class="sourceLineNo">093</span>  {<a name="line.93"></a>
-<span class="sourceLineNo">094</span>    ensureNotNull(s);<a name="line.94"></a>
+<span class="sourceLineNo">094</span>    Validator.ensureNotNull(s);<a name="line.94"></a>
 <span class="sourceLineNo">095</span><a name="line.95"></a>
 <span class="sourceLineNo">096</span>    matchingRuleString = s.trim();<a name="line.96"></a>
 <span class="sourceLineNo">097</span><a name="line.97"></a>
@@ -130,11 +130,11 @@
 <span class="sourceLineNo">122</span>    // Technically, matching rule elements are supposed to appear in a specific<a name="line.122"></a>
 <span class="sourceLineNo">123</span>    // order, but we'll be lenient and allow remaining elements to come in any<a name="line.123"></a>
 <span class="sourceLineNo">124</span>    // order.<a name="line.124"></a>
-<span class="sourceLineNo">125</span>    final ArrayList&lt;String&gt; nameList = new ArrayList&lt;String&gt;(1);<a name="line.125"></a>
+<span class="sourceLineNo">125</span>    final ArrayList&lt;String&gt; nameList = new ArrayList&lt;&gt;(1);<a name="line.125"></a>
 <span class="sourceLineNo">126</span>    String               descr       = null;<a name="line.126"></a>
 <span class="sourceLineNo">127</span>    Boolean              obsolete    = null;<a name="line.127"></a>
 <span class="sourceLineNo">128</span>    String               synOID      = null;<a name="line.128"></a>
-<span class="sourceLineNo">129</span>    final Map&lt;String,String[]&gt; exts  = new LinkedHashMap&lt;String,String[]&gt;();<a name="line.129"></a>
+<span class="sourceLineNo">129</span>    final Map&lt;String,String[]&gt; exts  = new LinkedHashMap&lt;&gt;(5);<a name="line.129"></a>
 <span class="sourceLineNo">130</span><a name="line.130"></a>
 <span class="sourceLineNo">131</span>    while (true)<a name="line.131"></a>
 <span class="sourceLineNo">132</span>    {<a name="line.132"></a>
@@ -159,7 +159,7 @@
 <span class="sourceLineNo">151</span>        pos--;<a name="line.151"></a>
 <span class="sourceLineNo">152</span>      }<a name="line.152"></a>
 <span class="sourceLineNo">153</span><a name="line.153"></a>
-<span class="sourceLineNo">154</span>      final String lowerToken = toLowerCase(token);<a name="line.154"></a>
+<span class="sourceLineNo">154</span>      final String lowerToken = StaticUtils.toLowerCase(token);<a name="line.154"></a>
 <span class="sourceLineNo">155</span>      if (lowerToken.equals(")"))<a name="line.155"></a>
 <span class="sourceLineNo">156</span>      {<a name="line.156"></a>
 <span class="sourceLineNo">157</span>        // This indicates that we're at the end of the value.  There should not<a name="line.157"></a>
@@ -237,7 +237,7 @@
 <span class="sourceLineNo">229</span>      {<a name="line.229"></a>
 <span class="sourceLineNo">230</span>        pos = skipSpaces(matchingRuleString, pos, length);<a name="line.230"></a>
 <span class="sourceLineNo">231</span><a name="line.231"></a>
-<span class="sourceLineNo">232</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;String&gt;();<a name="line.232"></a>
+<span class="sourceLineNo">232</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;&gt;(5);<a name="line.232"></a>
 <span class="sourceLineNo">233</span>        pos = readQDStrings(matchingRuleString, pos, length, valueList);<a name="line.233"></a>
 <span class="sourceLineNo">234</span><a name="line.234"></a>
 <span class="sourceLineNo">235</span>        final String[] values = new String[valueList.size()];<a name="line.235"></a>
@@ -329,7 +329,7 @@
 <span class="sourceLineNo">321</span>                                final String syntaxOID,<a name="line.321"></a>
 <span class="sourceLineNo">322</span>                                final Map&lt;String,String[]&gt; extensions)<a name="line.322"></a>
 <span class="sourceLineNo">323</span>  {<a name="line.323"></a>
-<span class="sourceLineNo">324</span>    ensureNotNull(oid, syntaxOID);<a name="line.324"></a>
+<span class="sourceLineNo">324</span>    Validator.ensureNotNull(oid, syntaxOID);<a name="line.324"></a>
 <span class="sourceLineNo">325</span><a name="line.325"></a>
 <span class="sourceLineNo">326</span>    this.oid                   = oid;<a name="line.326"></a>
 <span class="sourceLineNo">327</span>    this.description           = description;<a name="line.327"></a>
@@ -338,7 +338,7 @@
 <span class="sourceLineNo">330</span><a name="line.330"></a>
 <span class="sourceLineNo">331</span>    if (names == null)<a name="line.331"></a>
 <span class="sourceLineNo">332</span>    {<a name="line.332"></a>
-<span class="sourceLineNo">333</span>      this.names = NO_STRINGS;<a name="line.333"></a>
+<span class="sourceLineNo">333</span>      this.names = StaticUtils.NO_STRINGS;<a name="line.333"></a>
 <span class="sourceLineNo">334</span>    }<a name="line.334"></a>
 <span class="sourceLineNo">335</span>    else<a name="line.335"></a>
 <span class="sourceLineNo">336</span>    {<a name="line.336"></a>
@@ -596,8 +596,8 @@
 <span class="sourceLineNo">588</span>    final MatchingRuleDefinition d = (MatchingRuleDefinition) o;<a name="line.588"></a>
 <span class="sourceLineNo">589</span>    return (oid.equals(d.oid) &amp;&amp;<a name="line.589"></a>
 <span class="sourceLineNo">590</span>         syntaxOID.equals(d.syntaxOID) &amp;&amp;<a name="line.590"></a>
-<span class="sourceLineNo">591</span>         stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.591"></a>
-<span class="sourceLineNo">592</span>         bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.592"></a>
+<span class="sourceLineNo">591</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.591"></a>
+<span class="sourceLineNo">592</span>         StaticUtils.bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.592"></a>
 <span class="sourceLineNo">593</span>         (isObsolete == d.isObsolete) &amp;&amp;<a name="line.593"></a>
 <span class="sourceLineNo">594</span>         extensionsEqual(extensions, d.extensions));<a name="line.594"></a>
 <span class="sourceLineNo">595</span>  }<a name="line.595"></a>

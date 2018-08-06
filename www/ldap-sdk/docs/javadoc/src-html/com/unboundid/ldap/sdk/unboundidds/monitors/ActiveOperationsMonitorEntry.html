@@ -51,11 +51,11 @@
 <span class="sourceLineNo">043</span> * &lt;BLOCKQUOTE&gt;<a name="line.43"></a>
 <span class="sourceLineNo">044</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.44"></a>
 <span class="sourceLineNo">045</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.45"></a>
-<span class="sourceLineNo">046</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *   server products.  These classes provide support for proprietary<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *   functionality or for external specifications that are not considered stable<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.49"></a>
-<span class="sourceLineNo">050</span> *   other types of LDAP servers.<a name="line.50"></a>
+<span class="sourceLineNo">046</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *   for proprietary functionality or for external specifications that are not<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *   interoperable way with other types of LDAP servers.<a name="line.50"></a>
 <span class="sourceLineNo">051</span> * &lt;/BLOCKQUOTE&gt;<a name="line.51"></a>
 <span class="sourceLineNo">052</span> * &lt;BR&gt;<a name="line.52"></a>
 <span class="sourceLineNo">053</span> * The server should present at most one active operations monitor entry.  It<a name="line.53"></a>
@@ -242,48 +242,47 @@
 <span class="sourceLineNo">234</span>  @Override()<a name="line.234"></a>
 <span class="sourceLineNo">235</span>  public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()<a name="line.235"></a>
 <span class="sourceLineNo">236</span>  {<a name="line.236"></a>
-<span class="sourceLineNo">237</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs =<a name="line.237"></a>
-<span class="sourceLineNo">238</span>         new LinkedHashMap&lt;String,MonitorAttribute&gt;();<a name="line.238"></a>
-<span class="sourceLineNo">239</span><a name="line.239"></a>
-<span class="sourceLineNo">240</span>    if (numOpsInProgress != null)<a name="line.240"></a>
-<span class="sourceLineNo">241</span>    {<a name="line.241"></a>
-<span class="sourceLineNo">242</span>      addMonitorAttribute(attrs,<a name="line.242"></a>
-<span class="sourceLineNo">243</span>           ATTR_NUM_OPS_IN_PROGRESS,<a name="line.243"></a>
-<span class="sourceLineNo">244</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_NUM_OPS_IN_PROGRESS.get(),<a name="line.244"></a>
-<span class="sourceLineNo">245</span>           INFO_ACTIVE_OPERATIONS_DESC_NUM_OPS_IN_PROGRESS.get(),<a name="line.245"></a>
-<span class="sourceLineNo">246</span>           numOpsInProgress);<a name="line.246"></a>
-<span class="sourceLineNo">247</span>    }<a name="line.247"></a>
-<span class="sourceLineNo">248</span><a name="line.248"></a>
-<span class="sourceLineNo">249</span>    if (! activeOperations.isEmpty())<a name="line.249"></a>
-<span class="sourceLineNo">250</span>    {<a name="line.250"></a>
-<span class="sourceLineNo">251</span>      addMonitorAttribute(attrs,<a name="line.251"></a>
-<span class="sourceLineNo">252</span>           ATTR_OP_IN_PROGRESS,<a name="line.252"></a>
-<span class="sourceLineNo">253</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_OPS_IN_PROGRESS.get(),<a name="line.253"></a>
-<span class="sourceLineNo">254</span>           INFO_ACTIVE_OPERATIONS_DESC_OPS_IN_PROGRESS.get(),<a name="line.254"></a>
-<span class="sourceLineNo">255</span>           activeOperations);<a name="line.255"></a>
-<span class="sourceLineNo">256</span>    }<a name="line.256"></a>
-<span class="sourceLineNo">257</span><a name="line.257"></a>
-<span class="sourceLineNo">258</span>    if (numPsearchesInProgress != null)<a name="line.258"></a>
-<span class="sourceLineNo">259</span>    {<a name="line.259"></a>
-<span class="sourceLineNo">260</span>      addMonitorAttribute(attrs,<a name="line.260"></a>
-<span class="sourceLineNo">261</span>           ATTR_NUM_PSEARCHES_IN_PROGRESS,<a name="line.261"></a>
-<span class="sourceLineNo">262</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_NUM_PSEARCHES_IN_PROGRESS.get(),<a name="line.262"></a>
-<span class="sourceLineNo">263</span>           INFO_ACTIVE_OPERATIONS_DESC_NUM_PSEARCHES_IN_PROGRESS.get(),<a name="line.263"></a>
-<span class="sourceLineNo">264</span>           numPsearchesInProgress);<a name="line.264"></a>
-<span class="sourceLineNo">265</span>    }<a name="line.265"></a>
-<span class="sourceLineNo">266</span><a name="line.266"></a>
-<span class="sourceLineNo">267</span>    if (! activePersistentSearches.isEmpty())<a name="line.267"></a>
-<span class="sourceLineNo">268</span>    {<a name="line.268"></a>
-<span class="sourceLineNo">269</span>      addMonitorAttribute(attrs,<a name="line.269"></a>
-<span class="sourceLineNo">270</span>           ATTR_PSEARCH_IN_PROGRESS,<a name="line.270"></a>
-<span class="sourceLineNo">271</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_PSEARCHES_IN_PROGRESS.get(),<a name="line.271"></a>
-<span class="sourceLineNo">272</span>           INFO_ACTIVE_OPERATIONS_DESC_PSEARCHES_IN_PROGRESS.get(),<a name="line.272"></a>
-<span class="sourceLineNo">273</span>           activePersistentSearches);<a name="line.273"></a>
-<span class="sourceLineNo">274</span>    }<a name="line.274"></a>
-<span class="sourceLineNo">275</span><a name="line.275"></a>
-<span class="sourceLineNo">276</span>    return Collections.unmodifiableMap(attrs);<a name="line.276"></a>
-<span class="sourceLineNo">277</span>  }<a name="line.277"></a>
-<span class="sourceLineNo">278</span>}<a name="line.278"></a>
+<span class="sourceLineNo">237</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs = new LinkedHashMap&lt;&gt;(4);<a name="line.237"></a>
+<span class="sourceLineNo">238</span><a name="line.238"></a>
+<span class="sourceLineNo">239</span>    if (numOpsInProgress != null)<a name="line.239"></a>
+<span class="sourceLineNo">240</span>    {<a name="line.240"></a>
+<span class="sourceLineNo">241</span>      addMonitorAttribute(attrs,<a name="line.241"></a>
+<span class="sourceLineNo">242</span>           ATTR_NUM_OPS_IN_PROGRESS,<a name="line.242"></a>
+<span class="sourceLineNo">243</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_NUM_OPS_IN_PROGRESS.get(),<a name="line.243"></a>
+<span class="sourceLineNo">244</span>           INFO_ACTIVE_OPERATIONS_DESC_NUM_OPS_IN_PROGRESS.get(),<a name="line.244"></a>
+<span class="sourceLineNo">245</span>           numOpsInProgress);<a name="line.245"></a>
+<span class="sourceLineNo">246</span>    }<a name="line.246"></a>
+<span class="sourceLineNo">247</span><a name="line.247"></a>
+<span class="sourceLineNo">248</span>    if (! activeOperations.isEmpty())<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>      addMonitorAttribute(attrs,<a name="line.250"></a>
+<span class="sourceLineNo">251</span>           ATTR_OP_IN_PROGRESS,<a name="line.251"></a>
+<span class="sourceLineNo">252</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_OPS_IN_PROGRESS.get(),<a name="line.252"></a>
+<span class="sourceLineNo">253</span>           INFO_ACTIVE_OPERATIONS_DESC_OPS_IN_PROGRESS.get(),<a name="line.253"></a>
+<span class="sourceLineNo">254</span>           activeOperations);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>    }<a name="line.255"></a>
+<span class="sourceLineNo">256</span><a name="line.256"></a>
+<span class="sourceLineNo">257</span>    if (numPsearchesInProgress != null)<a name="line.257"></a>
+<span class="sourceLineNo">258</span>    {<a name="line.258"></a>
+<span class="sourceLineNo">259</span>      addMonitorAttribute(attrs,<a name="line.259"></a>
+<span class="sourceLineNo">260</span>           ATTR_NUM_PSEARCHES_IN_PROGRESS,<a name="line.260"></a>
+<span class="sourceLineNo">261</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_NUM_PSEARCHES_IN_PROGRESS.get(),<a name="line.261"></a>
+<span class="sourceLineNo">262</span>           INFO_ACTIVE_OPERATIONS_DESC_NUM_PSEARCHES_IN_PROGRESS.get(),<a name="line.262"></a>
+<span class="sourceLineNo">263</span>           numPsearchesInProgress);<a name="line.263"></a>
+<span class="sourceLineNo">264</span>    }<a name="line.264"></a>
+<span class="sourceLineNo">265</span><a name="line.265"></a>
+<span class="sourceLineNo">266</span>    if (! activePersistentSearches.isEmpty())<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>      addMonitorAttribute(attrs,<a name="line.268"></a>
+<span class="sourceLineNo">269</span>           ATTR_PSEARCH_IN_PROGRESS,<a name="line.269"></a>
+<span class="sourceLineNo">270</span>           INFO_ACTIVE_OPERATIONS_DISPNAME_PSEARCHES_IN_PROGRESS.get(),<a name="line.270"></a>
+<span class="sourceLineNo">271</span>           INFO_ACTIVE_OPERATIONS_DESC_PSEARCHES_IN_PROGRESS.get(),<a name="line.271"></a>
+<span class="sourceLineNo">272</span>           activePersistentSearches);<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    }<a name="line.273"></a>
+<span class="sourceLineNo">274</span><a name="line.274"></a>
+<span class="sourceLineNo">275</span>    return Collections.unmodifiableMap(attrs);<a name="line.275"></a>
+<span class="sourceLineNo">276</span>  }<a name="line.276"></a>
+<span class="sourceLineNo">277</span>}<a name="line.277"></a>
 
 
 

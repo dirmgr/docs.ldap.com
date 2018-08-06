@@ -112,7 +112,7 @@
 <span class="sourceLineNo">104</span>  public LDAPListenerConfig(final int listenPort,<a name="line.104"></a>
 <span class="sourceLineNo">105</span>                            final LDAPListenerRequestHandler requestHandler)<a name="line.105"></a>
 <span class="sourceLineNo">106</span>  {<a name="line.106"></a>
-<span class="sourceLineNo">107</span>    Validator.ensureTrue((listenPort &gt;= 0) &amp;&amp; (listenPort &lt;= 65535));<a name="line.107"></a>
+<span class="sourceLineNo">107</span>    Validator.ensureTrue((listenPort &gt;= 0) &amp;&amp; (listenPort &lt;= 65_535));<a name="line.107"></a>
 <span class="sourceLineNo">108</span>    Validator.ensureNotNull(requestHandler);<a name="line.108"></a>
 <span class="sourceLineNo">109</span><a name="line.109"></a>
 <span class="sourceLineNo">110</span>    this.listenPort     = listenPort;<a name="line.110"></a>
@@ -157,7 +157,7 @@
 <span class="sourceLineNo">149</span>   */<a name="line.149"></a>
 <span class="sourceLineNo">150</span>  public void setListenPort(final int listenPort)<a name="line.150"></a>
 <span class="sourceLineNo">151</span>  {<a name="line.151"></a>
-<span class="sourceLineNo">152</span>    Validator.ensureTrue((listenPort &gt;= 0) &amp;&amp; (listenPort &lt;= 65535));<a name="line.152"></a>
+<span class="sourceLineNo">152</span>    Validator.ensureTrue((listenPort &gt;= 0) &amp;&amp; (listenPort &lt;= 65_535));<a name="line.152"></a>
 <span class="sourceLineNo">153</span><a name="line.153"></a>
 <span class="sourceLineNo">154</span>    this.listenPort = listenPort;<a name="line.154"></a>
 <span class="sourceLineNo">155</span>  }<a name="line.155"></a>
@@ -361,7 +361,7 @@
 <span class="sourceLineNo">353</span>   */<a name="line.353"></a>
 <span class="sourceLineNo">354</span>  public void setLingerTimeoutSeconds(final int lingerTimeout)<a name="line.354"></a>
 <span class="sourceLineNo">355</span>  {<a name="line.355"></a>
-<span class="sourceLineNo">356</span>    Validator.ensureTrue((lingerTimeout &gt;= 0) &amp;&amp; (lingerTimeout &lt;= 65535));<a name="line.356"></a>
+<span class="sourceLineNo">356</span>    Validator.ensureTrue((lingerTimeout &gt;= 0) &amp;&amp; (lingerTimeout &lt;= 65_535));<a name="line.356"></a>
 <span class="sourceLineNo">357</span><a name="line.357"></a>
 <span class="sourceLineNo">358</span>    this.lingerTimeout = lingerTimeout;<a name="line.358"></a>
 <span class="sourceLineNo">359</span>  }<a name="line.359"></a>

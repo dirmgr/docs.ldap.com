@@ -32,13 +32,13 @@
 <span class="sourceLineNo">024</span><a name="line.24"></a>
 <span class="sourceLineNo">025</span>import java.io.Serializable;<a name="line.25"></a>
 <span class="sourceLineNo">026</span><a name="line.26"></a>
-<span class="sourceLineNo">027</span>import com.unboundid.util.NotMutable;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import com.unboundid.util.ThreadSafety;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.29"></a>
-<span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import static com.unboundid.util.Debug.*;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import static com.unboundid.util.StaticUtils.*;<a name="line.33"></a>
+<span class="sourceLineNo">027</span>import com.unboundid.util.Debug;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import com.unboundid.util.NotMutable;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import com.unboundid.util.StaticUtils;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import com.unboundid.util.ThreadSafety;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.33"></a>
 <span class="sourceLineNo">034</span><a name="line.34"></a>
 <span class="sourceLineNo">035</span><a name="line.35"></a>
 <span class="sourceLineNo">036</span><a name="line.36"></a>
@@ -66,7 +66,7 @@
 <span class="sourceLineNo">058</span>   * The default maximum response time value in milliseconds, which is set to<a name="line.58"></a>
 <span class="sourceLineNo">059</span>   * 30,000 milliseconds or 30 seconds.<a name="line.59"></a>
 <span class="sourceLineNo">060</span>   */<a name="line.60"></a>
-<span class="sourceLineNo">061</span>  private static final long DEFAULT_MAX_RESPONSE_TIME = 30000L;<a name="line.61"></a>
+<span class="sourceLineNo">061</span>  private static final long DEFAULT_MAX_RESPONSE_TIME = 30_000L;<a name="line.61"></a>
 <span class="sourceLineNo">062</span><a name="line.62"></a>
 <span class="sourceLineNo">063</span><a name="line.63"></a>
 <span class="sourceLineNo">064</span><a name="line.64"></a>
@@ -482,10 +482,10 @@
 <span class="sourceLineNo">474</span>    }<a name="line.474"></a>
 <span class="sourceLineNo">475</span>    catch (final Exception e)<a name="line.475"></a>
 <span class="sourceLineNo">476</span>    {<a name="line.476"></a>
-<span class="sourceLineNo">477</span>      debugException(e);<a name="line.477"></a>
+<span class="sourceLineNo">477</span>      Debug.debugException(e);<a name="line.477"></a>
 <span class="sourceLineNo">478</span><a name="line.478"></a>
 <span class="sourceLineNo">479</span>      final String msg = ERR_GET_ENTRY_HEALTH_CHECK_FAILURE.get(entryDN,<a name="line.479"></a>
-<span class="sourceLineNo">480</span>           getExceptionMessage(e));<a name="line.480"></a>
+<span class="sourceLineNo">480</span>           StaticUtils.getExceptionMessage(e));<a name="line.480"></a>
 <span class="sourceLineNo">481</span><a name="line.481"></a>
 <span class="sourceLineNo">482</span>      conn.setDisconnectInfo(DisconnectType.POOLED_CONNECTION_DEFUNCT, msg, e);<a name="line.482"></a>
 <span class="sourceLineNo">483</span>      throw new LDAPException(ResultCode.SERVER_DOWN, msg, e);<a name="line.483"></a>

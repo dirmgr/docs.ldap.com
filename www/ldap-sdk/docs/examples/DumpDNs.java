@@ -65,11 +65,11 @@ import com.unboundid.util.args.FileArgument;
  * <BLOCKQUOTE>
  *   <B>NOTE:</B>  This class, and other classes within the
  *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only
- *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661
- *   server products.  These classes provide support for proprietary
- *   functionality or for external specifications that are not considered stable
- *   or mature enough to be guaranteed to work in an interoperable way with
- *   other types of LDAP servers.
+ *   supported for use against Ping Identity, UnboundID, and
+ *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support
+ *   for proprietary functionality or for external specifications that are not
+ *   considered stable or mature enough to be guaranteed to work in an
+ *   interoperable way with other types of LDAP servers.
  * </BLOCKQUOTE>
  * <BR>
  * The APIs demonstrated by this example include:
@@ -166,7 +166,6 @@ public final class DumpDNs
     outputStream = null;
     dnsWritten   = new AtomicLong(0L);
   }
-
 
 
 
@@ -444,8 +443,7 @@ public final class DumpDNs
   @Override()
   public LinkedHashMap<String[],String> getExampleUsages()
   {
-    final LinkedHashMap<String[],String> exampleMap =
-         new LinkedHashMap<String[],String>(1);
+    final LinkedHashMap<String[],String> exampleMap = new LinkedHashMap<>(1);
 
     final String[] args =
     {
@@ -473,6 +471,7 @@ public final class DumpDNs
    * @param  intermediateResponse  The intermediate response that has been
    *                               returned by the server.
    */
+  @Override()
   public void intermediateResponseReturned(
                    final IntermediateResponse intermediateResponse)
   {
@@ -493,7 +492,7 @@ public final class DumpDNs
     }
 
     final String diagnosticMessage = streamValuesIR.getDiagnosticMessage();
-    if ((diagnosticMessage != null) && (diagnosticMessage.length() > 0))
+    if ((diagnosticMessage != null) && (! diagnosticMessage.isEmpty()))
     {
       err(diagnosticMessage);
     }

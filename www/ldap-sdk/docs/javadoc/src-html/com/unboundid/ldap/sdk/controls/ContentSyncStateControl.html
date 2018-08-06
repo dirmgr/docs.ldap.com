@@ -225,7 +225,7 @@
 <span class="sourceLineNo">217</span>  {<a name="line.217"></a>
 <span class="sourceLineNo">218</span>    Validator.ensureNotNull(state, entryUUID);<a name="line.218"></a>
 <span class="sourceLineNo">219</span><a name="line.219"></a>
-<span class="sourceLineNo">220</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(3);<a name="line.220"></a>
+<span class="sourceLineNo">220</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;&gt;(3);<a name="line.220"></a>
 <span class="sourceLineNo">221</span>    elements.add(new ASN1Enumerated(state.intValue()));<a name="line.221"></a>
 <span class="sourceLineNo">222</span>    elements.add(new ASN1OctetString(StaticUtils.encodeUUID(entryUUID)));<a name="line.222"></a>
 <span class="sourceLineNo">223</span><a name="line.223"></a>

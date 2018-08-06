@@ -55,14 +55,14 @@
 <span class="sourceLineNo">047</span>import com.unboundid.ldap.matchingrules.MatchingRule;<a name="line.47"></a>
 <span class="sourceLineNo">048</span>import com.unboundid.ldap.sdk.schema.Schema;<a name="line.48"></a>
 <span class="sourceLineNo">049</span>import com.unboundid.util.Base64;<a name="line.49"></a>
-<span class="sourceLineNo">050</span>import com.unboundid.util.NotMutable;<a name="line.50"></a>
-<span class="sourceLineNo">051</span>import com.unboundid.util.ThreadSafety;<a name="line.51"></a>
-<span class="sourceLineNo">052</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.52"></a>
-<span class="sourceLineNo">053</span><a name="line.53"></a>
-<span class="sourceLineNo">054</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>import static com.unboundid.util.Debug.*;<a name="line.55"></a>
-<span class="sourceLineNo">056</span>import static com.unboundid.util.StaticUtils.*;<a name="line.56"></a>
-<span class="sourceLineNo">057</span>import static com.unboundid.util.Validator.*;<a name="line.57"></a>
+<span class="sourceLineNo">050</span>import com.unboundid.util.Debug;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import com.unboundid.util.NotMutable;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import com.unboundid.util.StaticUtils;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import com.unboundid.util.ThreadSafety;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import com.unboundid.util.Validator;<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.57"></a>
 <span class="sourceLineNo">058</span><a name="line.58"></a>
 <span class="sourceLineNo">059</span><a name="line.59"></a>
 <span class="sourceLineNo">060</span><a name="line.60"></a>
@@ -154,7 +154,7 @@
 <span class="sourceLineNo">146</span>   */<a name="line.146"></a>
 <span class="sourceLineNo">147</span>  public Attribute(final String name)<a name="line.147"></a>
 <span class="sourceLineNo">148</span>  {<a name="line.148"></a>
-<span class="sourceLineNo">149</span>    ensureNotNull(name);<a name="line.149"></a>
+<span class="sourceLineNo">149</span>    Validator.ensureNotNull(name);<a name="line.149"></a>
 <span class="sourceLineNo">150</span><a name="line.150"></a>
 <span class="sourceLineNo">151</span>    this.name = name;<a name="line.151"></a>
 <span class="sourceLineNo">152</span><a name="line.152"></a>
@@ -172,7 +172,7 @@
 <span class="sourceLineNo">164</span>   */<a name="line.164"></a>
 <span class="sourceLineNo">165</span>  public Attribute(final String name, final String value)<a name="line.165"></a>
 <span class="sourceLineNo">166</span>  {<a name="line.166"></a>
-<span class="sourceLineNo">167</span>    ensureNotNull(name, value);<a name="line.167"></a>
+<span class="sourceLineNo">167</span>    Validator.ensureNotNull(name, value);<a name="line.167"></a>
 <span class="sourceLineNo">168</span><a name="line.168"></a>
 <span class="sourceLineNo">169</span>    this.name = name;<a name="line.169"></a>
 <span class="sourceLineNo">170</span><a name="line.170"></a>
@@ -190,7 +190,7 @@
 <span class="sourceLineNo">182</span>   */<a name="line.182"></a>
 <span class="sourceLineNo">183</span>  public Attribute(final String name, final byte[] value)<a name="line.183"></a>
 <span class="sourceLineNo">184</span>  {<a name="line.184"></a>
-<span class="sourceLineNo">185</span>    ensureNotNull(name, value);<a name="line.185"></a>
+<span class="sourceLineNo">185</span>    Validator.ensureNotNull(name, value);<a name="line.185"></a>
 <span class="sourceLineNo">186</span><a name="line.186"></a>
 <span class="sourceLineNo">187</span>    this.name = name;<a name="line.187"></a>
 <span class="sourceLineNo">188</span>    values = new ASN1OctetString[] { new ASN1OctetString(value) };<a name="line.188"></a>
@@ -208,7 +208,7 @@
 <span class="sourceLineNo">200</span>   */<a name="line.200"></a>
 <span class="sourceLineNo">201</span>  public Attribute(final String name, final String... values)<a name="line.201"></a>
 <span class="sourceLineNo">202</span>  {<a name="line.202"></a>
-<span class="sourceLineNo">203</span>    ensureNotNull(name, values);<a name="line.203"></a>
+<span class="sourceLineNo">203</span>    Validator.ensureNotNull(name, values);<a name="line.203"></a>
 <span class="sourceLineNo">204</span><a name="line.204"></a>
 <span class="sourceLineNo">205</span>    this.name = name;<a name="line.205"></a>
 <span class="sourceLineNo">206</span><a name="line.206"></a>
@@ -231,7 +231,7 @@
 <span class="sourceLineNo">223</span>   */<a name="line.223"></a>
 <span class="sourceLineNo">224</span>  public Attribute(final String name, final byte[]... values)<a name="line.224"></a>
 <span class="sourceLineNo">225</span>  {<a name="line.225"></a>
-<span class="sourceLineNo">226</span>    ensureNotNull(name, values);<a name="line.226"></a>
+<span class="sourceLineNo">226</span>    Validator.ensureNotNull(name, values);<a name="line.226"></a>
 <span class="sourceLineNo">227</span><a name="line.227"></a>
 <span class="sourceLineNo">228</span>    this.name = name;<a name="line.228"></a>
 <span class="sourceLineNo">229</span><a name="line.229"></a>
@@ -254,7 +254,7 @@
 <span class="sourceLineNo">246</span>   */<a name="line.246"></a>
 <span class="sourceLineNo">247</span>  public Attribute(final String name, final ASN1OctetString... values)<a name="line.247"></a>
 <span class="sourceLineNo">248</span>  {<a name="line.248"></a>
-<span class="sourceLineNo">249</span>    ensureNotNull(name, values);<a name="line.249"></a>
+<span class="sourceLineNo">249</span>    Validator.ensureNotNull(name, values);<a name="line.249"></a>
 <span class="sourceLineNo">250</span><a name="line.250"></a>
 <span class="sourceLineNo">251</span>    this.name   = name;<a name="line.251"></a>
 <span class="sourceLineNo">252</span>    this.values = values;<a name="line.252"></a>
@@ -273,7 +273,7 @@
 <span class="sourceLineNo">265</span>   */<a name="line.265"></a>
 <span class="sourceLineNo">266</span>  public Attribute(final String name, final Collection&lt;String&gt; values)<a name="line.266"></a>
 <span class="sourceLineNo">267</span>  {<a name="line.267"></a>
-<span class="sourceLineNo">268</span>    ensureNotNull(name, values);<a name="line.268"></a>
+<span class="sourceLineNo">268</span>    Validator.ensureNotNull(name, values);<a name="line.268"></a>
 <span class="sourceLineNo">269</span><a name="line.269"></a>
 <span class="sourceLineNo">270</span>    this.name = name;<a name="line.270"></a>
 <span class="sourceLineNo">271</span><a name="line.271"></a>
@@ -299,7 +299,7 @@
 <span class="sourceLineNo">291</span>   */<a name="line.291"></a>
 <span class="sourceLineNo">292</span>  public Attribute(final String name, final MatchingRule matchingRule)<a name="line.292"></a>
 <span class="sourceLineNo">293</span>  {<a name="line.293"></a>
-<span class="sourceLineNo">294</span>    ensureNotNull(name, matchingRule);<a name="line.294"></a>
+<span class="sourceLineNo">294</span>    Validator.ensureNotNull(name, matchingRule);<a name="line.294"></a>
 <span class="sourceLineNo">295</span><a name="line.295"></a>
 <span class="sourceLineNo">296</span>    this.name         = name;<a name="line.296"></a>
 <span class="sourceLineNo">297</span>    this.matchingRule = matchingRule;<a name="line.297"></a>
@@ -322,7 +322,7 @@
 <span class="sourceLineNo">314</span>  public Attribute(final String name, final MatchingRule matchingRule,<a name="line.314"></a>
 <span class="sourceLineNo">315</span>                   final String value)<a name="line.315"></a>
 <span class="sourceLineNo">316</span>  {<a name="line.316"></a>
-<span class="sourceLineNo">317</span>    ensureNotNull(name, matchingRule, value);<a name="line.317"></a>
+<span class="sourceLineNo">317</span>    Validator.ensureNotNull(name, matchingRule, value);<a name="line.317"></a>
 <span class="sourceLineNo">318</span><a name="line.318"></a>
 <span class="sourceLineNo">319</span>    this.name         = name;<a name="line.319"></a>
 <span class="sourceLineNo">320</span>    this.matchingRule = matchingRule;<a name="line.320"></a>
@@ -345,7 +345,7 @@
 <span class="sourceLineNo">337</span>  public Attribute(final String name, final MatchingRule matchingRule,<a name="line.337"></a>
 <span class="sourceLineNo">338</span>                   final byte[] value)<a name="line.338"></a>
 <span class="sourceLineNo">339</span>  {<a name="line.339"></a>
-<span class="sourceLineNo">340</span>    ensureNotNull(name, matchingRule, value);<a name="line.340"></a>
+<span class="sourceLineNo">340</span>    Validator.ensureNotNull(name, matchingRule, value);<a name="line.340"></a>
 <span class="sourceLineNo">341</span><a name="line.341"></a>
 <span class="sourceLineNo">342</span>    this.name         = name;<a name="line.342"></a>
 <span class="sourceLineNo">343</span>    this.matchingRule = matchingRule;<a name="line.343"></a>
@@ -368,7 +368,7 @@
 <span class="sourceLineNo">360</span>  public Attribute(final String name, final MatchingRule matchingRule,<a name="line.360"></a>
 <span class="sourceLineNo">361</span>                   final String... values)<a name="line.361"></a>
 <span class="sourceLineNo">362</span>  {<a name="line.362"></a>
-<span class="sourceLineNo">363</span>    ensureNotNull(name, matchingRule, values);<a name="line.363"></a>
+<span class="sourceLineNo">363</span>    Validator.ensureNotNull(name, matchingRule, values);<a name="line.363"></a>
 <span class="sourceLineNo">364</span><a name="line.364"></a>
 <span class="sourceLineNo">365</span>    this.name         = name;<a name="line.365"></a>
 <span class="sourceLineNo">366</span>    this.matchingRule = matchingRule;<a name="line.366"></a>
@@ -395,7 +395,7 @@
 <span class="sourceLineNo">387</span>  public Attribute(final String name, final MatchingRule matchingRule,<a name="line.387"></a>
 <span class="sourceLineNo">388</span>                   final byte[]... values)<a name="line.388"></a>
 <span class="sourceLineNo">389</span>  {<a name="line.389"></a>
-<span class="sourceLineNo">390</span>    ensureNotNull(name, matchingRule, values);<a name="line.390"></a>
+<span class="sourceLineNo">390</span>    Validator.ensureNotNull(name, matchingRule, values);<a name="line.390"></a>
 <span class="sourceLineNo">391</span><a name="line.391"></a>
 <span class="sourceLineNo">392</span>    this.name         = name;<a name="line.392"></a>
 <span class="sourceLineNo">393</span>    this.matchingRule = matchingRule;<a name="line.393"></a>
@@ -422,7 +422,7 @@
 <span class="sourceLineNo">414</span>  public Attribute(final String name, final MatchingRule matchingRule,<a name="line.414"></a>
 <span class="sourceLineNo">415</span>                   final Collection&lt;String&gt; values)<a name="line.415"></a>
 <span class="sourceLineNo">416</span>  {<a name="line.416"></a>
-<span class="sourceLineNo">417</span>    ensureNotNull(name, matchingRule, values);<a name="line.417"></a>
+<span class="sourceLineNo">417</span>    Validator.ensureNotNull(name, matchingRule, values);<a name="line.417"></a>
 <span class="sourceLineNo">418</span><a name="line.418"></a>
 <span class="sourceLineNo">419</span>    this.name         = name;<a name="line.419"></a>
 <span class="sourceLineNo">420</span>    this.matchingRule = matchingRule;<a name="line.420"></a>
@@ -570,10 +570,10 @@
 <span class="sourceLineNo">562</span>                                          final Attribute attr2,<a name="line.562"></a>
 <span class="sourceLineNo">563</span>                                          final MatchingRule matchingRule)<a name="line.563"></a>
 <span class="sourceLineNo">564</span>  {<a name="line.564"></a>
-<span class="sourceLineNo">565</span>    ensureNotNull(attr1, attr2);<a name="line.565"></a>
+<span class="sourceLineNo">565</span>    Validator.ensureNotNull(attr1, attr2);<a name="line.565"></a>
 <span class="sourceLineNo">566</span><a name="line.566"></a>
 <span class="sourceLineNo">567</span>    final String name = attr1.name;<a name="line.567"></a>
-<span class="sourceLineNo">568</span>    ensureTrue(name.equalsIgnoreCase(attr2.name));<a name="line.568"></a>
+<span class="sourceLineNo">568</span>    Validator.ensureTrue(name.equalsIgnoreCase(attr2.name));<a name="line.568"></a>
 <span class="sourceLineNo">569</span><a name="line.569"></a>
 <span class="sourceLineNo">570</span>    final MatchingRule mr;<a name="line.570"></a>
 <span class="sourceLineNo">571</span>    if (matchingRule == null)<a name="line.571"></a>
@@ -658,10 +658,10 @@
 <span class="sourceLineNo">650</span>                                       final Attribute attr2,<a name="line.650"></a>
 <span class="sourceLineNo">651</span>                                       final MatchingRule matchingRule)<a name="line.651"></a>
 <span class="sourceLineNo">652</span>  {<a name="line.652"></a>
-<span class="sourceLineNo">653</span>    ensureNotNull(attr1, attr2);<a name="line.653"></a>
+<span class="sourceLineNo">653</span>    Validator.ensureNotNull(attr1, attr2);<a name="line.653"></a>
 <span class="sourceLineNo">654</span><a name="line.654"></a>
 <span class="sourceLineNo">655</span>    final String name = attr1.name;<a name="line.655"></a>
-<span class="sourceLineNo">656</span>    ensureTrue(name.equalsIgnoreCase(attr2.name));<a name="line.656"></a>
+<span class="sourceLineNo">656</span>    Validator.ensureTrue(name.equalsIgnoreCase(attr2.name));<a name="line.656"></a>
 <span class="sourceLineNo">657</span><a name="line.657"></a>
 <span class="sourceLineNo">658</span>    final MatchingRule mr;<a name="line.658"></a>
 <span class="sourceLineNo">659</span>    if (matchingRule == null)<a name="line.659"></a>
@@ -674,7 +674,7 @@
 <span class="sourceLineNo">666</span>    }<a name="line.666"></a>
 <span class="sourceLineNo">667</span><a name="line.667"></a>
 <span class="sourceLineNo">668</span>    final ArrayList&lt;ASN1OctetString&gt; newValues =<a name="line.668"></a>
-<span class="sourceLineNo">669</span>         new ArrayList&lt;ASN1OctetString&gt;(Arrays.asList(attr1.values));<a name="line.669"></a>
+<span class="sourceLineNo">669</span>         new ArrayList&lt;&gt;(Arrays.asList(attr1.values));<a name="line.669"></a>
 <span class="sourceLineNo">670</span><a name="line.670"></a>
 <span class="sourceLineNo">671</span>    final Iterator&lt;ASN1OctetString&gt; iterator = newValues.iterator();<a name="line.671"></a>
 <span class="sourceLineNo">672</span>    while (iterator.hasNext())<a name="line.672"></a>
@@ -960,7 +960,7 @@
 <span class="sourceLineNo">952</span>    int semicolonPos = name.indexOf(';');<a name="line.952"></a>
 <span class="sourceLineNo">953</span>    if (semicolonPos &gt; 0)<a name="line.953"></a>
 <span class="sourceLineNo">954</span>    {<a name="line.954"></a>
-<span class="sourceLineNo">955</span>      final LinkedHashSet&lt;String&gt; options = new LinkedHashSet&lt;String&gt;();<a name="line.955"></a>
+<span class="sourceLineNo">955</span>      final LinkedHashSet&lt;String&gt; options = new LinkedHashSet&lt;&gt;(5);<a name="line.955"></a>
 <span class="sourceLineNo">956</span>      while (true)<a name="line.956"></a>
 <span class="sourceLineNo">957</span>      {<a name="line.957"></a>
 <span class="sourceLineNo">958</span>        final int nextSemicolonPos = name.indexOf(';', semicolonPos+1);<a name="line.958"></a>
@@ -1055,7 +1055,7 @@
 <span class="sourceLineNo">1047</span>      return null;<a name="line.1047"></a>
 <span class="sourceLineNo">1048</span>    }<a name="line.1048"></a>
 <span class="sourceLineNo">1049</span><a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>    final String lowerValue = toLowerCase(values[0].stringValue());<a name="line.1050"></a>
+<span class="sourceLineNo">1050</span>    final String lowerValue = StaticUtils.toLowerCase(values[0].stringValue());<a name="line.1050"></a>
 <span class="sourceLineNo">1051</span>    if (lowerValue.equals("true") || lowerValue.equals("t") ||<a name="line.1051"></a>
 <span class="sourceLineNo">1052</span>        lowerValue.equals("yes") || lowerValue.equals("y") ||<a name="line.1052"></a>
 <span class="sourceLineNo">1053</span>        lowerValue.equals("on") || lowerValue.equals("1"))<a name="line.1053"></a>
@@ -1094,11 +1094,11 @@
 <span class="sourceLineNo">1086</span><a name="line.1086"></a>
 <span class="sourceLineNo">1087</span>    try<a name="line.1087"></a>
 <span class="sourceLineNo">1088</span>    {<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>      return decodeGeneralizedTime(values[0].stringValue());<a name="line.1089"></a>
+<span class="sourceLineNo">1089</span>      return StaticUtils.decodeGeneralizedTime(values[0].stringValue());<a name="line.1089"></a>
 <span class="sourceLineNo">1090</span>    }<a name="line.1090"></a>
 <span class="sourceLineNo">1091</span>    catch (final Exception e)<a name="line.1091"></a>
 <span class="sourceLineNo">1092</span>    {<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>      debugException(e);<a name="line.1093"></a>
+<span class="sourceLineNo">1093</span>      Debug.debugException(e);<a name="line.1093"></a>
 <span class="sourceLineNo">1094</span>      return null;<a name="line.1094"></a>
 <span class="sourceLineNo">1095</span>    }<a name="line.1095"></a>
 <span class="sourceLineNo">1096</span>  }<a name="line.1096"></a>
@@ -1125,7 +1125,7 @@
 <span class="sourceLineNo">1117</span>    }<a name="line.1117"></a>
 <span class="sourceLineNo">1118</span>    catch (final Exception e)<a name="line.1118"></a>
 <span class="sourceLineNo">1119</span>    {<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span>      debugException(e);<a name="line.1120"></a>
+<span class="sourceLineNo">1120</span>      Debug.debugException(e);<a name="line.1120"></a>
 <span class="sourceLineNo">1121</span>      return null;<a name="line.1121"></a>
 <span class="sourceLineNo">1122</span>    }<a name="line.1122"></a>
 <span class="sourceLineNo">1123</span>  }<a name="line.1123"></a>
@@ -1153,7 +1153,7 @@
 <span class="sourceLineNo">1145</span>    }<a name="line.1145"></a>
 <span class="sourceLineNo">1146</span>    catch (final NumberFormatException nfe)<a name="line.1146"></a>
 <span class="sourceLineNo">1147</span>    {<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>      debugException(nfe);<a name="line.1148"></a>
+<span class="sourceLineNo">1148</span>      Debug.debugException(nfe);<a name="line.1148"></a>
 <span class="sourceLineNo">1149</span>      return null;<a name="line.1149"></a>
 <span class="sourceLineNo">1150</span>    }<a name="line.1150"></a>
 <span class="sourceLineNo">1151</span>  }<a name="line.1151"></a>
@@ -1181,7 +1181,7 @@
 <span class="sourceLineNo">1173</span>    }<a name="line.1173"></a>
 <span class="sourceLineNo">1174</span>    catch (final NumberFormatException nfe)<a name="line.1174"></a>
 <span class="sourceLineNo">1175</span>    {<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>      debugException(nfe);<a name="line.1176"></a>
+<span class="sourceLineNo">1176</span>      Debug.debugException(nfe);<a name="line.1176"></a>
 <span class="sourceLineNo">1177</span>      return null;<a name="line.1177"></a>
 <span class="sourceLineNo">1178</span>    }<a name="line.1178"></a>
 <span class="sourceLineNo">1179</span>  }<a name="line.1179"></a>
@@ -1199,7 +1199,7 @@
 <span class="sourceLineNo">1191</span>  {<a name="line.1191"></a>
 <span class="sourceLineNo">1192</span>    if (values.length == 0)<a name="line.1192"></a>
 <span class="sourceLineNo">1193</span>    {<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>      return NO_STRINGS;<a name="line.1194"></a>
+<span class="sourceLineNo">1194</span>      return StaticUtils.NO_STRINGS;<a name="line.1194"></a>
 <span class="sourceLineNo">1195</span>    }<a name="line.1195"></a>
 <span class="sourceLineNo">1196</span><a name="line.1196"></a>
 <span class="sourceLineNo">1197</span>    final String[] stringValues = new String[values.length];<a name="line.1197"></a>
@@ -1276,7 +1276,7 @@
 <span class="sourceLineNo">1268</span>   */<a name="line.1268"></a>
 <span class="sourceLineNo">1269</span>  public boolean hasValue(final String value)<a name="line.1269"></a>
 <span class="sourceLineNo">1270</span>  {<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span>    ensureNotNull(value);<a name="line.1271"></a>
+<span class="sourceLineNo">1271</span>    Validator.ensureNotNull(value);<a name="line.1271"></a>
 <span class="sourceLineNo">1272</span><a name="line.1272"></a>
 <span class="sourceLineNo">1273</span>    return hasValue(new ASN1OctetString(value), matchingRule);<a name="line.1273"></a>
 <span class="sourceLineNo">1274</span>  }<a name="line.1274"></a>
@@ -1296,7 +1296,7 @@
 <span class="sourceLineNo">1288</span>   */<a name="line.1288"></a>
 <span class="sourceLineNo">1289</span>  public boolean hasValue(final String value, final MatchingRule matchingRule)<a name="line.1289"></a>
 <span class="sourceLineNo">1290</span>  {<a name="line.1290"></a>
-<span class="sourceLineNo">1291</span>    ensureNotNull(value);<a name="line.1291"></a>
+<span class="sourceLineNo">1291</span>    Validator.ensureNotNull(value);<a name="line.1291"></a>
 <span class="sourceLineNo">1292</span><a name="line.1292"></a>
 <span class="sourceLineNo">1293</span>    return hasValue(new ASN1OctetString(value), matchingRule);<a name="line.1293"></a>
 <span class="sourceLineNo">1294</span>  }<a name="line.1294"></a>
@@ -1314,7 +1314,7 @@
 <span class="sourceLineNo">1306</span>   */<a name="line.1306"></a>
 <span class="sourceLineNo">1307</span>  public boolean hasValue(final byte[] value)<a name="line.1307"></a>
 <span class="sourceLineNo">1308</span>  {<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>    ensureNotNull(value);<a name="line.1309"></a>
+<span class="sourceLineNo">1309</span>    Validator.ensureNotNull(value);<a name="line.1309"></a>
 <span class="sourceLineNo">1310</span><a name="line.1310"></a>
 <span class="sourceLineNo">1311</span>    return hasValue(new ASN1OctetString(value), matchingRule);<a name="line.1311"></a>
 <span class="sourceLineNo">1312</span>  }<a name="line.1312"></a>
@@ -1334,7 +1334,7 @@
 <span class="sourceLineNo">1326</span>   */<a name="line.1326"></a>
 <span class="sourceLineNo">1327</span>  public boolean hasValue(final byte[] value, final MatchingRule matchingRule)<a name="line.1327"></a>
 <span class="sourceLineNo">1328</span>  {<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>    ensureNotNull(value);<a name="line.1329"></a>
+<span class="sourceLineNo">1329</span>    Validator.ensureNotNull(value);<a name="line.1329"></a>
 <span class="sourceLineNo">1330</span><a name="line.1330"></a>
 <span class="sourceLineNo">1331</span>    return hasValue(new ASN1OctetString(value), matchingRule);<a name="line.1331"></a>
 <span class="sourceLineNo">1332</span>  }<a name="line.1332"></a>
@@ -1375,7 +1375,7 @@
 <span class="sourceLineNo">1367</span>    }<a name="line.1367"></a>
 <span class="sourceLineNo">1368</span>    catch (final LDAPException le)<a name="line.1368"></a>
 <span class="sourceLineNo">1369</span>    {<a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>      debugException(le);<a name="line.1370"></a>
+<span class="sourceLineNo">1370</span>      Debug.debugException(le);<a name="line.1370"></a>
 <span class="sourceLineNo">1371</span><a name="line.1371"></a>
 <span class="sourceLineNo">1372</span>      // This probably means that the provided value cannot be normalized.  In<a name="line.1372"></a>
 <span class="sourceLineNo">1373</span>      // that case, we'll fall back to a byte-for-byte comparison of the values.<a name="line.1373"></a>
@@ -1485,72 +1485,72 @@
 <span class="sourceLineNo">1477</span>  {<a name="line.1477"></a>
 <span class="sourceLineNo">1478</span>    try<a name="line.1478"></a>
 <span class="sourceLineNo">1479</span>    {<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>      ensureNotNull(reader.beginSequence());<a name="line.1480"></a>
+<span class="sourceLineNo">1480</span>      Validator.ensureNotNull(reader.beginSequence());<a name="line.1480"></a>
 <span class="sourceLineNo">1481</span>      final String attrName = reader.readString();<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>      ensureNotNull(attrName);<a name="line.1482"></a>
+<span class="sourceLineNo">1482</span>      Validator.ensureNotNull(attrName);<a name="line.1482"></a>
 <span class="sourceLineNo">1483</span><a name="line.1483"></a>
 <span class="sourceLineNo">1484</span>      final MatchingRule matchingRule =<a name="line.1484"></a>
 <span class="sourceLineNo">1485</span>           MatchingRule.selectEqualityMatchingRule(attrName, schema);<a name="line.1485"></a>
 <span class="sourceLineNo">1486</span><a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>      final ArrayList&lt;ASN1OctetString&gt; valueList =<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>           new ArrayList&lt;ASN1OctetString&gt;();<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>      final ASN1StreamReaderSet valueSet = reader.beginSet();<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>      while (valueSet.hasMoreElements())<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>      {<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>        valueList.add(new ASN1OctetString(reader.readBytes()));<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>      }<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span><a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>      final ASN1OctetString[] values = new ASN1OctetString[valueList.size()];<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>      valueList.toArray(values);<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span><a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>      return new Attribute(attrName, matchingRule, values);<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>    }<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>    catch (final Exception e)<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>    {<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>      debugException(e);<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>           ERR_ATTR_CANNOT_DECODE.get(getExceptionMessage(e)), e);<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>    }<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>  }<a name="line.1506"></a>
+<span class="sourceLineNo">1487</span>      final ArrayList&lt;ASN1OctetString&gt; valueList = new ArrayList&lt;&gt;(10);<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>      final ASN1StreamReaderSet valueSet = reader.beginSet();<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>      while (valueSet.hasMoreElements())<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>      {<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>        valueList.add(new ASN1OctetString(reader.readBytes()));<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>      }<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span><a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>      final ASN1OctetString[] values = new ASN1OctetString[valueList.size()];<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>      valueList.toArray(values);<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span><a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>      return new Attribute(attrName, matchingRule, values);<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>    }<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>    catch (final Exception e)<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>    {<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>      Debug.debugException(e);<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>           ERR_ATTR_CANNOT_DECODE.get(StaticUtils.getExceptionMessage(e)), e);<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>    }<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>  }<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span><a name="line.1506"></a>
 <span class="sourceLineNo">1507</span><a name="line.1507"></a>
 <span class="sourceLineNo">1508</span><a name="line.1508"></a>
-<span class="sourceLineNo">1509</span><a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>  /**<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>   * Decodes the provided ASN.1 sequence as an LDAP attribute.<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>   *<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>   * @param  encodedAttribute  The ASN.1 sequence to be decoded as an LDAP<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>   *                           attribute.  It must not be {@code null}.<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>   *<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>   * @return  The decoded LDAP attribute.<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>   *<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>   * @throws  LDAPException  If a problem occurs while attempting to decode the<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>   *                         provided ASN.1 sequence as an LDAP attribute.<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>   */<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>  public static Attribute decode(final ASN1Sequence encodedAttribute)<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>         throws LDAPException<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>  {<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>    ensureNotNull(encodedAttribute);<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span><a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>    final ASN1Element[] elements = encodedAttribute.elements();<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>    if (elements.length != 2)<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>    {<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>                     ERR_ATTR_DECODE_INVALID_COUNT.get(elements.length));<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>    }<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span><a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>    final String name =<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>         ASN1OctetString.decodeAsOctetString(elements[0]).stringValue();<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span><a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>    final ASN1Set valueSet;<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>    try<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>    {<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>      valueSet = ASN1Set.decodeAsSet(elements[1]);<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>    }<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>    catch (final ASN1Exception ae)<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>    {<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>      debugException(ae);<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>           ERR_ATTR_DECODE_VALUE_SET.get(getExceptionMessage(ae)), ae);<a name="line.1545"></a>
+<span class="sourceLineNo">1509</span>  /**<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>   * Decodes the provided ASN.1 sequence as an LDAP attribute.<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>   *<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>   * @param  encodedAttribute  The ASN.1 sequence to be decoded as an LDAP<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>   *                           attribute.  It must not be {@code null}.<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>   *<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>   * @return  The decoded LDAP attribute.<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>   *<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>   * @throws  LDAPException  If a problem occurs while attempting to decode the<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>   *                         provided ASN.1 sequence as an LDAP attribute.<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>   */<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>  public static Attribute decode(final ASN1Sequence encodedAttribute)<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>         throws LDAPException<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>  {<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>    Validator.ensureNotNull(encodedAttribute);<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span><a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>    final ASN1Element[] elements = encodedAttribute.elements();<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>    if (elements.length != 2)<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>    {<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>                     ERR_ATTR_DECODE_INVALID_COUNT.get(elements.length));<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>    }<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span><a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>    final String name =<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>         ASN1OctetString.decodeAsOctetString(elements[0]).stringValue();<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span><a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>    final ASN1Set valueSet;<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>    try<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>    {<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>      valueSet = ASN1Set.decodeAsSet(elements[1]);<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>    }<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>    catch (final ASN1Exception ae)<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>    {<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>      Debug.debugException(ae);<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>           ERR_ATTR_DECODE_VALUE_SET.get(StaticUtils.getExceptionMessage(ae)),<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>           ae);<a name="line.1545"></a>
 <span class="sourceLineNo">1546</span>    }<a name="line.1546"></a>
 <span class="sourceLineNo">1547</span><a name="line.1547"></a>
 <span class="sourceLineNo">1548</span>    final ASN1OctetString[] values =<a name="line.1548"></a>
@@ -1600,7 +1600,7 @@
 <span class="sourceLineNo">1592</span>   */<a name="line.1592"></a>
 <span class="sourceLineNo">1593</span>  public static boolean needsBase64Encoding(final String v)<a name="line.1593"></a>
 <span class="sourceLineNo">1594</span>  {<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>    return needsBase64Encoding(getBytes(v));<a name="line.1595"></a>
+<span class="sourceLineNo">1595</span>    return needsBase64Encoding(StaticUtils.getBytes(v));<a name="line.1595"></a>
 <span class="sourceLineNo">1596</span>  }<a name="line.1596"></a>
 <span class="sourceLineNo">1597</span><a name="line.1597"></a>
 <span class="sourceLineNo">1598</span><a name="line.1598"></a>
@@ -1669,7 +1669,7 @@
 <span class="sourceLineNo">1661</span>  {<a name="line.1661"></a>
 <span class="sourceLineNo">1662</span>    if (hashCode == -1)<a name="line.1662"></a>
 <span class="sourceLineNo">1663</span>    {<a name="line.1663"></a>
-<span class="sourceLineNo">1664</span>      int c = toLowerCase(name).hashCode();<a name="line.1664"></a>
+<span class="sourceLineNo">1664</span>      int c = StaticUtils.toLowerCase(name).hashCode();<a name="line.1664"></a>
 <span class="sourceLineNo">1665</span><a name="line.1665"></a>
 <span class="sourceLineNo">1666</span>      for (final ASN1OctetString value : values)<a name="line.1666"></a>
 <span class="sourceLineNo">1667</span>      {<a name="line.1667"></a>
@@ -1679,7 +1679,7 @@
 <span class="sourceLineNo">1671</span>        }<a name="line.1671"></a>
 <span class="sourceLineNo">1672</span>        catch (final LDAPException le)<a name="line.1672"></a>
 <span class="sourceLineNo">1673</span>        {<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>          debugException(le);<a name="line.1674"></a>
+<span class="sourceLineNo">1674</span>          Debug.debugException(le);<a name="line.1674"></a>
 <span class="sourceLineNo">1675</span>          c += value.hashCode();<a name="line.1675"></a>
 <span class="sourceLineNo">1676</span>        }<a name="line.1676"></a>
 <span class="sourceLineNo">1677</span>      }<a name="line.1677"></a>
@@ -1740,7 +1740,7 @@
 <span class="sourceLineNo">1732</span>      // First, create a hash set containing the un-normalized values of the<a name="line.1732"></a>
 <span class="sourceLineNo">1733</span>      // first attribute.<a name="line.1733"></a>
 <span class="sourceLineNo">1734</span>      final HashSet&lt;ASN1OctetString&gt; unNormalizedValues =<a name="line.1734"></a>
-<span class="sourceLineNo">1735</span>           new HashSet&lt;ASN1OctetString&gt;(values.length);<a name="line.1735"></a>
+<span class="sourceLineNo">1735</span>           new HashSet&lt;&gt;(values.length);<a name="line.1735"></a>
 <span class="sourceLineNo">1736</span>      Collections.addAll(unNormalizedValues, values);<a name="line.1736"></a>
 <span class="sourceLineNo">1737</span><a name="line.1737"></a>
 <span class="sourceLineNo">1738</span>      // Next, iterate through the values of the second attribute.  For any<a name="line.1738"></a>
@@ -1754,131 +1754,130 @@
 <span class="sourceLineNo">1746</span>        {<a name="line.1746"></a>
 <span class="sourceLineNo">1747</span>          if (normalizedMissingValues == null)<a name="line.1747"></a>
 <span class="sourceLineNo">1748</span>          {<a name="line.1748"></a>
-<span class="sourceLineNo">1749</span>            normalizedMissingValues =<a name="line.1749"></a>
-<span class="sourceLineNo">1750</span>                 new HashSet&lt;ASN1OctetString&gt;(values.length);<a name="line.1750"></a>
-<span class="sourceLineNo">1751</span>          }<a name="line.1751"></a>
-<span class="sourceLineNo">1752</span><a name="line.1752"></a>
-<span class="sourceLineNo">1753</span>          try<a name="line.1753"></a>
-<span class="sourceLineNo">1754</span>          {<a name="line.1754"></a>
-<span class="sourceLineNo">1755</span>            normalizedMissingValues.add(matchingRule.normalize(value));<a name="line.1755"></a>
-<span class="sourceLineNo">1756</span>          }<a name="line.1756"></a>
-<span class="sourceLineNo">1757</span>          catch (final Exception e)<a name="line.1757"></a>
-<span class="sourceLineNo">1758</span>          {<a name="line.1758"></a>
-<span class="sourceLineNo">1759</span>            debugException(e);<a name="line.1759"></a>
-<span class="sourceLineNo">1760</span>            return false;<a name="line.1760"></a>
-<span class="sourceLineNo">1761</span>          }<a name="line.1761"></a>
-<span class="sourceLineNo">1762</span>        }<a name="line.1762"></a>
-<span class="sourceLineNo">1763</span>      }<a name="line.1763"></a>
-<span class="sourceLineNo">1764</span><a name="line.1764"></a>
-<span class="sourceLineNo">1765</span>      // If the un-normalized set is empty, then that means all the values<a name="line.1765"></a>
-<span class="sourceLineNo">1766</span>      // exactly match without the need to compare the normalized<a name="line.1766"></a>
-<span class="sourceLineNo">1767</span>      // representations.  For any values that are left, then we will need to<a name="line.1767"></a>
-<span class="sourceLineNo">1768</span>      // compare their normalized representations.<a name="line.1768"></a>
-<span class="sourceLineNo">1769</span>      if (normalizedMissingValues != null)<a name="line.1769"></a>
-<span class="sourceLineNo">1770</span>      {<a name="line.1770"></a>
-<span class="sourceLineNo">1771</span>        for (final ASN1OctetString value : unNormalizedValues)<a name="line.1771"></a>
-<span class="sourceLineNo">1772</span>        {<a name="line.1772"></a>
-<span class="sourceLineNo">1773</span>          try<a name="line.1773"></a>
-<span class="sourceLineNo">1774</span>          {<a name="line.1774"></a>
-<span class="sourceLineNo">1775</span>            if (! normalizedMissingValues.contains(<a name="line.1775"></a>
-<span class="sourceLineNo">1776</span>                       matchingRule.normalize(value)))<a name="line.1776"></a>
-<span class="sourceLineNo">1777</span>            {<a name="line.1777"></a>
-<span class="sourceLineNo">1778</span>              return false;<a name="line.1778"></a>
-<span class="sourceLineNo">1779</span>            }<a name="line.1779"></a>
-<span class="sourceLineNo">1780</span>          }<a name="line.1780"></a>
-<span class="sourceLineNo">1781</span>          catch (final Exception e)<a name="line.1781"></a>
-<span class="sourceLineNo">1782</span>          {<a name="line.1782"></a>
-<span class="sourceLineNo">1783</span>            debugException(e);<a name="line.1783"></a>
-<span class="sourceLineNo">1784</span>            return false;<a name="line.1784"></a>
-<span class="sourceLineNo">1785</span>          }<a name="line.1785"></a>
-<span class="sourceLineNo">1786</span>        }<a name="line.1786"></a>
-<span class="sourceLineNo">1787</span>      }<a name="line.1787"></a>
-<span class="sourceLineNo">1788</span>    }<a name="line.1788"></a>
-<span class="sourceLineNo">1789</span>    else<a name="line.1789"></a>
-<span class="sourceLineNo">1790</span>    {<a name="line.1790"></a>
-<span class="sourceLineNo">1791</span>      for (final ASN1OctetString value : values)<a name="line.1791"></a>
-<span class="sourceLineNo">1792</span>      {<a name="line.1792"></a>
-<span class="sourceLineNo">1793</span>        if (! a.hasValue(value))<a name="line.1793"></a>
-<span class="sourceLineNo">1794</span>        {<a name="line.1794"></a>
-<span class="sourceLineNo">1795</span>          return false;<a name="line.1795"></a>
-<span class="sourceLineNo">1796</span>        }<a name="line.1796"></a>
-<span class="sourceLineNo">1797</span>      }<a name="line.1797"></a>
-<span class="sourceLineNo">1798</span>    }<a name="line.1798"></a>
+<span class="sourceLineNo">1749</span>            normalizedMissingValues = new HashSet&lt;&gt;(values.length);<a name="line.1749"></a>
+<span class="sourceLineNo">1750</span>          }<a name="line.1750"></a>
+<span class="sourceLineNo">1751</span><a name="line.1751"></a>
+<span class="sourceLineNo">1752</span>          try<a name="line.1752"></a>
+<span class="sourceLineNo">1753</span>          {<a name="line.1753"></a>
+<span class="sourceLineNo">1754</span>            normalizedMissingValues.add(matchingRule.normalize(value));<a name="line.1754"></a>
+<span class="sourceLineNo">1755</span>          }<a name="line.1755"></a>
+<span class="sourceLineNo">1756</span>          catch (final Exception e)<a name="line.1756"></a>
+<span class="sourceLineNo">1757</span>          {<a name="line.1757"></a>
+<span class="sourceLineNo">1758</span>            Debug.debugException(e);<a name="line.1758"></a>
+<span class="sourceLineNo">1759</span>            return false;<a name="line.1759"></a>
+<span class="sourceLineNo">1760</span>          }<a name="line.1760"></a>
+<span class="sourceLineNo">1761</span>        }<a name="line.1761"></a>
+<span class="sourceLineNo">1762</span>      }<a name="line.1762"></a>
+<span class="sourceLineNo">1763</span><a name="line.1763"></a>
+<span class="sourceLineNo">1764</span>      // If the un-normalized set is empty, then that means all the values<a name="line.1764"></a>
+<span class="sourceLineNo">1765</span>      // exactly match without the need to compare the normalized<a name="line.1765"></a>
+<span class="sourceLineNo">1766</span>      // representations.  For any values that are left, then we will need to<a name="line.1766"></a>
+<span class="sourceLineNo">1767</span>      // compare their normalized representations.<a name="line.1767"></a>
+<span class="sourceLineNo">1768</span>      if (normalizedMissingValues != null)<a name="line.1768"></a>
+<span class="sourceLineNo">1769</span>      {<a name="line.1769"></a>
+<span class="sourceLineNo">1770</span>        for (final ASN1OctetString value : unNormalizedValues)<a name="line.1770"></a>
+<span class="sourceLineNo">1771</span>        {<a name="line.1771"></a>
+<span class="sourceLineNo">1772</span>          try<a name="line.1772"></a>
+<span class="sourceLineNo">1773</span>          {<a name="line.1773"></a>
+<span class="sourceLineNo">1774</span>            if (! normalizedMissingValues.contains(<a name="line.1774"></a>
+<span class="sourceLineNo">1775</span>                       matchingRule.normalize(value)))<a name="line.1775"></a>
+<span class="sourceLineNo">1776</span>            {<a name="line.1776"></a>
+<span class="sourceLineNo">1777</span>              return false;<a name="line.1777"></a>
+<span class="sourceLineNo">1778</span>            }<a name="line.1778"></a>
+<span class="sourceLineNo">1779</span>          }<a name="line.1779"></a>
+<span class="sourceLineNo">1780</span>          catch (final Exception e)<a name="line.1780"></a>
+<span class="sourceLineNo">1781</span>          {<a name="line.1781"></a>
+<span class="sourceLineNo">1782</span>            Debug.debugException(e);<a name="line.1782"></a>
+<span class="sourceLineNo">1783</span>            return false;<a name="line.1783"></a>
+<span class="sourceLineNo">1784</span>          }<a name="line.1784"></a>
+<span class="sourceLineNo">1785</span>        }<a name="line.1785"></a>
+<span class="sourceLineNo">1786</span>      }<a name="line.1786"></a>
+<span class="sourceLineNo">1787</span>    }<a name="line.1787"></a>
+<span class="sourceLineNo">1788</span>    else<a name="line.1788"></a>
+<span class="sourceLineNo">1789</span>    {<a name="line.1789"></a>
+<span class="sourceLineNo">1790</span>      for (final ASN1OctetString value : values)<a name="line.1790"></a>
+<span class="sourceLineNo">1791</span>      {<a name="line.1791"></a>
+<span class="sourceLineNo">1792</span>        if (! a.hasValue(value))<a name="line.1792"></a>
+<span class="sourceLineNo">1793</span>        {<a name="line.1793"></a>
+<span class="sourceLineNo">1794</span>          return false;<a name="line.1794"></a>
+<span class="sourceLineNo">1795</span>        }<a name="line.1795"></a>
+<span class="sourceLineNo">1796</span>      }<a name="line.1796"></a>
+<span class="sourceLineNo">1797</span>    }<a name="line.1797"></a>
+<span class="sourceLineNo">1798</span><a name="line.1798"></a>
 <span class="sourceLineNo">1799</span><a name="line.1799"></a>
-<span class="sourceLineNo">1800</span><a name="line.1800"></a>
-<span class="sourceLineNo">1801</span>    // If we've gotten here, then we can consider them equal.<a name="line.1801"></a>
-<span class="sourceLineNo">1802</span>    return true;<a name="line.1802"></a>
-<span class="sourceLineNo">1803</span>  }<a name="line.1803"></a>
+<span class="sourceLineNo">1800</span>    // If we've gotten here, then we can consider them equal.<a name="line.1800"></a>
+<span class="sourceLineNo">1801</span>    return true;<a name="line.1801"></a>
+<span class="sourceLineNo">1802</span>  }<a name="line.1802"></a>
+<span class="sourceLineNo">1803</span><a name="line.1803"></a>
 <span class="sourceLineNo">1804</span><a name="line.1804"></a>
 <span class="sourceLineNo">1805</span><a name="line.1805"></a>
-<span class="sourceLineNo">1806</span><a name="line.1806"></a>
-<span class="sourceLineNo">1807</span>  /**<a name="line.1807"></a>
-<span class="sourceLineNo">1808</span>   * Retrieves a string representation of this LDAP attribute.<a name="line.1808"></a>
-<span class="sourceLineNo">1809</span>   *<a name="line.1809"></a>
-<span class="sourceLineNo">1810</span>   * @return  A string representation of this LDAP attribute.<a name="line.1810"></a>
-<span class="sourceLineNo">1811</span>   */<a name="line.1811"></a>
-<span class="sourceLineNo">1812</span>  @Override()<a name="line.1812"></a>
-<span class="sourceLineNo">1813</span>  public String toString()<a name="line.1813"></a>
-<span class="sourceLineNo">1814</span>  {<a name="line.1814"></a>
-<span class="sourceLineNo">1815</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1815"></a>
-<span class="sourceLineNo">1816</span>    toString(buffer);<a name="line.1816"></a>
-<span class="sourceLineNo">1817</span>    return buffer.toString();<a name="line.1817"></a>
-<span class="sourceLineNo">1818</span>  }<a name="line.1818"></a>
+<span class="sourceLineNo">1806</span>  /**<a name="line.1806"></a>
+<span class="sourceLineNo">1807</span>   * Retrieves a string representation of this LDAP attribute.<a name="line.1807"></a>
+<span class="sourceLineNo">1808</span>   *<a name="line.1808"></a>
+<span class="sourceLineNo">1809</span>   * @return  A string representation of this LDAP attribute.<a name="line.1809"></a>
+<span class="sourceLineNo">1810</span>   */<a name="line.1810"></a>
+<span class="sourceLineNo">1811</span>  @Override()<a name="line.1811"></a>
+<span class="sourceLineNo">1812</span>  public String toString()<a name="line.1812"></a>
+<span class="sourceLineNo">1813</span>  {<a name="line.1813"></a>
+<span class="sourceLineNo">1814</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1814"></a>
+<span class="sourceLineNo">1815</span>    toString(buffer);<a name="line.1815"></a>
+<span class="sourceLineNo">1816</span>    return buffer.toString();<a name="line.1816"></a>
+<span class="sourceLineNo">1817</span>  }<a name="line.1817"></a>
+<span class="sourceLineNo">1818</span><a name="line.1818"></a>
 <span class="sourceLineNo">1819</span><a name="line.1819"></a>
 <span class="sourceLineNo">1820</span><a name="line.1820"></a>
-<span class="sourceLineNo">1821</span><a name="line.1821"></a>
-<span class="sourceLineNo">1822</span>  /**<a name="line.1822"></a>
-<span class="sourceLineNo">1823</span>   * Appends a string representation of this LDAP attribute to the provided<a name="line.1823"></a>
-<span class="sourceLineNo">1824</span>   * buffer.<a name="line.1824"></a>
-<span class="sourceLineNo">1825</span>   *<a name="line.1825"></a>
-<span class="sourceLineNo">1826</span>   * @param  buffer  The buffer to which the string representation of this LDAP<a name="line.1826"></a>
-<span class="sourceLineNo">1827</span>   *                 attribute should be appended.<a name="line.1827"></a>
-<span class="sourceLineNo">1828</span>   */<a name="line.1828"></a>
-<span class="sourceLineNo">1829</span>  public void toString(final StringBuilder buffer)<a name="line.1829"></a>
-<span class="sourceLineNo">1830</span>  {<a name="line.1830"></a>
-<span class="sourceLineNo">1831</span>    buffer.append("Attribute(name=");<a name="line.1831"></a>
-<span class="sourceLineNo">1832</span>    buffer.append(name);<a name="line.1832"></a>
-<span class="sourceLineNo">1833</span><a name="line.1833"></a>
-<span class="sourceLineNo">1834</span>    if (values.length == 0)<a name="line.1834"></a>
-<span class="sourceLineNo">1835</span>    {<a name="line.1835"></a>
-<span class="sourceLineNo">1836</span>      buffer.append(", values={");<a name="line.1836"></a>
-<span class="sourceLineNo">1837</span>    }<a name="line.1837"></a>
-<span class="sourceLineNo">1838</span>    else if (needsBase64Encoding())<a name="line.1838"></a>
-<span class="sourceLineNo">1839</span>    {<a name="line.1839"></a>
-<span class="sourceLineNo">1840</span>      buffer.append(", base64Values={'");<a name="line.1840"></a>
-<span class="sourceLineNo">1841</span><a name="line.1841"></a>
-<span class="sourceLineNo">1842</span>      for (int i=0; i &lt; values.length; i++)<a name="line.1842"></a>
-<span class="sourceLineNo">1843</span>      {<a name="line.1843"></a>
-<span class="sourceLineNo">1844</span>        if (i &gt; 0)<a name="line.1844"></a>
-<span class="sourceLineNo">1845</span>        {<a name="line.1845"></a>
-<span class="sourceLineNo">1846</span>          buffer.append("', '");<a name="line.1846"></a>
-<span class="sourceLineNo">1847</span>        }<a name="line.1847"></a>
-<span class="sourceLineNo">1848</span><a name="line.1848"></a>
-<span class="sourceLineNo">1849</span>        buffer.append(Base64.encode(values[i].getValue()));<a name="line.1849"></a>
-<span class="sourceLineNo">1850</span>      }<a name="line.1850"></a>
-<span class="sourceLineNo">1851</span><a name="line.1851"></a>
-<span class="sourceLineNo">1852</span>      buffer.append('\'');<a name="line.1852"></a>
-<span class="sourceLineNo">1853</span>    }<a name="line.1853"></a>
-<span class="sourceLineNo">1854</span>    else<a name="line.1854"></a>
-<span class="sourceLineNo">1855</span>    {<a name="line.1855"></a>
-<span class="sourceLineNo">1856</span>      buffer.append(", values={'");<a name="line.1856"></a>
-<span class="sourceLineNo">1857</span><a name="line.1857"></a>
-<span class="sourceLineNo">1858</span>      for (int i=0; i &lt; values.length; i++)<a name="line.1858"></a>
-<span class="sourceLineNo">1859</span>      {<a name="line.1859"></a>
-<span class="sourceLineNo">1860</span>        if (i &gt; 0)<a name="line.1860"></a>
-<span class="sourceLineNo">1861</span>        {<a name="line.1861"></a>
-<span class="sourceLineNo">1862</span>          buffer.append("', '");<a name="line.1862"></a>
-<span class="sourceLineNo">1863</span>        }<a name="line.1863"></a>
-<span class="sourceLineNo">1864</span><a name="line.1864"></a>
-<span class="sourceLineNo">1865</span>        buffer.append(values[i].stringValue());<a name="line.1865"></a>
-<span class="sourceLineNo">1866</span>      }<a name="line.1866"></a>
-<span class="sourceLineNo">1867</span><a name="line.1867"></a>
-<span class="sourceLineNo">1868</span>      buffer.append('\'');<a name="line.1868"></a>
-<span class="sourceLineNo">1869</span>    }<a name="line.1869"></a>
-<span class="sourceLineNo">1870</span><a name="line.1870"></a>
-<span class="sourceLineNo">1871</span>    buffer.append("})");<a name="line.1871"></a>
-<span class="sourceLineNo">1872</span>  }<a name="line.1872"></a>
-<span class="sourceLineNo">1873</span>}<a name="line.1873"></a>
+<span class="sourceLineNo">1821</span>  /**<a name="line.1821"></a>
+<span class="sourceLineNo">1822</span>   * Appends a string representation of this LDAP attribute to the provided<a name="line.1822"></a>
+<span class="sourceLineNo">1823</span>   * buffer.<a name="line.1823"></a>
+<span class="sourceLineNo">1824</span>   *<a name="line.1824"></a>
+<span class="sourceLineNo">1825</span>   * @param  buffer  The buffer to which the string representation of this LDAP<a name="line.1825"></a>
+<span class="sourceLineNo">1826</span>   *                 attribute should be appended.<a name="line.1826"></a>
+<span class="sourceLineNo">1827</span>   */<a name="line.1827"></a>
+<span class="sourceLineNo">1828</span>  public void toString(final StringBuilder buffer)<a name="line.1828"></a>
+<span class="sourceLineNo">1829</span>  {<a name="line.1829"></a>
+<span class="sourceLineNo">1830</span>    buffer.append("Attribute(name=");<a name="line.1830"></a>
+<span class="sourceLineNo">1831</span>    buffer.append(name);<a name="line.1831"></a>
+<span class="sourceLineNo">1832</span><a name="line.1832"></a>
+<span class="sourceLineNo">1833</span>    if (values.length == 0)<a name="line.1833"></a>
+<span class="sourceLineNo">1834</span>    {<a name="line.1834"></a>
+<span class="sourceLineNo">1835</span>      buffer.append(", values={");<a name="line.1835"></a>
+<span class="sourceLineNo">1836</span>    }<a name="line.1836"></a>
+<span class="sourceLineNo">1837</span>    else if (needsBase64Encoding())<a name="line.1837"></a>
+<span class="sourceLineNo">1838</span>    {<a name="line.1838"></a>
+<span class="sourceLineNo">1839</span>      buffer.append(", base64Values={'");<a name="line.1839"></a>
+<span class="sourceLineNo">1840</span><a name="line.1840"></a>
+<span class="sourceLineNo">1841</span>      for (int i=0; i &lt; values.length; i++)<a name="line.1841"></a>
+<span class="sourceLineNo">1842</span>      {<a name="line.1842"></a>
+<span class="sourceLineNo">1843</span>        if (i &gt; 0)<a name="line.1843"></a>
+<span class="sourceLineNo">1844</span>        {<a name="line.1844"></a>
+<span class="sourceLineNo">1845</span>          buffer.append("', '");<a name="line.1845"></a>
+<span class="sourceLineNo">1846</span>        }<a name="line.1846"></a>
+<span class="sourceLineNo">1847</span><a name="line.1847"></a>
+<span class="sourceLineNo">1848</span>        buffer.append(Base64.encode(values[i].getValue()));<a name="line.1848"></a>
+<span class="sourceLineNo">1849</span>      }<a name="line.1849"></a>
+<span class="sourceLineNo">1850</span><a name="line.1850"></a>
+<span class="sourceLineNo">1851</span>      buffer.append('\'');<a name="line.1851"></a>
+<span class="sourceLineNo">1852</span>    }<a name="line.1852"></a>
+<span class="sourceLineNo">1853</span>    else<a name="line.1853"></a>
+<span class="sourceLineNo">1854</span>    {<a name="line.1854"></a>
+<span class="sourceLineNo">1855</span>      buffer.append(", values={'");<a name="line.1855"></a>
+<span class="sourceLineNo">1856</span><a name="line.1856"></a>
+<span class="sourceLineNo">1857</span>      for (int i=0; i &lt; values.length; i++)<a name="line.1857"></a>
+<span class="sourceLineNo">1858</span>      {<a name="line.1858"></a>
+<span class="sourceLineNo">1859</span>        if (i &gt; 0)<a name="line.1859"></a>
+<span class="sourceLineNo">1860</span>        {<a name="line.1860"></a>
+<span class="sourceLineNo">1861</span>          buffer.append("', '");<a name="line.1861"></a>
+<span class="sourceLineNo">1862</span>        }<a name="line.1862"></a>
+<span class="sourceLineNo">1863</span><a name="line.1863"></a>
+<span class="sourceLineNo">1864</span>        buffer.append(values[i].stringValue());<a name="line.1864"></a>
+<span class="sourceLineNo">1865</span>      }<a name="line.1865"></a>
+<span class="sourceLineNo">1866</span><a name="line.1866"></a>
+<span class="sourceLineNo">1867</span>      buffer.append('\'');<a name="line.1867"></a>
+<span class="sourceLineNo">1868</span>    }<a name="line.1868"></a>
+<span class="sourceLineNo">1869</span><a name="line.1869"></a>
+<span class="sourceLineNo">1870</span>    buffer.append("})");<a name="line.1870"></a>
+<span class="sourceLineNo">1871</span>  }<a name="line.1871"></a>
+<span class="sourceLineNo">1872</span>}<a name="line.1872"></a>
 
 
 

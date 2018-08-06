@@ -37,13 +37,13 @@
 <span class="sourceLineNo">029</span>import com.unboundid.ldap.sdk.DN;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.Validator.*;<a name="line.38"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.Debug;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.Validator;<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
@@ -158,7 +158,7 @@
 <span class="sourceLineNo">150</span>  {<a name="line.150"></a>
 <span class="sourceLineNo">151</span>    super(PROXIED_AUTHORIZATION_V1_REQUEST_OID, true, encodeValue(proxyDN));<a name="line.151"></a>
 <span class="sourceLineNo">152</span><a name="line.152"></a>
-<span class="sourceLineNo">153</span>    ensureNotNull(proxyDN);<a name="line.153"></a>
+<span class="sourceLineNo">153</span>    Validator.ensureNotNull(proxyDN);<a name="line.153"></a>
 <span class="sourceLineNo">154</span><a name="line.154"></a>
 <span class="sourceLineNo">155</span>    this.proxyDN = proxyDN;<a name="line.155"></a>
 <span class="sourceLineNo">156</span>  }<a name="line.156"></a>
@@ -214,7 +214,7 @@
 <span class="sourceLineNo">206</span>    }<a name="line.206"></a>
 <span class="sourceLineNo">207</span>    catch (final Exception e)<a name="line.207"></a>
 <span class="sourceLineNo">208</span>    {<a name="line.208"></a>
-<span class="sourceLineNo">209</span>      debugException(e);<a name="line.209"></a>
+<span class="sourceLineNo">209</span>      Debug.debugException(e);<a name="line.209"></a>
 <span class="sourceLineNo">210</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.210"></a>
 <span class="sourceLineNo">211</span>                              ERR_PROXYV1_DECODE_ERROR.get(e), e);<a name="line.211"></a>
 <span class="sourceLineNo">212</span>    }<a name="line.212"></a>

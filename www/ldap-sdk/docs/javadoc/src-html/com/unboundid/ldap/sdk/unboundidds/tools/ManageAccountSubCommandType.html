@@ -51,11 +51,11 @@
 <span class="sourceLineNo">043</span> * &lt;BLOCKQUOTE&gt;<a name="line.43"></a>
 <span class="sourceLineNo">044</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.44"></a>
 <span class="sourceLineNo">045</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.45"></a>
-<span class="sourceLineNo">046</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *   server products.  These classes provide support for proprietary<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *   functionality or for external specifications that are not considered stable<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.49"></a>
-<span class="sourceLineNo">050</span> *   other types of LDAP servers.<a name="line.50"></a>
+<span class="sourceLineNo">046</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *   for proprietary functionality or for external specifications that are not<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *   interoperable way with other types of LDAP servers.<a name="line.50"></a>
 <span class="sourceLineNo">051</span> * &lt;/BLOCKQUOTE&gt;<a name="line.51"></a>
 <span class="sourceLineNo">052</span> */<a name="line.52"></a>
 <span class="sourceLineNo">053</span>public enum ManageAccountSubCommandType<a name="line.53"></a>
@@ -931,7 +931,7 @@
 <span class="sourceLineNo">923</span>         Collections.unmodifiableList(Arrays.asList(alternateNames));<a name="line.923"></a>
 <span class="sourceLineNo">924</span><a name="line.924"></a>
 <span class="sourceLineNo">925</span>    final ArrayList&lt;String&gt; allNamesList =<a name="line.925"></a>
-<span class="sourceLineNo">926</span>         new ArrayList&lt;String&gt;(alternateNames.length + 1);<a name="line.926"></a>
+<span class="sourceLineNo">926</span>         new ArrayList&lt;&gt;(alternateNames.length + 1);<a name="line.926"></a>
 <span class="sourceLineNo">927</span>    allNamesList.add(primaryName);<a name="line.927"></a>
 <span class="sourceLineNo">928</span>    allNamesList.addAll(this.alternateNames);<a name="line.928"></a>
 <span class="sourceLineNo">929</span><a name="line.929"></a>
@@ -1054,27 +1054,25 @@
 <span class="sourceLineNo">1046</span>    {<a name="line.1046"></a>
 <span class="sourceLineNo">1047</span>      final ManageAccountSubCommandType[] values =<a name="line.1047"></a>
 <span class="sourceLineNo">1048</span>           ManageAccountSubCommandType.values();<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>      typesByName =<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>           new HashMap&lt;String,ManageAccountSubCommandType&gt;(2*values.length);<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>      typesByOpType =<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>           new HashMap&lt;Integer,ManageAccountSubCommandType&gt;(values.length);<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span><a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>      for (final ManageAccountSubCommandType t :  values)<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>      {<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>        typesByName.put(StaticUtils.toLowerCase(t.primaryName), t);<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>        for (final String altName : t.alternateNames)<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>        {<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>          typesByName.put(StaticUtils.toLowerCase(altName), t);<a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>        }<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span><a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>        if (t.operationType&gt;= 0)<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>        {<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>          typesByOpType.put(t.operationType, t);<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>        }<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>      }<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>    }<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>  }<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span>}<a name="line.1069"></a>
+<span class="sourceLineNo">1049</span>      typesByName = new HashMap&lt;&gt;(2*values.length);<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>      typesByOpType = new HashMap&lt;&gt;(values.length);<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span><a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>      for (final ManageAccountSubCommandType t :  values)<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>      {<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>        typesByName.put(StaticUtils.toLowerCase(t.primaryName), t);<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>        for (final String altName : t.alternateNames)<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>        {<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>          typesByName.put(StaticUtils.toLowerCase(altName), t);<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>        }<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span><a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>        if (t.operationType&gt;= 0)<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>        {<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>          typesByOpType.put(t.operationType, t);<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>        }<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>      }<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>    }<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>  }<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>}<a name="line.1067"></a>
 
 
 

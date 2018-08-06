@@ -38,12 +38,12 @@
 <span class="sourceLineNo">030</span>import com.unboundid.asn1.ASN1OctetString;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.matchingrules.MatchingRuleMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.StaticUtils.*;<a name="line.38"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.Debug;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.StaticUtils;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafety;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>import static com.unboundid.ldap.matchingrules.MatchingRuleMessages.*;<a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
@@ -78,7 +78,7 @@
 <span class="sourceLineNo">070</span>   * all lowercase characters.<a name="line.70"></a>
 <span class="sourceLineNo">071</span>   */<a name="line.71"></a>
 <span class="sourceLineNo">072</span>  static final String LOWER_EQUALITY_RULE_NAME =<a name="line.72"></a>
-<span class="sourceLineNo">073</span>       toLowerCase(EQUALITY_RULE_NAME);<a name="line.73"></a>
+<span class="sourceLineNo">073</span>       StaticUtils.toLowerCase(EQUALITY_RULE_NAME);<a name="line.73"></a>
 <span class="sourceLineNo">074</span><a name="line.74"></a>
 <span class="sourceLineNo">075</span><a name="line.75"></a>
 <span class="sourceLineNo">076</span><a name="line.76"></a>
@@ -102,7 +102,7 @@
 <span class="sourceLineNo">094</span>   * formatted in all lowercase characters.<a name="line.94"></a>
 <span class="sourceLineNo">095</span>   */<a name="line.95"></a>
 <span class="sourceLineNo">096</span>  static final String LOWER_SUBSTRING_RULE_NAME =<a name="line.96"></a>
-<span class="sourceLineNo">097</span>       toLowerCase(SUBSTRING_RULE_NAME);<a name="line.97"></a>
+<span class="sourceLineNo">097</span>       StaticUtils.toLowerCase(SUBSTRING_RULE_NAME);<a name="line.97"></a>
 <span class="sourceLineNo">098</span><a name="line.98"></a>
 <span class="sourceLineNo">099</span><a name="line.99"></a>
 <span class="sourceLineNo">100</span><a name="line.100"></a>
@@ -388,7 +388,7 @@
 <span class="sourceLineNo">380</span>  public static List&lt;String&gt; getItems(final String value)<a name="line.380"></a>
 <span class="sourceLineNo">381</span>         throws LDAPException<a name="line.381"></a>
 <span class="sourceLineNo">382</span>  {<a name="line.382"></a>
-<span class="sourceLineNo">383</span>    final ArrayList&lt;String&gt; items = new ArrayList&lt;String&gt;(10);<a name="line.383"></a>
+<span class="sourceLineNo">383</span>    final ArrayList&lt;String&gt; items = new ArrayList&lt;&gt;(10);<a name="line.383"></a>
 <span class="sourceLineNo">384</span><a name="line.384"></a>
 <span class="sourceLineNo">385</span>    final int length = value.length();<a name="line.385"></a>
 <span class="sourceLineNo">386</span>    final StringBuilder buffer = new StringBuilder();<a name="line.386"></a>
@@ -404,7 +404,7 @@
 <span class="sourceLineNo">396</span>        }<a name="line.396"></a>
 <span class="sourceLineNo">397</span>        catch (final Exception e)<a name="line.397"></a>
 <span class="sourceLineNo">398</span>        {<a name="line.398"></a>
-<span class="sourceLineNo">399</span>          debugException(e);<a name="line.399"></a>
+<span class="sourceLineNo">399</span>          Debug.debugException(e);<a name="line.399"></a>
 <span class="sourceLineNo">400</span>          throw new LDAPException(ResultCode.INVALID_ATTRIBUTE_SYNTAX,<a name="line.400"></a>
 <span class="sourceLineNo">401</span>               ERR_CASE_IGNORE_LIST_MALFORMED_HEX_CHAR.get(value), e);<a name="line.401"></a>
 <span class="sourceLineNo">402</span>        }<a name="line.402"></a>
@@ -483,7 +483,7 @@
 <span class="sourceLineNo">475</span>  public static List&lt;String&gt; getLowercaseItems(final String value)<a name="line.475"></a>
 <span class="sourceLineNo">476</span>         throws LDAPException<a name="line.476"></a>
 <span class="sourceLineNo">477</span>  {<a name="line.477"></a>
-<span class="sourceLineNo">478</span>    return getItems(toLowerCase(value));<a name="line.478"></a>
+<span class="sourceLineNo">478</span>    return getItems(StaticUtils.toLowerCase(value));<a name="line.478"></a>
 <span class="sourceLineNo">479</span>  }<a name="line.479"></a>
 <span class="sourceLineNo">480</span><a name="line.480"></a>
 <span class="sourceLineNo">481</span><a name="line.481"></a>

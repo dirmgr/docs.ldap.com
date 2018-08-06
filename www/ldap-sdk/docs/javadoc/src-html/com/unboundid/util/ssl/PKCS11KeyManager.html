@@ -35,12 +35,12 @@
 <span class="sourceLineNo">027</span>import javax.net.ssl.KeyManager;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import javax.net.ssl.KeyManagerFactory;<a name="line.28"></a>
 <span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>import com.unboundid.util.NotMutable;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import com.unboundid.util.StaticUtils;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.ThreadSafety;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.33"></a>
-<span class="sourceLineNo">034</span><a name="line.34"></a>
-<span class="sourceLineNo">035</span>import static com.unboundid.util.Debug.*;<a name="line.35"></a>
+<span class="sourceLineNo">030</span>import com.unboundid.util.Debug;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import com.unboundid.util.NotMutable;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.StaticUtils;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
 <span class="sourceLineNo">036</span>import static com.unboundid.util.ssl.SSLMessages.*;<a name="line.36"></a>
 <span class="sourceLineNo">037</span><a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
@@ -105,7 +105,7 @@
 <span class="sourceLineNo">097</span>    }<a name="line.97"></a>
 <span class="sourceLineNo">098</span>    catch (final Exception e)<a name="line.98"></a>
 <span class="sourceLineNo">099</span>    {<a name="line.99"></a>
-<span class="sourceLineNo">100</span>      debugException(e);<a name="line.100"></a>
+<span class="sourceLineNo">100</span>      Debug.debugException(e);<a name="line.100"></a>
 <span class="sourceLineNo">101</span><a name="line.101"></a>
 <span class="sourceLineNo">102</span>      throw new KeyStoreException(<a name="line.102"></a>
 <span class="sourceLineNo">103</span>           ERR_PKCS11_CANNOT_ACCESS.get(StaticUtils.getExceptionMessage(e)), e);<a name="line.103"></a>
@@ -120,7 +120,7 @@
 <span class="sourceLineNo">112</span>    }<a name="line.112"></a>
 <span class="sourceLineNo">113</span>    catch (final Exception e)<a name="line.113"></a>
 <span class="sourceLineNo">114</span>    {<a name="line.114"></a>
-<span class="sourceLineNo">115</span>      debugException(e);<a name="line.115"></a>
+<span class="sourceLineNo">115</span>      Debug.debugException(e);<a name="line.115"></a>
 <span class="sourceLineNo">116</span><a name="line.116"></a>
 <span class="sourceLineNo">117</span>      throw new KeyStoreException(<a name="line.117"></a>
 <span class="sourceLineNo">118</span>           ERR_PKCS11_CANNOT_GET_KEY_MANAGERS.get(<a name="line.118"></a>

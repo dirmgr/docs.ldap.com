@@ -75,11 +75,11 @@
 <span class="sourceLineNo">067</span> * &lt;BLOCKQUOTE&gt;<a name="line.67"></a>
 <span class="sourceLineNo">068</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.68"></a>
 <span class="sourceLineNo">069</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.69"></a>
-<span class="sourceLineNo">070</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.70"></a>
-<span class="sourceLineNo">071</span> *   server products.  These classes provide support for proprietary<a name="line.71"></a>
-<span class="sourceLineNo">072</span> *   functionality or for external specifications that are not considered stable<a name="line.72"></a>
-<span class="sourceLineNo">073</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.73"></a>
-<span class="sourceLineNo">074</span> *   other types of LDAP servers.<a name="line.74"></a>
+<span class="sourceLineNo">070</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.70"></a>
+<span class="sourceLineNo">071</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.71"></a>
+<span class="sourceLineNo">072</span> *   for proprietary functionality or for external specifications that are not<a name="line.72"></a>
+<span class="sourceLineNo">073</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.73"></a>
+<span class="sourceLineNo">074</span> *   interoperable way with other types of LDAP servers.<a name="line.74"></a>
 <span class="sourceLineNo">075</span> * &lt;/BLOCKQUOTE&gt;<a name="line.75"></a>
 <span class="sourceLineNo">076</span> */<a name="line.76"></a>
 <span class="sourceLineNo">077</span>@ThreadSafety(level= ThreadSafetyLevel.NOT_THREADSAFE)<a name="line.77"></a>
@@ -861,7 +861,7 @@
 <span class="sourceLineNo">853</span>    // Try to read a passphrase-encrypted stream header from the beginning of<a name="line.853"></a>
 <span class="sourceLineNo">854</span>    // the stream.  Just decode the header, but don't attempt to make it usable<a name="line.854"></a>
 <span class="sourceLineNo">855</span>    // for encryption or decryption.<a name="line.855"></a>
-<span class="sourceLineNo">856</span>    PassphraseEncryptedStreamHeader streamHeaderShell = null;<a name="line.856"></a>
+<span class="sourceLineNo">856</span>    final PassphraseEncryptedStreamHeader streamHeaderShell;<a name="line.856"></a>
 <span class="sourceLineNo">857</span>    try<a name="line.857"></a>
 <span class="sourceLineNo">858</span>    {<a name="line.858"></a>
 <span class="sourceLineNo">859</span>      streamHeaderShell = PassphraseEncryptedStreamHeader.readFrom(<a name="line.859"></a>

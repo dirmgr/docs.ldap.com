@@ -187,7 +187,7 @@
 <span class="sourceLineNo">179</span>  // A set of thread-local byte stream buffers that will be used to construct<a name="line.179"></a>
 <span class="sourceLineNo">180</span>  // the LDIF representations of records.<a name="line.180"></a>
 <span class="sourceLineNo">181</span>  private final ThreadLocal&lt;ByteStringBuffer&gt; byteStringBuffers =<a name="line.181"></a>
-<span class="sourceLineNo">182</span>       new ThreadLocal&lt;ByteStringBuffer&gt;();<a name="line.182"></a>
+<span class="sourceLineNo">182</span>       new ThreadLocal&lt;&gt;();<a name="line.182"></a>
 <span class="sourceLineNo">183</span><a name="line.183"></a>
 <span class="sourceLineNo">184</span><a name="line.184"></a>
 <span class="sourceLineNo">185</span><a name="line.185"></a>
@@ -886,9 +886,9 @@
 <span class="sourceLineNo">878</span><a name="line.878"></a>
 <span class="sourceLineNo">879</span>    // Create the translators to use to apply the transformations.<a name="line.879"></a>
 <span class="sourceLineNo">880</span>    final ArrayList&lt;LDIFReaderEntryTranslator&gt; entryTranslators =<a name="line.880"></a>
-<span class="sourceLineNo">881</span>         new ArrayList&lt;LDIFReaderEntryTranslator&gt;(10);<a name="line.881"></a>
+<span class="sourceLineNo">881</span>         new ArrayList&lt;&gt;(10);<a name="line.881"></a>
 <span class="sourceLineNo">882</span>    final ArrayList&lt;LDIFReaderChangeRecordTranslator&gt; changeRecordTranslators =<a name="line.882"></a>
-<span class="sourceLineNo">883</span>         new ArrayList&lt;LDIFReaderChangeRecordTranslator&gt;(10);<a name="line.883"></a>
+<span class="sourceLineNo">883</span>         new ArrayList&lt;&gt;(10);<a name="line.883"></a>
 <span class="sourceLineNo">884</span><a name="line.884"></a>
 <span class="sourceLineNo">885</span>    final AtomicLong excludedEntryCount = new AtomicLong(0L);<a name="line.885"></a>
 <span class="sourceLineNo">886</span>    createTranslators(entryTranslators, changeRecordTranslators,<a name="line.886"></a>
@@ -1186,7 +1186,7 @@
 <span class="sourceLineNo">1178</span>    // paths.<a name="line.1178"></a>
 <span class="sourceLineNo">1179</span>    if (schemaPath.isPresent())<a name="line.1179"></a>
 <span class="sourceLineNo">1180</span>    {<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>      final ArrayList&lt;File&gt; schemaFiles = new ArrayList&lt;File&gt;(10);<a name="line.1181"></a>
+<span class="sourceLineNo">1181</span>      final ArrayList&lt;File&gt; schemaFiles = new ArrayList&lt;&gt;(10);<a name="line.1181"></a>
 <span class="sourceLineNo">1182</span>      for (final File path : schemaPath.getValues())<a name="line.1182"></a>
 <span class="sourceLineNo">1183</span>      {<a name="line.1183"></a>
 <span class="sourceLineNo">1184</span>        if (path.isFile())<a name="line.1184"></a>
@@ -1195,7 +1195,7 @@
 <span class="sourceLineNo">1187</span>        }<a name="line.1187"></a>
 <span class="sourceLineNo">1188</span>        else<a name="line.1188"></a>
 <span class="sourceLineNo">1189</span>        {<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>          final TreeMap&lt;String,File&gt; fileMap = new TreeMap&lt;String,File&gt;();<a name="line.1190"></a>
+<span class="sourceLineNo">1190</span>          final TreeMap&lt;String,File&gt; fileMap = new TreeMap&lt;&gt;();<a name="line.1190"></a>
 <span class="sourceLineNo">1191</span>          for (final File schemaDirFile : path.listFiles())<a name="line.1191"></a>
 <span class="sourceLineNo">1192</span>          {<a name="line.1192"></a>
 <span class="sourceLineNo">1193</span>            final String name = schemaDirFile.getName();<a name="line.1193"></a>
@@ -1244,7 +1244,7 @@
 <span class="sourceLineNo">1236</span>          final File schemaDir = new File(configDir, "schema");<a name="line.1236"></a>
 <span class="sourceLineNo">1237</span>          if (schemaDir.exists())<a name="line.1237"></a>
 <span class="sourceLineNo">1238</span>          {<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>            final TreeMap&lt;String,File&gt; fileMap = new TreeMap&lt;String,File&gt;();<a name="line.1239"></a>
+<span class="sourceLineNo">1239</span>            final TreeMap&lt;String,File&gt; fileMap = new TreeMap&lt;&gt;();<a name="line.1239"></a>
 <span class="sourceLineNo">1240</span>            for (final File schemaDirFile : schemaDir.listFiles())<a name="line.1240"></a>
 <span class="sourceLineNo">1241</span>            {<a name="line.1241"></a>
 <span class="sourceLineNo">1242</span>              final String name = schemaDirFile.getName();<a name="line.1242"></a>
@@ -1257,7 +1257,7 @@
 <span class="sourceLineNo">1249</span><a name="line.1249"></a>
 <span class="sourceLineNo">1250</span>            if (! fileMap.isEmpty())<a name="line.1250"></a>
 <span class="sourceLineNo">1251</span>            {<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>              return Schema.getSchema(new ArrayList&lt;File&gt;(fileMap.values()));<a name="line.1252"></a>
+<span class="sourceLineNo">1252</span>              return Schema.getSchema(new ArrayList&lt;&gt;(fileMap.values()));<a name="line.1252"></a>
 <span class="sourceLineNo">1253</span>            }<a name="line.1253"></a>
 <span class="sourceLineNo">1254</span>          }<a name="line.1254"></a>
 <span class="sourceLineNo">1255</span>        }<a name="line.1255"></a>
@@ -1450,112 +1450,111 @@
 <span class="sourceLineNo">1442</span>  @Override()<a name="line.1442"></a>
 <span class="sourceLineNo">1443</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1443"></a>
 <span class="sourceLineNo">1444</span>  {<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>         new LinkedHashMap&lt;String[],String&gt;(4);<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span><a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>    examples.put(<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>         new String[]<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>         {<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>           "--sourceLDIF", "input.ldif",<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>           "--targetLDIF", "scrambled.ldif",<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>           "--scrambleAttribute", "givenName",<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>           "--scrambleAttribute", "sn",<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>           "--scrambleAttribute", "cn",<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>           "--numThreads", "10",<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>           "--schemaPath", "/ds/config/schema",<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>           "--processDNs"<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>         },<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>         INFO_TRANSFORM_LDIF_EXAMPLE_SCRAMBLE.get());<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span><a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>    examples.put(<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>         new String[]<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>         {<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>           "--sourceLDIF", "input.ldif",<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>           "--targetLDIF", "sequential.ldif",<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>           "--sequentialAttribute", "uid",<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>           "--initialSequentialValue", "1",<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>           "--sequentialValueIncrement", "1",<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>           "--textBeforeSequentialValue", "user.",<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>           "--numThreads", "10",<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>           "--schemaPath", "/ds/config/schema",<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>           "--processDNs"<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>         },<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>         INFO_TRANSFORM_LDIF_EXAMPLE_SEQUENTIAL.get());<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span><a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>    examples.put(<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>         new String[]<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>         {<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>           "--sourceLDIF", "input.ldif",<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>           "--targetLDIF", "added-organization.ldif",<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>           "--addAttributeName", "o",<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>           "--addAttributeValue", "Example Corp.",<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>           "--addAttributeFilter", "(objectClass=person)",<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>           "--numThreads", "10",<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>           "--schemaPath", "/ds/config/schema"<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>         },<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>         INFO_TRANSFORM_LDIF_EXAMPLE_ADD.get());<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span><a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>    examples.put(<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>         new String[]<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>         {<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>           "--sourceLDIF", "input.ldif",<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>           "--targetLDIF", "rebased.ldif",<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>           "--moveSubtreeFrom", "o=example.com",<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>           "--moveSubtreeTo", "dc=example,dc=com",<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>           "--numThreads", "10",<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>           "--schemaPath", "/ds/config/schema"<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>         },<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>         INFO_TRANSFORM_LDIF_EXAMPLE_REBASE.get());<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span><a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>    return examples;<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>  }<a name="line.1503"></a>
+<span class="sourceLineNo">1445</span>    final LinkedHashMap&lt;String[],String&gt; examples = new LinkedHashMap&lt;&gt;(4);<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span><a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>    examples.put(<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>         new String[]<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>         {<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>           "--sourceLDIF", "input.ldif",<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>           "--targetLDIF", "scrambled.ldif",<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>           "--scrambleAttribute", "givenName",<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>           "--scrambleAttribute", "sn",<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>           "--scrambleAttribute", "cn",<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>           "--numThreads", "10",<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>           "--schemaPath", "/ds/config/schema",<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>           "--processDNs"<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>         },<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>         INFO_TRANSFORM_LDIF_EXAMPLE_SCRAMBLE.get());<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span><a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>    examples.put(<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>         new String[]<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>         {<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>           "--sourceLDIF", "input.ldif",<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>           "--targetLDIF", "sequential.ldif",<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>           "--sequentialAttribute", "uid",<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>           "--initialSequentialValue", "1",<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>           "--sequentialValueIncrement", "1",<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>           "--textBeforeSequentialValue", "user.",<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>           "--numThreads", "10",<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>           "--schemaPath", "/ds/config/schema",<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>           "--processDNs"<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>         },<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>         INFO_TRANSFORM_LDIF_EXAMPLE_SEQUENTIAL.get());<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span><a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>    examples.put(<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>         new String[]<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>         {<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>           "--sourceLDIF", "input.ldif",<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>           "--targetLDIF", "added-organization.ldif",<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>           "--addAttributeName", "o",<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>           "--addAttributeValue", "Example Corp.",<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>           "--addAttributeFilter", "(objectClass=person)",<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>           "--numThreads", "10",<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>           "--schemaPath", "/ds/config/schema"<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>         },<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>         INFO_TRANSFORM_LDIF_EXAMPLE_ADD.get());<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span><a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>    examples.put(<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>         new String[]<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>         {<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>           "--sourceLDIF", "input.ldif",<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>           "--targetLDIF", "rebased.ldif",<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>           "--moveSubtreeFrom", "o=example.com",<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>           "--moveSubtreeTo", "dc=example,dc=com",<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>           "--numThreads", "10",<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>           "--schemaPath", "/ds/config/schema"<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>         },<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>         INFO_TRANSFORM_LDIF_EXAMPLE_REBASE.get());<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span><a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>    return examples;<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>  }<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span><a name="line.1503"></a>
 <span class="sourceLineNo">1504</span><a name="line.1504"></a>
 <span class="sourceLineNo">1505</span><a name="line.1505"></a>
-<span class="sourceLineNo">1506</span><a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>  /**<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>   * {@inheritDoc}<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>   */<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>  @Override()<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>  public Entry translate(final Entry original, final long firstLineNumber)<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>         throws LDIFException<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>  {<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>    final ByteStringBuffer buffer = getBuffer();<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>    if (wrapColumn.isPresent())<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>    {<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>      original.toLDIF(buffer, wrapColumn.getValue());<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>    }<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>    else<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>    {<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>      original.toLDIF(buffer, 0);<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>    }<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>    buffer.append(StaticUtils.EOL_BYTES);<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span><a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>    return new PreEncodedLDIFEntry(original, buffer.toByteArray());<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>  }<a name="line.1526"></a>
+<span class="sourceLineNo">1506</span>  /**<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>   * {@inheritDoc}<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>   */<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>  @Override()<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>  public Entry translate(final Entry original, final long firstLineNumber)<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>         throws LDIFException<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>  {<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>    final ByteStringBuffer buffer = getBuffer();<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>    if (wrapColumn.isPresent())<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>    {<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>      original.toLDIF(buffer, wrapColumn.getValue());<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>    }<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>    else<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>    {<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>      original.toLDIF(buffer, 0);<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>    }<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>    buffer.append(StaticUtils.EOL_BYTES);<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span><a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>    return new PreEncodedLDIFEntry(original, buffer.toByteArray());<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>  }<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span><a name="line.1526"></a>
 <span class="sourceLineNo">1527</span><a name="line.1527"></a>
 <span class="sourceLineNo">1528</span><a name="line.1528"></a>
-<span class="sourceLineNo">1529</span><a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>  /**<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>   * Retrieves a byte string buffer that can be used to perform LDIF encoding.<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>   *<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>   * @return  A byte string buffer that can be used to perform LDIF encoding.<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>   */<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>  private ByteStringBuffer getBuffer()<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>  {<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>    ByteStringBuffer buffer = byteStringBuffers.get();<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>    if (buffer == null)<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>    {<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>      buffer = new ByteStringBuffer();<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>      byteStringBuffers.set(buffer);<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>    }<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>    else<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>    {<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>      buffer.clear();<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>    }<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span><a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>    return buffer;<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>  }<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>}<a name="line.1550"></a>
+<span class="sourceLineNo">1529</span>  /**<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>   * Retrieves a byte string buffer that can be used to perform LDIF encoding.<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>   *<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>   * @return  A byte string buffer that can be used to perform LDIF encoding.<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>   */<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>  private ByteStringBuffer getBuffer()<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>  {<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>    ByteStringBuffer buffer = byteStringBuffers.get();<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>    if (buffer == null)<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>    {<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>      buffer = new ByteStringBuffer();<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>      byteStringBuffers.set(buffer);<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>    }<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>    else<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>    {<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>      buffer.clear();<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>    }<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span><a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>    return buffer;<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>  }<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>}<a name="line.1549"></a>
 
 
 

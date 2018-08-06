@@ -30,7 +30,7 @@
 <span class="sourceLineNo">022</span><a name="line.22"></a>
 <span class="sourceLineNo">023</span><a name="line.23"></a>
 <span class="sourceLineNo">024</span><a name="line.24"></a>
-<span class="sourceLineNo">025</span>import java.util.Arrays;<a name="line.25"></a>
+<span class="sourceLineNo">025</span>import java.util.Collections;<a name="line.25"></a>
 <span class="sourceLineNo">026</span>import java.util.List;<a name="line.26"></a>
 <span class="sourceLineNo">027</span><a name="line.27"></a>
 <span class="sourceLineNo">028</span>import com.unboundid.ldap.sdk.Control;<a name="line.28"></a>
@@ -85,38 +85,39 @@
 <span class="sourceLineNo">077</span>  @Override()<a name="line.77"></a>
 <span class="sourceLineNo">078</span>  public List&lt;String&gt; getSupportedExtendedRequestOIDs()<a name="line.78"></a>
 <span class="sourceLineNo">079</span>  {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>    return Arrays.asList(WhoAmIExtendedRequest.WHO_AM_I_REQUEST_OID);<a name="line.80"></a>
-<span class="sourceLineNo">081</span>  }<a name="line.81"></a>
-<span class="sourceLineNo">082</span><a name="line.82"></a>
+<span class="sourceLineNo">080</span>    return Collections.singletonList(<a name="line.80"></a>
+<span class="sourceLineNo">081</span>         WhoAmIExtendedRequest.WHO_AM_I_REQUEST_OID);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>  }<a name="line.82"></a>
 <span class="sourceLineNo">083</span><a name="line.83"></a>
 <span class="sourceLineNo">084</span><a name="line.84"></a>
-<span class="sourceLineNo">085</span>  /**<a name="line.85"></a>
-<span class="sourceLineNo">086</span>   * {@inheritDoc}<a name="line.86"></a>
-<span class="sourceLineNo">087</span>   */<a name="line.87"></a>
-<span class="sourceLineNo">088</span>  @Override()<a name="line.88"></a>
-<span class="sourceLineNo">089</span>  public ExtendedResult processExtendedOperation(<a name="line.89"></a>
-<span class="sourceLineNo">090</span>                             final InMemoryRequestHandler handler,<a name="line.90"></a>
-<span class="sourceLineNo">091</span>                             final int messageID, final ExtendedRequest request)<a name="line.91"></a>
-<span class="sourceLineNo">092</span>  {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    // This extended operation handler does not support any controls.  If the<a name="line.93"></a>
-<span class="sourceLineNo">094</span>    // request has any critical controls, then reject it.<a name="line.94"></a>
-<span class="sourceLineNo">095</span>    for (final Control c : request.getControls())<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    {<a name="line.96"></a>
-<span class="sourceLineNo">097</span>      if (c.isCritical())<a name="line.97"></a>
-<span class="sourceLineNo">098</span>      {<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        return new ExtendedResult(messageID,<a name="line.99"></a>
-<span class="sourceLineNo">100</span>             ResultCode.UNAVAILABLE_CRITICAL_EXTENSION,<a name="line.100"></a>
-<span class="sourceLineNo">101</span>             ERR_WHO_AM_I_EXTOP_UNSUPPORTED_CONTROL.get(c.getOID()), null, null,<a name="line.101"></a>
-<span class="sourceLineNo">102</span>             null, null, null);<a name="line.102"></a>
-<span class="sourceLineNo">103</span>      }<a name="line.103"></a>
-<span class="sourceLineNo">104</span>    }<a name="line.104"></a>
-<span class="sourceLineNo">105</span><a name="line.105"></a>
-<span class="sourceLineNo">106</span>    final String authorizationID =<a name="line.106"></a>
-<span class="sourceLineNo">107</span>         "dn:" + handler.getAuthenticatedDN().toString();<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    return new WhoAmIExtendedResult(messageID, ResultCode.SUCCESS,  null,<a name="line.108"></a>
-<span class="sourceLineNo">109</span>         null, null, authorizationID, null);<a name="line.109"></a>
-<span class="sourceLineNo">110</span>  }<a name="line.110"></a>
-<span class="sourceLineNo">111</span>}<a name="line.111"></a>
+<span class="sourceLineNo">085</span><a name="line.85"></a>
+<span class="sourceLineNo">086</span>  /**<a name="line.86"></a>
+<span class="sourceLineNo">087</span>   * {@inheritDoc}<a name="line.87"></a>
+<span class="sourceLineNo">088</span>   */<a name="line.88"></a>
+<span class="sourceLineNo">089</span>  @Override()<a name="line.89"></a>
+<span class="sourceLineNo">090</span>  public ExtendedResult processExtendedOperation(<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                             final InMemoryRequestHandler handler,<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                             final int messageID, final ExtendedRequest request)<a name="line.92"></a>
+<span class="sourceLineNo">093</span>  {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    // This extended operation handler does not support any controls.  If the<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    // request has any critical controls, then reject it.<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    for (final Control c : request.getControls())<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>      if (c.isCritical())<a name="line.98"></a>
+<span class="sourceLineNo">099</span>      {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        return new ExtendedResult(messageID,<a name="line.100"></a>
+<span class="sourceLineNo">101</span>             ResultCode.UNAVAILABLE_CRITICAL_EXTENSION,<a name="line.101"></a>
+<span class="sourceLineNo">102</span>             ERR_WHO_AM_I_EXTOP_UNSUPPORTED_CONTROL.get(c.getOID()), null, null,<a name="line.102"></a>
+<span class="sourceLineNo">103</span>             null, null, null);<a name="line.103"></a>
+<span class="sourceLineNo">104</span>      }<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    }<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>    final String authorizationID =<a name="line.107"></a>
+<span class="sourceLineNo">108</span>         "dn:" + handler.getAuthenticatedDN().toString();<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    return new WhoAmIExtendedResult(messageID, ResultCode.SUCCESS,  null,<a name="line.109"></a>
+<span class="sourceLineNo">110</span>         null, null, authorizationID, null);<a name="line.110"></a>
+<span class="sourceLineNo">111</span>  }<a name="line.111"></a>
+<span class="sourceLineNo">112</span>}<a name="line.112"></a>
 
 
 

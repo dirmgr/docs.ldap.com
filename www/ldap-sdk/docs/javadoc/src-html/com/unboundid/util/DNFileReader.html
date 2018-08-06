@@ -138,7 +138,7 @@
 <span class="sourceLineNo">130</span>      }<a name="line.130"></a>
 <span class="sourceLineNo">131</span><a name="line.131"></a>
 <span class="sourceLineNo">132</span>      final String trimmedLine = line.trim();<a name="line.132"></a>
-<span class="sourceLineNo">133</span>      if ((trimmedLine.length() == 0) || trimmedLine.startsWith("#"))<a name="line.133"></a>
+<span class="sourceLineNo">133</span>      if (trimmedLine.isEmpty() || trimmedLine.startsWith("#"))<a name="line.133"></a>
 <span class="sourceLineNo">134</span>      {<a name="line.134"></a>
 <span class="sourceLineNo">135</span>        continue;<a name="line.135"></a>
 <span class="sourceLineNo">136</span>      }<a name="line.136"></a>
@@ -192,12 +192,13 @@
 <span class="sourceLineNo">184</span>   *<a name="line.184"></a>
 <span class="sourceLineNo">185</span>   * @throws  IOException  If a problem is encountered while closing the reader.<a name="line.185"></a>
 <span class="sourceLineNo">186</span>   */<a name="line.186"></a>
-<span class="sourceLineNo">187</span>  public void close()<a name="line.187"></a>
-<span class="sourceLineNo">188</span>         throws IOException<a name="line.188"></a>
-<span class="sourceLineNo">189</span>  {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>    reader.close();<a name="line.190"></a>
-<span class="sourceLineNo">191</span>  }<a name="line.191"></a>
-<span class="sourceLineNo">192</span>}<a name="line.192"></a>
+<span class="sourceLineNo">187</span>  @Override()<a name="line.187"></a>
+<span class="sourceLineNo">188</span>  public void close()<a name="line.188"></a>
+<span class="sourceLineNo">189</span>         throws IOException<a name="line.189"></a>
+<span class="sourceLineNo">190</span>  {<a name="line.190"></a>
+<span class="sourceLineNo">191</span>    reader.close();<a name="line.191"></a>
+<span class="sourceLineNo">192</span>  }<a name="line.192"></a>
+<span class="sourceLineNo">193</span>}<a name="line.193"></a>
 
 
 

@@ -356,7 +356,7 @@
 <span class="sourceLineNo">348</span>              case ASN1Constants.UNIVERSAL_SET_TYPE:<a name="line.348"></a>
 <span class="sourceLineNo">349</span>                final ASN1Set uuidSet = ASN1Set.decodeAsSet(e);<a name="line.349"></a>
 <span class="sourceLineNo">350</span>                final ASN1Element[] uuidElements = uuidSet.elements();<a name="line.350"></a>
-<span class="sourceLineNo">351</span>                entryUUIDs = new ArrayList&lt;UUID&gt;(uuidElements.length);<a name="line.351"></a>
+<span class="sourceLineNo">351</span>                entryUUIDs = new ArrayList&lt;&gt;(uuidElements.length);<a name="line.351"></a>
 <span class="sourceLineNo">352</span>                for (final ASN1Element uuidElement : uuidElements)<a name="line.352"></a>
 <span class="sourceLineNo">353</span>                {<a name="line.353"></a>
 <span class="sourceLineNo">354</span>                  try<a name="line.354"></a>
@@ -437,7 +437,7 @@
 <span class="sourceLineNo">429</span><a name="line.429"></a>
 <span class="sourceLineNo">430</span>      case REFRESH_DELETE:<a name="line.430"></a>
 <span class="sourceLineNo">431</span>      case REFRESH_PRESENT:<a name="line.431"></a>
-<span class="sourceLineNo">432</span>        ArrayList&lt;ASN1Element&gt; l = new ArrayList&lt;ASN1Element&gt;(2);<a name="line.432"></a>
+<span class="sourceLineNo">432</span>        ArrayList&lt;ASN1Element&gt; l = new ArrayList&lt;&gt;(2);<a name="line.432"></a>
 <span class="sourceLineNo">433</span>        if (cookie != null)<a name="line.433"></a>
 <span class="sourceLineNo">434</span>        {<a name="line.434"></a>
 <span class="sourceLineNo">435</span>          l.add(cookie);<a name="line.435"></a>
@@ -452,7 +452,7 @@
 <span class="sourceLineNo">444</span>        break;<a name="line.444"></a>
 <span class="sourceLineNo">445</span><a name="line.445"></a>
 <span class="sourceLineNo">446</span>      case SYNC_ID_SET:<a name="line.446"></a>
-<span class="sourceLineNo">447</span>        l = new ArrayList&lt;ASN1Element&gt;(3);<a name="line.447"></a>
+<span class="sourceLineNo">447</span>        l = new ArrayList&lt;&gt;(3);<a name="line.447"></a>
 <span class="sourceLineNo">448</span><a name="line.448"></a>
 <span class="sourceLineNo">449</span>        if (cookie != null)<a name="line.449"></a>
 <span class="sourceLineNo">450</span>        {<a name="line.450"></a>
@@ -465,7 +465,7 @@
 <span class="sourceLineNo">457</span>        }<a name="line.457"></a>
 <span class="sourceLineNo">458</span><a name="line.458"></a>
 <span class="sourceLineNo">459</span>        final ArrayList&lt;ASN1Element&gt; uuidElements =<a name="line.459"></a>
-<span class="sourceLineNo">460</span>             new ArrayList&lt;ASN1Element&gt;(entryUUIDs.size());<a name="line.460"></a>
+<span class="sourceLineNo">460</span>             new ArrayList&lt;&gt;(entryUUIDs.size());<a name="line.460"></a>
 <span class="sourceLineNo">461</span>        for (final UUID uuid : entryUUIDs)<a name="line.461"></a>
 <span class="sourceLineNo">462</span>        {<a name="line.462"></a>
 <span class="sourceLineNo">463</span>          uuidElements.add(new ASN1OctetString(StaticUtils.encodeUUID(uuid)));<a name="line.463"></a>

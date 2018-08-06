@@ -41,11 +41,11 @@
 <span class="sourceLineNo">033</span> * &lt;BLOCKQUOTE&gt;<a name="line.33"></a>
 <span class="sourceLineNo">034</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.34"></a>
 <span class="sourceLineNo">035</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.35"></a>
-<span class="sourceLineNo">036</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.36"></a>
-<span class="sourceLineNo">037</span> *   server products.  These classes provide support for proprietary<a name="line.37"></a>
-<span class="sourceLineNo">038</span> *   functionality or for external specifications that are not considered stable<a name="line.38"></a>
-<span class="sourceLineNo">039</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.39"></a>
-<span class="sourceLineNo">040</span> *   other types of LDAP servers.<a name="line.40"></a>
+<span class="sourceLineNo">036</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.36"></a>
+<span class="sourceLineNo">037</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.37"></a>
+<span class="sourceLineNo">038</span> *   for proprietary functionality or for external specifications that are not<a name="line.38"></a>
+<span class="sourceLineNo">039</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *   interoperable way with other types of LDAP servers.<a name="line.40"></a>
 <span class="sourceLineNo">041</span> * &lt;/BLOCKQUOTE&gt;<a name="line.41"></a>
 <span class="sourceLineNo">042</span> */<a name="line.42"></a>
 <span class="sourceLineNo">043</span>@ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)<a name="line.43"></a>
@@ -168,7 +168,7 @@
 <span class="sourceLineNo">160</span>  {<a name="line.160"></a>
 <span class="sourceLineNo">161</span>    for (final AccessLogOperationType t : values())<a name="line.161"></a>
 <span class="sourceLineNo">162</span>    {<a name="line.162"></a>
-<span class="sourceLineNo">163</span>      if (t.getLogIdentifier().equals(logIdentifier))<a name="line.163"></a>
+<span class="sourceLineNo">163</span>      if (t.logIdentifier.equals(logIdentifier))<a name="line.163"></a>
 <span class="sourceLineNo">164</span>      {<a name="line.164"></a>
 <span class="sourceLineNo">165</span>        return t;<a name="line.165"></a>
 <span class="sourceLineNo">166</span>      }<a name="line.166"></a>

@@ -37,14 +37,14 @@
 <span class="sourceLineNo">029</span>import com.unboundid.asn1.ASN1StreamReader;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.asn1.ASN1StreamReaderSequence;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.protocol.LDAPResponse;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.Extensible;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
-<span class="sourceLineNo">036</span><a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.Debug.*;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.util.StaticUtils.*;<a name="line.39"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.Debug;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.Extensible;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.NotMutable;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.StaticUtils;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafety;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
@@ -258,230 +258,232 @@
 <span class="sourceLineNo">250</span>            break;<a name="line.250"></a>
 <span class="sourceLineNo">251</span>          default:<a name="line.251"></a>
 <span class="sourceLineNo">252</span>            throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.252"></a>
-<span class="sourceLineNo">253</span>                 ERR_INTERMEDIATE_RESPONSE_INVALID_ELEMENT.get(toHex(type)));<a name="line.253"></a>
-<span class="sourceLineNo">254</span>        }<a name="line.254"></a>
-<span class="sourceLineNo">255</span>      }<a name="line.255"></a>
-<span class="sourceLineNo">256</span><a name="line.256"></a>
-<span class="sourceLineNo">257</span>      final Control[] controls;<a name="line.257"></a>
-<span class="sourceLineNo">258</span>      if (messageSequence.hasMoreElements())<a name="line.258"></a>
-<span class="sourceLineNo">259</span>      {<a name="line.259"></a>
-<span class="sourceLineNo">260</span>        final ArrayList&lt;Control&gt; controlList = new ArrayList&lt;Control&gt;(1);<a name="line.260"></a>
-<span class="sourceLineNo">261</span>        final ASN1StreamReaderSequence controlSequence = reader.beginSequence();<a name="line.261"></a>
-<span class="sourceLineNo">262</span>        while (controlSequence.hasMoreElements())<a name="line.262"></a>
-<span class="sourceLineNo">263</span>        {<a name="line.263"></a>
-<span class="sourceLineNo">264</span>          controlList.add(Control.readFrom(reader));<a name="line.264"></a>
-<span class="sourceLineNo">265</span>        }<a name="line.265"></a>
-<span class="sourceLineNo">266</span><a name="line.266"></a>
-<span class="sourceLineNo">267</span>        controls = new Control[controlList.size()];<a name="line.267"></a>
-<span class="sourceLineNo">268</span>        controlList.toArray(controls);<a name="line.268"></a>
-<span class="sourceLineNo">269</span>      }<a name="line.269"></a>
-<span class="sourceLineNo">270</span>      else<a name="line.270"></a>
-<span class="sourceLineNo">271</span>      {<a name="line.271"></a>
-<span class="sourceLineNo">272</span>        controls = NO_CONTROLS;<a name="line.272"></a>
-<span class="sourceLineNo">273</span>      }<a name="line.273"></a>
-<span class="sourceLineNo">274</span><a name="line.274"></a>
-<span class="sourceLineNo">275</span>      return new IntermediateResponse(messageID, oid, value, controls);<a name="line.275"></a>
-<span class="sourceLineNo">276</span>    }<a name="line.276"></a>
-<span class="sourceLineNo">277</span>    catch (final LDAPException le)<a name="line.277"></a>
-<span class="sourceLineNo">278</span>    {<a name="line.278"></a>
-<span class="sourceLineNo">279</span>      debugException(le);<a name="line.279"></a>
-<span class="sourceLineNo">280</span>      throw le;<a name="line.280"></a>
-<span class="sourceLineNo">281</span>    }<a name="line.281"></a>
-<span class="sourceLineNo">282</span>    catch (final Exception e)<a name="line.282"></a>
-<span class="sourceLineNo">283</span>    {<a name="line.283"></a>
-<span class="sourceLineNo">284</span>      debugException(e);<a name="line.284"></a>
-<span class="sourceLineNo">285</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.285"></a>
-<span class="sourceLineNo">286</span>           ERR_INTERMEDIATE_RESPONSE_CANNOT_DECODE.get(getExceptionMessage(e)),<a name="line.286"></a>
-<span class="sourceLineNo">287</span>           e);<a name="line.287"></a>
-<span class="sourceLineNo">288</span>    }<a name="line.288"></a>
-<span class="sourceLineNo">289</span>  }<a name="line.289"></a>
-<span class="sourceLineNo">290</span><a name="line.290"></a>
-<span class="sourceLineNo">291</span><a name="line.291"></a>
+<span class="sourceLineNo">253</span>                 ERR_INTERMEDIATE_RESPONSE_INVALID_ELEMENT.get(<a name="line.253"></a>
+<span class="sourceLineNo">254</span>                      StaticUtils.toHex(type)));<a name="line.254"></a>
+<span class="sourceLineNo">255</span>        }<a name="line.255"></a>
+<span class="sourceLineNo">256</span>      }<a name="line.256"></a>
+<span class="sourceLineNo">257</span><a name="line.257"></a>
+<span class="sourceLineNo">258</span>      final Control[] controls;<a name="line.258"></a>
+<span class="sourceLineNo">259</span>      if (messageSequence.hasMoreElements())<a name="line.259"></a>
+<span class="sourceLineNo">260</span>      {<a name="line.260"></a>
+<span class="sourceLineNo">261</span>        final ArrayList&lt;Control&gt; controlList = new ArrayList&lt;&gt;(1);<a name="line.261"></a>
+<span class="sourceLineNo">262</span>        final ASN1StreamReaderSequence controlSequence = reader.beginSequence();<a name="line.262"></a>
+<span class="sourceLineNo">263</span>        while (controlSequence.hasMoreElements())<a name="line.263"></a>
+<span class="sourceLineNo">264</span>        {<a name="line.264"></a>
+<span class="sourceLineNo">265</span>          controlList.add(Control.readFrom(reader));<a name="line.265"></a>
+<span class="sourceLineNo">266</span>        }<a name="line.266"></a>
+<span class="sourceLineNo">267</span><a name="line.267"></a>
+<span class="sourceLineNo">268</span>        controls = new Control[controlList.size()];<a name="line.268"></a>
+<span class="sourceLineNo">269</span>        controlList.toArray(controls);<a name="line.269"></a>
+<span class="sourceLineNo">270</span>      }<a name="line.270"></a>
+<span class="sourceLineNo">271</span>      else<a name="line.271"></a>
+<span class="sourceLineNo">272</span>      {<a name="line.272"></a>
+<span class="sourceLineNo">273</span>        controls = NO_CONTROLS;<a name="line.273"></a>
+<span class="sourceLineNo">274</span>      }<a name="line.274"></a>
+<span class="sourceLineNo">275</span><a name="line.275"></a>
+<span class="sourceLineNo">276</span>      return new IntermediateResponse(messageID, oid, value, controls);<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    }<a name="line.277"></a>
+<span class="sourceLineNo">278</span>    catch (final LDAPException le)<a name="line.278"></a>
+<span class="sourceLineNo">279</span>    {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>      Debug.debugException(le);<a name="line.280"></a>
+<span class="sourceLineNo">281</span>      throw le;<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    }<a name="line.282"></a>
+<span class="sourceLineNo">283</span>    catch (final Exception e)<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    {<a name="line.284"></a>
+<span class="sourceLineNo">285</span>      Debug.debugException(e);<a name="line.285"></a>
+<span class="sourceLineNo">286</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.286"></a>
+<span class="sourceLineNo">287</span>           ERR_INTERMEDIATE_RESPONSE_CANNOT_DECODE.get(<a name="line.287"></a>
+<span class="sourceLineNo">288</span>                StaticUtils.getExceptionMessage(e)),<a name="line.288"></a>
+<span class="sourceLineNo">289</span>           e);<a name="line.289"></a>
+<span class="sourceLineNo">290</span>    }<a name="line.290"></a>
+<span class="sourceLineNo">291</span>  }<a name="line.291"></a>
 <span class="sourceLineNo">292</span><a name="line.292"></a>
-<span class="sourceLineNo">293</span>  /**<a name="line.293"></a>
-<span class="sourceLineNo">294</span>   * {@inheritDoc}<a name="line.294"></a>
-<span class="sourceLineNo">295</span>   */<a name="line.295"></a>
-<span class="sourceLineNo">296</span>  @Override()<a name="line.296"></a>
-<span class="sourceLineNo">297</span>  public int getMessageID()<a name="line.297"></a>
-<span class="sourceLineNo">298</span>  {<a name="line.298"></a>
-<span class="sourceLineNo">299</span>    return messageID;<a name="line.299"></a>
-<span class="sourceLineNo">300</span>  }<a name="line.300"></a>
-<span class="sourceLineNo">301</span><a name="line.301"></a>
-<span class="sourceLineNo">302</span><a name="line.302"></a>
+<span class="sourceLineNo">293</span><a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>  /**<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   * {@inheritDoc}<a name="line.296"></a>
+<span class="sourceLineNo">297</span>   */<a name="line.297"></a>
+<span class="sourceLineNo">298</span>  @Override()<a name="line.298"></a>
+<span class="sourceLineNo">299</span>  public int getMessageID()<a name="line.299"></a>
+<span class="sourceLineNo">300</span>  {<a name="line.300"></a>
+<span class="sourceLineNo">301</span>    return messageID;<a name="line.301"></a>
+<span class="sourceLineNo">302</span>  }<a name="line.302"></a>
 <span class="sourceLineNo">303</span><a name="line.303"></a>
-<span class="sourceLineNo">304</span>  /**<a name="line.304"></a>
-<span class="sourceLineNo">305</span>   * Retrieves the OID for this intermediate response, if any.<a name="line.305"></a>
-<span class="sourceLineNo">306</span>   *<a name="line.306"></a>
-<span class="sourceLineNo">307</span>   * @return  The OID for this intermediate response, or {@code null} if there<a name="line.307"></a>
-<span class="sourceLineNo">308</span>   *          is no OID for this response.<a name="line.308"></a>
-<span class="sourceLineNo">309</span>   */<a name="line.309"></a>
-<span class="sourceLineNo">310</span>  public final String getOID()<a name="line.310"></a>
-<span class="sourceLineNo">311</span>  {<a name="line.311"></a>
-<span class="sourceLineNo">312</span>    return oid;<a name="line.312"></a>
-<span class="sourceLineNo">313</span>  }<a name="line.313"></a>
-<span class="sourceLineNo">314</span><a name="line.314"></a>
-<span class="sourceLineNo">315</span><a name="line.315"></a>
+<span class="sourceLineNo">304</span><a name="line.304"></a>
+<span class="sourceLineNo">305</span><a name="line.305"></a>
+<span class="sourceLineNo">306</span>  /**<a name="line.306"></a>
+<span class="sourceLineNo">307</span>   * Retrieves the OID for this intermediate response, if any.<a name="line.307"></a>
+<span class="sourceLineNo">308</span>   *<a name="line.308"></a>
+<span class="sourceLineNo">309</span>   * @return  The OID for this intermediate response, or {@code null} if there<a name="line.309"></a>
+<span class="sourceLineNo">310</span>   *          is no OID for this response.<a name="line.310"></a>
+<span class="sourceLineNo">311</span>   */<a name="line.311"></a>
+<span class="sourceLineNo">312</span>  public final String getOID()<a name="line.312"></a>
+<span class="sourceLineNo">313</span>  {<a name="line.313"></a>
+<span class="sourceLineNo">314</span>    return oid;<a name="line.314"></a>
+<span class="sourceLineNo">315</span>  }<a name="line.315"></a>
 <span class="sourceLineNo">316</span><a name="line.316"></a>
-<span class="sourceLineNo">317</span>  /**<a name="line.317"></a>
-<span class="sourceLineNo">318</span>   * Retrieves the encoded value for this intermediate response, if any.<a name="line.318"></a>
-<span class="sourceLineNo">319</span>   *<a name="line.319"></a>
-<span class="sourceLineNo">320</span>   * @return  The encoded value for this intermediate response, or {@code null}<a name="line.320"></a>
-<span class="sourceLineNo">321</span>   *          if there is no value for this response.<a name="line.321"></a>
-<span class="sourceLineNo">322</span>   */<a name="line.322"></a>
-<span class="sourceLineNo">323</span>  public final ASN1OctetString getValue()<a name="line.323"></a>
-<span class="sourceLineNo">324</span>  {<a name="line.324"></a>
-<span class="sourceLineNo">325</span>    return value;<a name="line.325"></a>
-<span class="sourceLineNo">326</span>  }<a name="line.326"></a>
-<span class="sourceLineNo">327</span><a name="line.327"></a>
-<span class="sourceLineNo">328</span><a name="line.328"></a>
+<span class="sourceLineNo">317</span><a name="line.317"></a>
+<span class="sourceLineNo">318</span><a name="line.318"></a>
+<span class="sourceLineNo">319</span>  /**<a name="line.319"></a>
+<span class="sourceLineNo">320</span>   * Retrieves the encoded value for this intermediate response, if any.<a name="line.320"></a>
+<span class="sourceLineNo">321</span>   *<a name="line.321"></a>
+<span class="sourceLineNo">322</span>   * @return  The encoded value for this intermediate response, or {@code null}<a name="line.322"></a>
+<span class="sourceLineNo">323</span>   *          if there is no value for this response.<a name="line.323"></a>
+<span class="sourceLineNo">324</span>   */<a name="line.324"></a>
+<span class="sourceLineNo">325</span>  public final ASN1OctetString getValue()<a name="line.325"></a>
+<span class="sourceLineNo">326</span>  {<a name="line.326"></a>
+<span class="sourceLineNo">327</span>    return value;<a name="line.327"></a>
+<span class="sourceLineNo">328</span>  }<a name="line.328"></a>
 <span class="sourceLineNo">329</span><a name="line.329"></a>
-<span class="sourceLineNo">330</span>  /**<a name="line.330"></a>
-<span class="sourceLineNo">331</span>   * Retrieves the set of controls returned with this intermediate response.<a name="line.331"></a>
-<span class="sourceLineNo">332</span>   * Individual response controls of a specific type may be retrieved and<a name="line.332"></a>
-<span class="sourceLineNo">333</span>   * decoded using the {@code get} method in the response control class.<a name="line.333"></a>
-<span class="sourceLineNo">334</span>   *<a name="line.334"></a>
-<span class="sourceLineNo">335</span>   * @return  The set of controls returned with this intermediate response.<a name="line.335"></a>
-<span class="sourceLineNo">336</span>   */<a name="line.336"></a>
-<span class="sourceLineNo">337</span>  public final Control[] getControls()<a name="line.337"></a>
-<span class="sourceLineNo">338</span>  {<a name="line.338"></a>
-<span class="sourceLineNo">339</span>    return controls;<a name="line.339"></a>
-<span class="sourceLineNo">340</span>  }<a name="line.340"></a>
-<span class="sourceLineNo">341</span><a name="line.341"></a>
-<span class="sourceLineNo">342</span><a name="line.342"></a>
+<span class="sourceLineNo">330</span><a name="line.330"></a>
+<span class="sourceLineNo">331</span><a name="line.331"></a>
+<span class="sourceLineNo">332</span>  /**<a name="line.332"></a>
+<span class="sourceLineNo">333</span>   * Retrieves the set of controls returned with this intermediate response.<a name="line.333"></a>
+<span class="sourceLineNo">334</span>   * Individual response controls of a specific type may be retrieved and<a name="line.334"></a>
+<span class="sourceLineNo">335</span>   * decoded using the {@code get} method in the response control class.<a name="line.335"></a>
+<span class="sourceLineNo">336</span>   *<a name="line.336"></a>
+<span class="sourceLineNo">337</span>   * @return  The set of controls returned with this intermediate response.<a name="line.337"></a>
+<span class="sourceLineNo">338</span>   */<a name="line.338"></a>
+<span class="sourceLineNo">339</span>  public final Control[] getControls()<a name="line.339"></a>
+<span class="sourceLineNo">340</span>  {<a name="line.340"></a>
+<span class="sourceLineNo">341</span>    return controls;<a name="line.341"></a>
+<span class="sourceLineNo">342</span>  }<a name="line.342"></a>
 <span class="sourceLineNo">343</span><a name="line.343"></a>
-<span class="sourceLineNo">344</span>  /**<a name="line.344"></a>
-<span class="sourceLineNo">345</span>   * Retrieves the control with the specified OID.  If there is more than one<a name="line.345"></a>
-<span class="sourceLineNo">346</span>   * control with the given OID, then the first will be returned.<a name="line.346"></a>
-<span class="sourceLineNo">347</span>   *<a name="line.347"></a>
-<span class="sourceLineNo">348</span>   * @param  oid  The OID of the control to retrieve.<a name="line.348"></a>
+<span class="sourceLineNo">344</span><a name="line.344"></a>
+<span class="sourceLineNo">345</span><a name="line.345"></a>
+<span class="sourceLineNo">346</span>  /**<a name="line.346"></a>
+<span class="sourceLineNo">347</span>   * Retrieves the control with the specified OID.  If there is more than one<a name="line.347"></a>
+<span class="sourceLineNo">348</span>   * control with the given OID, then the first will be returned.<a name="line.348"></a>
 <span class="sourceLineNo">349</span>   *<a name="line.349"></a>
-<span class="sourceLineNo">350</span>   * @return  The control with the requested OID, or {@code null} if there is no<a name="line.350"></a>
-<span class="sourceLineNo">351</span>   *          such control for this intermediate response.<a name="line.351"></a>
-<span class="sourceLineNo">352</span>   */<a name="line.352"></a>
-<span class="sourceLineNo">353</span>  public final Control getControl(final String oid)<a name="line.353"></a>
-<span class="sourceLineNo">354</span>  {<a name="line.354"></a>
-<span class="sourceLineNo">355</span>    for (final Control c : controls)<a name="line.355"></a>
-<span class="sourceLineNo">356</span>    {<a name="line.356"></a>
-<span class="sourceLineNo">357</span>      if (c.getOID().equals(oid))<a name="line.357"></a>
-<span class="sourceLineNo">358</span>      {<a name="line.358"></a>
-<span class="sourceLineNo">359</span>        return c;<a name="line.359"></a>
-<span class="sourceLineNo">360</span>      }<a name="line.360"></a>
-<span class="sourceLineNo">361</span>    }<a name="line.361"></a>
-<span class="sourceLineNo">362</span><a name="line.362"></a>
-<span class="sourceLineNo">363</span>    return null;<a name="line.363"></a>
-<span class="sourceLineNo">364</span>  }<a name="line.364"></a>
-<span class="sourceLineNo">365</span><a name="line.365"></a>
-<span class="sourceLineNo">366</span><a name="line.366"></a>
+<span class="sourceLineNo">350</span>   * @param  oid  The OID of the control to retrieve.<a name="line.350"></a>
+<span class="sourceLineNo">351</span>   *<a name="line.351"></a>
+<span class="sourceLineNo">352</span>   * @return  The control with the requested OID, or {@code null} if there is no<a name="line.352"></a>
+<span class="sourceLineNo">353</span>   *          such control for this intermediate response.<a name="line.353"></a>
+<span class="sourceLineNo">354</span>   */<a name="line.354"></a>
+<span class="sourceLineNo">355</span>  public final Control getControl(final String oid)<a name="line.355"></a>
+<span class="sourceLineNo">356</span>  {<a name="line.356"></a>
+<span class="sourceLineNo">357</span>    for (final Control c : controls)<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    {<a name="line.358"></a>
+<span class="sourceLineNo">359</span>      if (c.getOID().equals(oid))<a name="line.359"></a>
+<span class="sourceLineNo">360</span>      {<a name="line.360"></a>
+<span class="sourceLineNo">361</span>        return c;<a name="line.361"></a>
+<span class="sourceLineNo">362</span>      }<a name="line.362"></a>
+<span class="sourceLineNo">363</span>    }<a name="line.363"></a>
+<span class="sourceLineNo">364</span><a name="line.364"></a>
+<span class="sourceLineNo">365</span>    return null;<a name="line.365"></a>
+<span class="sourceLineNo">366</span>  }<a name="line.366"></a>
 <span class="sourceLineNo">367</span><a name="line.367"></a>
-<span class="sourceLineNo">368</span>  /**<a name="line.368"></a>
-<span class="sourceLineNo">369</span>   * Retrieves the user-friendly name for the intermediate response, if<a name="line.369"></a>
-<span class="sourceLineNo">370</span>   * available.  If no user-friendly name has been defined, but a response OID<a name="line.370"></a>
-<span class="sourceLineNo">371</span>   * is available, then that will be returned.  If neither a user-friendly name<a name="line.371"></a>
-<span class="sourceLineNo">372</span>   * nor a response OID are available, then {@code null} will be returned.<a name="line.372"></a>
-<span class="sourceLineNo">373</span>   *<a name="line.373"></a>
-<span class="sourceLineNo">374</span>   * @return  The user-friendly name for this intermediate response, the<a name="line.374"></a>
-<span class="sourceLineNo">375</span>   *          response OID if a user-friendly name is not available but a<a name="line.375"></a>
-<span class="sourceLineNo">376</span>   *          response OID is, or {@code null} if neither a user-friendly name<a name="line.376"></a>
-<span class="sourceLineNo">377</span>   *          nor a response OID are available.<a name="line.377"></a>
-<span class="sourceLineNo">378</span>   */<a name="line.378"></a>
-<span class="sourceLineNo">379</span>  public String getIntermediateResponseName()<a name="line.379"></a>
-<span class="sourceLineNo">380</span>  {<a name="line.380"></a>
-<span class="sourceLineNo">381</span>    // By default, we will return the OID (which may be null).  Subclasses<a name="line.381"></a>
-<span class="sourceLineNo">382</span>    // should override this to provide the user-friendly name.<a name="line.382"></a>
-<span class="sourceLineNo">383</span>    return oid;<a name="line.383"></a>
-<span class="sourceLineNo">384</span>  }<a name="line.384"></a>
-<span class="sourceLineNo">385</span><a name="line.385"></a>
-<span class="sourceLineNo">386</span><a name="line.386"></a>
+<span class="sourceLineNo">368</span><a name="line.368"></a>
+<span class="sourceLineNo">369</span><a name="line.369"></a>
+<span class="sourceLineNo">370</span>  /**<a name="line.370"></a>
+<span class="sourceLineNo">371</span>   * Retrieves the user-friendly name for the intermediate response, if<a name="line.371"></a>
+<span class="sourceLineNo">372</span>   * available.  If no user-friendly name has been defined, but a response OID<a name="line.372"></a>
+<span class="sourceLineNo">373</span>   * is available, then that will be returned.  If neither a user-friendly name<a name="line.373"></a>
+<span class="sourceLineNo">374</span>   * nor a response OID are available, then {@code null} will be returned.<a name="line.374"></a>
+<span class="sourceLineNo">375</span>   *<a name="line.375"></a>
+<span class="sourceLineNo">376</span>   * @return  The user-friendly name for this intermediate response, the<a name="line.376"></a>
+<span class="sourceLineNo">377</span>   *          response OID if a user-friendly name is not available but a<a name="line.377"></a>
+<span class="sourceLineNo">378</span>   *          response OID is, or {@code null} if neither a user-friendly name<a name="line.378"></a>
+<span class="sourceLineNo">379</span>   *          nor a response OID are available.<a name="line.379"></a>
+<span class="sourceLineNo">380</span>   */<a name="line.380"></a>
+<span class="sourceLineNo">381</span>  public String getIntermediateResponseName()<a name="line.381"></a>
+<span class="sourceLineNo">382</span>  {<a name="line.382"></a>
+<span class="sourceLineNo">383</span>    // By default, we will return the OID (which may be null).  Subclasses<a name="line.383"></a>
+<span class="sourceLineNo">384</span>    // should override this to provide the user-friendly name.<a name="line.384"></a>
+<span class="sourceLineNo">385</span>    return oid;<a name="line.385"></a>
+<span class="sourceLineNo">386</span>  }<a name="line.386"></a>
 <span class="sourceLineNo">387</span><a name="line.387"></a>
-<span class="sourceLineNo">388</span>  /**<a name="line.388"></a>
-<span class="sourceLineNo">389</span>   * Retrieves a human-readable string representation for the contents of the<a name="line.389"></a>
-<span class="sourceLineNo">390</span>   * value for this intermediate response, if appropriate.  If one is provided,<a name="line.390"></a>
-<span class="sourceLineNo">391</span>   * then it should be a relatively compact single-line representation of the<a name="line.391"></a>
-<span class="sourceLineNo">392</span>   * most important elements of the value.<a name="line.392"></a>
-<span class="sourceLineNo">393</span>   *<a name="line.393"></a>
-<span class="sourceLineNo">394</span>   * @return  A human-readable string representation for the contents of the<a name="line.394"></a>
-<span class="sourceLineNo">395</span>   *          value for this intermediate response, or {@code null} if there is<a name="line.395"></a>
-<span class="sourceLineNo">396</span>   *          no value or no string representation is available.<a name="line.396"></a>
-<span class="sourceLineNo">397</span>   */<a name="line.397"></a>
-<span class="sourceLineNo">398</span>  public String valueToString()<a name="line.398"></a>
-<span class="sourceLineNo">399</span>  {<a name="line.399"></a>
-<span class="sourceLineNo">400</span>    return null;<a name="line.400"></a>
-<span class="sourceLineNo">401</span>  }<a name="line.401"></a>
-<span class="sourceLineNo">402</span><a name="line.402"></a>
-<span class="sourceLineNo">403</span><a name="line.403"></a>
+<span class="sourceLineNo">388</span><a name="line.388"></a>
+<span class="sourceLineNo">389</span><a name="line.389"></a>
+<span class="sourceLineNo">390</span>  /**<a name="line.390"></a>
+<span class="sourceLineNo">391</span>   * Retrieves a human-readable string representation for the contents of the<a name="line.391"></a>
+<span class="sourceLineNo">392</span>   * value for this intermediate response, if appropriate.  If one is provided,<a name="line.392"></a>
+<span class="sourceLineNo">393</span>   * then it should be a relatively compact single-line representation of the<a name="line.393"></a>
+<span class="sourceLineNo">394</span>   * most important elements of the value.<a name="line.394"></a>
+<span class="sourceLineNo">395</span>   *<a name="line.395"></a>
+<span class="sourceLineNo">396</span>   * @return  A human-readable string representation for the contents of the<a name="line.396"></a>
+<span class="sourceLineNo">397</span>   *          value for this intermediate response, or {@code null} if there is<a name="line.397"></a>
+<span class="sourceLineNo">398</span>   *          no value or no string representation is available.<a name="line.398"></a>
+<span class="sourceLineNo">399</span>   */<a name="line.399"></a>
+<span class="sourceLineNo">400</span>  public String valueToString()<a name="line.400"></a>
+<span class="sourceLineNo">401</span>  {<a name="line.401"></a>
+<span class="sourceLineNo">402</span>    return null;<a name="line.402"></a>
+<span class="sourceLineNo">403</span>  }<a name="line.403"></a>
 <span class="sourceLineNo">404</span><a name="line.404"></a>
-<span class="sourceLineNo">405</span>  /**<a name="line.405"></a>
-<span class="sourceLineNo">406</span>   * Retrieves a string representation of this intermediate response.<a name="line.406"></a>
-<span class="sourceLineNo">407</span>   *<a name="line.407"></a>
-<span class="sourceLineNo">408</span>   * @return  A string representation of this intermediate response.<a name="line.408"></a>
-<span class="sourceLineNo">409</span>   */<a name="line.409"></a>
-<span class="sourceLineNo">410</span>  @Override()<a name="line.410"></a>
-<span class="sourceLineNo">411</span>  public final String toString()<a name="line.411"></a>
-<span class="sourceLineNo">412</span>  {<a name="line.412"></a>
-<span class="sourceLineNo">413</span>    final StringBuilder buffer = new StringBuilder();<a name="line.413"></a>
-<span class="sourceLineNo">414</span>    toString(buffer);<a name="line.414"></a>
-<span class="sourceLineNo">415</span>    return buffer.toString();<a name="line.415"></a>
-<span class="sourceLineNo">416</span>  }<a name="line.416"></a>
-<span class="sourceLineNo">417</span><a name="line.417"></a>
-<span class="sourceLineNo">418</span><a name="line.418"></a>
+<span class="sourceLineNo">405</span><a name="line.405"></a>
+<span class="sourceLineNo">406</span><a name="line.406"></a>
+<span class="sourceLineNo">407</span>  /**<a name="line.407"></a>
+<span class="sourceLineNo">408</span>   * Retrieves a string representation of this intermediate response.<a name="line.408"></a>
+<span class="sourceLineNo">409</span>   *<a name="line.409"></a>
+<span class="sourceLineNo">410</span>   * @return  A string representation of this intermediate response.<a name="line.410"></a>
+<span class="sourceLineNo">411</span>   */<a name="line.411"></a>
+<span class="sourceLineNo">412</span>  @Override()<a name="line.412"></a>
+<span class="sourceLineNo">413</span>  public final String toString()<a name="line.413"></a>
+<span class="sourceLineNo">414</span>  {<a name="line.414"></a>
+<span class="sourceLineNo">415</span>    final StringBuilder buffer = new StringBuilder();<a name="line.415"></a>
+<span class="sourceLineNo">416</span>    toString(buffer);<a name="line.416"></a>
+<span class="sourceLineNo">417</span>    return buffer.toString();<a name="line.417"></a>
+<span class="sourceLineNo">418</span>  }<a name="line.418"></a>
 <span class="sourceLineNo">419</span><a name="line.419"></a>
-<span class="sourceLineNo">420</span>  /**<a name="line.420"></a>
-<span class="sourceLineNo">421</span>   * Appends a string representation of this intermediate response to the<a name="line.421"></a>
-<span class="sourceLineNo">422</span>   * provided buffer.<a name="line.422"></a>
-<span class="sourceLineNo">423</span>   *<a name="line.423"></a>
-<span class="sourceLineNo">424</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.424"></a>
-<span class="sourceLineNo">425</span>   *                 appended.<a name="line.425"></a>
-<span class="sourceLineNo">426</span>   */<a name="line.426"></a>
-<span class="sourceLineNo">427</span>  @Override()<a name="line.427"></a>
-<span class="sourceLineNo">428</span>  public void toString(final StringBuilder buffer)<a name="line.428"></a>
-<span class="sourceLineNo">429</span>  {<a name="line.429"></a>
-<span class="sourceLineNo">430</span>    buffer.append("IntermediateResponse(");<a name="line.430"></a>
-<span class="sourceLineNo">431</span><a name="line.431"></a>
-<span class="sourceLineNo">432</span>    boolean added = false;<a name="line.432"></a>
+<span class="sourceLineNo">420</span><a name="line.420"></a>
+<span class="sourceLineNo">421</span><a name="line.421"></a>
+<span class="sourceLineNo">422</span>  /**<a name="line.422"></a>
+<span class="sourceLineNo">423</span>   * Appends a string representation of this intermediate response to the<a name="line.423"></a>
+<span class="sourceLineNo">424</span>   * provided buffer.<a name="line.424"></a>
+<span class="sourceLineNo">425</span>   *<a name="line.425"></a>
+<span class="sourceLineNo">426</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.426"></a>
+<span class="sourceLineNo">427</span>   *                 appended.<a name="line.427"></a>
+<span class="sourceLineNo">428</span>   */<a name="line.428"></a>
+<span class="sourceLineNo">429</span>  @Override()<a name="line.429"></a>
+<span class="sourceLineNo">430</span>  public void toString(final StringBuilder buffer)<a name="line.430"></a>
+<span class="sourceLineNo">431</span>  {<a name="line.431"></a>
+<span class="sourceLineNo">432</span>    buffer.append("IntermediateResponse(");<a name="line.432"></a>
 <span class="sourceLineNo">433</span><a name="line.433"></a>
-<span class="sourceLineNo">434</span>    if (messageID &gt;= 0)<a name="line.434"></a>
-<span class="sourceLineNo">435</span>    {<a name="line.435"></a>
-<span class="sourceLineNo">436</span>      buffer.append("messageID=");<a name="line.436"></a>
-<span class="sourceLineNo">437</span>      buffer.append(messageID);<a name="line.437"></a>
-<span class="sourceLineNo">438</span>      added = true;<a name="line.438"></a>
-<span class="sourceLineNo">439</span>    }<a name="line.439"></a>
-<span class="sourceLineNo">440</span><a name="line.440"></a>
-<span class="sourceLineNo">441</span>    if (oid != null)<a name="line.441"></a>
-<span class="sourceLineNo">442</span>    {<a name="line.442"></a>
-<span class="sourceLineNo">443</span>      if (added)<a name="line.443"></a>
-<span class="sourceLineNo">444</span>      {<a name="line.444"></a>
-<span class="sourceLineNo">445</span>        buffer.append(", ");<a name="line.445"></a>
-<span class="sourceLineNo">446</span>      }<a name="line.446"></a>
-<span class="sourceLineNo">447</span><a name="line.447"></a>
-<span class="sourceLineNo">448</span>      buffer.append("oid='");<a name="line.448"></a>
-<span class="sourceLineNo">449</span>      buffer.append(oid);<a name="line.449"></a>
-<span class="sourceLineNo">450</span>      buffer.append('\'');<a name="line.450"></a>
-<span class="sourceLineNo">451</span>      added = true;<a name="line.451"></a>
-<span class="sourceLineNo">452</span>    }<a name="line.452"></a>
-<span class="sourceLineNo">453</span><a name="line.453"></a>
-<span class="sourceLineNo">454</span>    if (controls.length &gt; 0)<a name="line.454"></a>
-<span class="sourceLineNo">455</span>    {<a name="line.455"></a>
-<span class="sourceLineNo">456</span>      if (added)<a name="line.456"></a>
-<span class="sourceLineNo">457</span>      {<a name="line.457"></a>
-<span class="sourceLineNo">458</span>        buffer.append(", ");<a name="line.458"></a>
-<span class="sourceLineNo">459</span>      }<a name="line.459"></a>
-<span class="sourceLineNo">460</span><a name="line.460"></a>
-<span class="sourceLineNo">461</span>      buffer.append("controls={");<a name="line.461"></a>
-<span class="sourceLineNo">462</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.462"></a>
-<span class="sourceLineNo">463</span>      {<a name="line.463"></a>
-<span class="sourceLineNo">464</span>        if (i &gt; 0)<a name="line.464"></a>
-<span class="sourceLineNo">465</span>        {<a name="line.465"></a>
-<span class="sourceLineNo">466</span>          buffer.append(", ");<a name="line.466"></a>
-<span class="sourceLineNo">467</span>        }<a name="line.467"></a>
-<span class="sourceLineNo">468</span><a name="line.468"></a>
-<span class="sourceLineNo">469</span>        buffer.append(controls[i]);<a name="line.469"></a>
-<span class="sourceLineNo">470</span>      }<a name="line.470"></a>
-<span class="sourceLineNo">471</span>      buffer.append('}');<a name="line.471"></a>
-<span class="sourceLineNo">472</span>    }<a name="line.472"></a>
-<span class="sourceLineNo">473</span><a name="line.473"></a>
-<span class="sourceLineNo">474</span>    buffer.append(')');<a name="line.474"></a>
-<span class="sourceLineNo">475</span>  }<a name="line.475"></a>
-<span class="sourceLineNo">476</span>}<a name="line.476"></a>
+<span class="sourceLineNo">434</span>    boolean added = false;<a name="line.434"></a>
+<span class="sourceLineNo">435</span><a name="line.435"></a>
+<span class="sourceLineNo">436</span>    if (messageID &gt;= 0)<a name="line.436"></a>
+<span class="sourceLineNo">437</span>    {<a name="line.437"></a>
+<span class="sourceLineNo">438</span>      buffer.append("messageID=");<a name="line.438"></a>
+<span class="sourceLineNo">439</span>      buffer.append(messageID);<a name="line.439"></a>
+<span class="sourceLineNo">440</span>      added = true;<a name="line.440"></a>
+<span class="sourceLineNo">441</span>    }<a name="line.441"></a>
+<span class="sourceLineNo">442</span><a name="line.442"></a>
+<span class="sourceLineNo">443</span>    if (oid != null)<a name="line.443"></a>
+<span class="sourceLineNo">444</span>    {<a name="line.444"></a>
+<span class="sourceLineNo">445</span>      if (added)<a name="line.445"></a>
+<span class="sourceLineNo">446</span>      {<a name="line.446"></a>
+<span class="sourceLineNo">447</span>        buffer.append(", ");<a name="line.447"></a>
+<span class="sourceLineNo">448</span>      }<a name="line.448"></a>
+<span class="sourceLineNo">449</span><a name="line.449"></a>
+<span class="sourceLineNo">450</span>      buffer.append("oid='");<a name="line.450"></a>
+<span class="sourceLineNo">451</span>      buffer.append(oid);<a name="line.451"></a>
+<span class="sourceLineNo">452</span>      buffer.append('\'');<a name="line.452"></a>
+<span class="sourceLineNo">453</span>      added = true;<a name="line.453"></a>
+<span class="sourceLineNo">454</span>    }<a name="line.454"></a>
+<span class="sourceLineNo">455</span><a name="line.455"></a>
+<span class="sourceLineNo">456</span>    if (controls.length &gt; 0)<a name="line.456"></a>
+<span class="sourceLineNo">457</span>    {<a name="line.457"></a>
+<span class="sourceLineNo">458</span>      if (added)<a name="line.458"></a>
+<span class="sourceLineNo">459</span>      {<a name="line.459"></a>
+<span class="sourceLineNo">460</span>        buffer.append(", ");<a name="line.460"></a>
+<span class="sourceLineNo">461</span>      }<a name="line.461"></a>
+<span class="sourceLineNo">462</span><a name="line.462"></a>
+<span class="sourceLineNo">463</span>      buffer.append("controls={");<a name="line.463"></a>
+<span class="sourceLineNo">464</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.464"></a>
+<span class="sourceLineNo">465</span>      {<a name="line.465"></a>
+<span class="sourceLineNo">466</span>        if (i &gt; 0)<a name="line.466"></a>
+<span class="sourceLineNo">467</span>        {<a name="line.467"></a>
+<span class="sourceLineNo">468</span>          buffer.append(", ");<a name="line.468"></a>
+<span class="sourceLineNo">469</span>        }<a name="line.469"></a>
+<span class="sourceLineNo">470</span><a name="line.470"></a>
+<span class="sourceLineNo">471</span>        buffer.append(controls[i]);<a name="line.471"></a>
+<span class="sourceLineNo">472</span>      }<a name="line.472"></a>
+<span class="sourceLineNo">473</span>      buffer.append('}');<a name="line.473"></a>
+<span class="sourceLineNo">474</span>    }<a name="line.474"></a>
+<span class="sourceLineNo">475</span><a name="line.475"></a>
+<span class="sourceLineNo">476</span>    buffer.append(')');<a name="line.476"></a>
+<span class="sourceLineNo">477</span>  }<a name="line.477"></a>
+<span class="sourceLineNo">478</span>}<a name="line.478"></a>
 
 
 

@@ -36,13 +36,13 @@
 <span class="sourceLineNo">028</span>import com.unboundid.ldap.sdk.Control;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import com.unboundid.util.NotMutable;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.StaticUtils;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
+<span class="sourceLineNo">031</span>import com.unboundid.util.Debug;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.StaticUtils;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
@@ -185,7 +185,7 @@
 <span class="sourceLineNo">177</span>    }<a name="line.177"></a>
 <span class="sourceLineNo">178</span>    catch (final Exception e)<a name="line.178"></a>
 <span class="sourceLineNo">179</span>    {<a name="line.179"></a>
-<span class="sourceLineNo">180</span>      debugException(e);<a name="line.180"></a>
+<span class="sourceLineNo">180</span>      Debug.debugException(e);<a name="line.180"></a>
 <span class="sourceLineNo">181</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.181"></a>
 <span class="sourceLineNo">182</span>                              ERR_PRE_READ_REQUEST_CANNOT_DECODE.get(e), e);<a name="line.182"></a>
 <span class="sourceLineNo">183</span>    }<a name="line.183"></a>

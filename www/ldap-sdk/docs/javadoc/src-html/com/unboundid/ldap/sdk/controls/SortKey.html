@@ -39,14 +39,14 @@
 <span class="sourceLineNo">031</span>import com.unboundid.asn1.ASN1Sequence;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.NotMutable;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafety;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.util.Debug.*;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import static com.unboundid.util.StaticUtils.*;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import static com.unboundid.util.Validator.*;<a name="line.41"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.Debug;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.NotMutable;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.StaticUtils;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafety;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.Validator;<a name="line.39"></a>
+<span class="sourceLineNo">040</span><a name="line.40"></a>
+<span class="sourceLineNo">041</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
 <span class="sourceLineNo">044</span><a name="line.44"></a>
@@ -151,7 +151,7 @@
 <span class="sourceLineNo">143</span>  public SortKey(final String attributeName, final String matchingRuleID,<a name="line.143"></a>
 <span class="sourceLineNo">144</span>                 final boolean reverseOrder)<a name="line.144"></a>
 <span class="sourceLineNo">145</span>  {<a name="line.145"></a>
-<span class="sourceLineNo">146</span>    ensureNotNull(attributeName);<a name="line.146"></a>
+<span class="sourceLineNo">146</span>    Validator.ensureNotNull(attributeName);<a name="line.146"></a>
 <span class="sourceLineNo">147</span><a name="line.147"></a>
 <span class="sourceLineNo">148</span>    this.attributeName  = attributeName;<a name="line.148"></a>
 <span class="sourceLineNo">149</span>    this.matchingRuleID = matchingRuleID;<a name="line.149"></a>
@@ -211,7 +211,7 @@
 <span class="sourceLineNo">203</span>   */<a name="line.203"></a>
 <span class="sourceLineNo">204</span>  ASN1Sequence encode()<a name="line.204"></a>
 <span class="sourceLineNo">205</span>  {<a name="line.205"></a>
-<span class="sourceLineNo">206</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(3);<a name="line.206"></a>
+<span class="sourceLineNo">206</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;&gt;(3);<a name="line.206"></a>
 <span class="sourceLineNo">207</span>    elements.add(new ASN1OctetString(attributeName));<a name="line.207"></a>
 <span class="sourceLineNo">208</span><a name="line.208"></a>
 <span class="sourceLineNo">209</span>    if (matchingRuleID != null)<a name="line.209"></a>
@@ -249,94 +249,93 @@
 <span class="sourceLineNo">241</span>    }<a name="line.241"></a>
 <span class="sourceLineNo">242</span>    catch (final Exception e)<a name="line.242"></a>
 <span class="sourceLineNo">243</span>    {<a name="line.243"></a>
-<span class="sourceLineNo">244</span>      debugException(e);<a name="line.244"></a>
+<span class="sourceLineNo">244</span>      Debug.debugException(e);<a name="line.244"></a>
 <span class="sourceLineNo">245</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.245"></a>
-<span class="sourceLineNo">246</span>                              ERR_SORT_KEY_NOT_SEQUENCE.get(e), e);<a name="line.246"></a>
+<span class="sourceLineNo">246</span>           ERR_SORT_KEY_NOT_SEQUENCE.get(e), e);<a name="line.246"></a>
 <span class="sourceLineNo">247</span>    }<a name="line.247"></a>
 <span class="sourceLineNo">248</span><a name="line.248"></a>
 <span class="sourceLineNo">249</span>    if ((elements.length &lt; 1) || (elements.length &gt; 3))<a name="line.249"></a>
 <span class="sourceLineNo">250</span>    {<a name="line.250"></a>
 <span class="sourceLineNo">251</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.251"></a>
-<span class="sourceLineNo">252</span>                              ERR_SORT_KEY_INVALID_ELEMENT_COUNT.get(<a name="line.252"></a>
-<span class="sourceLineNo">253</span>                                   elements.length));<a name="line.253"></a>
-<span class="sourceLineNo">254</span>    }<a name="line.254"></a>
-<span class="sourceLineNo">255</span><a name="line.255"></a>
-<span class="sourceLineNo">256</span>    boolean reverseOrder   = false;<a name="line.256"></a>
-<span class="sourceLineNo">257</span>    String  matchingRuleID = null;<a name="line.257"></a>
-<span class="sourceLineNo">258</span>    final String  attributeName  =<a name="line.258"></a>
-<span class="sourceLineNo">259</span>         ASN1OctetString.decodeAsOctetString(elements[0]).stringValue();<a name="line.259"></a>
-<span class="sourceLineNo">260</span>    for (int i=1; i &lt; elements.length; i++)<a name="line.260"></a>
-<span class="sourceLineNo">261</span>    {<a name="line.261"></a>
-<span class="sourceLineNo">262</span>      switch (elements[i].getType())<a name="line.262"></a>
-<span class="sourceLineNo">263</span>      {<a name="line.263"></a>
-<span class="sourceLineNo">264</span>        case TYPE_MATCHING_RULE_ID:<a name="line.264"></a>
-<span class="sourceLineNo">265</span>          matchingRuleID =<a name="line.265"></a>
-<span class="sourceLineNo">266</span>               ASN1OctetString.decodeAsOctetString(elements[i]).stringValue();<a name="line.266"></a>
-<span class="sourceLineNo">267</span>          break;<a name="line.267"></a>
-<span class="sourceLineNo">268</span><a name="line.268"></a>
-<span class="sourceLineNo">269</span>        case TYPE_REVERSE_ORDER:<a name="line.269"></a>
-<span class="sourceLineNo">270</span>          try<a name="line.270"></a>
-<span class="sourceLineNo">271</span>          {<a name="line.271"></a>
-<span class="sourceLineNo">272</span>            reverseOrder =<a name="line.272"></a>
-<span class="sourceLineNo">273</span>                 ASN1Boolean.decodeAsBoolean(elements[i]).booleanValue();<a name="line.273"></a>
-<span class="sourceLineNo">274</span>          }<a name="line.274"></a>
-<span class="sourceLineNo">275</span>          catch (final Exception e)<a name="line.275"></a>
-<span class="sourceLineNo">276</span>          {<a name="line.276"></a>
-<span class="sourceLineNo">277</span>            debugException(e);<a name="line.277"></a>
-<span class="sourceLineNo">278</span>            throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.278"></a>
-<span class="sourceLineNo">279</span>                                    ERR_SORT_KEY_REVERSE_NOT_BOOLEAN.get(e), e);<a name="line.279"></a>
-<span class="sourceLineNo">280</span>          }<a name="line.280"></a>
-<span class="sourceLineNo">281</span>          break;<a name="line.281"></a>
-<span class="sourceLineNo">282</span><a name="line.282"></a>
-<span class="sourceLineNo">283</span>        default:<a name="line.283"></a>
-<span class="sourceLineNo">284</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.284"></a>
-<span class="sourceLineNo">285</span>                                  ERR_SORT_KEY_ELEMENT_INVALID_TYPE.get(<a name="line.285"></a>
-<span class="sourceLineNo">286</span>                                       toHex(elements[i].getType())));<a name="line.286"></a>
-<span class="sourceLineNo">287</span>      }<a name="line.287"></a>
-<span class="sourceLineNo">288</span>    }<a name="line.288"></a>
-<span class="sourceLineNo">289</span><a name="line.289"></a>
-<span class="sourceLineNo">290</span>    return new SortKey(attributeName, matchingRuleID, reverseOrder);<a name="line.290"></a>
-<span class="sourceLineNo">291</span>  }<a name="line.291"></a>
+<span class="sourceLineNo">252</span>           ERR_SORT_KEY_INVALID_ELEMENT_COUNT.get(elements.length));<a name="line.252"></a>
+<span class="sourceLineNo">253</span>    }<a name="line.253"></a>
+<span class="sourceLineNo">254</span><a name="line.254"></a>
+<span class="sourceLineNo">255</span>    boolean reverseOrder   = false;<a name="line.255"></a>
+<span class="sourceLineNo">256</span>    String  matchingRuleID = null;<a name="line.256"></a>
+<span class="sourceLineNo">257</span>    final String  attributeName  =<a name="line.257"></a>
+<span class="sourceLineNo">258</span>         ASN1OctetString.decodeAsOctetString(elements[0]).stringValue();<a name="line.258"></a>
+<span class="sourceLineNo">259</span>    for (int i=1; i &lt; elements.length; i++)<a name="line.259"></a>
+<span class="sourceLineNo">260</span>    {<a name="line.260"></a>
+<span class="sourceLineNo">261</span>      switch (elements[i].getType())<a name="line.261"></a>
+<span class="sourceLineNo">262</span>      {<a name="line.262"></a>
+<span class="sourceLineNo">263</span>        case TYPE_MATCHING_RULE_ID:<a name="line.263"></a>
+<span class="sourceLineNo">264</span>          matchingRuleID =<a name="line.264"></a>
+<span class="sourceLineNo">265</span>               ASN1OctetString.decodeAsOctetString(elements[i]).stringValue();<a name="line.265"></a>
+<span class="sourceLineNo">266</span>          break;<a name="line.266"></a>
+<span class="sourceLineNo">267</span><a name="line.267"></a>
+<span class="sourceLineNo">268</span>        case TYPE_REVERSE_ORDER:<a name="line.268"></a>
+<span class="sourceLineNo">269</span>          try<a name="line.269"></a>
+<span class="sourceLineNo">270</span>          {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>            reverseOrder =<a name="line.271"></a>
+<span class="sourceLineNo">272</span>                 ASN1Boolean.decodeAsBoolean(elements[i]).booleanValue();<a name="line.272"></a>
+<span class="sourceLineNo">273</span>          }<a name="line.273"></a>
+<span class="sourceLineNo">274</span>          catch (final Exception e)<a name="line.274"></a>
+<span class="sourceLineNo">275</span>          {<a name="line.275"></a>
+<span class="sourceLineNo">276</span>            Debug.debugException(e);<a name="line.276"></a>
+<span class="sourceLineNo">277</span>            throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.277"></a>
+<span class="sourceLineNo">278</span>                 ERR_SORT_KEY_REVERSE_NOT_BOOLEAN.get(e), e);<a name="line.278"></a>
+<span class="sourceLineNo">279</span>          }<a name="line.279"></a>
+<span class="sourceLineNo">280</span>          break;<a name="line.280"></a>
+<span class="sourceLineNo">281</span><a name="line.281"></a>
+<span class="sourceLineNo">282</span>        default:<a name="line.282"></a>
+<span class="sourceLineNo">283</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.283"></a>
+<span class="sourceLineNo">284</span>               ERR_SORT_KEY_ELEMENT_INVALID_TYPE.get(<a name="line.284"></a>
+<span class="sourceLineNo">285</span>                    StaticUtils.toHex(elements[i].getType())));<a name="line.285"></a>
+<span class="sourceLineNo">286</span>      }<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    }<a name="line.287"></a>
+<span class="sourceLineNo">288</span><a name="line.288"></a>
+<span class="sourceLineNo">289</span>    return new SortKey(attributeName, matchingRuleID, reverseOrder);<a name="line.289"></a>
+<span class="sourceLineNo">290</span>  }<a name="line.290"></a>
+<span class="sourceLineNo">291</span><a name="line.291"></a>
 <span class="sourceLineNo">292</span><a name="line.292"></a>
 <span class="sourceLineNo">293</span><a name="line.293"></a>
-<span class="sourceLineNo">294</span><a name="line.294"></a>
-<span class="sourceLineNo">295</span>  /**<a name="line.295"></a>
-<span class="sourceLineNo">296</span>   * Retrieves a string representation of this sort key.<a name="line.296"></a>
-<span class="sourceLineNo">297</span>   *<a name="line.297"></a>
-<span class="sourceLineNo">298</span>   * @return  A string representation of this sort key.<a name="line.298"></a>
-<span class="sourceLineNo">299</span>   */<a name="line.299"></a>
-<span class="sourceLineNo">300</span>  @Override()<a name="line.300"></a>
-<span class="sourceLineNo">301</span>  public String toString()<a name="line.301"></a>
-<span class="sourceLineNo">302</span>  {<a name="line.302"></a>
-<span class="sourceLineNo">303</span>    final StringBuilder buffer = new StringBuilder();<a name="line.303"></a>
-<span class="sourceLineNo">304</span>    toString(buffer);<a name="line.304"></a>
-<span class="sourceLineNo">305</span>    return buffer.toString();<a name="line.305"></a>
-<span class="sourceLineNo">306</span>  }<a name="line.306"></a>
+<span class="sourceLineNo">294</span>  /**<a name="line.294"></a>
+<span class="sourceLineNo">295</span>   * Retrieves a string representation of this sort key.<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   *<a name="line.296"></a>
+<span class="sourceLineNo">297</span>   * @return  A string representation of this sort key.<a name="line.297"></a>
+<span class="sourceLineNo">298</span>   */<a name="line.298"></a>
+<span class="sourceLineNo">299</span>  @Override()<a name="line.299"></a>
+<span class="sourceLineNo">300</span>  public String toString()<a name="line.300"></a>
+<span class="sourceLineNo">301</span>  {<a name="line.301"></a>
+<span class="sourceLineNo">302</span>    final StringBuilder buffer = new StringBuilder();<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    toString(buffer);<a name="line.303"></a>
+<span class="sourceLineNo">304</span>    return buffer.toString();<a name="line.304"></a>
+<span class="sourceLineNo">305</span>  }<a name="line.305"></a>
+<span class="sourceLineNo">306</span><a name="line.306"></a>
 <span class="sourceLineNo">307</span><a name="line.307"></a>
 <span class="sourceLineNo">308</span><a name="line.308"></a>
-<span class="sourceLineNo">309</span><a name="line.309"></a>
-<span class="sourceLineNo">310</span>  /**<a name="line.310"></a>
-<span class="sourceLineNo">311</span>   * Appends a string representation of this sort key to the provided buffer.<a name="line.311"></a>
-<span class="sourceLineNo">312</span>   *<a name="line.312"></a>
-<span class="sourceLineNo">313</span>   * @param  buffer  The buffer to which to append a string representation of<a name="line.313"></a>
-<span class="sourceLineNo">314</span>   *                 this sort key.<a name="line.314"></a>
-<span class="sourceLineNo">315</span>   */<a name="line.315"></a>
-<span class="sourceLineNo">316</span>  public void toString(final StringBuilder buffer)<a name="line.316"></a>
-<span class="sourceLineNo">317</span>  {<a name="line.317"></a>
-<span class="sourceLineNo">318</span>    buffer.append("SortKey(attributeName=");<a name="line.318"></a>
-<span class="sourceLineNo">319</span>    buffer.append(attributeName);<a name="line.319"></a>
-<span class="sourceLineNo">320</span><a name="line.320"></a>
-<span class="sourceLineNo">321</span>    if (matchingRuleID != null)<a name="line.321"></a>
-<span class="sourceLineNo">322</span>    {<a name="line.322"></a>
-<span class="sourceLineNo">323</span>      buffer.append(", matchingRuleID=");<a name="line.323"></a>
-<span class="sourceLineNo">324</span>      buffer.append(matchingRuleID);<a name="line.324"></a>
-<span class="sourceLineNo">325</span>    }<a name="line.325"></a>
-<span class="sourceLineNo">326</span><a name="line.326"></a>
-<span class="sourceLineNo">327</span>    buffer.append(", reverseOrder=");<a name="line.327"></a>
-<span class="sourceLineNo">328</span>    buffer.append(reverseOrder);<a name="line.328"></a>
-<span class="sourceLineNo">329</span>    buffer.append(')');<a name="line.329"></a>
-<span class="sourceLineNo">330</span>  }<a name="line.330"></a>
-<span class="sourceLineNo">331</span>}<a name="line.331"></a>
+<span class="sourceLineNo">309</span>  /**<a name="line.309"></a>
+<span class="sourceLineNo">310</span>   * Appends a string representation of this sort key to the provided buffer.<a name="line.310"></a>
+<span class="sourceLineNo">311</span>   *<a name="line.311"></a>
+<span class="sourceLineNo">312</span>   * @param  buffer  The buffer to which to append a string representation of<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   *                 this sort key.<a name="line.313"></a>
+<span class="sourceLineNo">314</span>   */<a name="line.314"></a>
+<span class="sourceLineNo">315</span>  public void toString(final StringBuilder buffer)<a name="line.315"></a>
+<span class="sourceLineNo">316</span>  {<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    buffer.append("SortKey(attributeName=");<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    buffer.append(attributeName);<a name="line.318"></a>
+<span class="sourceLineNo">319</span><a name="line.319"></a>
+<span class="sourceLineNo">320</span>    if (matchingRuleID != null)<a name="line.320"></a>
+<span class="sourceLineNo">321</span>    {<a name="line.321"></a>
+<span class="sourceLineNo">322</span>      buffer.append(", matchingRuleID=");<a name="line.322"></a>
+<span class="sourceLineNo">323</span>      buffer.append(matchingRuleID);<a name="line.323"></a>
+<span class="sourceLineNo">324</span>    }<a name="line.324"></a>
+<span class="sourceLineNo">325</span><a name="line.325"></a>
+<span class="sourceLineNo">326</span>    buffer.append(", reverseOrder=");<a name="line.326"></a>
+<span class="sourceLineNo">327</span>    buffer.append(reverseOrder);<a name="line.327"></a>
+<span class="sourceLineNo">328</span>    buffer.append(')');<a name="line.328"></a>
+<span class="sourceLineNo">329</span>  }<a name="line.329"></a>
+<span class="sourceLineNo">330</span>}<a name="line.330"></a>
 
 
 

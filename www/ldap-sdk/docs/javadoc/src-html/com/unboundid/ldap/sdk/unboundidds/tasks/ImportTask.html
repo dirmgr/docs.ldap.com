@@ -44,9 +44,9 @@
 <span class="sourceLineNo">036</span>import com.unboundid.util.StaticUtils;<a name="line.36"></a>
 <span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafety;<a name="line.37"></a>
 <span class="sourceLineNo">038</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>import static com.unboundid.ldap.sdk.unboundidds.tasks.TaskMessages.*;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import static com.unboundid.util.Validator.*;<a name="line.41"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.Validator;<a name="line.39"></a>
+<span class="sourceLineNo">040</span><a name="line.40"></a>
+<span class="sourceLineNo">041</span>import static com.unboundid.ldap.sdk.unboundidds.tasks.TaskMessages.*;<a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
 <span class="sourceLineNo">044</span><a name="line.44"></a>
@@ -57,11 +57,11 @@
 <span class="sourceLineNo">049</span> * &lt;BLOCKQUOTE&gt;<a name="line.49"></a>
 <span class="sourceLineNo">050</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.50"></a>
 <span class="sourceLineNo">051</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *   server products.  These classes provide support for proprietary<a name="line.53"></a>
-<span class="sourceLineNo">054</span> *   functionality or for external specifications that are not considered stable<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.55"></a>
-<span class="sourceLineNo">056</span> *   other types of LDAP servers.<a name="line.56"></a>
+<span class="sourceLineNo">052</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *   for proprietary functionality or for external specifications that are not<a name="line.54"></a>
+<span class="sourceLineNo">055</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *   interoperable way with other types of LDAP servers.<a name="line.56"></a>
 <span class="sourceLineNo">057</span> * &lt;/BLOCKQUOTE&gt;<a name="line.57"></a>
 <span class="sourceLineNo">058</span> * &lt;BR&gt;<a name="line.58"></a>
 <span class="sourceLineNo">059</span> * The properties that are available for use with this type of task include:<a name="line.59"></a>
@@ -591,11 +591,11 @@
 <span class="sourceLineNo">583</span>  public ImportTask(final String taskID, final String backendID,<a name="line.583"></a>
 <span class="sourceLineNo">584</span>                    final String ldifFile)<a name="line.584"></a>
 <span class="sourceLineNo">585</span>  {<a name="line.585"></a>
-<span class="sourceLineNo">586</span>    this(taskID, Arrays.asList(ldifFile), backendID, false, false, null, false,<a name="line.586"></a>
-<span class="sourceLineNo">587</span>         true, null, null, null, null, null, null, false, false, false, null,<a name="line.587"></a>
-<span class="sourceLineNo">588</span>         null, null, null, null);<a name="line.588"></a>
+<span class="sourceLineNo">586</span>    this(taskID, Collections.singletonList(ldifFile), backendID, false, false,<a name="line.586"></a>
+<span class="sourceLineNo">587</span>         null, false, true, null, null, null, null, null, null, false, false,<a name="line.587"></a>
+<span class="sourceLineNo">588</span>         false, null, null, null, null, null);<a name="line.588"></a>
 <span class="sourceLineNo">589</span><a name="line.589"></a>
-<span class="sourceLineNo">590</span>    ensureNotNull(ldifFile);<a name="line.590"></a>
+<span class="sourceLineNo">590</span>    Validator.ensureNotNull(ldifFile);<a name="line.590"></a>
 <span class="sourceLineNo">591</span>  }<a name="line.591"></a>
 <span class="sourceLineNo">592</span><a name="line.592"></a>
 <span class="sourceLineNo">593</span><a name="line.593"></a>
@@ -952,837 +952,977 @@
 <span class="sourceLineNo">944</span>                    final List&lt;String&gt; notifyOnCompletion,<a name="line.944"></a>
 <span class="sourceLineNo">945</span>                    final List&lt;String&gt; notifyOnError)<a name="line.945"></a>
 <span class="sourceLineNo">946</span>  {<a name="line.946"></a>
-<span class="sourceLineNo">947</span>    super(taskID, IMPORT_TASK_CLASS, scheduledStartTime,<a name="line.947"></a>
-<span class="sourceLineNo">948</span>          dependencyIDs, failedDependencyAction, notifyOnCompletion,<a name="line.948"></a>
-<span class="sourceLineNo">949</span>          notifyOnError);<a name="line.949"></a>
-<span class="sourceLineNo">950</span><a name="line.950"></a>
-<span class="sourceLineNo">951</span>    ensureNotNull(ldifFiles);<a name="line.951"></a>
-<span class="sourceLineNo">952</span>    ensureFalse(ldifFiles.isEmpty(),<a name="line.952"></a>
-<span class="sourceLineNo">953</span>                "ImportTask.ldifFiles must not be empty.");<a name="line.953"></a>
-<span class="sourceLineNo">954</span>    ensureFalse((backendID == null) &amp;&amp;<a name="line.954"></a>
-<span class="sourceLineNo">955</span>                ((includeBranches == null) || includeBranches.isEmpty()));<a name="line.955"></a>
-<span class="sourceLineNo">956</span>    ensureTrue(clearBackend || append ||<a name="line.956"></a>
-<span class="sourceLineNo">957</span>                ((includeBranches != null) &amp;&amp; (! includeBranches.isEmpty())));<a name="line.957"></a>
-<span class="sourceLineNo">958</span><a name="line.958"></a>
-<span class="sourceLineNo">959</span>    this.ldifFiles = Collections.unmodifiableList(ldifFiles);<a name="line.959"></a>
-<span class="sourceLineNo">960</span>    this.backendID = backendID;<a name="line.960"></a>
-<span class="sourceLineNo">961</span>    this.append = append;<a name="line.961"></a>
-<span class="sourceLineNo">962</span>    this.replaceExisting = replaceExisting;<a name="line.962"></a>
-<span class="sourceLineNo">963</span>    this.rejectFile = rejectFile;<a name="line.963"></a>
-<span class="sourceLineNo">964</span>    this.overwriteRejects = overwriteRejects;<a name="line.964"></a>
-<span class="sourceLineNo">965</span>    this.clearBackend = clearBackend;<a name="line.965"></a>
-<span class="sourceLineNo">966</span>    this.isCompressed = isCompressed;<a name="line.966"></a>
-<span class="sourceLineNo">967</span>    this.isEncrypted = isEncrypted;<a name="line.967"></a>
-<span class="sourceLineNo">968</span>    this.encryptionPassphraseFile = encryptionPassphraseFile;<a name="line.968"></a>
-<span class="sourceLineNo">969</span>    this.skipSchemaValidation = skipSchemaValidation;<a name="line.969"></a>
-<span class="sourceLineNo">970</span>    this.stripTrailingSpaces = stripTrailingSpaces;<a name="line.970"></a>
-<span class="sourceLineNo">971</span><a name="line.971"></a>
-<span class="sourceLineNo">972</span>    if (includeBranches == null)<a name="line.972"></a>
-<span class="sourceLineNo">973</span>    {<a name="line.973"></a>
-<span class="sourceLineNo">974</span>      this.includeBranches = Collections.emptyList();<a name="line.974"></a>
-<span class="sourceLineNo">975</span>    }<a name="line.975"></a>
-<span class="sourceLineNo">976</span>    else<a name="line.976"></a>
-<span class="sourceLineNo">977</span>    {<a name="line.977"></a>
-<span class="sourceLineNo">978</span>      this.includeBranches = Collections.unmodifiableList(includeBranches);<a name="line.978"></a>
-<span class="sourceLineNo">979</span>    }<a name="line.979"></a>
-<span class="sourceLineNo">980</span><a name="line.980"></a>
-<span class="sourceLineNo">981</span>    if (excludeBranches == null)<a name="line.981"></a>
-<span class="sourceLineNo">982</span>    {<a name="line.982"></a>
-<span class="sourceLineNo">983</span>      this.excludeBranches = Collections.emptyList();<a name="line.983"></a>
-<span class="sourceLineNo">984</span>    }<a name="line.984"></a>
-<span class="sourceLineNo">985</span>    else<a name="line.985"></a>
-<span class="sourceLineNo">986</span>    {<a name="line.986"></a>
-<span class="sourceLineNo">987</span>      this.excludeBranches = Collections.unmodifiableList(excludeBranches);<a name="line.987"></a>
-<span class="sourceLineNo">988</span>    }<a name="line.988"></a>
-<span class="sourceLineNo">989</span><a name="line.989"></a>
-<span class="sourceLineNo">990</span>    if (includeFilters == null)<a name="line.990"></a>
-<span class="sourceLineNo">991</span>    {<a name="line.991"></a>
-<span class="sourceLineNo">992</span>      this.includeFilters = Collections.emptyList();<a name="line.992"></a>
-<span class="sourceLineNo">993</span>    }<a name="line.993"></a>
-<span class="sourceLineNo">994</span>    else<a name="line.994"></a>
-<span class="sourceLineNo">995</span>    {<a name="line.995"></a>
-<span class="sourceLineNo">996</span>      this.includeFilters = Collections.unmodifiableList(includeFilters);<a name="line.996"></a>
-<span class="sourceLineNo">997</span>    }<a name="line.997"></a>
-<span class="sourceLineNo">998</span><a name="line.998"></a>
-<span class="sourceLineNo">999</span>    if (excludeFilters == null)<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>    {<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>      this.excludeFilters = Collections.emptyList();<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>    }<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>    else<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>    {<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>      this.excludeFilters = Collections.unmodifiableList(excludeFilters);<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>    }<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span><a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>    if (includeAttributes == null)<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>    {<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>      this.includeAttributes = Collections.emptyList();<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>    }<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>    else<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>    {<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>      this.includeAttributes = Collections.unmodifiableList(includeAttributes);<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>    }<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span><a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>    if (excludeAttributes == null)<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>    {<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>      this.excludeAttributes = Collections.emptyList();<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>    }<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>    else<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>    {<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>      this.excludeAttributes = Collections.unmodifiableList(excludeAttributes);<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>    }<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>  }<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span><a name="line.1026"></a>
-<span class="sourceLineNo">1027</span><a name="line.1027"></a>
-<span class="sourceLineNo">1028</span><a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>  /**<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>   * Creates a new import task from the provided entry.<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>   *<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>   * @param  entry  The entry to use to create this import task.<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>   *<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>   * @throws  TaskException  If the provided entry cannot be parsed as an import<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>   *                         task entry.<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>   */<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>  public ImportTask(final Entry entry)<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>         throws TaskException<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>  {<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>    super(entry);<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span><a name="line.1041"></a>
-<span class="sourceLineNo">1042</span><a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>    // Get the set of LDIF files.  It must be present.<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span>    final String[] files = entry.getAttributeValues(ATTR_LDIF_FILE);<a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>    if ((files == null) || (files.length == 0))<a name="line.1045"></a>
-<span class="sourceLineNo">1046</span>    {<a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>      throw new TaskException(ERR_IMPORT_TASK_NO_LDIF.get(getTaskEntryDN()));<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span>    }<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>    else<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>    {<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>      ldifFiles = Collections.unmodifiableList(Arrays.asList(files));<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>    }<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span><a name="line.1053"></a>
-<span class="sourceLineNo">1054</span><a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>    // Get the backend ID.  It may be absent.<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>    backendID = entry.getAttributeValue(ATTR_BACKEND_ID);<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span><a name="line.1057"></a>
-<span class="sourceLineNo">1058</span><a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>    // Get the append flag.  It may be absent.<a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>    append = parseBooleanValue(entry, ATTR_APPEND, false);<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span><a name="line.1061"></a>
-<span class="sourceLineNo">1062</span><a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>    // Get the replaceExisting flag.  It may be absent.<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>    replaceExisting = parseBooleanValue(entry, ATTR_REPLACE_EXISTING, false);<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span><a name="line.1065"></a>
-<span class="sourceLineNo">1066</span><a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>    // Get the reject file.  It may be absent.<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>    rejectFile = entry.getAttributeValue(ATTR_REJECT_FILE);<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span><a name="line.1069"></a>
-<span class="sourceLineNo">1070</span><a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>    // Get the overwriteRejects flag.  It may be absent.<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>    overwriteRejects = parseBooleanValue(entry, ATTR_OVERWRITE_REJECTS, false);<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span><a name="line.1073"></a>
-<span class="sourceLineNo">1074</span><a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>    // Get the clearBackend flag.  It may be absent.<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>    clearBackend = parseBooleanValue(entry, ATTR_CLEAR_BACKEND, false);<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span><a name="line.1077"></a>
-<span class="sourceLineNo">1078</span><a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>    // Get the list of include branches.  It may be absent.<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>    includeBranches = parseStringList(entry, ATTR_INCLUDE_BRANCH);<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span><a name="line.1081"></a>
-<span class="sourceLineNo">1082</span><a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>    // Get the list of exclude branches.  It may be absent.<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>    excludeBranches = parseStringList(entry, ATTR_EXCLUDE_BRANCH);<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span><a name="line.1085"></a>
-<span class="sourceLineNo">1086</span><a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>    // Get the list of include filters.  It may be absent.<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>    includeFilters = parseStringList(entry, ATTR_INCLUDE_FILTER);<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span><a name="line.1089"></a>
-<span class="sourceLineNo">1090</span><a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>    // Get the list of exclude filters.  It may be absent.<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>    excludeFilters = parseStringList(entry, ATTR_EXCLUDE_FILTER);<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span><a name="line.1093"></a>
-<span class="sourceLineNo">1094</span><a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>    // Get the list of include attributes.  It may be absent.<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span>    includeAttributes = parseStringList(entry, ATTR_INCLUDE_ATTRIBUTE);<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span><a name="line.1097"></a>
-<span class="sourceLineNo">1098</span><a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>    // Get the list of exclude attributes.  It may be absent.<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>    excludeAttributes = parseStringList(entry, ATTR_EXCLUDE_ATTRIBUTE);<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span><a name="line.1101"></a>
-<span class="sourceLineNo">1102</span><a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>    // Get the isCompressed flag.  It may be absent.<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span>    isCompressed = parseBooleanValue(entry, ATTR_IS_COMPRESSED, false);<a name="line.1104"></a>
-<span class="sourceLineNo">1105</span><a name="line.1105"></a>
-<span class="sourceLineNo">1106</span><a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>    // Get the isEncrypted flag.  It may be absent.<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>    isEncrypted = parseBooleanValue(entry, ATTR_IS_ENCRYPTED, false);<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span><a name="line.1109"></a>
-<span class="sourceLineNo">1110</span><a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>    // Get the path to the encryption passphrase file.  It may be absent.<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span>    encryptionPassphraseFile =<a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>         entry.getAttributeValue(ATTR_ENCRYPTION_PASSPHRASE_FILE);<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span><a name="line.1114"></a>
-<span class="sourceLineNo">1115</span><a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>    // Get the skipSchemaValidation flag.  It may be absent.<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>    skipSchemaValidation = parseBooleanValue(entry, ATTR_SKIP_SCHEMA_VALIDATION,<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>                                             false);<a name="line.1118"></a>
-<span class="sourceLineNo">1119</span><a name="line.1119"></a>
+<span class="sourceLineNo">947</span>    this(taskID, ldifFiles, backendID, append, replaceExisting, rejectFile,<a name="line.947"></a>
+<span class="sourceLineNo">948</span>         overwriteRejects, clearBackend, includeBranches, excludeBranches,<a name="line.948"></a>
+<span class="sourceLineNo">949</span>         includeFilters, excludeFilters, includeAttributes,<a name="line.949"></a>
+<span class="sourceLineNo">950</span>         excludeAttributes, isCompressed, isEncrypted,<a name="line.950"></a>
+<span class="sourceLineNo">951</span>         encryptionPassphraseFile, skipSchemaValidation, stripTrailingSpaces,<a name="line.951"></a>
+<span class="sourceLineNo">952</span>         scheduledStartTime, dependencyIDs, failedDependencyAction, null,<a name="line.952"></a>
+<span class="sourceLineNo">953</span>         notifyOnCompletion, null, notifyOnError, null, null, null);<a name="line.953"></a>
+<span class="sourceLineNo">954</span>  }<a name="line.954"></a>
+<span class="sourceLineNo">955</span><a name="line.955"></a>
+<span class="sourceLineNo">956</span><a name="line.956"></a>
+<span class="sourceLineNo">957</span><a name="line.957"></a>
+<span class="sourceLineNo">958</span>  /**<a name="line.958"></a>
+<span class="sourceLineNo">959</span>   * Creates a new import task with the provided information.<a name="line.959"></a>
+<span class="sourceLineNo">960</span>   *<a name="line.960"></a>
+<span class="sourceLineNo">961</span>   * @param  taskID                    The task ID to use for this task.  If it<a name="line.961"></a>
+<span class="sourceLineNo">962</span>   *                                   is {@code null} then a UUID will be<a name="line.962"></a>
+<span class="sourceLineNo">963</span>   *                                   generated for use as the task ID.<a name="line.963"></a>
+<span class="sourceLineNo">964</span>   * @param  ldifFiles                 The paths to the LDIF file containing the<a name="line.964"></a>
+<span class="sourceLineNo">965</span>   *                                   data to be imported.  The paths may be<a name="line.965"></a>
+<span class="sourceLineNo">966</span>   *                                   either absolute or relative to the server<a name="line.966"></a>
+<span class="sourceLineNo">967</span>   *                                   install root.  It must not be<a name="line.967"></a>
+<span class="sourceLineNo">968</span>   *                                   {@code null} or empty.<a name="line.968"></a>
+<span class="sourceLineNo">969</span>   * @param  backendID                 The backend ID of the backend into which<a name="line.969"></a>
+<span class="sourceLineNo">970</span>   *                                   the data should be imported.  It may be<a name="line.970"></a>
+<span class="sourceLineNo">971</span>   *                                   {@code null} only if one or more include<a name="line.971"></a>
+<span class="sourceLineNo">972</span>   *                                   branches was specified.<a name="line.972"></a>
+<span class="sourceLineNo">973</span>   * @param  append                    Indicates whether to append to the<a name="line.973"></a>
+<span class="sourceLineNo">974</span>   *                                   existing data rather than overwriting it.<a name="line.974"></a>
+<span class="sourceLineNo">975</span>   * @param  replaceExisting           Indicates whether to replace existing<a name="line.975"></a>
+<span class="sourceLineNo">976</span>   *                                   entries when appending to the database.<a name="line.976"></a>
+<span class="sourceLineNo">977</span>   * @param  rejectFile                The path to a file into which<a name="line.977"></a>
+<span class="sourceLineNo">978</span>   *                                   information will be written about<a name="line.978"></a>
+<span class="sourceLineNo">979</span>   *                                   rejected entries.  It may be {@code null}<a name="line.979"></a>
+<span class="sourceLineNo">980</span>   *                                   if no reject file is to be maintained.<a name="line.980"></a>
+<span class="sourceLineNo">981</span>   * @param  overwriteRejects          Indicates whether to overwrite an<a name="line.981"></a>
+<span class="sourceLineNo">982</span>   *                                   existing rejects file rather than<a name="line.982"></a>
+<span class="sourceLineNo">983</span>   *                                   appending to it.<a name="line.983"></a>
+<span class="sourceLineNo">984</span>   * @param  clearBackend              Indicates whether to clear data below all<a name="line.984"></a>
+<span class="sourceLineNo">985</span>   *                                   base DNs in the backend.  It must be<a name="line.985"></a>
+<span class="sourceLineNo">986</span>   *                                   {@code true} if the backend was specified<a name="line.986"></a>
+<span class="sourceLineNo">987</span>   *                                   using a backend ID and no include<a name="line.987"></a>
+<span class="sourceLineNo">988</span>   *                                   branches are specified and {@code append}<a name="line.988"></a>
+<span class="sourceLineNo">989</span>   *                                   is {@code false}.  If include branches<a name="line.989"></a>
+<span class="sourceLineNo">990</span>   *                                   were specified, or if data is being<a name="line.990"></a>
+<span class="sourceLineNo">991</span>   *                                   appended to the backend, then it may be<a name="line.991"></a>
+<span class="sourceLineNo">992</span>   *                                   either {@code true} or {@code false}.<a name="line.992"></a>
+<span class="sourceLineNo">993</span>   * @param  includeBranches           The set of base DNs below which to import<a name="line.993"></a>
+<span class="sourceLineNo">994</span>   *                                   the data.  It may be {@code null} or<a name="line.994"></a>
+<span class="sourceLineNo">995</span>   *                                   empty if a backend ID was specified and<a name="line.995"></a>
+<span class="sourceLineNo">996</span>   *                                   data should be imported below all base<a name="line.996"></a>
+<span class="sourceLineNo">997</span>   *                                   DNs defined in the backend.  Otherwise,<a name="line.997"></a>
+<span class="sourceLineNo">998</span>   *                                   at least one include branch must be<a name="line.998"></a>
+<span class="sourceLineNo">999</span>   *                                   provided, and any data not under one of<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>   *                                   the include branches will be excluded<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>   *                                   from the import.  All include branches<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>   *                                   must be within the scope of the same<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>   *                                   backend.<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>   * @param  excludeBranches           The set of base DNs to exclude from the<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>   *                                   import.  It may be {@code null} or empty<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>   *                                   if no data is to be excluded based on its<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>   *                                   location.<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>   * @param  includeFilters            The set of filters to use to determine<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>   *                                   which entries should be included in the<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>   *                                   import.  It may be {@code null} or empty<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>   *                                   if no data is to be excluded based on its<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>   *                                   content.<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>   * @param  excludeFilters            The set of filters to use to determine<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>   *                                   which entries should be excluded from the<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>   *                                   import.  It may be {@code null} or empty<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>   *                                   if no data is to be excluded based on its<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>   *                                   content.<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>   * @param  includeAttributes         The set of attributes to include in the<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>   *                                   entries being imported.  It may be<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>   *                                   {@code null} or empty if no attributes<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>   *                                   should be excluded from the import.<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>   * @param  excludeAttributes         The set of attributes to exclude from the<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>   *                                   entries being imported.  It may be<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>   *                                   {@code null} or empty if no attributes<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>   *                                   should be excluded from the import.<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>   * @param  isCompressed              Indicates whether the data in the LDIF<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>   *                                   file(s) is compressed.<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>   * @param  isEncrypted               Indicates whether the data in the LDIF<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>   *                                   file(s) is encrypted.<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>   * @param  encryptionPassphraseFile  The path to a file containing the<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>   *                                   passphrase to use to generate the<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>   *                                   encryption key.  It amy be {@code null}<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>   *                                   if the backup is not to be encrypted, or<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>   *                                   if the key should be obtained in some<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>   *                                   other way.<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>   * @param  skipSchemaValidation      Indicates whether to skip schema<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>   *                                   validation during the import.<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>   * @param  stripTrailingSpaces       Indicates whether to strip illegal<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>   *                                   trailing spaces found in LDIF records<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>   *                                   rather than rejecting those records.<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>   * @param  scheduledStartTime        The time that this task should start<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>   *                                   running.<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>   * @param  dependencyIDs             The list of task IDs that will be<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>   *                                   required to complete before this task<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>   *                                   will be eligible to start.<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>   * @param  failedDependencyAction    Indicates what action should be taken if<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>   *                                   any of the dependencies for this task do<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>   *                                   not complete successfully.<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>   * @param  notifyOnStart             The list of e-mail addresses of<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>   *                                   individuals that should be notified when<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>   *                                   this task starts running.<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>   * @param  notifyOnCompletion        The list of e-mail addresses of<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>   *                                   individuals that should be notified when<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>   *                                   this task completes.<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>   * @param  notifyOnSuccess           The list of e-mail addresses of<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>   *                                   individuals that should be notified if<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>   *                                   this task completes successfully.<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>   * @param  notifyOnError             The list of e-mail addresses of<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>   *                                   individuals that should be notified if<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>   *                                   this task does not complete successfully.<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>   * @param  alertOnStart              Indicates whether the server should send<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>   *                                   an alert notification when this task<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>   *                                   starts.<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>   * @param  alertOnSuccess            Indicates whether the server should send<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>   *                                   an alert notification if this task<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>   *                                   completes successfully.<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>   * @param  alertOnError              Indicates whether the server should send<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>   *                                   an alert notification if this task fails<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>   *                                   to complete successfully.<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>   */<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>  public ImportTask(final String taskID, final List&lt;String&gt; ldifFiles,<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>                    final String backendID, final boolean append,<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>                    final boolean replaceExisting, final String rejectFile,<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>                    final boolean overwriteRejects, final boolean clearBackend,<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>                    final List&lt;String&gt; includeBranches,<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>                    final List&lt;String&gt; excludeBranches,<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>                    final List&lt;String&gt; includeFilters,<a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>                    final List&lt;String&gt; excludeFilters,<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>                    final List&lt;String&gt; includeAttributes,<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>                    final List&lt;String&gt; excludeAttributes,<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>                    final boolean isCompressed, final boolean isEncrypted,<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>                    final String encryptionPassphraseFile,<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>                    final boolean skipSchemaValidation,<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>                    final boolean stripTrailingSpaces,<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>                    final Date scheduledStartTime,<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>                    final List&lt;String&gt; dependencyIDs,<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>                    final FailedDependencyAction failedDependencyAction,<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>                    final List&lt;String&gt; notifyOnStart,<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>                    final List&lt;String&gt; notifyOnCompletion,<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>                    final List&lt;String&gt; notifyOnSuccess,<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>                    final List&lt;String&gt; notifyOnError,<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>                    final Boolean alertOnStart, final Boolean alertOnSuccess,<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>                    final Boolean alertOnError)<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>  {<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>    super(taskID, IMPORT_TASK_CLASS, scheduledStartTime,<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>         dependencyIDs, failedDependencyAction, notifyOnStart,<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span>         notifyOnCompletion, notifyOnSuccess, notifyOnError, alertOnStart,<a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>         alertOnSuccess, alertOnError);<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span><a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>    Validator.ensureNotNull(ldifFiles);<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>    Validator.ensureFalse(ldifFiles.isEmpty(),<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>         "ImportTask.ldifFiles must not be empty.");<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>    Validator.ensureFalse((backendID == null) &amp;&amp;<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>         ((includeBranches == null) || includeBranches.isEmpty()));<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>    Validator.ensureTrue(clearBackend || append ||<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>         ((includeBranches != null) &amp;&amp; (! includeBranches.isEmpty())));<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span><a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>    this.ldifFiles = Collections.unmodifiableList(ldifFiles);<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>    this.backendID = backendID;<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>    this.append = append;<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>    this.replaceExisting = replaceExisting;<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span>    this.rejectFile = rejectFile;<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>    this.overwriteRejects = overwriteRejects;<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>    this.clearBackend = clearBackend;<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>    this.isCompressed = isCompressed;<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>    this.isEncrypted = isEncrypted;<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>    this.encryptionPassphraseFile = encryptionPassphraseFile;<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>    this.skipSchemaValidation = skipSchemaValidation;<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>    this.stripTrailingSpaces = stripTrailingSpaces;<a name="line.1119"></a>
 <span class="sourceLineNo">1120</span><a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>    // Get the stripTrailingSpaces flag.  It may be absent.<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>    stripTrailingSpaces = parseBooleanValue(entry, ATTR_STRIP_TRAILING_SPACES,<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span>                                            false);<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>  }<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span><a name="line.1125"></a>
-<span class="sourceLineNo">1126</span><a name="line.1126"></a>
-<span class="sourceLineNo">1127</span><a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>  /**<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>   * Creates a new import task from the provided set of task properties.<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>   *<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span>   * @param  properties  The set of task properties and their corresponding<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>   *                     values to use for the task.  It must not be<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>   *                     {@code null}.<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>   *<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>   * @throws  TaskException  If the provided set of properties cannot be used to<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>   *                         create a valid import task.<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>   */<a name="line.1137"></a>
-<span class="sourceLineNo">1138</span>  public ImportTask(final Map&lt;TaskProperty,List&lt;Object&gt;&gt; properties)<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>         throws TaskException<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>  {<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>    super(IMPORT_TASK_CLASS, properties);<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span><a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>    boolean  a  = false;<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>    boolean  c  = false;<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>    boolean  cB = true;<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>    boolean  e  = false;<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>    boolean  o  = false;<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>    boolean  r  = false;<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>    boolean  ss = false;<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>    boolean  st = false;<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>    String   b  = null;<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>    String   pF = null;<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>    String   rF = null;<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>    String[] eA = StaticUtils.NO_STRINGS;<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>    String[] eB = StaticUtils.NO_STRINGS;<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>    String[] eF = StaticUtils.NO_STRINGS;<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>    String[] iA = StaticUtils.NO_STRINGS;<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>    String[] iB = StaticUtils.NO_STRINGS;<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>    String[] iF = StaticUtils.NO_STRINGS;<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>    String[] l  = StaticUtils.NO_STRINGS;<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span><a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>    for (final Map.Entry&lt;TaskProperty,List&lt;Object&gt;&gt; entry :<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>         properties.entrySet())<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>    {<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>      final TaskProperty p = entry.getKey();<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>      final String attrName = p.getAttributeName();<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>      final List&lt;Object&gt; values = entry.getValue();<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span><a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>      if (attrName.equalsIgnoreCase(ATTR_BACKEND_ID))<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>      {<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>        b = parseString(p, values, b);<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>      }<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>      else if (attrName.equalsIgnoreCase(ATTR_LDIF_FILE))<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>      {<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>        l = parseStrings(p, values, l);<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>      }<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>      else if (attrName.equalsIgnoreCase(ATTR_APPEND))<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>      {<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>        a = parseBoolean(p, values, a);<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>      }<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>      else if (attrName.equalsIgnoreCase(ATTR_REPLACE_EXISTING))<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>      {<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>        r = parseBoolean(p, values, r);<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>      }<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>      else if (attrName.equalsIgnoreCase(ATTR_REJECT_FILE))<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>      {<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>        rF = parseString(p, values, rF);<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>      }<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>      else if (attrName.equalsIgnoreCase(ATTR_OVERWRITE_REJECTS))<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>      {<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>        o = parseBoolean(p, values, o);<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>      }<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>      else if (attrName.equalsIgnoreCase(ATTR_CLEAR_BACKEND))<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>      {<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>        cB = parseBoolean(p, values, cB);<a name="line.1195"></a>
-<span class="sourceLineNo">1196</span>      }<a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>      else if (attrName.equalsIgnoreCase(ATTR_INCLUDE_BRANCH))<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>      {<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>        iB = parseStrings(p, values, iB);<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>      }<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>      else if (attrName.equalsIgnoreCase(ATTR_EXCLUDE_BRANCH))<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>      {<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>        eB = parseStrings(p, values, eB);<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>      }<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>      else if (attrName.equalsIgnoreCase(ATTR_INCLUDE_FILTER))<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>      {<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>        iF = parseStrings(p, values, iF);<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>      }<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>      else if (attrName.equalsIgnoreCase(ATTR_EXCLUDE_FILTER))<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>      {<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>        eF = parseStrings(p, values, eF);<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>      }<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>      else if (attrName.equalsIgnoreCase(ATTR_INCLUDE_ATTRIBUTE))<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>      {<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>        iA = parseStrings(p, values, iA);<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>      }<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>      else if (attrName.equalsIgnoreCase(ATTR_EXCLUDE_ATTRIBUTE))<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>      {<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>        eA = parseStrings(p, values, eA);<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>      }<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>      else if (attrName.equalsIgnoreCase(ATTR_IS_COMPRESSED))<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>      {<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>        c = parseBoolean(p, values, c);<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>      }<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>      else if (attrName.equalsIgnoreCase(ATTR_IS_ENCRYPTED))<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>      {<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>        e = parseBoolean(p, values, e);<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span>      }<a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>      else if (attrName.equalsIgnoreCase(ATTR_ENCRYPTION_PASSPHRASE_FILE))<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>      {<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span>        pF = parseString(p, values, pF);<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>      }<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>      else if (attrName.equalsIgnoreCase(ATTR_SKIP_SCHEMA_VALIDATION))<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>      {<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>        ss = parseBoolean(p, values, ss);<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>      }<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>      else if (attrName.equalsIgnoreCase(ATTR_STRIP_TRAILING_SPACES))<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>      {<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>        st = parseBoolean(p, values, st);<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>      }<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>    }<a name="line.1241"></a>
+<span class="sourceLineNo">1121</span>    if (includeBranches == null)<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>    {<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>      this.includeBranches = Collections.emptyList();<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span>    }<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>    else<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>    {<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>      this.includeBranches = Collections.unmodifiableList(includeBranches);<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>    }<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span><a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>    if (excludeBranches == null)<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>    {<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>      this.excludeBranches = Collections.emptyList();<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>    }<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>    else<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>    {<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>      this.excludeBranches = Collections.unmodifiableList(excludeBranches);<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>    }<a name="line.1137"></a>
+<span class="sourceLineNo">1138</span><a name="line.1138"></a>
+<span class="sourceLineNo">1139</span>    if (includeFilters == null)<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>    {<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>      this.includeFilters = Collections.emptyList();<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>    }<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>    else<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>    {<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>      this.includeFilters = Collections.unmodifiableList(includeFilters);<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>    }<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span><a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>    if (excludeFilters == null)<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>    {<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>      this.excludeFilters = Collections.emptyList();<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>    }<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>    else<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>    {<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>      this.excludeFilters = Collections.unmodifiableList(excludeFilters);<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>    }<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span><a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>    if (includeAttributes == null)<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>    {<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>      this.includeAttributes = Collections.emptyList();<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>    }<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>    else<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>    {<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>      this.includeAttributes = Collections.unmodifiableList(includeAttributes);<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>    }<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span><a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>    if (excludeAttributes == null)<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>    {<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>      this.excludeAttributes = Collections.emptyList();<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>    }<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>    else<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>    {<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>      this.excludeAttributes = Collections.unmodifiableList(excludeAttributes);<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>    }<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>  }<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span><a name="line.1175"></a>
+<span class="sourceLineNo">1176</span><a name="line.1176"></a>
+<span class="sourceLineNo">1177</span><a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>  /**<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>   * Creates a new import task from the provided entry.<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>   *<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>   * @param  entry  The entry to use to create this import task.<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>   *<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>   * @throws  TaskException  If the provided entry cannot be parsed as an import<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>   *                         task entry.<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>   */<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>  public ImportTask(final Entry entry)<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>         throws TaskException<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>  {<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>    super(entry);<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span><a name="line.1190"></a>
+<span class="sourceLineNo">1191</span><a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>    // Get the set of LDIF files.  It must be present.<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>    final String[] files = entry.getAttributeValues(ATTR_LDIF_FILE);<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>    if ((files == null) || (files.length == 0))<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>    {<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>      throw new TaskException(ERR_IMPORT_TASK_NO_LDIF.get(getTaskEntryDN()));<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>    }<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>    else<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>    {<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>      ldifFiles = Collections.unmodifiableList(Arrays.asList(files));<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>    }<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span><a name="line.1202"></a>
+<span class="sourceLineNo">1203</span><a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>    // Get the backend ID.  It may be absent.<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>    backendID = entry.getAttributeValue(ATTR_BACKEND_ID);<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span><a name="line.1206"></a>
+<span class="sourceLineNo">1207</span><a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>    // Get the append flag.  It may be absent.<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>    append = parseBooleanValue(entry, ATTR_APPEND, false);<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span><a name="line.1210"></a>
+<span class="sourceLineNo">1211</span><a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>    // Get the replaceExisting flag.  It may be absent.<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>    replaceExisting = parseBooleanValue(entry, ATTR_REPLACE_EXISTING, false);<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span><a name="line.1214"></a>
+<span class="sourceLineNo">1215</span><a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>    // Get the reject file.  It may be absent.<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>    rejectFile = entry.getAttributeValue(ATTR_REJECT_FILE);<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span><a name="line.1218"></a>
+<span class="sourceLineNo">1219</span><a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>    // Get the overwriteRejects flag.  It may be absent.<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>    overwriteRejects = parseBooleanValue(entry, ATTR_OVERWRITE_REJECTS, false);<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span><a name="line.1222"></a>
+<span class="sourceLineNo">1223</span><a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>    // Get the clearBackend flag.  It may be absent.<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>    clearBackend = parseBooleanValue(entry, ATTR_CLEAR_BACKEND, false);<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span><a name="line.1226"></a>
+<span class="sourceLineNo">1227</span><a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>    // Get the list of include branches.  It may be absent.<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>    includeBranches = parseStringList(entry, ATTR_INCLUDE_BRANCH);<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span><a name="line.1230"></a>
+<span class="sourceLineNo">1231</span><a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>    // Get the list of exclude branches.  It may be absent.<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>    excludeBranches = parseStringList(entry, ATTR_EXCLUDE_BRANCH);<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span><a name="line.1234"></a>
+<span class="sourceLineNo">1235</span><a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>    // Get the list of include filters.  It may be absent.<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>    includeFilters = parseStringList(entry, ATTR_INCLUDE_FILTER);<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span><a name="line.1238"></a>
+<span class="sourceLineNo">1239</span><a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>    // Get the list of exclude filters.  It may be absent.<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>    excludeFilters = parseStringList(entry, ATTR_EXCLUDE_FILTER);<a name="line.1241"></a>
 <span class="sourceLineNo">1242</span><a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>    if ((b == null) &amp;&amp; (iB.length == 0))<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>    {<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>      throw new TaskException(<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span>                     ERR_IMPORT_TASK_NO_BACKEND_ID_OR_INCLUDE_BRANCHES.get(<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>                          getTaskEntryDN()));<a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>    }<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span><a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>    if (l == null)<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>    {<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>      throw new TaskException(ERR_IMPORT_TASK_NO_LDIF.get(<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>                                   getTaskEntryDN()));<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>    }<a name="line.1254"></a>
+<span class="sourceLineNo">1243</span><a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>    // Get the list of include attributes.  It may be absent.<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>    includeAttributes = parseStringList(entry, ATTR_INCLUDE_ATTRIBUTE);<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span><a name="line.1246"></a>
+<span class="sourceLineNo">1247</span><a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>    // Get the list of exclude attributes.  It may be absent.<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>    excludeAttributes = parseStringList(entry, ATTR_EXCLUDE_ATTRIBUTE);<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span><a name="line.1250"></a>
+<span class="sourceLineNo">1251</span><a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>    // Get the isCompressed flag.  It may be absent.<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>    isCompressed = parseBooleanValue(entry, ATTR_IS_COMPRESSED, false);<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span><a name="line.1254"></a>
 <span class="sourceLineNo">1255</span><a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>    backendID = b;<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>    ldifFiles = Collections.unmodifiableList(Arrays.asList(l));<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>    append = a;<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>    replaceExisting = r;<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span>    rejectFile = rF;<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>    overwriteRejects = o;<a name="line.1261"></a>
-<span class="sourceLineNo">1262</span>    clearBackend = cB;<a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>    includeAttributes = Collections.unmodifiableList(Arrays.asList(iA));<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span>    excludeAttributes = Collections.unmodifiableList(Arrays.asList(eA));<a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>    includeBranches = Collections.unmodifiableList(Arrays.asList(iB));<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>    excludeBranches = Collections.unmodifiableList(Arrays.asList(eB));<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>    includeFilters = Collections.unmodifiableList(Arrays.asList(iF));<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>    excludeFilters = Collections.unmodifiableList(Arrays.asList(eF));<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>    isCompressed = c;<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>    isEncrypted = e;<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span>    encryptionPassphraseFile = pF;<a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>    skipSchemaValidation = ss;<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>    stripTrailingSpaces = st;<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>  }<a name="line.1274"></a>
+<span class="sourceLineNo">1256</span>    // Get the isEncrypted flag.  It may be absent.<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>    isEncrypted = parseBooleanValue(entry, ATTR_IS_ENCRYPTED, false);<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span><a name="line.1258"></a>
+<span class="sourceLineNo">1259</span><a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>    // Get the path to the encryption passphrase file.  It may be absent.<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>    encryptionPassphraseFile =<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>         entry.getAttributeValue(ATTR_ENCRYPTION_PASSPHRASE_FILE);<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span><a name="line.1263"></a>
+<span class="sourceLineNo">1264</span><a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>    // Get the skipSchemaValidation flag.  It may be absent.<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>    skipSchemaValidation = parseBooleanValue(entry, ATTR_SKIP_SCHEMA_VALIDATION,<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>                                             false);<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span><a name="line.1268"></a>
+<span class="sourceLineNo">1269</span><a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>    // Get the stripTrailingSpaces flag.  It may be absent.<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>    stripTrailingSpaces = parseBooleanValue(entry, ATTR_STRIP_TRAILING_SPACES,<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>                                            false);<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>  }<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span><a name="line.1274"></a>
 <span class="sourceLineNo">1275</span><a name="line.1275"></a>
 <span class="sourceLineNo">1276</span><a name="line.1276"></a>
-<span class="sourceLineNo">1277</span><a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>  /**<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>   * {@inheritDoc}<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span>   */<a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>  @Override()<a name="line.1281"></a>
-<span class="sourceLineNo">1282</span>  public String getTaskName()<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span>  {<a name="line.1283"></a>
-<span class="sourceLineNo">1284</span>    return INFO_TASK_NAME_IMPORT.get();<a name="line.1284"></a>
-<span class="sourceLineNo">1285</span>  }<a name="line.1285"></a>
-<span class="sourceLineNo">1286</span><a name="line.1286"></a>
-<span class="sourceLineNo">1287</span><a name="line.1287"></a>
-<span class="sourceLineNo">1288</span><a name="line.1288"></a>
-<span class="sourceLineNo">1289</span>  /**<a name="line.1289"></a>
-<span class="sourceLineNo">1290</span>   * {@inheritDoc}<a name="line.1290"></a>
-<span class="sourceLineNo">1291</span>   */<a name="line.1291"></a>
-<span class="sourceLineNo">1292</span>  @Override()<a name="line.1292"></a>
-<span class="sourceLineNo">1293</span>  public String getTaskDescription()<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>  {<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span>    return INFO_TASK_DESCRIPTION_IMPORT.get();<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>  }<a name="line.1296"></a>
-<span class="sourceLineNo">1297</span><a name="line.1297"></a>
-<span class="sourceLineNo">1298</span><a name="line.1298"></a>
-<span class="sourceLineNo">1299</span><a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>  /**<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>   * Retrieves the paths to the LDIF files containing the data to be imported.<a name="line.1301"></a>
-<span class="sourceLineNo">1302</span>   * The paths may be absolute or relative to the server root.<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>   *<a name="line.1303"></a>
-<span class="sourceLineNo">1304</span>   * @return  The paths to the LDIF files containing the data to be imported.<a name="line.1304"></a>
-<span class="sourceLineNo">1305</span>   */<a name="line.1305"></a>
-<span class="sourceLineNo">1306</span>  public List&lt;String&gt; getLDIFFiles()<a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>  {<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span>    return ldifFiles;<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>  }<a name="line.1309"></a>
+<span class="sourceLineNo">1277</span>  /**<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>   * Creates a new import task from the provided set of task properties.<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>   *<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>   * @param  properties  The set of task properties and their corresponding<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>   *                     values to use for the task.  It must not be<a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>   *                     {@code null}.<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>   *<a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>   * @throws  TaskException  If the provided set of properties cannot be used to<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>   *                         create a valid import task.<a name="line.1285"></a>
+<span class="sourceLineNo">1286</span>   */<a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>  public ImportTask(final Map&lt;TaskProperty,List&lt;Object&gt;&gt; properties)<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span>         throws TaskException<a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>  {<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>    super(IMPORT_TASK_CLASS, properties);<a name="line.1290"></a>
+<span class="sourceLineNo">1291</span><a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>    boolean  a  = false;<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>    boolean  c  = false;<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span>    boolean  cB = true;<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>    boolean  e  = false;<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>    boolean  o  = false;<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>    boolean  r  = false;<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span>    boolean  ss = false;<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>    boolean  st = false;<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span>    String   b  = null;<a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>    String   pF = null;<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>    String   rF = null;<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>    String[] eA = StaticUtils.NO_STRINGS;<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>    String[] eB = StaticUtils.NO_STRINGS;<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>    String[] eF = StaticUtils.NO_STRINGS;<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span>    String[] iA = StaticUtils.NO_STRINGS;<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>    String[] iB = StaticUtils.NO_STRINGS;<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>    String[] iF = StaticUtils.NO_STRINGS;<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span>    String[] l  = StaticUtils.NO_STRINGS;<a name="line.1309"></a>
 <span class="sourceLineNo">1310</span><a name="line.1310"></a>
-<span class="sourceLineNo">1311</span><a name="line.1311"></a>
-<span class="sourceLineNo">1312</span><a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>  /**<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>   * Retrieves the backend ID of the backend into which the data should be<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span>   * imported.<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>   *<a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>   * @return  The backend ID of the backend into which the data should be<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>   *          imported, or {@code null} if no backend ID was specified and the<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>   *          backend will be identified from the include branches.<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span>   */<a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>  public String getBackendID()<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>  {<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span>    return backendID;<a name="line.1323"></a>
-<span class="sourceLineNo">1324</span>  }<a name="line.1324"></a>
-<span class="sourceLineNo">1325</span><a name="line.1325"></a>
-<span class="sourceLineNo">1326</span><a name="line.1326"></a>
-<span class="sourceLineNo">1327</span><a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>  /**<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>   * Indicates whether the import should append to the data in the backend<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>   * rather than clearing the backend before performing the import.<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>   *<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>   * @return  {@code true} if the contents of the existing backend should be<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>   *          retained and the new data appended to it, or {@code false} if the<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span>   *          existing content should be cleared prior to performing the import.<a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>   */<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>  public boolean append()<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>  {<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>    return append;<a name="line.1338"></a>
-<span class="sourceLineNo">1339</span>  }<a name="line.1339"></a>
-<span class="sourceLineNo">1340</span><a name="line.1340"></a>
-<span class="sourceLineNo">1341</span><a name="line.1341"></a>
-<span class="sourceLineNo">1342</span><a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>  /**<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>   * Indicates whether to replace existing entries when appending data to the<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>   * backend.  This is only applicable if {@code append()} returns {@code true}.<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span>   *<a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>   * @return  {@code true} if entries already present in the backend should be<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>   *          replaced if that entry is also present in the LDIF file, or<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span>   *          {@code false} if entries already present in the backend should be<a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>   *          retained and the corresponding entry contained in the LDIF should<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>   *          be skipped.<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>   */<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span>  public boolean replaceExistingEntries()<a name="line.1353"></a>
-<span class="sourceLineNo">1354</span>  {<a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>    return replaceExisting;<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>  }<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span><a name="line.1357"></a>
-<span class="sourceLineNo">1358</span><a name="line.1358"></a>
-<span class="sourceLineNo">1359</span><a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>  /**<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>   * Retrieves the path to a file to which rejected entries should be written.<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>   *<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>   * @return  The path to a file to which rejected entries should be written, or<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>   *          {@code null} if a rejected entries file should not be maintained.<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>   */<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>  public String getRejectFile()<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>  {<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>    return rejectFile;<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span>  }<a name="line.1369"></a>
-<span class="sourceLineNo">1370</span><a name="line.1370"></a>
-<span class="sourceLineNo">1371</span><a name="line.1371"></a>
-<span class="sourceLineNo">1372</span><a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>  /**<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>   * Indicates whether an existing reject file should be overwritten rather than<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>   * appending to it.<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>   *<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>   * @return  {@code true} if an existing reject file should be overwritten, or<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>   *          {@code false} if the server should append to it.<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>   */<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>  public boolean overwriteRejectFile()<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>  {<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>    return overwriteRejects;<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>  }<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span><a name="line.1384"></a>
-<span class="sourceLineNo">1385</span><a name="line.1385"></a>
-<span class="sourceLineNo">1386</span><a name="line.1386"></a>
-<span class="sourceLineNo">1387</span>  /**<a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>   * Indicates whether data below all base DNs defined in the backend should be<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>   * cleared before performing the import.  This is not applicable if the import<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>   * is to append to the backend, or if the backend only has a single base DN.<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>   *<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>   * @return  {@code true} if data below all base DNs in the backend should be<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>   *          cleared, or {@code false} if only data below the base DNs that<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>   *          correspond to the configured include branches should be cleared.<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>   */<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>  public boolean clearBackend()<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>  {<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>    return clearBackend;<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>  }<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span><a name="line.1400"></a>
-<span class="sourceLineNo">1401</span><a name="line.1401"></a>
-<span class="sourceLineNo">1402</span><a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>  /**<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>   * Retrieves the list of base DNs for branches that should be included in the<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>   * import.<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>   *<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>   * @return  The set of base DNs for branches that should be included in the<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>   *          import, or an empty list if data should be imported from all base<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>   *          DNs in the associated backend.<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>   */<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>  public List&lt;String&gt; getIncludeBranches()<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>  {<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>    return includeBranches;<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>  }<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span><a name="line.1415"></a>
-<span class="sourceLineNo">1416</span><a name="line.1416"></a>
-<span class="sourceLineNo">1417</span><a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>  /**<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>   * Retrieves the list of base DNs of branches that should be excluded from the<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>   * import.<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>   *<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>   * @return  The list of base DNs of branches that should be excluded from the<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>   *          import, or an empty list if no entries should be excluded from the<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>   *          import based on their location.<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>   */<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>  public List&lt;String&gt; getExcludeBranches()<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>  {<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>    return excludeBranches;<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>  }<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span><a name="line.1430"></a>
-<span class="sourceLineNo">1431</span><a name="line.1431"></a>
-<span class="sourceLineNo">1432</span><a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>  /**<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>   * Retrieves the list of search filters that may be used to identify which<a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>   * entries should be included in the import.<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span>   *<a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>   * @return  The list of search filters that may be used to identify which<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>   *          entries should be included in the import, or an empty list if no<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>   *          entries should be excluded from the import based on their content.<a name="line.1439"></a>
+<span class="sourceLineNo">1311</span>    for (final Map.Entry&lt;TaskProperty,List&lt;Object&gt;&gt; entry :<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>         properties.entrySet())<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>    {<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>      final TaskProperty p = entry.getKey();<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>      final String attrName = p.getAttributeName();<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>      final List&lt;Object&gt; values = entry.getValue();<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span><a name="line.1317"></a>
+<span class="sourceLineNo">1318</span>      if (attrName.equalsIgnoreCase(ATTR_BACKEND_ID))<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>      {<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>        b = parseString(p, values, b);<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>      }<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>      else if (attrName.equalsIgnoreCase(ATTR_LDIF_FILE))<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>      {<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>        l = parseStrings(p, values, l);<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>      }<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>      else if (attrName.equalsIgnoreCase(ATTR_APPEND))<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>      {<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span>        a = parseBoolean(p, values, a);<a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>      }<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>      else if (attrName.equalsIgnoreCase(ATTR_REPLACE_EXISTING))<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span>      {<a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>        r = parseBoolean(p, values, r);<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>      }<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>      else if (attrName.equalsIgnoreCase(ATTR_REJECT_FILE))<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>      {<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>        rF = parseString(p, values, rF);<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>      }<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>      else if (attrName.equalsIgnoreCase(ATTR_OVERWRITE_REJECTS))<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>      {<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>        o = parseBoolean(p, values, o);<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>      }<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>      else if (attrName.equalsIgnoreCase(ATTR_CLEAR_BACKEND))<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>      {<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>        cB = parseBoolean(p, values, cB);<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>      }<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>      else if (attrName.equalsIgnoreCase(ATTR_INCLUDE_BRANCH))<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span>      {<a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>        iB = parseStrings(p, values, iB);<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>      }<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>      else if (attrName.equalsIgnoreCase(ATTR_EXCLUDE_BRANCH))<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span>      {<a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>        eB = parseStrings(p, values, eB);<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>      }<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>      else if (attrName.equalsIgnoreCase(ATTR_INCLUDE_FILTER))<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>      {<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>        iF = parseStrings(p, values, iF);<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>      }<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>      else if (attrName.equalsIgnoreCase(ATTR_EXCLUDE_FILTER))<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span>      {<a name="line.1359"></a>
+<span class="sourceLineNo">1360</span>        eF = parseStrings(p, values, eF);<a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>      }<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>      else if (attrName.equalsIgnoreCase(ATTR_INCLUDE_ATTRIBUTE))<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>      {<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>        iA = parseStrings(p, values, iA);<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>      }<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>      else if (attrName.equalsIgnoreCase(ATTR_EXCLUDE_ATTRIBUTE))<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>      {<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>        eA = parseStrings(p, values, eA);<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>      }<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>      else if (attrName.equalsIgnoreCase(ATTR_IS_COMPRESSED))<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>      {<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>        c = parseBoolean(p, values, c);<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>      }<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span>      else if (attrName.equalsIgnoreCase(ATTR_IS_ENCRYPTED))<a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>      {<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>        e = parseBoolean(p, values, e);<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>      }<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>      else if (attrName.equalsIgnoreCase(ATTR_ENCRYPTION_PASSPHRASE_FILE))<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>      {<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>        pF = parseString(p, values, pF);<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>      }<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>      else if (attrName.equalsIgnoreCase(ATTR_SKIP_SCHEMA_VALIDATION))<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>      {<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>        ss = parseBoolean(p, values, ss);<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>      }<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>      else if (attrName.equalsIgnoreCase(ATTR_STRIP_TRAILING_SPACES))<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>      {<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>        st = parseBoolean(p, values, st);<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>      }<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>    }<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span><a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>    if ((b == null) &amp;&amp; (iB.length == 0))<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>    {<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>      throw new TaskException(<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>                     ERR_IMPORT_TASK_NO_BACKEND_ID_OR_INCLUDE_BRANCHES.get(<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>                          getTaskEntryDN()));<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>    }<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span><a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>    if (l == null)<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>    {<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>      throw new TaskException(ERR_IMPORT_TASK_NO_LDIF.get(<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>                                   getTaskEntryDN()));<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>    }<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span><a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>    backendID = b;<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>    ldifFiles = Collections.unmodifiableList(Arrays.asList(l));<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>    append = a;<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>    replaceExisting = r;<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>    rejectFile = rF;<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>    overwriteRejects = o;<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>    clearBackend = cB;<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>    includeAttributes = Collections.unmodifiableList(Arrays.asList(iA));<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>    excludeAttributes = Collections.unmodifiableList(Arrays.asList(eA));<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>    includeBranches = Collections.unmodifiableList(Arrays.asList(iB));<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>    excludeBranches = Collections.unmodifiableList(Arrays.asList(eB));<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>    includeFilters = Collections.unmodifiableList(Arrays.asList(iF));<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>    excludeFilters = Collections.unmodifiableList(Arrays.asList(eF));<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>    isCompressed = c;<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>    isEncrypted = e;<a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>    encryptionPassphraseFile = pF;<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>    skipSchemaValidation = ss;<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>    stripTrailingSpaces = st;<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>  }<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span><a name="line.1424"></a>
+<span class="sourceLineNo">1425</span><a name="line.1425"></a>
+<span class="sourceLineNo">1426</span><a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>  /**<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>   * {@inheritDoc}<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>   */<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>  @Override()<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>  public String getTaskName()<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>  {<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span>    return INFO_TASK_NAME_IMPORT.get();<a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>  }<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span><a name="line.1435"></a>
+<span class="sourceLineNo">1436</span><a name="line.1436"></a>
+<span class="sourceLineNo">1437</span><a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>  /**<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>   * {@inheritDoc}<a name="line.1439"></a>
 <span class="sourceLineNo">1440</span>   */<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>  public List&lt;String&gt; getIncludeFilters()<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>  {<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>    return includeFilters;<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>  }<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span><a name="line.1445"></a>
+<span class="sourceLineNo">1441</span>  @Override()<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>  public String getTaskDescription()<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>  {<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>    return INFO_TASK_DESCRIPTION_IMPORT.get();<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>  }<a name="line.1445"></a>
 <span class="sourceLineNo">1446</span><a name="line.1446"></a>
 <span class="sourceLineNo">1447</span><a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>  /**<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>   * Retrieves the list of search filters that may be used to identify which<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>   * entries should be excluded from the import.<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>   *<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>   * @return  The list of search filters that may be used to identify which<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>   *          entries should be excluded from the import, or an empty list if no<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>   *          entries should be excluded from the import based on their content.<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>   */<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>  public List&lt;String&gt; getExcludeFilters()<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>  {<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>    return excludeFilters;<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>  }<a name="line.1459"></a>
+<span class="sourceLineNo">1448</span><a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>  /**<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>   * Retrieves the paths to the LDIF files containing the data to be imported.<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>   * The paths may be absolute or relative to the server root.<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>   *<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>   * @return  The paths to the LDIF files containing the data to be imported.<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>   */<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>  public List&lt;String&gt; getLDIFFiles()<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>  {<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>    return ldifFiles;<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>  }<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span><a name="line.1459"></a>
 <span class="sourceLineNo">1460</span><a name="line.1460"></a>
 <span class="sourceLineNo">1461</span><a name="line.1461"></a>
-<span class="sourceLineNo">1462</span><a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>  /**<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>   * Retrieves the list of attributes that should be included in the imported<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>   * entries.<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>   *<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>   * @return  The list of attributes that should be included in the imported<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>   *          entries, or an empty list if no attributes should be excluded.<a name="line.1468"></a>
+<span class="sourceLineNo">1462</span>  /**<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>   * Retrieves the backend ID of the backend into which the data should be<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>   * imported.<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>   *<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>   * @return  The backend ID of the backend into which the data should be<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>   *          imported, or {@code null} if no backend ID was specified and the<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>   *          backend will be identified from the include branches.<a name="line.1468"></a>
 <span class="sourceLineNo">1469</span>   */<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>  public List&lt;String&gt; getIncludeAttributes()<a name="line.1470"></a>
+<span class="sourceLineNo">1470</span>  public String getBackendID()<a name="line.1470"></a>
 <span class="sourceLineNo">1471</span>  {<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>    return includeAttributes;<a name="line.1472"></a>
+<span class="sourceLineNo">1472</span>    return backendID;<a name="line.1472"></a>
 <span class="sourceLineNo">1473</span>  }<a name="line.1473"></a>
 <span class="sourceLineNo">1474</span><a name="line.1474"></a>
 <span class="sourceLineNo">1475</span><a name="line.1475"></a>
 <span class="sourceLineNo">1476</span><a name="line.1476"></a>
 <span class="sourceLineNo">1477</span>  /**<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>   * Retrieves the list of attributes that should be excluded from the imported<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>   * entries.<a name="line.1479"></a>
+<span class="sourceLineNo">1478</span>   * Indicates whether the import should append to the data in the backend<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>   * rather than clearing the backend before performing the import.<a name="line.1479"></a>
 <span class="sourceLineNo">1480</span>   *<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>   * @return  The list of attributes that should be excluded from the imported<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>   *          entries, or an empty list if no attributes should be excluded.<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>   */<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>  public List&lt;String&gt; getExcludeAttributes()<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>  {<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>    return excludeAttributes;<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>  }<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span><a name="line.1488"></a>
+<span class="sourceLineNo">1481</span>   * @return  {@code true} if the contents of the existing backend should be<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>   *          retained and the new data appended to it, or {@code false} if the<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>   *          existing content should be cleared prior to performing the import.<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>   */<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>  public boolean append()<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>  {<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>    return append;<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>  }<a name="line.1488"></a>
 <span class="sourceLineNo">1489</span><a name="line.1489"></a>
 <span class="sourceLineNo">1490</span><a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>  /**<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>   * Indicates whether the LDIF data to import is compressed.<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>   *<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>   * @return  {@code true} if the LDIF data to import is compressed, or<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>   *          {@code false} if not.<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>   */<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>  public boolean isCompressed()<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>  {<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>    return isCompressed;<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>  }<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span><a name="line.1501"></a>
-<span class="sourceLineNo">1502</span><a name="line.1502"></a>
-<span class="sourceLineNo">1503</span><a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>  /**<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>   * Indicates whether the LDIF data to import is encrypted.<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>   *<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>   * @return  {@code true} if the LDIF data to import is encrypted, or<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>   *          {@code false} if not.<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>   */<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>  public boolean isEncrypted()<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>  {<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>    return isEncrypted;<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>  }<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span><a name="line.1514"></a>
-<span class="sourceLineNo">1515</span><a name="line.1515"></a>
-<span class="sourceLineNo">1516</span><a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>  /**<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>   * Retrieves the path to a file that contains the passphrase to use to<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>   * generate the encryption key.<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>   *<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>   * @return  The path to a file that contains the passphrase to use to<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>   *          generate the encryption key, or {@code null} if the LDIF file is<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>   *          not encrypted or if the encryption key should be obtained through<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>   *          some other means.<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>   */<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>  public String getEncryptionPassphraseFile()<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>  {<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>    return encryptionPassphraseFile;<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>  }<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span><a name="line.1530"></a>
-<span class="sourceLineNo">1531</span><a name="line.1531"></a>
-<span class="sourceLineNo">1532</span><a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>  /**<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>   * Indicates whether the server should skip schema validation processing when<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>   * performing the import.<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>   *<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>   * @return  {@code true} if the server should skip schema validation<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>   *          processing when performing the import, or {@code false} if not.<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>   */<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>  public boolean skipSchemaValidation()<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>  {<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>    return skipSchemaValidation;<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>  }<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span><a name="line.1544"></a>
-<span class="sourceLineNo">1545</span><a name="line.1545"></a>
-<span class="sourceLineNo">1546</span><a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>  /**<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>   * Indicates whether the server should strip off any illegal trailing spaces<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>   * found in LDIF records rather than rejecting those records.<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>   *<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>   * @return  {@code true} if the server should strip off any illegal trailing<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>   *          spaces found in LDIF records, or {@code false} if it should reject<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>   *          any records containing illegal trailing spaces.<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>   */<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>  public boolean stripTrailingSpaces()<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>  {<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>    return stripTrailingSpaces;<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>  }<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span><a name="line.1559"></a>
-<span class="sourceLineNo">1560</span><a name="line.1560"></a>
-<span class="sourceLineNo">1561</span><a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>  /**<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>   * {@inheritDoc}<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>   */<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>  @Override()<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>  protected List&lt;String&gt; getAdditionalObjectClasses()<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>  {<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>    return Arrays.asList(OC_IMPORT_TASK);<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>  }<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span><a name="line.1570"></a>
-<span class="sourceLineNo">1571</span><a name="line.1571"></a>
-<span class="sourceLineNo">1572</span><a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>  /**<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>   * {@inheritDoc}<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span>   */<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>  @Override()<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>  protected List&lt;Attribute&gt; getAdditionalAttributes()<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>  {<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>    final ArrayList&lt;Attribute&gt; attrs = new ArrayList&lt;Attribute&gt;(20);<a name="line.1579"></a>
+<span class="sourceLineNo">1491</span><a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>  /**<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>   * Indicates whether to replace existing entries when appending data to the<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>   * backend.  This is only applicable if {@code append()} returns {@code true}.<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>   *<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>   * @return  {@code true} if entries already present in the backend should be<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>   *          replaced if that entry is also present in the LDIF file, or<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>   *          {@code false} if entries already present in the backend should be<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>   *          retained and the corresponding entry contained in the LDIF should<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>   *          be skipped.<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>   */<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>  public boolean replaceExistingEntries()<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>  {<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>    return replaceExisting;<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>  }<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span><a name="line.1506"></a>
+<span class="sourceLineNo">1507</span><a name="line.1507"></a>
+<span class="sourceLineNo">1508</span><a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>  /**<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>   * Retrieves the path to a file to which rejected entries should be written.<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>   *<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>   * @return  The path to a file to which rejected entries should be written, or<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>   *          {@code null} if a rejected entries file should not be maintained.<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>   */<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>  public String getRejectFile()<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>  {<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>    return rejectFile;<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>  }<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span><a name="line.1519"></a>
+<span class="sourceLineNo">1520</span><a name="line.1520"></a>
+<span class="sourceLineNo">1521</span><a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>  /**<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>   * Indicates whether an existing reject file should be overwritten rather than<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>   * appending to it.<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>   *<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>   * @return  {@code true} if an existing reject file should be overwritten, or<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>   *          {@code false} if the server should append to it.<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>   */<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>  public boolean overwriteRejectFile()<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>  {<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>    return overwriteRejects;<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>  }<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span><a name="line.1533"></a>
+<span class="sourceLineNo">1534</span><a name="line.1534"></a>
+<span class="sourceLineNo">1535</span><a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>  /**<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>   * Indicates whether data below all base DNs defined in the backend should be<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>   * cleared before performing the import.  This is not applicable if the import<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>   * is to append to the backend, or if the backend only has a single base DN.<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>   *<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>   * @return  {@code true} if data below all base DNs in the backend should be<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>   *          cleared, or {@code false} if only data below the base DNs that<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>   *          correspond to the configured include branches should be cleared.<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>   */<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>  public boolean clearBackend()<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>  {<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>    return clearBackend;<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>  }<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span><a name="line.1549"></a>
+<span class="sourceLineNo">1550</span><a name="line.1550"></a>
+<span class="sourceLineNo">1551</span><a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>  /**<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>   * Retrieves the list of base DNs for branches that should be included in the<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>   * import.<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>   *<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>   * @return  The set of base DNs for branches that should be included in the<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>   *          import, or an empty list if data should be imported from all base<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>   *          DNs in the associated backend.<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>   */<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>  public List&lt;String&gt; getIncludeBranches()<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>  {<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>    return includeBranches;<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>  }<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span><a name="line.1564"></a>
+<span class="sourceLineNo">1565</span><a name="line.1565"></a>
+<span class="sourceLineNo">1566</span><a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>  /**<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>   * Retrieves the list of base DNs of branches that should be excluded from the<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>   * import.<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>   *<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>   * @return  The list of base DNs of branches that should be excluded from the<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>   *          import, or an empty list if no entries should be excluded from the<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>   *          import based on their location.<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>   */<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>  public List&lt;String&gt; getExcludeBranches()<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>  {<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>    return excludeBranches;<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>  }<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span><a name="line.1579"></a>
 <span class="sourceLineNo">1580</span><a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>    attrs.add(new Attribute(ATTR_LDIF_FILE, ldifFiles));<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>    attrs.add(new Attribute(ATTR_APPEND, String.valueOf(append)));<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>    attrs.add(new Attribute(ATTR_REPLACE_EXISTING,<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span>                            String.valueOf(replaceExisting)));<a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>    attrs.add(new Attribute(ATTR_OVERWRITE_REJECTS,<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>                            String.valueOf(overwriteRejects)));<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>    attrs.add(new Attribute(ATTR_CLEAR_BACKEND, String.valueOf(clearBackend)));<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>    attrs.add(new Attribute(ATTR_IS_COMPRESSED, String.valueOf(isCompressed)));<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>    attrs.add(new Attribute(ATTR_IS_ENCRYPTED, String.valueOf(isEncrypted)));<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>    attrs.add(new Attribute(ATTR_SKIP_SCHEMA_VALIDATION,<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>                            String.valueOf(skipSchemaValidation)));<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span><a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>    if (stripTrailingSpaces)<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>    {<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>      attrs.add(new Attribute(ATTR_STRIP_TRAILING_SPACES,<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>           String.valueOf(stripTrailingSpaces)));<a name="line.1596"></a>
-<span class="sourceLineNo">1597</span>    }<a name="line.1597"></a>
-<span class="sourceLineNo">1598</span><a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>    if (backendID != null)<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>    {<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>      attrs.add(new Attribute(ATTR_BACKEND_ID, backendID));<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span>    }<a name="line.1602"></a>
-<span class="sourceLineNo">1603</span><a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>    if (rejectFile != null)<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>    {<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span>      attrs.add(new Attribute(ATTR_REJECT_FILE, rejectFile));<a name="line.1606"></a>
-<span class="sourceLineNo">1607</span>    }<a name="line.1607"></a>
-<span class="sourceLineNo">1608</span><a name="line.1608"></a>
-<span class="sourceLineNo">1609</span>    if (! includeBranches.isEmpty())<a name="line.1609"></a>
-<span class="sourceLineNo">1610</span>    {<a name="line.1610"></a>
-<span class="sourceLineNo">1611</span>      attrs.add(new Attribute(ATTR_INCLUDE_BRANCH, includeBranches));<a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>    }<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span><a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>    if (! excludeBranches.isEmpty())<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span>    {<a name="line.1615"></a>
-<span class="sourceLineNo">1616</span>      attrs.add(new Attribute(ATTR_EXCLUDE_BRANCH, excludeBranches));<a name="line.1616"></a>
-<span class="sourceLineNo">1617</span>    }<a name="line.1617"></a>
-<span class="sourceLineNo">1618</span><a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>    if (! includeAttributes.isEmpty())<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>    {<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>      attrs.add(new Attribute(ATTR_INCLUDE_ATTRIBUTE, includeAttributes));<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span>    }<a name="line.1622"></a>
+<span class="sourceLineNo">1581</span><a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>  /**<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>   * Retrieves the list of search filters that may be used to identify which<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>   * entries should be included in the import.<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>   *<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>   * @return  The list of search filters that may be used to identify which<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>   *          entries should be included in the import, or an empty list if no<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>   *          entries should be excluded from the import based on their content.<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>   */<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>  public List&lt;String&gt; getIncludeFilters()<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>  {<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>    return includeFilters;<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>  }<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span><a name="line.1594"></a>
+<span class="sourceLineNo">1595</span><a name="line.1595"></a>
+<span class="sourceLineNo">1596</span><a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>  /**<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span>   * Retrieves the list of search filters that may be used to identify which<a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>   * entries should be excluded from the import.<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>   *<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>   * @return  The list of search filters that may be used to identify which<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>   *          entries should be excluded from the import, or an empty list if no<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>   *          entries should be excluded from the import based on their content.<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>   */<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>  public List&lt;String&gt; getExcludeFilters()<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>  {<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span>    return excludeFilters;<a name="line.1607"></a>
+<span class="sourceLineNo">1608</span>  }<a name="line.1608"></a>
+<span class="sourceLineNo">1609</span><a name="line.1609"></a>
+<span class="sourceLineNo">1610</span><a name="line.1610"></a>
+<span class="sourceLineNo">1611</span><a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>  /**<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span>   * Retrieves the list of attributes that should be included in the imported<a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>   * entries.<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>   *<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>   * @return  The list of attributes that should be included in the imported<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>   *          entries, or an empty list if no attributes should be excluded.<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span>   */<a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>  public List&lt;String&gt; getIncludeAttributes()<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>  {<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>    return includeAttributes;<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>  }<a name="line.1622"></a>
 <span class="sourceLineNo">1623</span><a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>    if (! excludeAttributes.isEmpty())<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span>    {<a name="line.1625"></a>
-<span class="sourceLineNo">1626</span>      attrs.add(new Attribute(ATTR_EXCLUDE_ATTRIBUTE, excludeAttributes));<a name="line.1626"></a>
-<span class="sourceLineNo">1627</span>    }<a name="line.1627"></a>
-<span class="sourceLineNo">1628</span><a name="line.1628"></a>
-<span class="sourceLineNo">1629</span>    if (! includeFilters.isEmpty())<a name="line.1629"></a>
-<span class="sourceLineNo">1630</span>    {<a name="line.1630"></a>
-<span class="sourceLineNo">1631</span>      attrs.add(new Attribute(ATTR_INCLUDE_FILTER, includeFilters));<a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>    }<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span><a name="line.1633"></a>
-<span class="sourceLineNo">1634</span>    if (! excludeFilters.isEmpty())<a name="line.1634"></a>
-<span class="sourceLineNo">1635</span>    {<a name="line.1635"></a>
-<span class="sourceLineNo">1636</span>      attrs.add(new Attribute(ATTR_EXCLUDE_FILTER, excludeFilters));<a name="line.1636"></a>
-<span class="sourceLineNo">1637</span>    }<a name="line.1637"></a>
+<span class="sourceLineNo">1624</span><a name="line.1624"></a>
+<span class="sourceLineNo">1625</span><a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>  /**<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>   * Retrieves the list of attributes that should be excluded from the imported<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>   * entries.<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span>   *<a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>   * @return  The list of attributes that should be excluded from the imported<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>   *          entries, or an empty list if no attributes should be excluded.<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>   */<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>  public List&lt;String&gt; getExcludeAttributes()<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>  {<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>    return excludeAttributes;<a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>  }<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span><a name="line.1637"></a>
 <span class="sourceLineNo">1638</span><a name="line.1638"></a>
-<span class="sourceLineNo">1639</span>    if (encryptionPassphraseFile != null)<a name="line.1639"></a>
-<span class="sourceLineNo">1640</span>    {<a name="line.1640"></a>
-<span class="sourceLineNo">1641</span>      attrs.add(new Attribute(ATTR_ENCRYPTION_PASSPHRASE_FILE,<a name="line.1641"></a>
-<span class="sourceLineNo">1642</span>           encryptionPassphraseFile));<a name="line.1642"></a>
-<span class="sourceLineNo">1643</span>    }<a name="line.1643"></a>
-<span class="sourceLineNo">1644</span><a name="line.1644"></a>
-<span class="sourceLineNo">1645</span>    return attrs;<a name="line.1645"></a>
-<span class="sourceLineNo">1646</span>  }<a name="line.1646"></a>
-<span class="sourceLineNo">1647</span><a name="line.1647"></a>
-<span class="sourceLineNo">1648</span><a name="line.1648"></a>
-<span class="sourceLineNo">1649</span><a name="line.1649"></a>
-<span class="sourceLineNo">1650</span>  /**<a name="line.1650"></a>
-<span class="sourceLineNo">1651</span>   * {@inheritDoc}<a name="line.1651"></a>
-<span class="sourceLineNo">1652</span>   */<a name="line.1652"></a>
-<span class="sourceLineNo">1653</span>  @Override()<a name="line.1653"></a>
-<span class="sourceLineNo">1654</span>  public List&lt;TaskProperty&gt; getTaskSpecificProperties()<a name="line.1654"></a>
-<span class="sourceLineNo">1655</span>  {<a name="line.1655"></a>
-<span class="sourceLineNo">1656</span>    final List&lt;TaskProperty&gt; propList = Arrays.asList(<a name="line.1656"></a>
-<span class="sourceLineNo">1657</span>         PROPERTY_BACKEND_ID,<a name="line.1657"></a>
-<span class="sourceLineNo">1658</span>         PROPERTY_LDIF_FILE,<a name="line.1658"></a>
-<span class="sourceLineNo">1659</span>         PROPERTY_APPEND,<a name="line.1659"></a>
-<span class="sourceLineNo">1660</span>         PROPERTY_REPLACE_EXISTING,<a name="line.1660"></a>
-<span class="sourceLineNo">1661</span>         PROPERTY_REJECT_FILE,<a name="line.1661"></a>
-<span class="sourceLineNo">1662</span>         PROPERTY_OVERWRITE_REJECTS,<a name="line.1662"></a>
-<span class="sourceLineNo">1663</span>         PROPERTY_CLEAR_BACKEND,<a name="line.1663"></a>
-<span class="sourceLineNo">1664</span>         PROPERTY_INCLUDE_BRANCH,<a name="line.1664"></a>
-<span class="sourceLineNo">1665</span>         PROPERTY_EXCLUDE_BRANCH,<a name="line.1665"></a>
-<span class="sourceLineNo">1666</span>         PROPERTY_INCLUDE_FILTER,<a name="line.1666"></a>
-<span class="sourceLineNo">1667</span>         PROPERTY_EXCLUDE_FILTER,<a name="line.1667"></a>
-<span class="sourceLineNo">1668</span>         PROPERTY_INCLUDE_ATTRIBUTE,<a name="line.1668"></a>
-<span class="sourceLineNo">1669</span>         PROPERTY_EXCLUDE_ATTRIBUTE,<a name="line.1669"></a>
-<span class="sourceLineNo">1670</span>         PROPERTY_IS_COMPRESSED,<a name="line.1670"></a>
-<span class="sourceLineNo">1671</span>         PROPERTY_IS_ENCRYPTED,<a name="line.1671"></a>
-<span class="sourceLineNo">1672</span>         PROPERTY_ENCRYPTION_PASSPHRASE_FILE,<a name="line.1672"></a>
-<span class="sourceLineNo">1673</span>         PROPERTY_SKIP_SCHEMA_VALIDATION,<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>         PROPERTY_STRIP_TRAILING_SPACES);<a name="line.1674"></a>
-<span class="sourceLineNo">1675</span><a name="line.1675"></a>
-<span class="sourceLineNo">1676</span>    return Collections.unmodifiableList(propList);<a name="line.1676"></a>
-<span class="sourceLineNo">1677</span>  }<a name="line.1677"></a>
-<span class="sourceLineNo">1678</span><a name="line.1678"></a>
+<span class="sourceLineNo">1639</span><a name="line.1639"></a>
+<span class="sourceLineNo">1640</span>  /**<a name="line.1640"></a>
+<span class="sourceLineNo">1641</span>   * Indicates whether the LDIF data to import is compressed.<a name="line.1641"></a>
+<span class="sourceLineNo">1642</span>   *<a name="line.1642"></a>
+<span class="sourceLineNo">1643</span>   * @return  {@code true} if the LDIF data to import is compressed, or<a name="line.1643"></a>
+<span class="sourceLineNo">1644</span>   *          {@code false} if not.<a name="line.1644"></a>
+<span class="sourceLineNo">1645</span>   */<a name="line.1645"></a>
+<span class="sourceLineNo">1646</span>  public boolean isCompressed()<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>  {<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span>    return isCompressed;<a name="line.1648"></a>
+<span class="sourceLineNo">1649</span>  }<a name="line.1649"></a>
+<span class="sourceLineNo">1650</span><a name="line.1650"></a>
+<span class="sourceLineNo">1651</span><a name="line.1651"></a>
+<span class="sourceLineNo">1652</span><a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>  /**<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span>   * Indicates whether the LDIF data to import is encrypted.<a name="line.1654"></a>
+<span class="sourceLineNo">1655</span>   *<a name="line.1655"></a>
+<span class="sourceLineNo">1656</span>   * @return  {@code true} if the LDIF data to import is encrypted, or<a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>   *          {@code false} if not.<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>   */<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>  public boolean isEncrypted()<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>  {<a name="line.1660"></a>
+<span class="sourceLineNo">1661</span>    return isEncrypted;<a name="line.1661"></a>
+<span class="sourceLineNo">1662</span>  }<a name="line.1662"></a>
+<span class="sourceLineNo">1663</span><a name="line.1663"></a>
+<span class="sourceLineNo">1664</span><a name="line.1664"></a>
+<span class="sourceLineNo">1665</span><a name="line.1665"></a>
+<span class="sourceLineNo">1666</span>  /**<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span>   * Retrieves the path to a file that contains the passphrase to use to<a name="line.1667"></a>
+<span class="sourceLineNo">1668</span>   * generate the encryption key.<a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>   *<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span>   * @return  The path to a file that contains the passphrase to use to<a name="line.1670"></a>
+<span class="sourceLineNo">1671</span>   *          generate the encryption key, or {@code null} if the LDIF file is<a name="line.1671"></a>
+<span class="sourceLineNo">1672</span>   *          not encrypted or if the encryption key should be obtained through<a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>   *          some other means.<a name="line.1673"></a>
+<span class="sourceLineNo">1674</span>   */<a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>  public String getEncryptionPassphraseFile()<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span>  {<a name="line.1676"></a>
+<span class="sourceLineNo">1677</span>    return encryptionPassphraseFile;<a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>  }<a name="line.1678"></a>
 <span class="sourceLineNo">1679</span><a name="line.1679"></a>
 <span class="sourceLineNo">1680</span><a name="line.1680"></a>
-<span class="sourceLineNo">1681</span>  /**<a name="line.1681"></a>
-<span class="sourceLineNo">1682</span>   * {@inheritDoc}<a name="line.1682"></a>
-<span class="sourceLineNo">1683</span>   */<a name="line.1683"></a>
-<span class="sourceLineNo">1684</span>  @Override()<a name="line.1684"></a>
-<span class="sourceLineNo">1685</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.1685"></a>
-<span class="sourceLineNo">1686</span>  {<a name="line.1686"></a>
-<span class="sourceLineNo">1687</span>    final LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt; props =<a name="line.1687"></a>
-<span class="sourceLineNo">1688</span>         new LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt;();<a name="line.1688"></a>
-<span class="sourceLineNo">1689</span><a name="line.1689"></a>
-<span class="sourceLineNo">1690</span>    if (backendID == null)<a name="line.1690"></a>
-<span class="sourceLineNo">1691</span>    {<a name="line.1691"></a>
-<span class="sourceLineNo">1692</span>      props.put(PROPERTY_BACKEND_ID, Collections.emptyList());<a name="line.1692"></a>
-<span class="sourceLineNo">1693</span>    }<a name="line.1693"></a>
-<span class="sourceLineNo">1694</span>    else<a name="line.1694"></a>
-<span class="sourceLineNo">1695</span>    {<a name="line.1695"></a>
-<span class="sourceLineNo">1696</span>      props.put(PROPERTY_BACKEND_ID,<a name="line.1696"></a>
-<span class="sourceLineNo">1697</span>                Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(backendID)));<a name="line.1697"></a>
-<span class="sourceLineNo">1698</span>    }<a name="line.1698"></a>
-<span class="sourceLineNo">1699</span><a name="line.1699"></a>
-<span class="sourceLineNo">1700</span>    props.put(PROPERTY_LDIF_FILE,<a name="line.1700"></a>
-<span class="sourceLineNo">1701</span>              Collections.&lt;Object&gt;unmodifiableList(ldifFiles));<a name="line.1701"></a>
-<span class="sourceLineNo">1702</span><a name="line.1702"></a>
-<span class="sourceLineNo">1703</span>    props.put(PROPERTY_APPEND,<a name="line.1703"></a>
-<span class="sourceLineNo">1704</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(append)));<a name="line.1704"></a>
-<span class="sourceLineNo">1705</span><a name="line.1705"></a>
-<span class="sourceLineNo">1706</span>    props.put(PROPERTY_REPLACE_EXISTING,<a name="line.1706"></a>
-<span class="sourceLineNo">1707</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1707"></a>
-<span class="sourceLineNo">1708</span>                   replaceExisting)));<a name="line.1708"></a>
+<span class="sourceLineNo">1681</span><a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>  /**<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span>   * Indicates whether the server should skip schema validation processing when<a name="line.1683"></a>
+<span class="sourceLineNo">1684</span>   * performing the import.<a name="line.1684"></a>
+<span class="sourceLineNo">1685</span>   *<a name="line.1685"></a>
+<span class="sourceLineNo">1686</span>   * @return  {@code true} if the server should skip schema validation<a name="line.1686"></a>
+<span class="sourceLineNo">1687</span>   *          processing when performing the import, or {@code false} if not.<a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>   */<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>  public boolean skipSchemaValidation()<a name="line.1689"></a>
+<span class="sourceLineNo">1690</span>  {<a name="line.1690"></a>
+<span class="sourceLineNo">1691</span>    return skipSchemaValidation;<a name="line.1691"></a>
+<span class="sourceLineNo">1692</span>  }<a name="line.1692"></a>
+<span class="sourceLineNo">1693</span><a name="line.1693"></a>
+<span class="sourceLineNo">1694</span><a name="line.1694"></a>
+<span class="sourceLineNo">1695</span><a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>  /**<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>   * Indicates whether the server should strip off any illegal trailing spaces<a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>   * found in LDIF records rather than rejecting those records.<a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>   *<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span>   * @return  {@code true} if the server should strip off any illegal trailing<a name="line.1700"></a>
+<span class="sourceLineNo">1701</span>   *          spaces found in LDIF records, or {@code false} if it should reject<a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>   *          any records containing illegal trailing spaces.<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span>   */<a name="line.1703"></a>
+<span class="sourceLineNo">1704</span>  public boolean stripTrailingSpaces()<a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>  {<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span>    return stripTrailingSpaces;<a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>  }<a name="line.1707"></a>
+<span class="sourceLineNo">1708</span><a name="line.1708"></a>
 <span class="sourceLineNo">1709</span><a name="line.1709"></a>
-<span class="sourceLineNo">1710</span>    if (rejectFile == null)<a name="line.1710"></a>
-<span class="sourceLineNo">1711</span>    {<a name="line.1711"></a>
-<span class="sourceLineNo">1712</span>      props.put(PROPERTY_REJECT_FILE, Collections.emptyList());<a name="line.1712"></a>
-<span class="sourceLineNo">1713</span>    }<a name="line.1713"></a>
-<span class="sourceLineNo">1714</span>    else<a name="line.1714"></a>
-<span class="sourceLineNo">1715</span>    {<a name="line.1715"></a>
-<span class="sourceLineNo">1716</span>      props.put(PROPERTY_REJECT_FILE,<a name="line.1716"></a>
-<span class="sourceLineNo">1717</span>                Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1717"></a>
-<span class="sourceLineNo">1718</span>                     rejectFile)));<a name="line.1718"></a>
-<span class="sourceLineNo">1719</span>    }<a name="line.1719"></a>
+<span class="sourceLineNo">1710</span><a name="line.1710"></a>
+<span class="sourceLineNo">1711</span>  /**<a name="line.1711"></a>
+<span class="sourceLineNo">1712</span>   * {@inheritDoc}<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span>   */<a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>  @Override()<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span>  protected List&lt;String&gt; getAdditionalObjectClasses()<a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>  {<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>    return Collections.singletonList(OC_IMPORT_TASK);<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>  }<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span><a name="line.1719"></a>
 <span class="sourceLineNo">1720</span><a name="line.1720"></a>
-<span class="sourceLineNo">1721</span>    props.put(PROPERTY_OVERWRITE_REJECTS,<a name="line.1721"></a>
-<span class="sourceLineNo">1722</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>                   overwriteRejects)));<a name="line.1723"></a>
-<span class="sourceLineNo">1724</span><a name="line.1724"></a>
-<span class="sourceLineNo">1725</span>    props.put(PROPERTY_CLEAR_BACKEND,<a name="line.1725"></a>
-<span class="sourceLineNo">1726</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1726"></a>
-<span class="sourceLineNo">1727</span>                   clearBackend)));<a name="line.1727"></a>
-<span class="sourceLineNo">1728</span><a name="line.1728"></a>
-<span class="sourceLineNo">1729</span>    props.put(PROPERTY_INCLUDE_BRANCH,<a name="line.1729"></a>
-<span class="sourceLineNo">1730</span>              Collections.&lt;Object&gt;unmodifiableList(includeBranches));<a name="line.1730"></a>
-<span class="sourceLineNo">1731</span><a name="line.1731"></a>
-<span class="sourceLineNo">1732</span>    props.put(PROPERTY_EXCLUDE_BRANCH,<a name="line.1732"></a>
-<span class="sourceLineNo">1733</span>              Collections.&lt;Object&gt;unmodifiableList(excludeBranches));<a name="line.1733"></a>
-<span class="sourceLineNo">1734</span><a name="line.1734"></a>
-<span class="sourceLineNo">1735</span>    props.put(PROPERTY_INCLUDE_FILTER,<a name="line.1735"></a>
-<span class="sourceLineNo">1736</span>              Collections.&lt;Object&gt;unmodifiableList(includeFilters));<a name="line.1736"></a>
-<span class="sourceLineNo">1737</span><a name="line.1737"></a>
-<span class="sourceLineNo">1738</span>    props.put(PROPERTY_EXCLUDE_FILTER,<a name="line.1738"></a>
-<span class="sourceLineNo">1739</span>              Collections.&lt;Object&gt;unmodifiableList(excludeFilters));<a name="line.1739"></a>
-<span class="sourceLineNo">1740</span><a name="line.1740"></a>
-<span class="sourceLineNo">1741</span>    props.put(PROPERTY_INCLUDE_ATTRIBUTE,<a name="line.1741"></a>
-<span class="sourceLineNo">1742</span>              Collections.&lt;Object&gt;unmodifiableList(includeAttributes));<a name="line.1742"></a>
-<span class="sourceLineNo">1743</span><a name="line.1743"></a>
-<span class="sourceLineNo">1744</span>    props.put(PROPERTY_EXCLUDE_ATTRIBUTE,<a name="line.1744"></a>
-<span class="sourceLineNo">1745</span>              Collections.&lt;Object&gt;unmodifiableList(excludeAttributes));<a name="line.1745"></a>
-<span class="sourceLineNo">1746</span><a name="line.1746"></a>
-<span class="sourceLineNo">1747</span>    props.put(PROPERTY_IS_COMPRESSED,<a name="line.1747"></a>
-<span class="sourceLineNo">1748</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1748"></a>
-<span class="sourceLineNo">1749</span>                   isCompressed)));<a name="line.1749"></a>
-<span class="sourceLineNo">1750</span><a name="line.1750"></a>
-<span class="sourceLineNo">1751</span>    props.put(PROPERTY_IS_ENCRYPTED,<a name="line.1751"></a>
-<span class="sourceLineNo">1752</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1752"></a>
-<span class="sourceLineNo">1753</span>                   isEncrypted)));<a name="line.1753"></a>
-<span class="sourceLineNo">1754</span><a name="line.1754"></a>
-<span class="sourceLineNo">1755</span>    if (encryptionPassphraseFile == null)<a name="line.1755"></a>
-<span class="sourceLineNo">1756</span>    {<a name="line.1756"></a>
-<span class="sourceLineNo">1757</span>      props.put(PROPERTY_ENCRYPTION_PASSPHRASE_FILE, Collections.emptyList());<a name="line.1757"></a>
-<span class="sourceLineNo">1758</span>    }<a name="line.1758"></a>
-<span class="sourceLineNo">1759</span>    else<a name="line.1759"></a>
-<span class="sourceLineNo">1760</span>    {<a name="line.1760"></a>
-<span class="sourceLineNo">1761</span>      props.put(PROPERTY_ENCRYPTION_PASSPHRASE_FILE,<a name="line.1761"></a>
-<span class="sourceLineNo">1762</span>         Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1762"></a>
-<span class="sourceLineNo">1763</span>              encryptionPassphraseFile)));<a name="line.1763"></a>
-<span class="sourceLineNo">1764</span>    }<a name="line.1764"></a>
-<span class="sourceLineNo">1765</span><a name="line.1765"></a>
-<span class="sourceLineNo">1766</span>    props.put(PROPERTY_SKIP_SCHEMA_VALIDATION,<a name="line.1766"></a>
-<span class="sourceLineNo">1767</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1767"></a>
-<span class="sourceLineNo">1768</span>                   skipSchemaValidation)));<a name="line.1768"></a>
-<span class="sourceLineNo">1769</span><a name="line.1769"></a>
-<span class="sourceLineNo">1770</span>    props.put(PROPERTY_STRIP_TRAILING_SPACES,<a name="line.1770"></a>
-<span class="sourceLineNo">1771</span>              Collections.&lt;Object&gt;unmodifiableList(Arrays.asList(<a name="line.1771"></a>
-<span class="sourceLineNo">1772</span>                   stripTrailingSpaces)));<a name="line.1772"></a>
-<span class="sourceLineNo">1773</span><a name="line.1773"></a>
-<span class="sourceLineNo">1774</span>    props.putAll(super.getTaskPropertyValues());<a name="line.1774"></a>
-<span class="sourceLineNo">1775</span>    return Collections.unmodifiableMap(props);<a name="line.1775"></a>
-<span class="sourceLineNo">1776</span>  }<a name="line.1776"></a>
-<span class="sourceLineNo">1777</span>}<a name="line.1777"></a>
+<span class="sourceLineNo">1721</span><a name="line.1721"></a>
+<span class="sourceLineNo">1722</span>  /**<a name="line.1722"></a>
+<span class="sourceLineNo">1723</span>   * {@inheritDoc}<a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>   */<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span>  @Override()<a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>  protected List&lt;Attribute&gt; getAdditionalAttributes()<a name="line.1726"></a>
+<span class="sourceLineNo">1727</span>  {<a name="line.1727"></a>
+<span class="sourceLineNo">1728</span>    final ArrayList&lt;Attribute&gt; attrs = new ArrayList&lt;&gt;(20);<a name="line.1728"></a>
+<span class="sourceLineNo">1729</span><a name="line.1729"></a>
+<span class="sourceLineNo">1730</span>    attrs.add(new Attribute(ATTR_LDIF_FILE, ldifFiles));<a name="line.1730"></a>
+<span class="sourceLineNo">1731</span>    attrs.add(new Attribute(ATTR_APPEND, String.valueOf(append)));<a name="line.1731"></a>
+<span class="sourceLineNo">1732</span>    attrs.add(new Attribute(ATTR_REPLACE_EXISTING,<a name="line.1732"></a>
+<span class="sourceLineNo">1733</span>                            String.valueOf(replaceExisting)));<a name="line.1733"></a>
+<span class="sourceLineNo">1734</span>    attrs.add(new Attribute(ATTR_OVERWRITE_REJECTS,<a name="line.1734"></a>
+<span class="sourceLineNo">1735</span>                            String.valueOf(overwriteRejects)));<a name="line.1735"></a>
+<span class="sourceLineNo">1736</span>    attrs.add(new Attribute(ATTR_CLEAR_BACKEND, String.valueOf(clearBackend)));<a name="line.1736"></a>
+<span class="sourceLineNo">1737</span>    attrs.add(new Attribute(ATTR_IS_COMPRESSED, String.valueOf(isCompressed)));<a name="line.1737"></a>
+<span class="sourceLineNo">1738</span>    attrs.add(new Attribute(ATTR_IS_ENCRYPTED, String.valueOf(isEncrypted)));<a name="line.1738"></a>
+<span class="sourceLineNo">1739</span>    attrs.add(new Attribute(ATTR_SKIP_SCHEMA_VALIDATION,<a name="line.1739"></a>
+<span class="sourceLineNo">1740</span>                            String.valueOf(skipSchemaValidation)));<a name="line.1740"></a>
+<span class="sourceLineNo">1741</span><a name="line.1741"></a>
+<span class="sourceLineNo">1742</span>    if (stripTrailingSpaces)<a name="line.1742"></a>
+<span class="sourceLineNo">1743</span>    {<a name="line.1743"></a>
+<span class="sourceLineNo">1744</span>      attrs.add(new Attribute(ATTR_STRIP_TRAILING_SPACES,<a name="line.1744"></a>
+<span class="sourceLineNo">1745</span>           String.valueOf(stripTrailingSpaces)));<a name="line.1745"></a>
+<span class="sourceLineNo">1746</span>    }<a name="line.1746"></a>
+<span class="sourceLineNo">1747</span><a name="line.1747"></a>
+<span class="sourceLineNo">1748</span>    if (backendID != null)<a name="line.1748"></a>
+<span class="sourceLineNo">1749</span>    {<a name="line.1749"></a>
+<span class="sourceLineNo">1750</span>      attrs.add(new Attribute(ATTR_BACKEND_ID, backendID));<a name="line.1750"></a>
+<span class="sourceLineNo">1751</span>    }<a name="line.1751"></a>
+<span class="sourceLineNo">1752</span><a name="line.1752"></a>
+<span class="sourceLineNo">1753</span>    if (rejectFile != null)<a name="line.1753"></a>
+<span class="sourceLineNo">1754</span>    {<a name="line.1754"></a>
+<span class="sourceLineNo">1755</span>      attrs.add(new Attribute(ATTR_REJECT_FILE, rejectFile));<a name="line.1755"></a>
+<span class="sourceLineNo">1756</span>    }<a name="line.1756"></a>
+<span class="sourceLineNo">1757</span><a name="line.1757"></a>
+<span class="sourceLineNo">1758</span>    if (! includeBranches.isEmpty())<a name="line.1758"></a>
+<span class="sourceLineNo">1759</span>    {<a name="line.1759"></a>
+<span class="sourceLineNo">1760</span>      attrs.add(new Attribute(ATTR_INCLUDE_BRANCH, includeBranches));<a name="line.1760"></a>
+<span class="sourceLineNo">1761</span>    }<a name="line.1761"></a>
+<span class="sourceLineNo">1762</span><a name="line.1762"></a>
+<span class="sourceLineNo">1763</span>    if (! excludeBranches.isEmpty())<a name="line.1763"></a>
+<span class="sourceLineNo">1764</span>    {<a name="line.1764"></a>
+<span class="sourceLineNo">1765</span>      attrs.add(new Attribute(ATTR_EXCLUDE_BRANCH, excludeBranches));<a name="line.1765"></a>
+<span class="sourceLineNo">1766</span>    }<a name="line.1766"></a>
+<span class="sourceLineNo">1767</span><a name="line.1767"></a>
+<span class="sourceLineNo">1768</span>    if (! includeAttributes.isEmpty())<a name="line.1768"></a>
+<span class="sourceLineNo">1769</span>    {<a name="line.1769"></a>
+<span class="sourceLineNo">1770</span>      attrs.add(new Attribute(ATTR_INCLUDE_ATTRIBUTE, includeAttributes));<a name="line.1770"></a>
+<span class="sourceLineNo">1771</span>    }<a name="line.1771"></a>
+<span class="sourceLineNo">1772</span><a name="line.1772"></a>
+<span class="sourceLineNo">1773</span>    if (! excludeAttributes.isEmpty())<a name="line.1773"></a>
+<span class="sourceLineNo">1774</span>    {<a name="line.1774"></a>
+<span class="sourceLineNo">1775</span>      attrs.add(new Attribute(ATTR_EXCLUDE_ATTRIBUTE, excludeAttributes));<a name="line.1775"></a>
+<span class="sourceLineNo">1776</span>    }<a name="line.1776"></a>
+<span class="sourceLineNo">1777</span><a name="line.1777"></a>
+<span class="sourceLineNo">1778</span>    if (! includeFilters.isEmpty())<a name="line.1778"></a>
+<span class="sourceLineNo">1779</span>    {<a name="line.1779"></a>
+<span class="sourceLineNo">1780</span>      attrs.add(new Attribute(ATTR_INCLUDE_FILTER, includeFilters));<a name="line.1780"></a>
+<span class="sourceLineNo">1781</span>    }<a name="line.1781"></a>
+<span class="sourceLineNo">1782</span><a name="line.1782"></a>
+<span class="sourceLineNo">1783</span>    if (! excludeFilters.isEmpty())<a name="line.1783"></a>
+<span class="sourceLineNo">1784</span>    {<a name="line.1784"></a>
+<span class="sourceLineNo">1785</span>      attrs.add(new Attribute(ATTR_EXCLUDE_FILTER, excludeFilters));<a name="line.1785"></a>
+<span class="sourceLineNo">1786</span>    }<a name="line.1786"></a>
+<span class="sourceLineNo">1787</span><a name="line.1787"></a>
+<span class="sourceLineNo">1788</span>    if (encryptionPassphraseFile != null)<a name="line.1788"></a>
+<span class="sourceLineNo">1789</span>    {<a name="line.1789"></a>
+<span class="sourceLineNo">1790</span>      attrs.add(new Attribute(ATTR_ENCRYPTION_PASSPHRASE_FILE,<a name="line.1790"></a>
+<span class="sourceLineNo">1791</span>           encryptionPassphraseFile));<a name="line.1791"></a>
+<span class="sourceLineNo">1792</span>    }<a name="line.1792"></a>
+<span class="sourceLineNo">1793</span><a name="line.1793"></a>
+<span class="sourceLineNo">1794</span>    return attrs;<a name="line.1794"></a>
+<span class="sourceLineNo">1795</span>  }<a name="line.1795"></a>
+<span class="sourceLineNo">1796</span><a name="line.1796"></a>
+<span class="sourceLineNo">1797</span><a name="line.1797"></a>
+<span class="sourceLineNo">1798</span><a name="line.1798"></a>
+<span class="sourceLineNo">1799</span>  /**<a name="line.1799"></a>
+<span class="sourceLineNo">1800</span>   * {@inheritDoc}<a name="line.1800"></a>
+<span class="sourceLineNo">1801</span>   */<a name="line.1801"></a>
+<span class="sourceLineNo">1802</span>  @Override()<a name="line.1802"></a>
+<span class="sourceLineNo">1803</span>  public List&lt;TaskProperty&gt; getTaskSpecificProperties()<a name="line.1803"></a>
+<span class="sourceLineNo">1804</span>  {<a name="line.1804"></a>
+<span class="sourceLineNo">1805</span>    final List&lt;TaskProperty&gt; propList = Arrays.asList(<a name="line.1805"></a>
+<span class="sourceLineNo">1806</span>         PROPERTY_BACKEND_ID,<a name="line.1806"></a>
+<span class="sourceLineNo">1807</span>         PROPERTY_LDIF_FILE,<a name="line.1807"></a>
+<span class="sourceLineNo">1808</span>         PROPERTY_APPEND,<a name="line.1808"></a>
+<span class="sourceLineNo">1809</span>         PROPERTY_REPLACE_EXISTING,<a name="line.1809"></a>
+<span class="sourceLineNo">1810</span>         PROPERTY_REJECT_FILE,<a name="line.1810"></a>
+<span class="sourceLineNo">1811</span>         PROPERTY_OVERWRITE_REJECTS,<a name="line.1811"></a>
+<span class="sourceLineNo">1812</span>         PROPERTY_CLEAR_BACKEND,<a name="line.1812"></a>
+<span class="sourceLineNo">1813</span>         PROPERTY_INCLUDE_BRANCH,<a name="line.1813"></a>
+<span class="sourceLineNo">1814</span>         PROPERTY_EXCLUDE_BRANCH,<a name="line.1814"></a>
+<span class="sourceLineNo">1815</span>         PROPERTY_INCLUDE_FILTER,<a name="line.1815"></a>
+<span class="sourceLineNo">1816</span>         PROPERTY_EXCLUDE_FILTER,<a name="line.1816"></a>
+<span class="sourceLineNo">1817</span>         PROPERTY_INCLUDE_ATTRIBUTE,<a name="line.1817"></a>
+<span class="sourceLineNo">1818</span>         PROPERTY_EXCLUDE_ATTRIBUTE,<a name="line.1818"></a>
+<span class="sourceLineNo">1819</span>         PROPERTY_IS_COMPRESSED,<a name="line.1819"></a>
+<span class="sourceLineNo">1820</span>         PROPERTY_IS_ENCRYPTED,<a name="line.1820"></a>
+<span class="sourceLineNo">1821</span>         PROPERTY_ENCRYPTION_PASSPHRASE_FILE,<a name="line.1821"></a>
+<span class="sourceLineNo">1822</span>         PROPERTY_SKIP_SCHEMA_VALIDATION,<a name="line.1822"></a>
+<span class="sourceLineNo">1823</span>         PROPERTY_STRIP_TRAILING_SPACES);<a name="line.1823"></a>
+<span class="sourceLineNo">1824</span><a name="line.1824"></a>
+<span class="sourceLineNo">1825</span>    return Collections.unmodifiableList(propList);<a name="line.1825"></a>
+<span class="sourceLineNo">1826</span>  }<a name="line.1826"></a>
+<span class="sourceLineNo">1827</span><a name="line.1827"></a>
+<span class="sourceLineNo">1828</span><a name="line.1828"></a>
+<span class="sourceLineNo">1829</span><a name="line.1829"></a>
+<span class="sourceLineNo">1830</span>  /**<a name="line.1830"></a>
+<span class="sourceLineNo">1831</span>   * {@inheritDoc}<a name="line.1831"></a>
+<span class="sourceLineNo">1832</span>   */<a name="line.1832"></a>
+<span class="sourceLineNo">1833</span>  @Override()<a name="line.1833"></a>
+<span class="sourceLineNo">1834</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.1834"></a>
+<span class="sourceLineNo">1835</span>  {<a name="line.1835"></a>
+<span class="sourceLineNo">1836</span>    final LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt; props =<a name="line.1836"></a>
+<span class="sourceLineNo">1837</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.1837"></a>
+<span class="sourceLineNo">1838</span><a name="line.1838"></a>
+<span class="sourceLineNo">1839</span>    if (backendID == null)<a name="line.1839"></a>
+<span class="sourceLineNo">1840</span>    {<a name="line.1840"></a>
+<span class="sourceLineNo">1841</span>      props.put(PROPERTY_BACKEND_ID, Collections.emptyList());<a name="line.1841"></a>
+<span class="sourceLineNo">1842</span>    }<a name="line.1842"></a>
+<span class="sourceLineNo">1843</span>    else<a name="line.1843"></a>
+<span class="sourceLineNo">1844</span>    {<a name="line.1844"></a>
+<span class="sourceLineNo">1845</span>      props.put(PROPERTY_BACKEND_ID,<a name="line.1845"></a>
+<span class="sourceLineNo">1846</span>                Collections.&lt;Object&gt;singletonList(backendID));<a name="line.1846"></a>
+<span class="sourceLineNo">1847</span>    }<a name="line.1847"></a>
+<span class="sourceLineNo">1848</span><a name="line.1848"></a>
+<span class="sourceLineNo">1849</span>    props.put(PROPERTY_LDIF_FILE,<a name="line.1849"></a>
+<span class="sourceLineNo">1850</span>              Collections.&lt;Object&gt;unmodifiableList(ldifFiles));<a name="line.1850"></a>
+<span class="sourceLineNo">1851</span><a name="line.1851"></a>
+<span class="sourceLineNo">1852</span>    props.put(PROPERTY_APPEND,<a name="line.1852"></a>
+<span class="sourceLineNo">1853</span>              Collections.&lt;Object&gt;singletonList(append));<a name="line.1853"></a>
+<span class="sourceLineNo">1854</span><a name="line.1854"></a>
+<span class="sourceLineNo">1855</span>    props.put(PROPERTY_REPLACE_EXISTING,<a name="line.1855"></a>
+<span class="sourceLineNo">1856</span>              Collections.&lt;Object&gt;singletonList(replaceExisting));<a name="line.1856"></a>
+<span class="sourceLineNo">1857</span><a name="line.1857"></a>
+<span class="sourceLineNo">1858</span>    if (rejectFile == null)<a name="line.1858"></a>
+<span class="sourceLineNo">1859</span>    {<a name="line.1859"></a>
+<span class="sourceLineNo">1860</span>      props.put(PROPERTY_REJECT_FILE, Collections.emptyList());<a name="line.1860"></a>
+<span class="sourceLineNo">1861</span>    }<a name="line.1861"></a>
+<span class="sourceLineNo">1862</span>    else<a name="line.1862"></a>
+<span class="sourceLineNo">1863</span>    {<a name="line.1863"></a>
+<span class="sourceLineNo">1864</span>      props.put(PROPERTY_REJECT_FILE,<a name="line.1864"></a>
+<span class="sourceLineNo">1865</span>                Collections.&lt;Object&gt;singletonList(rejectFile));<a name="line.1865"></a>
+<span class="sourceLineNo">1866</span>    }<a name="line.1866"></a>
+<span class="sourceLineNo">1867</span><a name="line.1867"></a>
+<span class="sourceLineNo">1868</span>    props.put(PROPERTY_OVERWRITE_REJECTS,<a name="line.1868"></a>
+<span class="sourceLineNo">1869</span>              Collections.&lt;Object&gt;singletonList(overwriteRejects));<a name="line.1869"></a>
+<span class="sourceLineNo">1870</span><a name="line.1870"></a>
+<span class="sourceLineNo">1871</span>    props.put(PROPERTY_CLEAR_BACKEND,<a name="line.1871"></a>
+<span class="sourceLineNo">1872</span>              Collections.&lt;Object&gt;singletonList(clearBackend));<a name="line.1872"></a>
+<span class="sourceLineNo">1873</span><a name="line.1873"></a>
+<span class="sourceLineNo">1874</span>    props.put(PROPERTY_INCLUDE_BRANCH,<a name="line.1874"></a>
+<span class="sourceLineNo">1875</span>              Collections.&lt;Object&gt;unmodifiableList(includeBranches));<a name="line.1875"></a>
+<span class="sourceLineNo">1876</span><a name="line.1876"></a>
+<span class="sourceLineNo">1877</span>    props.put(PROPERTY_EXCLUDE_BRANCH,<a name="line.1877"></a>
+<span class="sourceLineNo">1878</span>              Collections.&lt;Object&gt;unmodifiableList(excludeBranches));<a name="line.1878"></a>
+<span class="sourceLineNo">1879</span><a name="line.1879"></a>
+<span class="sourceLineNo">1880</span>    props.put(PROPERTY_INCLUDE_FILTER,<a name="line.1880"></a>
+<span class="sourceLineNo">1881</span>              Collections.&lt;Object&gt;unmodifiableList(includeFilters));<a name="line.1881"></a>
+<span class="sourceLineNo">1882</span><a name="line.1882"></a>
+<span class="sourceLineNo">1883</span>    props.put(PROPERTY_EXCLUDE_FILTER,<a name="line.1883"></a>
+<span class="sourceLineNo">1884</span>              Collections.&lt;Object&gt;unmodifiableList(excludeFilters));<a name="line.1884"></a>
+<span class="sourceLineNo">1885</span><a name="line.1885"></a>
+<span class="sourceLineNo">1886</span>    props.put(PROPERTY_INCLUDE_ATTRIBUTE,<a name="line.1886"></a>
+<span class="sourceLineNo">1887</span>              Collections.&lt;Object&gt;unmodifiableList(includeAttributes));<a name="line.1887"></a>
+<span class="sourceLineNo">1888</span><a name="line.1888"></a>
+<span class="sourceLineNo">1889</span>    props.put(PROPERTY_EXCLUDE_ATTRIBUTE,<a name="line.1889"></a>
+<span class="sourceLineNo">1890</span>              Collections.&lt;Object&gt;unmodifiableList(excludeAttributes));<a name="line.1890"></a>
+<span class="sourceLineNo">1891</span><a name="line.1891"></a>
+<span class="sourceLineNo">1892</span>    props.put(PROPERTY_IS_COMPRESSED,<a name="line.1892"></a>
+<span class="sourceLineNo">1893</span>              Collections.&lt;Object&gt;singletonList(isCompressed));<a name="line.1893"></a>
+<span class="sourceLineNo">1894</span><a name="line.1894"></a>
+<span class="sourceLineNo">1895</span>    props.put(PROPERTY_IS_ENCRYPTED,<a name="line.1895"></a>
+<span class="sourceLineNo">1896</span>              Collections.&lt;Object&gt;singletonList(isEncrypted));<a name="line.1896"></a>
+<span class="sourceLineNo">1897</span><a name="line.1897"></a>
+<span class="sourceLineNo">1898</span>    if (encryptionPassphraseFile == null)<a name="line.1898"></a>
+<span class="sourceLineNo">1899</span>    {<a name="line.1899"></a>
+<span class="sourceLineNo">1900</span>      props.put(PROPERTY_ENCRYPTION_PASSPHRASE_FILE, Collections.emptyList());<a name="line.1900"></a>
+<span class="sourceLineNo">1901</span>    }<a name="line.1901"></a>
+<span class="sourceLineNo">1902</span>    else<a name="line.1902"></a>
+<span class="sourceLineNo">1903</span>    {<a name="line.1903"></a>
+<span class="sourceLineNo">1904</span>      props.put(PROPERTY_ENCRYPTION_PASSPHRASE_FILE,<a name="line.1904"></a>
+<span class="sourceLineNo">1905</span>         Collections.&lt;Object&gt;singletonList(encryptionPassphraseFile));<a name="line.1905"></a>
+<span class="sourceLineNo">1906</span>    }<a name="line.1906"></a>
+<span class="sourceLineNo">1907</span><a name="line.1907"></a>
+<span class="sourceLineNo">1908</span>    props.put(PROPERTY_SKIP_SCHEMA_VALIDATION,<a name="line.1908"></a>
+<span class="sourceLineNo">1909</span>              Collections.&lt;Object&gt;singletonList(skipSchemaValidation));<a name="line.1909"></a>
+<span class="sourceLineNo">1910</span><a name="line.1910"></a>
+<span class="sourceLineNo">1911</span>    props.put(PROPERTY_STRIP_TRAILING_SPACES,<a name="line.1911"></a>
+<span class="sourceLineNo">1912</span>              Collections.&lt;Object&gt;singletonList(stripTrailingSpaces));<a name="line.1912"></a>
+<span class="sourceLineNo">1913</span><a name="line.1913"></a>
+<span class="sourceLineNo">1914</span>    props.putAll(super.getTaskPropertyValues());<a name="line.1914"></a>
+<span class="sourceLineNo">1915</span>    return Collections.unmodifiableMap(props);<a name="line.1915"></a>
+<span class="sourceLineNo">1916</span>  }<a name="line.1916"></a>
+<span class="sourceLineNo">1917</span>}<a name="line.1917"></a>
 
 
 

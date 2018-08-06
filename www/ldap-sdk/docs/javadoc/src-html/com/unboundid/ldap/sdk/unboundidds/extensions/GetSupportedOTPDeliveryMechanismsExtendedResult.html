@@ -62,11 +62,11 @@
 <span class="sourceLineNo">054</span> * &lt;BLOCKQUOTE&gt;<a name="line.54"></a>
 <span class="sourceLineNo">055</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.55"></a>
 <span class="sourceLineNo">056</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.56"></a>
-<span class="sourceLineNo">057</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.57"></a>
-<span class="sourceLineNo">058</span> *   server products.  These classes provide support for proprietary<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *   functionality or for external specifications that are not considered stable<a name="line.59"></a>
-<span class="sourceLineNo">060</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.60"></a>
-<span class="sourceLineNo">061</span> *   other types of LDAP servers.<a name="line.61"></a>
+<span class="sourceLineNo">057</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.58"></a>
+<span class="sourceLineNo">059</span> *   for proprietary functionality or for external specifications that are not<a name="line.59"></a>
+<span class="sourceLineNo">060</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.60"></a>
+<span class="sourceLineNo">061</span> *   interoperable way with other types of LDAP servers.<a name="line.61"></a>
 <span class="sourceLineNo">062</span> * &lt;/BLOCKQUOTE&gt;<a name="line.62"></a>
 <span class="sourceLineNo">063</span> * &lt;BR&gt;<a name="line.63"></a>
 <span class="sourceLineNo">064</span> * If the request was processed successfully, then the extended result will have<a name="line.64"></a>
@@ -157,7 +157,7 @@
 <span class="sourceLineNo">149</span>        final ASN1Element[] elements =<a name="line.149"></a>
 <span class="sourceLineNo">150</span>             ASN1Sequence.decodeAsSequence(value.getValue()).elements();<a name="line.150"></a>
 <span class="sourceLineNo">151</span>        final ArrayList&lt;SupportedOTPDeliveryMechanismInfo&gt; mechInfo =<a name="line.151"></a>
-<span class="sourceLineNo">152</span>             new ArrayList&lt;SupportedOTPDeliveryMechanismInfo&gt;(elements.length);<a name="line.152"></a>
+<span class="sourceLineNo">152</span>             new ArrayList&lt;&gt;(elements.length);<a name="line.152"></a>
 <span class="sourceLineNo">153</span>        for (final ASN1Element e : elements)<a name="line.153"></a>
 <span class="sourceLineNo">154</span>        {<a name="line.154"></a>
 <span class="sourceLineNo">155</span>          final ASN1Element[] infoElements =<a name="line.155"></a>
@@ -253,189 +253,188 @@
 <span class="sourceLineNo">245</span>    else<a name="line.245"></a>
 <span class="sourceLineNo">246</span>    {<a name="line.246"></a>
 <span class="sourceLineNo">247</span>      this.deliveryMechanismInfo = Collections.unmodifiableList(<a name="line.247"></a>
-<span class="sourceLineNo">248</span>           new ArrayList&lt;SupportedOTPDeliveryMechanismInfo&gt;(<a name="line.248"></a>
-<span class="sourceLineNo">249</span>                deliveryMechanismInfo));<a name="line.249"></a>
-<span class="sourceLineNo">250</span>    }<a name="line.250"></a>
-<span class="sourceLineNo">251</span>  }<a name="line.251"></a>
+<span class="sourceLineNo">248</span>           new ArrayList&lt;&gt;(deliveryMechanismInfo));<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    }<a name="line.249"></a>
+<span class="sourceLineNo">250</span>  }<a name="line.250"></a>
+<span class="sourceLineNo">251</span><a name="line.251"></a>
 <span class="sourceLineNo">252</span><a name="line.252"></a>
 <span class="sourceLineNo">253</span><a name="line.253"></a>
-<span class="sourceLineNo">254</span><a name="line.254"></a>
-<span class="sourceLineNo">255</span>  /**<a name="line.255"></a>
-<span class="sourceLineNo">256</span>   * Encodes the provided information into an appropriate format for the value<a name="line.256"></a>
-<span class="sourceLineNo">257</span>   * of this extended operation.<a name="line.257"></a>
-<span class="sourceLineNo">258</span>   *<a name="line.258"></a>
-<span class="sourceLineNo">259</span>   * @param  resultCode             The result code from the response.  It must<a name="line.259"></a>
-<span class="sourceLineNo">260</span>   *                                not be {@code null}.<a name="line.260"></a>
-<span class="sourceLineNo">261</span>   * @param  deliveryMechanismInfo  The set of supported delivery mechanism info<a name="line.261"></a>
-<span class="sourceLineNo">262</span>   *                                for the result, if appropriate.  It should<a name="line.262"></a>
-<span class="sourceLineNo">263</span>   *                                be {@code null} or empty for non-success<a name="line.263"></a>
-<span class="sourceLineNo">264</span>   *                                results.<a name="line.264"></a>
-<span class="sourceLineNo">265</span>   *<a name="line.265"></a>
-<span class="sourceLineNo">266</span>   * @return  The ASN.1 octet string containing the encoded value.<a name="line.266"></a>
-<span class="sourceLineNo">267</span>   */<a name="line.267"></a>
-<span class="sourceLineNo">268</span>  private static ASN1OctetString encodeValue(final ResultCode resultCode,<a name="line.268"></a>
-<span class="sourceLineNo">269</span>                      final Collection&lt;SupportedOTPDeliveryMechanismInfo&gt;<a name="line.269"></a>
-<span class="sourceLineNo">270</span>                           deliveryMechanismInfo)<a name="line.270"></a>
-<span class="sourceLineNo">271</span><a name="line.271"></a>
-<span class="sourceLineNo">272</span>  {<a name="line.272"></a>
-<span class="sourceLineNo">273</span>    if (resultCode != ResultCode.SUCCESS)<a name="line.273"></a>
-<span class="sourceLineNo">274</span>    {<a name="line.274"></a>
-<span class="sourceLineNo">275</span>      return null;<a name="line.275"></a>
-<span class="sourceLineNo">276</span>    }<a name="line.276"></a>
-<span class="sourceLineNo">277</span><a name="line.277"></a>
-<span class="sourceLineNo">278</span>    if ((deliveryMechanismInfo == null) || deliveryMechanismInfo.isEmpty())<a name="line.278"></a>
-<span class="sourceLineNo">279</span>    {<a name="line.279"></a>
-<span class="sourceLineNo">280</span>      return new ASN1OctetString(new ASN1Sequence().encode());<a name="line.280"></a>
-<span class="sourceLineNo">281</span>    }<a name="line.281"></a>
-<span class="sourceLineNo">282</span><a name="line.282"></a>
-<span class="sourceLineNo">283</span>    final ArrayList&lt;ASN1Element&gt; elements = new ArrayList&lt;ASN1Element&gt;(<a name="line.283"></a>
-<span class="sourceLineNo">284</span>         deliveryMechanismInfo.size());<a name="line.284"></a>
-<span class="sourceLineNo">285</span>    for (final SupportedOTPDeliveryMechanismInfo i : deliveryMechanismInfo)<a name="line.285"></a>
-<span class="sourceLineNo">286</span>    {<a name="line.286"></a>
-<span class="sourceLineNo">287</span>      final ArrayList&lt;ASN1Element&gt; infoElements = new ArrayList&lt;ASN1Element&gt;(3);<a name="line.287"></a>
-<span class="sourceLineNo">288</span>      infoElements.add(new ASN1OctetString(TYPE_DELIVERY_MECHANISM,<a name="line.288"></a>
-<span class="sourceLineNo">289</span>           i.getDeliveryMechanism()));<a name="line.289"></a>
-<span class="sourceLineNo">290</span><a name="line.290"></a>
-<span class="sourceLineNo">291</span>      if (i.isSupported() != null)<a name="line.291"></a>
-<span class="sourceLineNo">292</span>      {<a name="line.292"></a>
-<span class="sourceLineNo">293</span>        infoElements.add(new ASN1Boolean(TYPE_IS_SUPPORTED, i.isSupported()));<a name="line.293"></a>
-<span class="sourceLineNo">294</span>      }<a name="line.294"></a>
-<span class="sourceLineNo">295</span><a name="line.295"></a>
-<span class="sourceLineNo">296</span>      if (i.getRecipientID() != null)<a name="line.296"></a>
-<span class="sourceLineNo">297</span>      {<a name="line.297"></a>
-<span class="sourceLineNo">298</span>        infoElements.add(new ASN1OctetString(TYPE_RECIPIENT_ID,<a name="line.298"></a>
-<span class="sourceLineNo">299</span>             i.getRecipientID()));<a name="line.299"></a>
-<span class="sourceLineNo">300</span>      }<a name="line.300"></a>
-<span class="sourceLineNo">301</span><a name="line.301"></a>
-<span class="sourceLineNo">302</span>      elements.add(new ASN1Sequence(infoElements));<a name="line.302"></a>
-<span class="sourceLineNo">303</span>    }<a name="line.303"></a>
-<span class="sourceLineNo">304</span><a name="line.304"></a>
-<span class="sourceLineNo">305</span>    return new ASN1OctetString(new ASN1Sequence(elements).encode());<a name="line.305"></a>
-<span class="sourceLineNo">306</span>  }<a name="line.306"></a>
+<span class="sourceLineNo">254</span>  /**<a name="line.254"></a>
+<span class="sourceLineNo">255</span>   * Encodes the provided information into an appropriate format for the value<a name="line.255"></a>
+<span class="sourceLineNo">256</span>   * of this extended operation.<a name="line.256"></a>
+<span class="sourceLineNo">257</span>   *<a name="line.257"></a>
+<span class="sourceLineNo">258</span>   * @param  resultCode             The result code from the response.  It must<a name="line.258"></a>
+<span class="sourceLineNo">259</span>   *                                not be {@code null}.<a name="line.259"></a>
+<span class="sourceLineNo">260</span>   * @param  deliveryMechanismInfo  The set of supported delivery mechanism info<a name="line.260"></a>
+<span class="sourceLineNo">261</span>   *                                for the result, if appropriate.  It should<a name="line.261"></a>
+<span class="sourceLineNo">262</span>   *                                be {@code null} or empty for non-success<a name="line.262"></a>
+<span class="sourceLineNo">263</span>   *                                results.<a name="line.263"></a>
+<span class="sourceLineNo">264</span>   *<a name="line.264"></a>
+<span class="sourceLineNo">265</span>   * @return  The ASN.1 octet string containing the encoded value.<a name="line.265"></a>
+<span class="sourceLineNo">266</span>   */<a name="line.266"></a>
+<span class="sourceLineNo">267</span>  private static ASN1OctetString encodeValue(final ResultCode resultCode,<a name="line.267"></a>
+<span class="sourceLineNo">268</span>                      final Collection&lt;SupportedOTPDeliveryMechanismInfo&gt;<a name="line.268"></a>
+<span class="sourceLineNo">269</span>                           deliveryMechanismInfo)<a name="line.269"></a>
+<span class="sourceLineNo">270</span><a name="line.270"></a>
+<span class="sourceLineNo">271</span>  {<a name="line.271"></a>
+<span class="sourceLineNo">272</span>    if (resultCode != ResultCode.SUCCESS)<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    {<a name="line.273"></a>
+<span class="sourceLineNo">274</span>      return null;<a name="line.274"></a>
+<span class="sourceLineNo">275</span>    }<a name="line.275"></a>
+<span class="sourceLineNo">276</span><a name="line.276"></a>
+<span class="sourceLineNo">277</span>    if ((deliveryMechanismInfo == null) || deliveryMechanismInfo.isEmpty())<a name="line.277"></a>
+<span class="sourceLineNo">278</span>    {<a name="line.278"></a>
+<span class="sourceLineNo">279</span>      return new ASN1OctetString(new ASN1Sequence().encode());<a name="line.279"></a>
+<span class="sourceLineNo">280</span>    }<a name="line.280"></a>
+<span class="sourceLineNo">281</span><a name="line.281"></a>
+<span class="sourceLineNo">282</span>    final ArrayList&lt;ASN1Element&gt; elements =<a name="line.282"></a>
+<span class="sourceLineNo">283</span>         new ArrayList&lt;&gt;(deliveryMechanismInfo.size());<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    for (final SupportedOTPDeliveryMechanismInfo i : deliveryMechanismInfo)<a name="line.284"></a>
+<span class="sourceLineNo">285</span>    {<a name="line.285"></a>
+<span class="sourceLineNo">286</span>      final ArrayList&lt;ASN1Element&gt; infoElements = new ArrayList&lt;&gt;(3);<a name="line.286"></a>
+<span class="sourceLineNo">287</span>      infoElements.add(new ASN1OctetString(TYPE_DELIVERY_MECHANISM,<a name="line.287"></a>
+<span class="sourceLineNo">288</span>           i.getDeliveryMechanism()));<a name="line.288"></a>
+<span class="sourceLineNo">289</span><a name="line.289"></a>
+<span class="sourceLineNo">290</span>      if (i.isSupported() != null)<a name="line.290"></a>
+<span class="sourceLineNo">291</span>      {<a name="line.291"></a>
+<span class="sourceLineNo">292</span>        infoElements.add(new ASN1Boolean(TYPE_IS_SUPPORTED, i.isSupported()));<a name="line.292"></a>
+<span class="sourceLineNo">293</span>      }<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>      if (i.getRecipientID() != null)<a name="line.295"></a>
+<span class="sourceLineNo">296</span>      {<a name="line.296"></a>
+<span class="sourceLineNo">297</span>        infoElements.add(new ASN1OctetString(TYPE_RECIPIENT_ID,<a name="line.297"></a>
+<span class="sourceLineNo">298</span>             i.getRecipientID()));<a name="line.298"></a>
+<span class="sourceLineNo">299</span>      }<a name="line.299"></a>
+<span class="sourceLineNo">300</span><a name="line.300"></a>
+<span class="sourceLineNo">301</span>      elements.add(new ASN1Sequence(infoElements));<a name="line.301"></a>
+<span class="sourceLineNo">302</span>    }<a name="line.302"></a>
+<span class="sourceLineNo">303</span><a name="line.303"></a>
+<span class="sourceLineNo">304</span>    return new ASN1OctetString(new ASN1Sequence(elements).encode());<a name="line.304"></a>
+<span class="sourceLineNo">305</span>  }<a name="line.305"></a>
+<span class="sourceLineNo">306</span><a name="line.306"></a>
 <span class="sourceLineNo">307</span><a name="line.307"></a>
 <span class="sourceLineNo">308</span><a name="line.308"></a>
-<span class="sourceLineNo">309</span><a name="line.309"></a>
-<span class="sourceLineNo">310</span>  /**<a name="line.310"></a>
-<span class="sourceLineNo">311</span>   * Retrieves a list containing information about the OTP delivery mechanisms<a name="line.311"></a>
-<span class="sourceLineNo">312</span>   * supported by the server and which are available for use by the target user,<a name="line.312"></a>
-<span class="sourceLineNo">313</span>   * if available.  Note that it is possible for the same OTP delivery mechanism<a name="line.313"></a>
-<span class="sourceLineNo">314</span>   * to appear in the list multiple times if that mechanism is supported for the<a name="line.314"></a>
-<span class="sourceLineNo">315</span>   * user with multiple recipient IDs (e.g., if the server provides an "Email"<a name="line.315"></a>
-<span class="sourceLineNo">316</span>   * delivery mechanism and a user has multiple email addresses, then the list<a name="line.316"></a>
-<span class="sourceLineNo">317</span>   * may include a separate "Email" delivery mechanism info object for each<a name="line.317"></a>
-<span class="sourceLineNo">318</span>   * of the user's email addresses).<a name="line.318"></a>
-<span class="sourceLineNo">319</span>   *<a name="line.319"></a>
-<span class="sourceLineNo">320</span>   * @return  A list containing information about the OTP delivery mechanisms<a name="line.320"></a>
-<span class="sourceLineNo">321</span>   *          supported by the server and which are available for the target<a name="line.321"></a>
-<span class="sourceLineNo">322</span>   *          user, or an empty list if the server doesn't support  any OTP<a name="line.322"></a>
-<span class="sourceLineNo">323</span>   *          delivery mechanisms or if the request was not processed<a name="line.323"></a>
-<span class="sourceLineNo">324</span>   *          successfully.<a name="line.324"></a>
-<span class="sourceLineNo">325</span>   */<a name="line.325"></a>
-<span class="sourceLineNo">326</span>  public List&lt;SupportedOTPDeliveryMechanismInfo&gt; getDeliveryMechanismInfo()<a name="line.326"></a>
-<span class="sourceLineNo">327</span>  {<a name="line.327"></a>
-<span class="sourceLineNo">328</span>    return deliveryMechanismInfo;<a name="line.328"></a>
-<span class="sourceLineNo">329</span>  }<a name="line.329"></a>
+<span class="sourceLineNo">309</span>  /**<a name="line.309"></a>
+<span class="sourceLineNo">310</span>   * Retrieves a list containing information about the OTP delivery mechanisms<a name="line.310"></a>
+<span class="sourceLineNo">311</span>   * supported by the server and which are available for use by the target user,<a name="line.311"></a>
+<span class="sourceLineNo">312</span>   * if available.  Note that it is possible for the same OTP delivery mechanism<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   * to appear in the list multiple times if that mechanism is supported for the<a name="line.313"></a>
+<span class="sourceLineNo">314</span>   * user with multiple recipient IDs (e.g., if the server provides an "Email"<a name="line.314"></a>
+<span class="sourceLineNo">315</span>   * delivery mechanism and a user has multiple email addresses, then the list<a name="line.315"></a>
+<span class="sourceLineNo">316</span>   * may include a separate "Email" delivery mechanism info object for each<a name="line.316"></a>
+<span class="sourceLineNo">317</span>   * of the user's email addresses).<a name="line.317"></a>
+<span class="sourceLineNo">318</span>   *<a name="line.318"></a>
+<span class="sourceLineNo">319</span>   * @return  A list containing information about the OTP delivery mechanisms<a name="line.319"></a>
+<span class="sourceLineNo">320</span>   *          supported by the server and which are available for the target<a name="line.320"></a>
+<span class="sourceLineNo">321</span>   *          user, or an empty list if the server doesn't support  any OTP<a name="line.321"></a>
+<span class="sourceLineNo">322</span>   *          delivery mechanisms or if the request was not processed<a name="line.322"></a>
+<span class="sourceLineNo">323</span>   *          successfully.<a name="line.323"></a>
+<span class="sourceLineNo">324</span>   */<a name="line.324"></a>
+<span class="sourceLineNo">325</span>  public List&lt;SupportedOTPDeliveryMechanismInfo&gt; getDeliveryMechanismInfo()<a name="line.325"></a>
+<span class="sourceLineNo">326</span>  {<a name="line.326"></a>
+<span class="sourceLineNo">327</span>    return deliveryMechanismInfo;<a name="line.327"></a>
+<span class="sourceLineNo">328</span>  }<a name="line.328"></a>
+<span class="sourceLineNo">329</span><a name="line.329"></a>
 <span class="sourceLineNo">330</span><a name="line.330"></a>
 <span class="sourceLineNo">331</span><a name="line.331"></a>
-<span class="sourceLineNo">332</span><a name="line.332"></a>
-<span class="sourceLineNo">333</span>  /**<a name="line.333"></a>
-<span class="sourceLineNo">334</span>   * {@inheritDoc}<a name="line.334"></a>
-<span class="sourceLineNo">335</span>   */<a name="line.335"></a>
-<span class="sourceLineNo">336</span>  @Override()<a name="line.336"></a>
-<span class="sourceLineNo">337</span>  public String getExtendedResultName()<a name="line.337"></a>
-<span class="sourceLineNo">338</span>  {<a name="line.338"></a>
-<span class="sourceLineNo">339</span>    return INFO_GET_SUPPORTED_OTP_MECH_RES_NAME.get();<a name="line.339"></a>
-<span class="sourceLineNo">340</span>  }<a name="line.340"></a>
+<span class="sourceLineNo">332</span>  /**<a name="line.332"></a>
+<span class="sourceLineNo">333</span>   * {@inheritDoc}<a name="line.333"></a>
+<span class="sourceLineNo">334</span>   */<a name="line.334"></a>
+<span class="sourceLineNo">335</span>  @Override()<a name="line.335"></a>
+<span class="sourceLineNo">336</span>  public String getExtendedResultName()<a name="line.336"></a>
+<span class="sourceLineNo">337</span>  {<a name="line.337"></a>
+<span class="sourceLineNo">338</span>    return INFO_GET_SUPPORTED_OTP_MECH_RES_NAME.get();<a name="line.338"></a>
+<span class="sourceLineNo">339</span>  }<a name="line.339"></a>
+<span class="sourceLineNo">340</span><a name="line.340"></a>
 <span class="sourceLineNo">341</span><a name="line.341"></a>
 <span class="sourceLineNo">342</span><a name="line.342"></a>
-<span class="sourceLineNo">343</span><a name="line.343"></a>
-<span class="sourceLineNo">344</span>  /**<a name="line.344"></a>
-<span class="sourceLineNo">345</span>   * Appends a string representation of this extended result to the provided<a name="line.345"></a>
-<span class="sourceLineNo">346</span>   * buffer.<a name="line.346"></a>
-<span class="sourceLineNo">347</span>   *<a name="line.347"></a>
-<span class="sourceLineNo">348</span>   * @param  buffer  The buffer to which a string representation of this<a name="line.348"></a>
-<span class="sourceLineNo">349</span>   *                 extended result will be appended.<a name="line.349"></a>
-<span class="sourceLineNo">350</span>   */<a name="line.350"></a>
-<span class="sourceLineNo">351</span>  @Override()<a name="line.351"></a>
-<span class="sourceLineNo">352</span>  public void toString(final StringBuilder buffer)<a name="line.352"></a>
-<span class="sourceLineNo">353</span>  {<a name="line.353"></a>
-<span class="sourceLineNo">354</span>    buffer.append("GetSupportedOTPDeliveryMechanismsExtendedResult(" +<a name="line.354"></a>
-<span class="sourceLineNo">355</span>         "resultCode=");<a name="line.355"></a>
-<span class="sourceLineNo">356</span>    buffer.append(getResultCode());<a name="line.356"></a>
-<span class="sourceLineNo">357</span><a name="line.357"></a>
-<span class="sourceLineNo">358</span>    final int messageID = getMessageID();<a name="line.358"></a>
-<span class="sourceLineNo">359</span>    if (messageID &gt;= 0)<a name="line.359"></a>
-<span class="sourceLineNo">360</span>    {<a name="line.360"></a>
-<span class="sourceLineNo">361</span>      buffer.append(", messageID=");<a name="line.361"></a>
-<span class="sourceLineNo">362</span>      buffer.append(messageID);<a name="line.362"></a>
-<span class="sourceLineNo">363</span>    }<a name="line.363"></a>
-<span class="sourceLineNo">364</span><a name="line.364"></a>
-<span class="sourceLineNo">365</span>    buffer.append("mechanismInfo={");<a name="line.365"></a>
-<span class="sourceLineNo">366</span>    final Iterator&lt;SupportedOTPDeliveryMechanismInfo&gt; mechIterator =<a name="line.366"></a>
-<span class="sourceLineNo">367</span>         deliveryMechanismInfo.iterator();<a name="line.367"></a>
-<span class="sourceLineNo">368</span>    while (mechIterator.hasNext())<a name="line.368"></a>
-<span class="sourceLineNo">369</span>    {<a name="line.369"></a>
-<span class="sourceLineNo">370</span>      mechIterator.next().toString(buffer);<a name="line.370"></a>
-<span class="sourceLineNo">371</span>      if (mechIterator.hasNext())<a name="line.371"></a>
-<span class="sourceLineNo">372</span>      {<a name="line.372"></a>
-<span class="sourceLineNo">373</span>        buffer.append(", ");<a name="line.373"></a>
-<span class="sourceLineNo">374</span>      }<a name="line.374"></a>
-<span class="sourceLineNo">375</span>    }<a name="line.375"></a>
-<span class="sourceLineNo">376</span>    buffer.append('}');<a name="line.376"></a>
-<span class="sourceLineNo">377</span><a name="line.377"></a>
-<span class="sourceLineNo">378</span>    final String diagnosticMessage = getDiagnosticMessage();<a name="line.378"></a>
-<span class="sourceLineNo">379</span>    if (diagnosticMessage != null)<a name="line.379"></a>
-<span class="sourceLineNo">380</span>    {<a name="line.380"></a>
-<span class="sourceLineNo">381</span>      buffer.append(", diagnosticMessage='");<a name="line.381"></a>
-<span class="sourceLineNo">382</span>      buffer.append(diagnosticMessage);<a name="line.382"></a>
-<span class="sourceLineNo">383</span>      buffer.append('\'');<a name="line.383"></a>
-<span class="sourceLineNo">384</span>    }<a name="line.384"></a>
-<span class="sourceLineNo">385</span><a name="line.385"></a>
-<span class="sourceLineNo">386</span>    final String matchedDN = getMatchedDN();<a name="line.386"></a>
-<span class="sourceLineNo">387</span>    if (matchedDN != null)<a name="line.387"></a>
-<span class="sourceLineNo">388</span>    {<a name="line.388"></a>
-<span class="sourceLineNo">389</span>      buffer.append(", matchedDN='");<a name="line.389"></a>
-<span class="sourceLineNo">390</span>      buffer.append(matchedDN);<a name="line.390"></a>
-<span class="sourceLineNo">391</span>      buffer.append('\'');<a name="line.391"></a>
-<span class="sourceLineNo">392</span>    }<a name="line.392"></a>
-<span class="sourceLineNo">393</span><a name="line.393"></a>
-<span class="sourceLineNo">394</span>    final String[] referralURLs = getReferralURLs();<a name="line.394"></a>
-<span class="sourceLineNo">395</span>    if (referralURLs.length &gt; 0)<a name="line.395"></a>
-<span class="sourceLineNo">396</span>    {<a name="line.396"></a>
-<span class="sourceLineNo">397</span>      buffer.append(", referralURLs={");<a name="line.397"></a>
-<span class="sourceLineNo">398</span>      for (int i=0; i &lt; referralURLs.length; i++)<a name="line.398"></a>
-<span class="sourceLineNo">399</span>      {<a name="line.399"></a>
-<span class="sourceLineNo">400</span>        if (i &gt; 0)<a name="line.400"></a>
-<span class="sourceLineNo">401</span>        {<a name="line.401"></a>
-<span class="sourceLineNo">402</span>          buffer.append(", ");<a name="line.402"></a>
-<span class="sourceLineNo">403</span>        }<a name="line.403"></a>
-<span class="sourceLineNo">404</span><a name="line.404"></a>
-<span class="sourceLineNo">405</span>        buffer.append('\'');<a name="line.405"></a>
-<span class="sourceLineNo">406</span>        buffer.append(referralURLs[i]);<a name="line.406"></a>
-<span class="sourceLineNo">407</span>        buffer.append('\'');<a name="line.407"></a>
-<span class="sourceLineNo">408</span>      }<a name="line.408"></a>
-<span class="sourceLineNo">409</span>      buffer.append('}');<a name="line.409"></a>
-<span class="sourceLineNo">410</span>    }<a name="line.410"></a>
-<span class="sourceLineNo">411</span><a name="line.411"></a>
-<span class="sourceLineNo">412</span>    final Control[] responseControls = getResponseControls();<a name="line.412"></a>
-<span class="sourceLineNo">413</span>    if (responseControls.length &gt; 0)<a name="line.413"></a>
-<span class="sourceLineNo">414</span>    {<a name="line.414"></a>
-<span class="sourceLineNo">415</span>      buffer.append(", responseControls={");<a name="line.415"></a>
-<span class="sourceLineNo">416</span>      for (int i=0; i &lt; responseControls.length; i++)<a name="line.416"></a>
-<span class="sourceLineNo">417</span>      {<a name="line.417"></a>
-<span class="sourceLineNo">418</span>        if (i &gt; 0)<a name="line.418"></a>
-<span class="sourceLineNo">419</span>        {<a name="line.419"></a>
-<span class="sourceLineNo">420</span>          buffer.append(", ");<a name="line.420"></a>
-<span class="sourceLineNo">421</span>        }<a name="line.421"></a>
-<span class="sourceLineNo">422</span><a name="line.422"></a>
-<span class="sourceLineNo">423</span>        buffer.append(responseControls[i]);<a name="line.423"></a>
-<span class="sourceLineNo">424</span>      }<a name="line.424"></a>
-<span class="sourceLineNo">425</span>      buffer.append('}');<a name="line.425"></a>
-<span class="sourceLineNo">426</span>    }<a name="line.426"></a>
-<span class="sourceLineNo">427</span><a name="line.427"></a>
-<span class="sourceLineNo">428</span>    buffer.append(')');<a name="line.428"></a>
-<span class="sourceLineNo">429</span>  }<a name="line.429"></a>
-<span class="sourceLineNo">430</span>}<a name="line.430"></a>
+<span class="sourceLineNo">343</span>  /**<a name="line.343"></a>
+<span class="sourceLineNo">344</span>   * Appends a string representation of this extended result to the provided<a name="line.344"></a>
+<span class="sourceLineNo">345</span>   * buffer.<a name="line.345"></a>
+<span class="sourceLineNo">346</span>   *<a name="line.346"></a>
+<span class="sourceLineNo">347</span>   * @param  buffer  The buffer to which a string representation of this<a name="line.347"></a>
+<span class="sourceLineNo">348</span>   *                 extended result will be appended.<a name="line.348"></a>
+<span class="sourceLineNo">349</span>   */<a name="line.349"></a>
+<span class="sourceLineNo">350</span>  @Override()<a name="line.350"></a>
+<span class="sourceLineNo">351</span>  public void toString(final StringBuilder buffer)<a name="line.351"></a>
+<span class="sourceLineNo">352</span>  {<a name="line.352"></a>
+<span class="sourceLineNo">353</span>    buffer.append("GetSupportedOTPDeliveryMechanismsExtendedResult(" +<a name="line.353"></a>
+<span class="sourceLineNo">354</span>         "resultCode=");<a name="line.354"></a>
+<span class="sourceLineNo">355</span>    buffer.append(getResultCode());<a name="line.355"></a>
+<span class="sourceLineNo">356</span><a name="line.356"></a>
+<span class="sourceLineNo">357</span>    final int messageID = getMessageID();<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    if (messageID &gt;= 0)<a name="line.358"></a>
+<span class="sourceLineNo">359</span>    {<a name="line.359"></a>
+<span class="sourceLineNo">360</span>      buffer.append(", messageID=");<a name="line.360"></a>
+<span class="sourceLineNo">361</span>      buffer.append(messageID);<a name="line.361"></a>
+<span class="sourceLineNo">362</span>    }<a name="line.362"></a>
+<span class="sourceLineNo">363</span><a name="line.363"></a>
+<span class="sourceLineNo">364</span>    buffer.append("mechanismInfo={");<a name="line.364"></a>
+<span class="sourceLineNo">365</span>    final Iterator&lt;SupportedOTPDeliveryMechanismInfo&gt; mechIterator =<a name="line.365"></a>
+<span class="sourceLineNo">366</span>         deliveryMechanismInfo.iterator();<a name="line.366"></a>
+<span class="sourceLineNo">367</span>    while (mechIterator.hasNext())<a name="line.367"></a>
+<span class="sourceLineNo">368</span>    {<a name="line.368"></a>
+<span class="sourceLineNo">369</span>      mechIterator.next().toString(buffer);<a name="line.369"></a>
+<span class="sourceLineNo">370</span>      if (mechIterator.hasNext())<a name="line.370"></a>
+<span class="sourceLineNo">371</span>      {<a name="line.371"></a>
+<span class="sourceLineNo">372</span>        buffer.append(", ");<a name="line.372"></a>
+<span class="sourceLineNo">373</span>      }<a name="line.373"></a>
+<span class="sourceLineNo">374</span>    }<a name="line.374"></a>
+<span class="sourceLineNo">375</span>    buffer.append('}');<a name="line.375"></a>
+<span class="sourceLineNo">376</span><a name="line.376"></a>
+<span class="sourceLineNo">377</span>    final String diagnosticMessage = getDiagnosticMessage();<a name="line.377"></a>
+<span class="sourceLineNo">378</span>    if (diagnosticMessage != null)<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    {<a name="line.379"></a>
+<span class="sourceLineNo">380</span>      buffer.append(", diagnosticMessage='");<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      buffer.append(diagnosticMessage);<a name="line.381"></a>
+<span class="sourceLineNo">382</span>      buffer.append('\'');<a name="line.382"></a>
+<span class="sourceLineNo">383</span>    }<a name="line.383"></a>
+<span class="sourceLineNo">384</span><a name="line.384"></a>
+<span class="sourceLineNo">385</span>    final String matchedDN = getMatchedDN();<a name="line.385"></a>
+<span class="sourceLineNo">386</span>    if (matchedDN != null)<a name="line.386"></a>
+<span class="sourceLineNo">387</span>    {<a name="line.387"></a>
+<span class="sourceLineNo">388</span>      buffer.append(", matchedDN='");<a name="line.388"></a>
+<span class="sourceLineNo">389</span>      buffer.append(matchedDN);<a name="line.389"></a>
+<span class="sourceLineNo">390</span>      buffer.append('\'');<a name="line.390"></a>
+<span class="sourceLineNo">391</span>    }<a name="line.391"></a>
+<span class="sourceLineNo">392</span><a name="line.392"></a>
+<span class="sourceLineNo">393</span>    final String[] referralURLs = getReferralURLs();<a name="line.393"></a>
+<span class="sourceLineNo">394</span>    if (referralURLs.length &gt; 0)<a name="line.394"></a>
+<span class="sourceLineNo">395</span>    {<a name="line.395"></a>
+<span class="sourceLineNo">396</span>      buffer.append(", referralURLs={");<a name="line.396"></a>
+<span class="sourceLineNo">397</span>      for (int i=0; i &lt; referralURLs.length; i++)<a name="line.397"></a>
+<span class="sourceLineNo">398</span>      {<a name="line.398"></a>
+<span class="sourceLineNo">399</span>        if (i &gt; 0)<a name="line.399"></a>
+<span class="sourceLineNo">400</span>        {<a name="line.400"></a>
+<span class="sourceLineNo">401</span>          buffer.append(", ");<a name="line.401"></a>
+<span class="sourceLineNo">402</span>        }<a name="line.402"></a>
+<span class="sourceLineNo">403</span><a name="line.403"></a>
+<span class="sourceLineNo">404</span>        buffer.append('\'');<a name="line.404"></a>
+<span class="sourceLineNo">405</span>        buffer.append(referralURLs[i]);<a name="line.405"></a>
+<span class="sourceLineNo">406</span>        buffer.append('\'');<a name="line.406"></a>
+<span class="sourceLineNo">407</span>      }<a name="line.407"></a>
+<span class="sourceLineNo">408</span>      buffer.append('}');<a name="line.408"></a>
+<span class="sourceLineNo">409</span>    }<a name="line.409"></a>
+<span class="sourceLineNo">410</span><a name="line.410"></a>
+<span class="sourceLineNo">411</span>    final Control[] responseControls = getResponseControls();<a name="line.411"></a>
+<span class="sourceLineNo">412</span>    if (responseControls.length &gt; 0)<a name="line.412"></a>
+<span class="sourceLineNo">413</span>    {<a name="line.413"></a>
+<span class="sourceLineNo">414</span>      buffer.append(", responseControls={");<a name="line.414"></a>
+<span class="sourceLineNo">415</span>      for (int i=0; i &lt; responseControls.length; i++)<a name="line.415"></a>
+<span class="sourceLineNo">416</span>      {<a name="line.416"></a>
+<span class="sourceLineNo">417</span>        if (i &gt; 0)<a name="line.417"></a>
+<span class="sourceLineNo">418</span>        {<a name="line.418"></a>
+<span class="sourceLineNo">419</span>          buffer.append(", ");<a name="line.419"></a>
+<span class="sourceLineNo">420</span>        }<a name="line.420"></a>
+<span class="sourceLineNo">421</span><a name="line.421"></a>
+<span class="sourceLineNo">422</span>        buffer.append(responseControls[i]);<a name="line.422"></a>
+<span class="sourceLineNo">423</span>      }<a name="line.423"></a>
+<span class="sourceLineNo">424</span>      buffer.append('}');<a name="line.424"></a>
+<span class="sourceLineNo">425</span>    }<a name="line.425"></a>
+<span class="sourceLineNo">426</span><a name="line.426"></a>
+<span class="sourceLineNo">427</span>    buffer.append(')');<a name="line.427"></a>
+<span class="sourceLineNo">428</span>  }<a name="line.428"></a>
+<span class="sourceLineNo">429</span>}<a name="line.429"></a>
 
 
 

@@ -248,7 +248,7 @@
 <span class="sourceLineNo">240</span>                                         final Collection&lt;String&gt; jsonFields)<a name="line.240"></a>
 <span class="sourceLineNo">241</span>  {<a name="line.241"></a>
 <span class="sourceLineNo">242</span>    createTime = System.currentTimeMillis();<a name="line.242"></a>
-<span class="sourceLineNo">243</span>    randoms = new ThreadLocal&lt;Random&gt;();<a name="line.243"></a>
+<span class="sourceLineNo">243</span>    randoms = new ThreadLocal&lt;&gt;();<a name="line.243"></a>
 <span class="sourceLineNo">244</span><a name="line.244"></a>
 <span class="sourceLineNo">245</span>    this.scrambleEntryDNs = scrambleEntryDNs;<a name="line.245"></a>
 <span class="sourceLineNo">246</span><a name="line.246"></a>
@@ -285,7 +285,7 @@
 <span class="sourceLineNo">277</span>    // Iterate through the set of provided attribute names.  Identify all of the<a name="line.277"></a>
 <span class="sourceLineNo">278</span>    // alternate names (including the OID) that may be used to reference the<a name="line.278"></a>
 <span class="sourceLineNo">279</span>    // attribute, and identify the associated matching rule.<a name="line.279"></a>
-<span class="sourceLineNo">280</span>    final HashMap&lt;String,MatchingRule&gt; m = new HashMap&lt;String,MatchingRule&gt;(10);<a name="line.280"></a>
+<span class="sourceLineNo">280</span>    final HashMap&lt;String,MatchingRule&gt; m = new HashMap&lt;&gt;(10);<a name="line.280"></a>
 <span class="sourceLineNo">281</span>    for (final String a : attributes)<a name="line.281"></a>
 <span class="sourceLineNo">282</span>    {<a name="line.282"></a>
 <span class="sourceLineNo">283</span>      final String baseName = StaticUtils.toLowerCase(Attribute.getBaseName(a));<a name="line.283"></a>
@@ -321,7 +321,7 @@
 <span class="sourceLineNo">313</span>    }<a name="line.313"></a>
 <span class="sourceLineNo">314</span>    else<a name="line.314"></a>
 <span class="sourceLineNo">315</span>    {<a name="line.315"></a>
-<span class="sourceLineNo">316</span>      final HashSet&lt;String&gt; fieldNames = new HashSet&lt;String&gt;(jsonFields.size());<a name="line.316"></a>
+<span class="sourceLineNo">316</span>      final HashSet&lt;String&gt; fieldNames = new HashSet&lt;&gt;(jsonFields.size());<a name="line.316"></a>
 <span class="sourceLineNo">317</span>      for (final String fieldName : jsonFields)<a name="line.317"></a>
 <span class="sourceLineNo">318</span>      {<a name="line.318"></a>
 <span class="sourceLineNo">319</span>        fieldNames.add(StaticUtils.toLowerCase(fieldName));<a name="line.319"></a>
@@ -355,7 +355,7 @@
 <span class="sourceLineNo">347</span><a name="line.347"></a>
 <span class="sourceLineNo">348</span>    final Collection&lt;Attribute&gt; originalAttributes = e.getAttributes();<a name="line.348"></a>
 <span class="sourceLineNo">349</span>    final ArrayList&lt;Attribute&gt; scrambledAttributes =<a name="line.349"></a>
-<span class="sourceLineNo">350</span>         new ArrayList&lt;Attribute&gt;(originalAttributes.size());<a name="line.350"></a>
+<span class="sourceLineNo">350</span>         new ArrayList&lt;&gt;(originalAttributes.size());<a name="line.350"></a>
 <span class="sourceLineNo">351</span><a name="line.351"></a>
 <span class="sourceLineNo">352</span>    for (final Attribute a : originalAttributes)<a name="line.352"></a>
 <span class="sourceLineNo">353</span>    {<a name="line.353"></a>
@@ -796,7 +796,7 @@
 <span class="sourceLineNo">788</span><a name="line.788"></a>
 <span class="sourceLineNo">789</span><a name="line.789"></a>
 <span class="sourceLineNo">790</span>    // Generate a random value between zero and the computed time span.<a name="line.790"></a>
-<span class="sourceLineNo">791</span>    final long randomLong = (random.nextLong() &amp; 0x7FFFFFFFFFFFFFFFL);<a name="line.791"></a>
+<span class="sourceLineNo">791</span>    final long randomLong = (random.nextLong() &amp; 0x7FFF_FFFF_FFFF_FFFFL);<a name="line.791"></a>
 <span class="sourceLineNo">792</span>    final long randomOffset = randomLong % timeSpan;<a name="line.792"></a>
 <span class="sourceLineNo">793</span><a name="line.793"></a>
 <span class="sourceLineNo">794</span><a name="line.794"></a>
@@ -1116,7 +1116,7 @@
 <span class="sourceLineNo">1108</span>    final boolean scrambleAllFields = jsonFields.isEmpty();<a name="line.1108"></a>
 <span class="sourceLineNo">1109</span>    final Map&lt;String,JSONValue&gt; originalFields = o.getFields();<a name="line.1109"></a>
 <span class="sourceLineNo">1110</span>    final LinkedHashMap&lt;String,JSONValue&gt; scrambledFields =<a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>         new LinkedHashMap&lt;String,JSONValue&gt;(originalFields.size());<a name="line.1111"></a>
+<span class="sourceLineNo">1111</span>         new LinkedHashMap&lt;&gt;(originalFields.size());<a name="line.1111"></a>
 <span class="sourceLineNo">1112</span>    for (final Map.Entry&lt;String,JSONValue&gt; e : originalFields.entrySet())<a name="line.1112"></a>
 <span class="sourceLineNo">1113</span>    {<a name="line.1113"></a>
 <span class="sourceLineNo">1114</span>      final JSONValue scrambledValue;<a name="line.1114"></a>
@@ -1165,7 +1165,7 @@
 <span class="sourceLineNo">1157</span>      final JSONArray a = (JSONArray) v;<a name="line.1157"></a>
 <span class="sourceLineNo">1158</span>      final List&lt;JSONValue&gt; originalValues = a.getValues();<a name="line.1158"></a>
 <span class="sourceLineNo">1159</span>      final ArrayList&lt;JSONValue&gt; scrambledValues =<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>           new ArrayList&lt;JSONValue&gt;(originalValues.size());<a name="line.1160"></a>
+<span class="sourceLineNo">1160</span>           new ArrayList&lt;&gt;(originalValues.size());<a name="line.1160"></a>
 <span class="sourceLineNo">1161</span>      for (final JSONValue arrayValue : originalValues)<a name="line.1161"></a>
 <span class="sourceLineNo">1162</span>      {<a name="line.1162"></a>
 <span class="sourceLineNo">1163</span>        scrambledValues.add(scrambleJSONValue(arrayValue, true));<a name="line.1163"></a>
@@ -1194,7 +1194,7 @@
 <span class="sourceLineNo">1186</span>      final JSONObject o = (JSONObject) v;<a name="line.1186"></a>
 <span class="sourceLineNo">1187</span>      final Map&lt;String,JSONValue&gt; originalFields = o.getFields();<a name="line.1187"></a>
 <span class="sourceLineNo">1188</span>      final LinkedHashMap&lt;String,JSONValue&gt; scrambledFields =<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>           new LinkedHashMap&lt;String,JSONValue&gt;(originalFields.size());<a name="line.1189"></a>
+<span class="sourceLineNo">1189</span>           new LinkedHashMap&lt;&gt;(originalFields.size());<a name="line.1189"></a>
 <span class="sourceLineNo">1190</span>      for (final Map.Entry&lt;String,JSONValue&gt; e : originalFields.entrySet())<a name="line.1190"></a>
 <span class="sourceLineNo">1191</span>      {<a name="line.1191"></a>
 <span class="sourceLineNo">1192</span>        final JSONValue scrambledValue;<a name="line.1192"></a>
@@ -1252,7 +1252,7 @@
 <span class="sourceLineNo">1244</span>  {<a name="line.1244"></a>
 <span class="sourceLineNo">1245</span>    final List&lt;JSONValue&gt; originalValues = a.getValues();<a name="line.1245"></a>
 <span class="sourceLineNo">1246</span>    final ArrayList&lt;JSONValue&gt; scrambledValues =<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>         new ArrayList&lt;JSONValue&gt;(originalValues.size());<a name="line.1247"></a>
+<span class="sourceLineNo">1247</span>         new ArrayList&lt;&gt;(originalValues.size());<a name="line.1247"></a>
 <span class="sourceLineNo">1248</span><a name="line.1248"></a>
 <span class="sourceLineNo">1249</span>    for (final JSONValue arrayValue : originalValues)<a name="line.1249"></a>
 <span class="sourceLineNo">1250</span>    {<a name="line.1250"></a>

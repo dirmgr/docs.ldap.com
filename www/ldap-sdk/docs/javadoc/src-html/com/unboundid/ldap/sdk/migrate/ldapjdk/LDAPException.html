@@ -583,12 +583,12 @@
 <span class="sourceLineNo">575</span>                                   final String serverErrorMessage,<a name="line.575"></a>
 <span class="sourceLineNo">576</span>                                   final int resultCode)<a name="line.576"></a>
 <span class="sourceLineNo">577</span>  {<a name="line.577"></a>
-<span class="sourceLineNo">578</span>    if ((message != null) &amp;&amp; (message.length() &gt; 0))<a name="line.578"></a>
+<span class="sourceLineNo">578</span>    if ((message != null) &amp;&amp; (! message.isEmpty()))<a name="line.578"></a>
 <span class="sourceLineNo">579</span>    {<a name="line.579"></a>
 <span class="sourceLineNo">580</span>      return message;<a name="line.580"></a>
 <span class="sourceLineNo">581</span>    }<a name="line.581"></a>
 <span class="sourceLineNo">582</span><a name="line.582"></a>
-<span class="sourceLineNo">583</span>    if ((serverErrorMessage != null) &amp;&amp; (serverErrorMessage.length() &gt; 0))<a name="line.583"></a>
+<span class="sourceLineNo">583</span>    if ((serverErrorMessage != null) &amp;&amp; (! serverErrorMessage.isEmpty()))<a name="line.583"></a>
 <span class="sourceLineNo">584</span>    {<a name="line.584"></a>
 <span class="sourceLineNo">585</span>      return serverErrorMessage;<a name="line.585"></a>
 <span class="sourceLineNo">586</span>    }<a name="line.586"></a>

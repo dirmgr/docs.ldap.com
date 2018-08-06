@@ -105,7 +105,7 @@
 <span class="sourceLineNo">097</span>    }<a name="line.97"></a>
 <span class="sourceLineNo">098</span><a name="line.98"></a>
 <span class="sourceLineNo">099</span>    final LinkedHashMap&lt;String,List&lt;Attribute&gt;&gt; attrMap =<a name="line.99"></a>
-<span class="sourceLineNo">100</span>         new LinkedHashMap&lt;String,List&lt;Attribute&gt;&gt;(changes.length);<a name="line.100"></a>
+<span class="sourceLineNo">100</span>         new LinkedHashMap&lt;&gt;(changes.length);<a name="line.100"></a>
 <span class="sourceLineNo">101</span>    for (final byte[] changeBytes : changes)<a name="line.101"></a>
 <span class="sourceLineNo">102</span>    {<a name="line.102"></a>
 <span class="sourceLineNo">103</span>      int colonPos = -1;<a name="line.103"></a>
@@ -159,7 +159,7 @@
 <span class="sourceLineNo">151</span>      List&lt;Attribute&gt; attrList = attrMap.get(lowerName);<a name="line.151"></a>
 <span class="sourceLineNo">152</span>      if (attrList == null)<a name="line.152"></a>
 <span class="sourceLineNo">153</span>      {<a name="line.153"></a>
-<span class="sourceLineNo">154</span>        attrList = new ArrayList&lt;Attribute&gt;(10);<a name="line.154"></a>
+<span class="sourceLineNo">154</span>        attrList = new ArrayList&lt;&gt;(10);<a name="line.154"></a>
 <span class="sourceLineNo">155</span>        attrMap.put(lowerName, attrList);<a name="line.155"></a>
 <span class="sourceLineNo">156</span>      }<a name="line.156"></a>
 <span class="sourceLineNo">157</span><a name="line.157"></a>
@@ -173,55 +173,54 @@
 <span class="sourceLineNo">165</span>      attrList.add(new Attribute(attrName, attrValue));<a name="line.165"></a>
 <span class="sourceLineNo">166</span>    }<a name="line.166"></a>
 <span class="sourceLineNo">167</span><a name="line.167"></a>
-<span class="sourceLineNo">168</span>    final ArrayList&lt;Attribute&gt; addAttributes =<a name="line.168"></a>
-<span class="sourceLineNo">169</span>         new ArrayList&lt;Attribute&gt;(attrMap.size());<a name="line.169"></a>
-<span class="sourceLineNo">170</span>    for (final List&lt;Attribute&gt; attrList : attrMap.values())<a name="line.170"></a>
-<span class="sourceLineNo">171</span>    {<a name="line.171"></a>
-<span class="sourceLineNo">172</span>      if (attrList.size() == 1)<a name="line.172"></a>
-<span class="sourceLineNo">173</span>      {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>        addAttributes.addAll(attrList);<a name="line.174"></a>
-<span class="sourceLineNo">175</span>      }<a name="line.175"></a>
-<span class="sourceLineNo">176</span>      else<a name="line.176"></a>
-<span class="sourceLineNo">177</span>      {<a name="line.177"></a>
-<span class="sourceLineNo">178</span>        final byte[][] valueArray = new byte[attrList.size()][];<a name="line.178"></a>
-<span class="sourceLineNo">179</span>        for (int i=0; i &lt; attrList.size(); i++)<a name="line.179"></a>
-<span class="sourceLineNo">180</span>        {<a name="line.180"></a>
-<span class="sourceLineNo">181</span>          valueArray[i] = attrList.get(i).getValueByteArray();<a name="line.181"></a>
-<span class="sourceLineNo">182</span>        }<a name="line.182"></a>
-<span class="sourceLineNo">183</span>        addAttributes.add(new Attribute(attrList.get(0).getName(), valueArray));<a name="line.183"></a>
-<span class="sourceLineNo">184</span>      }<a name="line.184"></a>
-<span class="sourceLineNo">185</span>    }<a name="line.185"></a>
-<span class="sourceLineNo">186</span><a name="line.186"></a>
-<span class="sourceLineNo">187</span>    attributes = Collections.unmodifiableList(addAttributes);<a name="line.187"></a>
-<span class="sourceLineNo">188</span>  }<a name="line.188"></a>
+<span class="sourceLineNo">168</span>    final ArrayList&lt;Attribute&gt; addAttributes = new ArrayList&lt;&gt;(attrMap.size());<a name="line.168"></a>
+<span class="sourceLineNo">169</span>    for (final List&lt;Attribute&gt; attrList : attrMap.values())<a name="line.169"></a>
+<span class="sourceLineNo">170</span>    {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>      if (attrList.size() == 1)<a name="line.171"></a>
+<span class="sourceLineNo">172</span>      {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>        addAttributes.addAll(attrList);<a name="line.173"></a>
+<span class="sourceLineNo">174</span>      }<a name="line.174"></a>
+<span class="sourceLineNo">175</span>      else<a name="line.175"></a>
+<span class="sourceLineNo">176</span>      {<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        final byte[][] valueArray = new byte[attrList.size()][];<a name="line.177"></a>
+<span class="sourceLineNo">178</span>        for (int i=0; i &lt; attrList.size(); i++)<a name="line.178"></a>
+<span class="sourceLineNo">179</span>        {<a name="line.179"></a>
+<span class="sourceLineNo">180</span>          valueArray[i] = attrList.get(i).getValueByteArray();<a name="line.180"></a>
+<span class="sourceLineNo">181</span>        }<a name="line.181"></a>
+<span class="sourceLineNo">182</span>        addAttributes.add(new Attribute(attrList.get(0).getName(), valueArray));<a name="line.182"></a>
+<span class="sourceLineNo">183</span>      }<a name="line.183"></a>
+<span class="sourceLineNo">184</span>    }<a name="line.184"></a>
+<span class="sourceLineNo">185</span><a name="line.185"></a>
+<span class="sourceLineNo">186</span>    attributes = Collections.unmodifiableList(addAttributes);<a name="line.186"></a>
+<span class="sourceLineNo">187</span>  }<a name="line.187"></a>
+<span class="sourceLineNo">188</span><a name="line.188"></a>
 <span class="sourceLineNo">189</span><a name="line.189"></a>
 <span class="sourceLineNo">190</span><a name="line.190"></a>
-<span class="sourceLineNo">191</span><a name="line.191"></a>
-<span class="sourceLineNo">192</span>  /**<a name="line.192"></a>
-<span class="sourceLineNo">193</span>   * Retrieves a list of the attributes included in the add request described<a name="line.193"></a>
-<span class="sourceLineNo">194</span>   * by this add access log entry.<a name="line.194"></a>
-<span class="sourceLineNo">195</span>   *<a name="line.195"></a>
-<span class="sourceLineNo">196</span>   * @return  A list of the attributes included in the add request described by<a name="line.196"></a>
-<span class="sourceLineNo">197</span>   *          this add access log entry.<a name="line.197"></a>
-<span class="sourceLineNo">198</span>   */<a name="line.198"></a>
-<span class="sourceLineNo">199</span>  public List&lt;Attribute&gt; getAddAttributes()<a name="line.199"></a>
-<span class="sourceLineNo">200</span>  {<a name="line.200"></a>
-<span class="sourceLineNo">201</span>    return attributes;<a name="line.201"></a>
-<span class="sourceLineNo">202</span>  }<a name="line.202"></a>
+<span class="sourceLineNo">191</span>  /**<a name="line.191"></a>
+<span class="sourceLineNo">192</span>   * Retrieves a list of the attributes included in the add request described<a name="line.192"></a>
+<span class="sourceLineNo">193</span>   * by this add access log entry.<a name="line.193"></a>
+<span class="sourceLineNo">194</span>   *<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   * @return  A list of the attributes included in the add request described by<a name="line.195"></a>
+<span class="sourceLineNo">196</span>   *          this add access log entry.<a name="line.196"></a>
+<span class="sourceLineNo">197</span>   */<a name="line.197"></a>
+<span class="sourceLineNo">198</span>  public List&lt;Attribute&gt; getAddAttributes()<a name="line.198"></a>
+<span class="sourceLineNo">199</span>  {<a name="line.199"></a>
+<span class="sourceLineNo">200</span>    return attributes;<a name="line.200"></a>
+<span class="sourceLineNo">201</span>  }<a name="line.201"></a>
+<span class="sourceLineNo">202</span><a name="line.202"></a>
 <span class="sourceLineNo">203</span><a name="line.203"></a>
 <span class="sourceLineNo">204</span><a name="line.204"></a>
-<span class="sourceLineNo">205</span><a name="line.205"></a>
-<span class="sourceLineNo">206</span>  /**<a name="line.206"></a>
-<span class="sourceLineNo">207</span>   * Retrieves an {@code AddRequest} created from this add access log entry.<a name="line.207"></a>
-<span class="sourceLineNo">208</span>   *<a name="line.208"></a>
-<span class="sourceLineNo">209</span>   * @return  The {@code AddRequest} created from this add access log entry.<a name="line.209"></a>
-<span class="sourceLineNo">210</span>   */<a name="line.210"></a>
-<span class="sourceLineNo">211</span>  public AddRequest toAddRequest()<a name="line.211"></a>
-<span class="sourceLineNo">212</span>  {<a name="line.212"></a>
-<span class="sourceLineNo">213</span>    return new AddRequest(getTargetEntryDN(), attributes,<a name="line.213"></a>
-<span class="sourceLineNo">214</span>         getRequestControlArray());<a name="line.214"></a>
-<span class="sourceLineNo">215</span>  }<a name="line.215"></a>
-<span class="sourceLineNo">216</span>}<a name="line.216"></a>
+<span class="sourceLineNo">205</span>  /**<a name="line.205"></a>
+<span class="sourceLineNo">206</span>   * Retrieves an {@code AddRequest} created from this add access log entry.<a name="line.206"></a>
+<span class="sourceLineNo">207</span>   *<a name="line.207"></a>
+<span class="sourceLineNo">208</span>   * @return  The {@code AddRequest} created from this add access log entry.<a name="line.208"></a>
+<span class="sourceLineNo">209</span>   */<a name="line.209"></a>
+<span class="sourceLineNo">210</span>  public AddRequest toAddRequest()<a name="line.210"></a>
+<span class="sourceLineNo">211</span>  {<a name="line.211"></a>
+<span class="sourceLineNo">212</span>    return new AddRequest(getTargetEntryDN(), attributes,<a name="line.212"></a>
+<span class="sourceLineNo">213</span>         getRequestControlArray());<a name="line.213"></a>
+<span class="sourceLineNo">214</span>  }<a name="line.214"></a>
+<span class="sourceLineNo">215</span>}<a name="line.215"></a>
 
 
 

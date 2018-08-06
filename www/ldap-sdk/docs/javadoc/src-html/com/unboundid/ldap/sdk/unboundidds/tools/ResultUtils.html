@@ -130,11 +130,11 @@
 <span class="sourceLineNo">122</span> * &lt;BLOCKQUOTE&gt;<a name="line.122"></a>
 <span class="sourceLineNo">123</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.123"></a>
 <span class="sourceLineNo">124</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.124"></a>
-<span class="sourceLineNo">125</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.125"></a>
-<span class="sourceLineNo">126</span> *   server products.  These classes provide support for proprietary<a name="line.126"></a>
-<span class="sourceLineNo">127</span> *   functionality or for external specifications that are not considered stable<a name="line.127"></a>
-<span class="sourceLineNo">128</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.128"></a>
-<span class="sourceLineNo">129</span> *   other types of LDAP servers.<a name="line.129"></a>
+<span class="sourceLineNo">125</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.125"></a>
+<span class="sourceLineNo">126</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.126"></a>
+<span class="sourceLineNo">127</span> *   for proprietary functionality or for external specifications that are not<a name="line.127"></a>
+<span class="sourceLineNo">128</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.128"></a>
+<span class="sourceLineNo">129</span> *   interoperable way with other types of LDAP servers.<a name="line.129"></a>
 <span class="sourceLineNo">130</span> * &lt;/BLOCKQUOTE&gt;<a name="line.130"></a>
 <span class="sourceLineNo">131</span> */<a name="line.131"></a>
 <span class="sourceLineNo">132</span>@ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)<a name="line.132"></a>
@@ -168,7 +168,7 @@
 <span class="sourceLineNo">160</span>                                          final boolean comment,<a name="line.160"></a>
 <span class="sourceLineNo">161</span>                                          final int indent, final int maxWidth)<a name="line.161"></a>
 <span class="sourceLineNo">162</span>  {<a name="line.162"></a>
-<span class="sourceLineNo">163</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;String&gt;(10);<a name="line.163"></a>
+<span class="sourceLineNo">163</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(10);<a name="line.163"></a>
 <span class="sourceLineNo">164</span>    formatResult(lines, result, comment, false, indent, maxWidth);<a name="line.164"></a>
 <span class="sourceLineNo">165</span>    return lines;<a name="line.165"></a>
 <span class="sourceLineNo">166</span>  }<a name="line.166"></a>
@@ -2080,7 +2080,7 @@
 <span class="sourceLineNo">2072</span>    final List&lt;Attribute&gt; otherAttrs = decoded.getOtherAttributes();<a name="line.2072"></a>
 <span class="sourceLineNo">2073</span>    if ((otherAttrs != null) &amp;&amp; (! otherAttrs.isEmpty()))<a name="line.2073"></a>
 <span class="sourceLineNo">2074</span>    {<a name="line.2074"></a>
-<span class="sourceLineNo">2075</span>      wrap(lines, INFO_RESULT_UTILS_GET_USER_RLIM_OTHER_ATTIBUTES_HEADER.get(),<a name="line.2075"></a>
+<span class="sourceLineNo">2075</span>      wrap(lines, INFO_RESULT_UTILS_GET_USER_RLIM_OTHER_ATTRIBUTES_HEADER.get(),<a name="line.2075"></a>
 <span class="sourceLineNo">2076</span>           indentPrefix, maxWidth);<a name="line.2076"></a>
 <span class="sourceLineNo">2077</span>      addLDIF(lines, new Entry("", otherAttrs), false, doubleIndentPrefix,<a name="line.2077"></a>
 <span class="sourceLineNo">2078</span>           maxWidth);<a name="line.2078"></a>

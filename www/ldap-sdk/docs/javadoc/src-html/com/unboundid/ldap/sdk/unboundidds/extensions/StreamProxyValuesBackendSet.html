@@ -38,14 +38,14 @@
 <span class="sourceLineNo">030</span>import com.unboundid.asn1.ASN1Sequence;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
-<span class="sourceLineNo">036</span><a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.Debug.*;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.util.StaticUtils.*;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import static com.unboundid.util.Validator.*;<a name="line.40"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.Debug;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.NotMutable;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.StaticUtils;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafety;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.Validator;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>import static com.unboundid.ldap.sdk.unboundidds.extensions.ExtOpMessages.*;<a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
@@ -57,11 +57,11 @@
 <span class="sourceLineNo">049</span> * &lt;BLOCKQUOTE&gt;<a name="line.49"></a>
 <span class="sourceLineNo">050</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.50"></a>
 <span class="sourceLineNo">051</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *   server products.  These classes provide support for proprietary<a name="line.53"></a>
-<span class="sourceLineNo">054</span> *   functionality or for external specifications that are not considered stable<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.55"></a>
-<span class="sourceLineNo">056</span> *   other types of LDAP servers.<a name="line.56"></a>
+<span class="sourceLineNo">052</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *   for proprietary functionality or for external specifications that are not<a name="line.54"></a>
+<span class="sourceLineNo">055</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *   interoperable way with other types of LDAP servers.<a name="line.56"></a>
 <span class="sourceLineNo">057</span> * &lt;/BLOCKQUOTE&gt;<a name="line.57"></a>
 <span class="sourceLineNo">058</span> */<a name="line.58"></a>
 <span class="sourceLineNo">059</span>@NotMutable()<a name="line.59"></a>
@@ -104,9 +104,9 @@
 <span class="sourceLineNo">096</span>  public StreamProxyValuesBackendSet(final ASN1OctetString backendSetID,<a name="line.96"></a>
 <span class="sourceLineNo">097</span>                                     final String[] hosts, final int[] ports)<a name="line.97"></a>
 <span class="sourceLineNo">098</span>  {<a name="line.98"></a>
-<span class="sourceLineNo">099</span>    ensureNotNull(backendSetID, hosts, ports);<a name="line.99"></a>
-<span class="sourceLineNo">100</span>    ensureTrue(hosts.length &gt; 0);<a name="line.100"></a>
-<span class="sourceLineNo">101</span>    ensureTrue(hosts.length == ports.length);<a name="line.101"></a>
+<span class="sourceLineNo">099</span>    Validator.ensureNotNull(backendSetID, hosts, ports);<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    Validator.ensureTrue(hosts.length &gt; 0);<a name="line.100"></a>
+<span class="sourceLineNo">101</span>    Validator.ensureTrue(hosts.length == ports.length);<a name="line.101"></a>
 <span class="sourceLineNo">102</span><a name="line.102"></a>
 <span class="sourceLineNo">103</span>    this.backendSetID = backendSetID;<a name="line.103"></a>
 <span class="sourceLineNo">104</span>    this.hosts        = hosts;<a name="line.104"></a>
@@ -211,10 +211,10 @@
 <span class="sourceLineNo">203</span>    }<a name="line.203"></a>
 <span class="sourceLineNo">204</span>    catch (final Exception e)<a name="line.204"></a>
 <span class="sourceLineNo">205</span>    {<a name="line.205"></a>
-<span class="sourceLineNo">206</span>      debugException(e);<a name="line.206"></a>
+<span class="sourceLineNo">206</span>      Debug.debugException(e);<a name="line.206"></a>
 <span class="sourceLineNo">207</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.207"></a>
 <span class="sourceLineNo">208</span>           ERR_STREAM_PROXY_VALUES_BACKEND_SET_CANNOT_DECODE.get(<a name="line.208"></a>
-<span class="sourceLineNo">209</span>                getExceptionMessage(e)), e);<a name="line.209"></a>
+<span class="sourceLineNo">209</span>                StaticUtils.getExceptionMessage(e)), e);<a name="line.209"></a>
 <span class="sourceLineNo">210</span>    }<a name="line.210"></a>
 <span class="sourceLineNo">211</span>  }<a name="line.211"></a>
 <span class="sourceLineNo">212</span><a name="line.212"></a>

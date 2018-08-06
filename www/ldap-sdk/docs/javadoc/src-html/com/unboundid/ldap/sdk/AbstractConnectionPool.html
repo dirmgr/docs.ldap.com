@@ -43,14 +43,14 @@
 <span class="sourceLineNo">035</span>import com.unboundid.ldap.sdk.extensions.StartTLSExtendedRequest;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>import com.unboundid.ldap.sdk.schema.Schema;<a name="line.36"></a>
 <span class="sourceLineNo">037</span>import com.unboundid.ldif.LDIFException;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import com.unboundid.util.NotExtensible;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import com.unboundid.util.ThreadSafety;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.40"></a>
-<span class="sourceLineNo">041</span><a name="line.41"></a>
-<span class="sourceLineNo">042</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>import static com.unboundid.util.Debug.*;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import static com.unboundid.util.StaticUtils.*;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import static com.unboundid.util.Validator.*;<a name="line.45"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.Debug;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.NotExtensible;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import com.unboundid.util.StaticUtils;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import com.unboundid.util.ThreadSafety;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import com.unboundid.util.Validator;<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.45"></a>
 <span class="sourceLineNo">046</span><a name="line.46"></a>
 <span class="sourceLineNo">047</span><a name="line.47"></a>
 <span class="sourceLineNo">048</span><a name="line.48"></a>
@@ -156,7 +156,7 @@
 <span class="sourceLineNo">148</span>    }<a name="line.148"></a>
 <span class="sourceLineNo">149</span>    catch (final LDAPException le)<a name="line.149"></a>
 <span class="sourceLineNo">150</span>    {<a name="line.150"></a>
-<span class="sourceLineNo">151</span>      debugException(le);<a name="line.151"></a>
+<span class="sourceLineNo">151</span>      Debug.debugException(le);<a name="line.151"></a>
 <span class="sourceLineNo">152</span>      releaseDefunctConnection(connection);<a name="line.152"></a>
 <span class="sourceLineNo">153</span>    }<a name="line.153"></a>
 <span class="sourceLineNo">154</span>  }<a name="line.154"></a>
@@ -214,7 +214,7 @@
 <span class="sourceLineNo">206</span>    }<a name="line.206"></a>
 <span class="sourceLineNo">207</span>    catch (final LDAPException le)<a name="line.207"></a>
 <span class="sourceLineNo">208</span>    {<a name="line.208"></a>
-<span class="sourceLineNo">209</span>      debugException(le);<a name="line.209"></a>
+<span class="sourceLineNo">209</span>      Debug.debugException(le);<a name="line.209"></a>
 <span class="sourceLineNo">210</span><a name="line.210"></a>
 <span class="sourceLineNo">211</span>      if (t instanceof LDAPException)<a name="line.211"></a>
 <span class="sourceLineNo">212</span>      {<a name="line.212"></a>
@@ -223,7 +223,7 @@
 <span class="sourceLineNo">215</span>      else<a name="line.215"></a>
 <span class="sourceLineNo">216</span>      {<a name="line.216"></a>
 <span class="sourceLineNo">217</span>        throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.217"></a>
-<span class="sourceLineNo">218</span>             ERR_POOL_OP_EXCEPTION.get(getExceptionMessage(t)), t);<a name="line.218"></a>
+<span class="sourceLineNo">218</span>             ERR_POOL_OP_EXCEPTION.get(StaticUtils.getExceptionMessage(t)), t);<a name="line.218"></a>
 <span class="sourceLineNo">219</span>      }<a name="line.219"></a>
 <span class="sourceLineNo">220</span>    }<a name="line.220"></a>
 <span class="sourceLineNo">221</span>  }<a name="line.221"></a>
@@ -589,7 +589,7 @@
 <span class="sourceLineNo">581</span>  public final SearchResultEntry getEntry(final String dn)<a name="line.581"></a>
 <span class="sourceLineNo">582</span>         throws LDAPException<a name="line.582"></a>
 <span class="sourceLineNo">583</span>  {<a name="line.583"></a>
-<span class="sourceLineNo">584</span>    return getEntry(dn, NO_STRINGS);<a name="line.584"></a>
+<span class="sourceLineNo">584</span>    return getEntry(dn, StaticUtils.NO_STRINGS);<a name="line.584"></a>
 <span class="sourceLineNo">585</span>  }<a name="line.585"></a>
 <span class="sourceLineNo">586</span><a name="line.586"></a>
 <span class="sourceLineNo">587</span><a name="line.587"></a>
@@ -824,8 +824,8 @@
 <span class="sourceLineNo">816</span>   * of the connection in the pool, and therefore this method should only be<a name="line.816"></a>
 <span class="sourceLineNo">817</span>   * used if this connection pool is used exclusively for processing bind<a name="line.817"></a>
 <span class="sourceLineNo">818</span>   * operations, or if the retain identity request control (a proprietary<a name="line.818"></a>
-<span class="sourceLineNo">819</span>   * control for use with the Ping Identity, UnboundID, or Alcatel-Lucent 8661<a name="line.819"></a>
-<span class="sourceLineNo">820</span>   * Directory Server) is included in the bind request to ensure that the<a name="line.820"></a>
+<span class="sourceLineNo">819</span>   * control for use with the Ping Identity, UnboundID, or Nokia/Alcatel-Lucent<a name="line.819"></a>
+<span class="sourceLineNo">820</span>   * 8661 Directory Server) is included in the bind request to ensure that the<a name="line.820"></a>
 <span class="sourceLineNo">821</span>   * authentication state is not impacted.<a name="line.821"></a>
 <span class="sourceLineNo">822</span>   *<a name="line.822"></a>
 <span class="sourceLineNo">823</span>   * @param  bindDN    The bind DN for the bind operation.<a name="line.823"></a>
@@ -851,8 +851,8 @@
 <span class="sourceLineNo">843</span>   * and therefore this method should only be used if this connection pool is<a name="line.843"></a>
 <span class="sourceLineNo">844</span>   * used exclusively for processing bind operations, or if the retain identity<a name="line.844"></a>
 <span class="sourceLineNo">845</span>   * request control (a proprietary control for use with the Ping Identity,<a name="line.845"></a>
-<span class="sourceLineNo">846</span>   * UnboundID, or Alcatel-Lucent 8661 Directory Server) is included in the bind<a name="line.846"></a>
-<span class="sourceLineNo">847</span>   * request to ensure that the authentication state is not impacted.<a name="line.847"></a>
+<span class="sourceLineNo">846</span>   * UnboundID, or Nokia/Alcatel-Lucent 8661 Directory Server) is included in<a name="line.846"></a>
+<span class="sourceLineNo">847</span>   * the bind request to ensure that the authentication state is not impacted.<a name="line.847"></a>
 <span class="sourceLineNo">848</span>   *<a name="line.848"></a>
 <span class="sourceLineNo">849</span>   * @param  bindRequest  The bind request to be processed.  It must not be<a name="line.849"></a>
 <span class="sourceLineNo">850</span>   *                      {@code null}.<a name="line.850"></a>
@@ -2055,7 +2055,7 @@
 <span class="sourceLineNo">2047</span>    }<a name="line.2047"></a>
 <span class="sourceLineNo">2048</span>    catch (final LDAPException le)<a name="line.2048"></a>
 <span class="sourceLineNo">2049</span>    {<a name="line.2049"></a>
-<span class="sourceLineNo">2050</span>      debugException(le);<a name="line.2050"></a>
+<span class="sourceLineNo">2050</span>      Debug.debugException(le);<a name="line.2050"></a>
 <span class="sourceLineNo">2051</span>      throw new LDAPSearchException(le);<a name="line.2051"></a>
 <span class="sourceLineNo">2052</span>    }<a name="line.2052"></a>
 <span class="sourceLineNo">2053</span><a name="line.2053"></a>
@@ -2078,7 +2078,7 @@
 <span class="sourceLineNo">2070</span>      }<a name="line.2070"></a>
 <span class="sourceLineNo">2071</span>      catch (final LDAPException le)<a name="line.2071"></a>
 <span class="sourceLineNo">2072</span>      {<a name="line.2072"></a>
-<span class="sourceLineNo">2073</span>        debugException(le);<a name="line.2073"></a>
+<span class="sourceLineNo">2073</span>        Debug.debugException(le);<a name="line.2073"></a>
 <span class="sourceLineNo">2074</span>        throw new LDAPSearchException(le);<a name="line.2074"></a>
 <span class="sourceLineNo">2075</span>      }<a name="line.2075"></a>
 <span class="sourceLineNo">2076</span><a name="line.2076"></a>
@@ -2424,7 +2424,7 @@
 <span class="sourceLineNo">2416</span>    }<a name="line.2416"></a>
 <span class="sourceLineNo">2417</span>    catch (final LDAPException le)<a name="line.2417"></a>
 <span class="sourceLineNo">2418</span>    {<a name="line.2418"></a>
-<span class="sourceLineNo">2419</span>      debugException(le);<a name="line.2419"></a>
+<span class="sourceLineNo">2419</span>      Debug.debugException(le);<a name="line.2419"></a>
 <span class="sourceLineNo">2420</span>      throw new LDAPSearchException(le);<a name="line.2420"></a>
 <span class="sourceLineNo">2421</span>    }<a name="line.2421"></a>
 <span class="sourceLineNo">2422</span><a name="line.2422"></a>
@@ -2447,7 +2447,7 @@
 <span class="sourceLineNo">2439</span>      }<a name="line.2439"></a>
 <span class="sourceLineNo">2440</span>      catch (final LDAPException le)<a name="line.2440"></a>
 <span class="sourceLineNo">2441</span>      {<a name="line.2441"></a>
-<span class="sourceLineNo">2442</span>        debugException(le);<a name="line.2442"></a>
+<span class="sourceLineNo">2442</span>        Debug.debugException(le);<a name="line.2442"></a>
 <span class="sourceLineNo">2443</span>        throw new LDAPSearchException(le);<a name="line.2443"></a>
 <span class="sourceLineNo">2444</span>      }<a name="line.2444"></a>
 <span class="sourceLineNo">2445</span><a name="line.2445"></a>
@@ -2533,7 +2533,7 @@
 <span class="sourceLineNo">2525</span>    }<a name="line.2525"></a>
 <span class="sourceLineNo">2526</span>    catch (final LDAPException le)<a name="line.2526"></a>
 <span class="sourceLineNo">2527</span>    {<a name="line.2527"></a>
-<span class="sourceLineNo">2528</span>      debugException(le);<a name="line.2528"></a>
+<span class="sourceLineNo">2528</span>      Debug.debugException(le);<a name="line.2528"></a>
 <span class="sourceLineNo">2529</span>      throw new LDAPSearchException(le);<a name="line.2529"></a>
 <span class="sourceLineNo">2530</span>    }<a name="line.2530"></a>
 <span class="sourceLineNo">2531</span>  }<a name="line.2531"></a>
@@ -2567,8 +2567,8 @@
 <span class="sourceLineNo">2559</span>                                     final boolean continueOnError)<a name="line.2559"></a>
 <span class="sourceLineNo">2560</span>         throws LDAPException<a name="line.2560"></a>
 <span class="sourceLineNo">2561</span>  {<a name="line.2561"></a>
-<span class="sourceLineNo">2562</span>    ensureNotNull(requests);<a name="line.2562"></a>
-<span class="sourceLineNo">2563</span>    ensureFalse(requests.isEmpty(),<a name="line.2563"></a>
+<span class="sourceLineNo">2562</span>    Validator.ensureNotNull(requests);<a name="line.2562"></a>
+<span class="sourceLineNo">2563</span>    Validator.ensureFalse(requests.isEmpty(),<a name="line.2563"></a>
 <span class="sourceLineNo">2564</span>         "LDAPConnectionPool.processRequests.requests must not be empty.");<a name="line.2564"></a>
 <span class="sourceLineNo">2565</span><a name="line.2565"></a>
 <span class="sourceLineNo">2566</span>    final LDAPConnection conn;<a name="line.2566"></a>
@@ -2578,504 +2578,503 @@
 <span class="sourceLineNo">2570</span>    }<a name="line.2570"></a>
 <span class="sourceLineNo">2571</span>    catch (final LDAPException le)<a name="line.2571"></a>
 <span class="sourceLineNo">2572</span>    {<a name="line.2572"></a>
-<span class="sourceLineNo">2573</span>      debugException(le);<a name="line.2573"></a>
+<span class="sourceLineNo">2573</span>      Debug.debugException(le);<a name="line.2573"></a>
 <span class="sourceLineNo">2574</span>      throw new LDAPSearchException(le);<a name="line.2574"></a>
 <span class="sourceLineNo">2575</span>    }<a name="line.2575"></a>
 <span class="sourceLineNo">2576</span><a name="line.2576"></a>
-<span class="sourceLineNo">2577</span>    final ArrayList&lt;LDAPResult&gt; results =<a name="line.2577"></a>
-<span class="sourceLineNo">2578</span>         new ArrayList&lt;LDAPResult&gt;(requests.size());<a name="line.2578"></a>
-<span class="sourceLineNo">2579</span>    boolean isDefunct = false;<a name="line.2579"></a>
-<span class="sourceLineNo">2580</span><a name="line.2580"></a>
-<span class="sourceLineNo">2581</span>    try<a name="line.2581"></a>
-<span class="sourceLineNo">2582</span>    {<a name="line.2582"></a>
-<span class="sourceLineNo">2583</span>requestLoop:<a name="line.2583"></a>
-<span class="sourceLineNo">2584</span>      for (final LDAPRequest request : requests)<a name="line.2584"></a>
-<span class="sourceLineNo">2585</span>      {<a name="line.2585"></a>
-<span class="sourceLineNo">2586</span>        try<a name="line.2586"></a>
-<span class="sourceLineNo">2587</span>        {<a name="line.2587"></a>
-<span class="sourceLineNo">2588</span>          final LDAPResult result = conn.processOperation(request);<a name="line.2588"></a>
-<span class="sourceLineNo">2589</span>          results.add(result);<a name="line.2589"></a>
-<span class="sourceLineNo">2590</span>          switch (result.getResultCode().intValue())<a name="line.2590"></a>
-<span class="sourceLineNo">2591</span>          {<a name="line.2591"></a>
-<span class="sourceLineNo">2592</span>            case ResultCode.SUCCESS_INT_VALUE:<a name="line.2592"></a>
-<span class="sourceLineNo">2593</span>            case ResultCode.COMPARE_FALSE_INT_VALUE:<a name="line.2593"></a>
-<span class="sourceLineNo">2594</span>            case ResultCode.COMPARE_TRUE_INT_VALUE:<a name="line.2594"></a>
-<span class="sourceLineNo">2595</span>            case ResultCode.NO_OPERATION_INT_VALUE:<a name="line.2595"></a>
-<span class="sourceLineNo">2596</span>              // These will be considered successful operations.<a name="line.2596"></a>
-<span class="sourceLineNo">2597</span>              break;<a name="line.2597"></a>
-<span class="sourceLineNo">2598</span><a name="line.2598"></a>
-<span class="sourceLineNo">2599</span>            default:<a name="line.2599"></a>
-<span class="sourceLineNo">2600</span>              // Anything else will be considered a failure.<a name="line.2600"></a>
-<span class="sourceLineNo">2601</span>              if (! ResultCode.isConnectionUsable(result.getResultCode()))<a name="line.2601"></a>
-<span class="sourceLineNo">2602</span>              {<a name="line.2602"></a>
-<span class="sourceLineNo">2603</span>                isDefunct = true;<a name="line.2603"></a>
-<span class="sourceLineNo">2604</span>              }<a name="line.2604"></a>
-<span class="sourceLineNo">2605</span><a name="line.2605"></a>
-<span class="sourceLineNo">2606</span>              if (! continueOnError)<a name="line.2606"></a>
-<span class="sourceLineNo">2607</span>              {<a name="line.2607"></a>
-<span class="sourceLineNo">2608</span>                break requestLoop;<a name="line.2608"></a>
-<span class="sourceLineNo">2609</span>              }<a name="line.2609"></a>
-<span class="sourceLineNo">2610</span>              break;<a name="line.2610"></a>
-<span class="sourceLineNo">2611</span>          }<a name="line.2611"></a>
-<span class="sourceLineNo">2612</span>        }<a name="line.2612"></a>
-<span class="sourceLineNo">2613</span>        catch (final LDAPException le)<a name="line.2613"></a>
-<span class="sourceLineNo">2614</span>        {<a name="line.2614"></a>
-<span class="sourceLineNo">2615</span>          debugException(le);<a name="line.2615"></a>
-<span class="sourceLineNo">2616</span>          results.add(new LDAPResult(request.getLastMessageID(),<a name="line.2616"></a>
-<span class="sourceLineNo">2617</span>                                     le.getResultCode(), le.getMessage(),<a name="line.2617"></a>
-<span class="sourceLineNo">2618</span>                                     le.getMatchedDN(), le.getReferralURLs(),<a name="line.2618"></a>
-<span class="sourceLineNo">2619</span>                                     le.getResponseControls()));<a name="line.2619"></a>
-<span class="sourceLineNo">2620</span><a name="line.2620"></a>
-<span class="sourceLineNo">2621</span>          if (! ResultCode.isConnectionUsable(le.getResultCode()))<a name="line.2621"></a>
-<span class="sourceLineNo">2622</span>          {<a name="line.2622"></a>
-<span class="sourceLineNo">2623</span>            isDefunct = true;<a name="line.2623"></a>
-<span class="sourceLineNo">2624</span>          }<a name="line.2624"></a>
-<span class="sourceLineNo">2625</span><a name="line.2625"></a>
-<span class="sourceLineNo">2626</span>          if (! continueOnError)<a name="line.2626"></a>
-<span class="sourceLineNo">2627</span>          {<a name="line.2627"></a>
-<span class="sourceLineNo">2628</span>            break;<a name="line.2628"></a>
-<span class="sourceLineNo">2629</span>          }<a name="line.2629"></a>
-<span class="sourceLineNo">2630</span>        }<a name="line.2630"></a>
-<span class="sourceLineNo">2631</span>      }<a name="line.2631"></a>
-<span class="sourceLineNo">2632</span>    }<a name="line.2632"></a>
-<span class="sourceLineNo">2633</span>    finally<a name="line.2633"></a>
-<span class="sourceLineNo">2634</span>    {<a name="line.2634"></a>
-<span class="sourceLineNo">2635</span>      if (isDefunct)<a name="line.2635"></a>
-<span class="sourceLineNo">2636</span>      {<a name="line.2636"></a>
-<span class="sourceLineNo">2637</span>        releaseDefunctConnection(conn);<a name="line.2637"></a>
-<span class="sourceLineNo">2638</span>      }<a name="line.2638"></a>
-<span class="sourceLineNo">2639</span>      else<a name="line.2639"></a>
-<span class="sourceLineNo">2640</span>      {<a name="line.2640"></a>
-<span class="sourceLineNo">2641</span>        releaseConnection(conn);<a name="line.2641"></a>
-<span class="sourceLineNo">2642</span>      }<a name="line.2642"></a>
-<span class="sourceLineNo">2643</span>    }<a name="line.2643"></a>
-<span class="sourceLineNo">2644</span><a name="line.2644"></a>
-<span class="sourceLineNo">2645</span>    return results;<a name="line.2645"></a>
-<span class="sourceLineNo">2646</span>  }<a name="line.2646"></a>
+<span class="sourceLineNo">2577</span>    final ArrayList&lt;LDAPResult&gt; results = new ArrayList&lt;&gt;(requests.size());<a name="line.2577"></a>
+<span class="sourceLineNo">2578</span>    boolean isDefunct = false;<a name="line.2578"></a>
+<span class="sourceLineNo">2579</span><a name="line.2579"></a>
+<span class="sourceLineNo">2580</span>    try<a name="line.2580"></a>
+<span class="sourceLineNo">2581</span>    {<a name="line.2581"></a>
+<span class="sourceLineNo">2582</span>requestLoop:<a name="line.2582"></a>
+<span class="sourceLineNo">2583</span>      for (final LDAPRequest request : requests)<a name="line.2583"></a>
+<span class="sourceLineNo">2584</span>      {<a name="line.2584"></a>
+<span class="sourceLineNo">2585</span>        try<a name="line.2585"></a>
+<span class="sourceLineNo">2586</span>        {<a name="line.2586"></a>
+<span class="sourceLineNo">2587</span>          final LDAPResult result = conn.processOperation(request);<a name="line.2587"></a>
+<span class="sourceLineNo">2588</span>          results.add(result);<a name="line.2588"></a>
+<span class="sourceLineNo">2589</span>          switch (result.getResultCode().intValue())<a name="line.2589"></a>
+<span class="sourceLineNo">2590</span>          {<a name="line.2590"></a>
+<span class="sourceLineNo">2591</span>            case ResultCode.SUCCESS_INT_VALUE:<a name="line.2591"></a>
+<span class="sourceLineNo">2592</span>            case ResultCode.COMPARE_FALSE_INT_VALUE:<a name="line.2592"></a>
+<span class="sourceLineNo">2593</span>            case ResultCode.COMPARE_TRUE_INT_VALUE:<a name="line.2593"></a>
+<span class="sourceLineNo">2594</span>            case ResultCode.NO_OPERATION_INT_VALUE:<a name="line.2594"></a>
+<span class="sourceLineNo">2595</span>              // These will be considered successful operations.<a name="line.2595"></a>
+<span class="sourceLineNo">2596</span>              break;<a name="line.2596"></a>
+<span class="sourceLineNo">2597</span><a name="line.2597"></a>
+<span class="sourceLineNo">2598</span>            default:<a name="line.2598"></a>
+<span class="sourceLineNo">2599</span>              // Anything else will be considered a failure.<a name="line.2599"></a>
+<span class="sourceLineNo">2600</span>              if (! ResultCode.isConnectionUsable(result.getResultCode()))<a name="line.2600"></a>
+<span class="sourceLineNo">2601</span>              {<a name="line.2601"></a>
+<span class="sourceLineNo">2602</span>                isDefunct = true;<a name="line.2602"></a>
+<span class="sourceLineNo">2603</span>              }<a name="line.2603"></a>
+<span class="sourceLineNo">2604</span><a name="line.2604"></a>
+<span class="sourceLineNo">2605</span>              if (! continueOnError)<a name="line.2605"></a>
+<span class="sourceLineNo">2606</span>              {<a name="line.2606"></a>
+<span class="sourceLineNo">2607</span>                break requestLoop;<a name="line.2607"></a>
+<span class="sourceLineNo">2608</span>              }<a name="line.2608"></a>
+<span class="sourceLineNo">2609</span>              break;<a name="line.2609"></a>
+<span class="sourceLineNo">2610</span>          }<a name="line.2610"></a>
+<span class="sourceLineNo">2611</span>        }<a name="line.2611"></a>
+<span class="sourceLineNo">2612</span>        catch (final LDAPException le)<a name="line.2612"></a>
+<span class="sourceLineNo">2613</span>        {<a name="line.2613"></a>
+<span class="sourceLineNo">2614</span>          Debug.debugException(le);<a name="line.2614"></a>
+<span class="sourceLineNo">2615</span>          results.add(new LDAPResult(request.getLastMessageID(),<a name="line.2615"></a>
+<span class="sourceLineNo">2616</span>                                     le.getResultCode(), le.getMessage(),<a name="line.2616"></a>
+<span class="sourceLineNo">2617</span>                                     le.getMatchedDN(), le.getReferralURLs(),<a name="line.2617"></a>
+<span class="sourceLineNo">2618</span>                                     le.getResponseControls()));<a name="line.2618"></a>
+<span class="sourceLineNo">2619</span><a name="line.2619"></a>
+<span class="sourceLineNo">2620</span>          if (! ResultCode.isConnectionUsable(le.getResultCode()))<a name="line.2620"></a>
+<span class="sourceLineNo">2621</span>          {<a name="line.2621"></a>
+<span class="sourceLineNo">2622</span>            isDefunct = true;<a name="line.2622"></a>
+<span class="sourceLineNo">2623</span>          }<a name="line.2623"></a>
+<span class="sourceLineNo">2624</span><a name="line.2624"></a>
+<span class="sourceLineNo">2625</span>          if (! continueOnError)<a name="line.2625"></a>
+<span class="sourceLineNo">2626</span>          {<a name="line.2626"></a>
+<span class="sourceLineNo">2627</span>            break;<a name="line.2627"></a>
+<span class="sourceLineNo">2628</span>          }<a name="line.2628"></a>
+<span class="sourceLineNo">2629</span>        }<a name="line.2629"></a>
+<span class="sourceLineNo">2630</span>      }<a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>    }<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span>    finally<a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>    {<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>      if (isDefunct)<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span>      {<a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>        releaseDefunctConnection(conn);<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>      }<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span>      else<a name="line.2638"></a>
+<span class="sourceLineNo">2639</span>      {<a name="line.2639"></a>
+<span class="sourceLineNo">2640</span>        releaseConnection(conn);<a name="line.2640"></a>
+<span class="sourceLineNo">2641</span>      }<a name="line.2641"></a>
+<span class="sourceLineNo">2642</span>    }<a name="line.2642"></a>
+<span class="sourceLineNo">2643</span><a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>    return results;<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span>  }<a name="line.2645"></a>
+<span class="sourceLineNo">2646</span><a name="line.2646"></a>
 <span class="sourceLineNo">2647</span><a name="line.2647"></a>
 <span class="sourceLineNo">2648</span><a name="line.2648"></a>
-<span class="sourceLineNo">2649</span><a name="line.2649"></a>
-<span class="sourceLineNo">2650</span>  /**<a name="line.2650"></a>
-<span class="sourceLineNo">2651</span>   * Processes multiple requests over a single connection from this pool using<a name="line.2651"></a>
-<span class="sourceLineNo">2652</span>   * asynchronous processing to cause the operations to be processed<a name="line.2652"></a>
-<span class="sourceLineNo">2653</span>   * concurrently.  The list of requests may contain only add, compare, delete,<a name="line.2653"></a>
-<span class="sourceLineNo">2654</span>   * modify, modify DN, and search operations (and any search operations to be<a name="line.2654"></a>
-<span class="sourceLineNo">2655</span>   * processed must be configured with an {@link AsyncSearchResultListener}.<a name="line.2655"></a>
-<span class="sourceLineNo">2656</span>   * This method will not return until all operations have completed, or until<a name="line.2656"></a>
-<span class="sourceLineNo">2657</span>   * the specified timeout period has elapsed.  The order of elements in the<a name="line.2657"></a>
-<span class="sourceLineNo">2658</span>   * list of the {@link AsyncRequestID} objects returned will correspond to the<a name="line.2658"></a>
-<span class="sourceLineNo">2659</span>   * order of elements in the list of requests.  The operation results may be<a name="line.2659"></a>
-<span class="sourceLineNo">2660</span>   * obtained from the returned {@code AsyncRequestID} objects using the<a name="line.2660"></a>
-<span class="sourceLineNo">2661</span>   * {@code java.util.concurrent.Future} API.<a name="line.2661"></a>
-<span class="sourceLineNo">2662</span>   *<a name="line.2662"></a>
-<span class="sourceLineNo">2663</span>   * @param  requests           The list of requests to be processed.  It must<a name="line.2663"></a>
-<span class="sourceLineNo">2664</span>   *                            not be {@code null} or empty, and it must<a name="line.2664"></a>
-<span class="sourceLineNo">2665</span>   *                            contain only add, compare, modify, modify DN,<a name="line.2665"></a>
-<span class="sourceLineNo">2666</span>   *                            and search requests.  Any search requests must<a name="line.2666"></a>
-<span class="sourceLineNo">2667</span>   *                            be configured with an<a name="line.2667"></a>
-<span class="sourceLineNo">2668</span>   *                            {@code AsyncSearchResultListener}.<a name="line.2668"></a>
-<span class="sourceLineNo">2669</span>   * @param  maxWaitTimeMillis  The maximum length of time in milliseconds to<a name="line.2669"></a>
-<span class="sourceLineNo">2670</span>   *                            wait for the operations to complete before<a name="line.2670"></a>
-<span class="sourceLineNo">2671</span>   *                            returning.  A value that is less than or equal<a name="line.2671"></a>
-<span class="sourceLineNo">2672</span>   *                            to zero indicates that the client should wait<a name="line.2672"></a>
-<span class="sourceLineNo">2673</span>   *                            indefinitely for the operations to complete.<a name="line.2673"></a>
-<span class="sourceLineNo">2674</span>   *<a name="line.2674"></a>
-<span class="sourceLineNo">2675</span>   * @return  The list of {@code AsyncRequestID} objects that may be used to<a name="line.2675"></a>
-<span class="sourceLineNo">2676</span>   *          retrieve the results for the operations.  The order of elements in<a name="line.2676"></a>
-<span class="sourceLineNo">2677</span>   *          this list will correspond to the order of the provided requests.<a name="line.2677"></a>
-<span class="sourceLineNo">2678</span>   *<a name="line.2678"></a>
-<span class="sourceLineNo">2679</span>   * @throws  LDAPException  If there is a problem with any of the requests, or<a name="line.2679"></a>
-<span class="sourceLineNo">2680</span>   *                         if connections in the pool are configured to use<a name="line.2680"></a>
-<span class="sourceLineNo">2681</span>   *                         synchronous mode and therefore cannot be used to<a name="line.2681"></a>
-<span class="sourceLineNo">2682</span>   *                         process asynchronous operations.<a name="line.2682"></a>
-<span class="sourceLineNo">2683</span>   */<a name="line.2683"></a>
-<span class="sourceLineNo">2684</span>  public final List&lt;AsyncRequestID&gt; processRequestsAsync(<a name="line.2684"></a>
-<span class="sourceLineNo">2685</span>                                         final List&lt;LDAPRequest&gt; requests,<a name="line.2685"></a>
-<span class="sourceLineNo">2686</span>                                         final long maxWaitTimeMillis)<a name="line.2686"></a>
-<span class="sourceLineNo">2687</span>         throws LDAPException<a name="line.2687"></a>
-<span class="sourceLineNo">2688</span>  {<a name="line.2688"></a>
-<span class="sourceLineNo">2689</span>    // Make sure the set of requests is not null or empty.<a name="line.2689"></a>
-<span class="sourceLineNo">2690</span>    ensureNotNull(requests);<a name="line.2690"></a>
-<span class="sourceLineNo">2691</span>    ensureFalse(requests.isEmpty(),<a name="line.2691"></a>
-<span class="sourceLineNo">2692</span>         "LDAPConnectionPool.processRequests.requests must not be empty.");<a name="line.2692"></a>
-<span class="sourceLineNo">2693</span><a name="line.2693"></a>
-<span class="sourceLineNo">2694</span>    // Make sure that all the requests are acceptable.<a name="line.2694"></a>
-<span class="sourceLineNo">2695</span>    for (final LDAPRequest r : requests)<a name="line.2695"></a>
-<span class="sourceLineNo">2696</span>    {<a name="line.2696"></a>
-<span class="sourceLineNo">2697</span>      switch (r.getOperationType())<a name="line.2697"></a>
-<span class="sourceLineNo">2698</span>      {<a name="line.2698"></a>
-<span class="sourceLineNo">2699</span>        case ADD:<a name="line.2699"></a>
-<span class="sourceLineNo">2700</span>        case COMPARE:<a name="line.2700"></a>
-<span class="sourceLineNo">2701</span>        case DELETE:<a name="line.2701"></a>
-<span class="sourceLineNo">2702</span>        case MODIFY:<a name="line.2702"></a>
-<span class="sourceLineNo">2703</span>        case MODIFY_DN:<a name="line.2703"></a>
-<span class="sourceLineNo">2704</span>          // These operation types are always acceptable for asynchronous<a name="line.2704"></a>
-<span class="sourceLineNo">2705</span>          // processing.<a name="line.2705"></a>
-<span class="sourceLineNo">2706</span>          break;<a name="line.2706"></a>
-<span class="sourceLineNo">2707</span><a name="line.2707"></a>
-<span class="sourceLineNo">2708</span>        case SEARCH:<a name="line.2708"></a>
-<span class="sourceLineNo">2709</span>          // Search operations will only be acceptable if they have been<a name="line.2709"></a>
-<span class="sourceLineNo">2710</span>          // configured with an async search result listener.<a name="line.2710"></a>
-<span class="sourceLineNo">2711</span>          final SearchRequest searchRequest = (SearchRequest) r;<a name="line.2711"></a>
-<span class="sourceLineNo">2712</span>          if ((searchRequest.getSearchResultListener() == null) ||<a name="line.2712"></a>
-<span class="sourceLineNo">2713</span>              (! (searchRequest.getSearchResultListener() instanceof<a name="line.2713"></a>
-<span class="sourceLineNo">2714</span>                   AsyncSearchResultListener)))<a name="line.2714"></a>
-<span class="sourceLineNo">2715</span>          {<a name="line.2715"></a>
-<span class="sourceLineNo">2716</span>            throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.2716"></a>
-<span class="sourceLineNo">2717</span>                 ERR_POOL_PROCESS_REQUESTS_ASYNC_SEARCH_NOT_ASYNC.get(<a name="line.2717"></a>
-<span class="sourceLineNo">2718</span>                      String.valueOf(r)));<a name="line.2718"></a>
-<span class="sourceLineNo">2719</span>          }<a name="line.2719"></a>
-<span class="sourceLineNo">2720</span>          break;<a name="line.2720"></a>
-<span class="sourceLineNo">2721</span><a name="line.2721"></a>
-<span class="sourceLineNo">2722</span>        case ABANDON:<a name="line.2722"></a>
-<span class="sourceLineNo">2723</span>        case BIND:<a name="line.2723"></a>
-<span class="sourceLineNo">2724</span>        case EXTENDED:<a name="line.2724"></a>
-<span class="sourceLineNo">2725</span>        case UNBIND:<a name="line.2725"></a>
-<span class="sourceLineNo">2726</span>        default:<a name="line.2726"></a>
-<span class="sourceLineNo">2727</span>          // These operation types are never acceptable for asynchronous<a name="line.2727"></a>
-<span class="sourceLineNo">2728</span>          // processing.<a name="line.2728"></a>
-<span class="sourceLineNo">2729</span>          throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.2729"></a>
-<span class="sourceLineNo">2730</span>               ERR_POOL_PROCESS_REQUESTS_ASYNC_OP_NOT_ASYNC.get(<a name="line.2730"></a>
-<span class="sourceLineNo">2731</span>                    String.valueOf(r)));<a name="line.2731"></a>
-<span class="sourceLineNo">2732</span>      }<a name="line.2732"></a>
-<span class="sourceLineNo">2733</span>    }<a name="line.2733"></a>
+<span class="sourceLineNo">2649</span>  /**<a name="line.2649"></a>
+<span class="sourceLineNo">2650</span>   * Processes multiple requests over a single connection from this pool using<a name="line.2650"></a>
+<span class="sourceLineNo">2651</span>   * asynchronous processing to cause the operations to be processed<a name="line.2651"></a>
+<span class="sourceLineNo">2652</span>   * concurrently.  The list of requests may contain only add, compare, delete,<a name="line.2652"></a>
+<span class="sourceLineNo">2653</span>   * modify, modify DN, and search operations (and any search operations to be<a name="line.2653"></a>
+<span class="sourceLineNo">2654</span>   * processed must be configured with an {@link AsyncSearchResultListener}.<a name="line.2654"></a>
+<span class="sourceLineNo">2655</span>   * This method will not return until all operations have completed, or until<a name="line.2655"></a>
+<span class="sourceLineNo">2656</span>   * the specified timeout period has elapsed.  The order of elements in the<a name="line.2656"></a>
+<span class="sourceLineNo">2657</span>   * list of the {@link AsyncRequestID} objects returned will correspond to the<a name="line.2657"></a>
+<span class="sourceLineNo">2658</span>   * order of elements in the list of requests.  The operation results may be<a name="line.2658"></a>
+<span class="sourceLineNo">2659</span>   * obtained from the returned {@code AsyncRequestID} objects using the<a name="line.2659"></a>
+<span class="sourceLineNo">2660</span>   * {@code java.util.concurrent.Future} API.<a name="line.2660"></a>
+<span class="sourceLineNo">2661</span>   *<a name="line.2661"></a>
+<span class="sourceLineNo">2662</span>   * @param  requests           The list of requests to be processed.  It must<a name="line.2662"></a>
+<span class="sourceLineNo">2663</span>   *                            not be {@code null} or empty, and it must<a name="line.2663"></a>
+<span class="sourceLineNo">2664</span>   *                            contain only add, compare, modify, modify DN,<a name="line.2664"></a>
+<span class="sourceLineNo">2665</span>   *                            and search requests.  Any search requests must<a name="line.2665"></a>
+<span class="sourceLineNo">2666</span>   *                            be configured with an<a name="line.2666"></a>
+<span class="sourceLineNo">2667</span>   *                            {@code AsyncSearchResultListener}.<a name="line.2667"></a>
+<span class="sourceLineNo">2668</span>   * @param  maxWaitTimeMillis  The maximum length of time in milliseconds to<a name="line.2668"></a>
+<span class="sourceLineNo">2669</span>   *                            wait for the operations to complete before<a name="line.2669"></a>
+<span class="sourceLineNo">2670</span>   *                            returning.  A value that is less than or equal<a name="line.2670"></a>
+<span class="sourceLineNo">2671</span>   *                            to zero indicates that the client should wait<a name="line.2671"></a>
+<span class="sourceLineNo">2672</span>   *                            indefinitely for the operations to complete.<a name="line.2672"></a>
+<span class="sourceLineNo">2673</span>   *<a name="line.2673"></a>
+<span class="sourceLineNo">2674</span>   * @return  The list of {@code AsyncRequestID} objects that may be used to<a name="line.2674"></a>
+<span class="sourceLineNo">2675</span>   *          retrieve the results for the operations.  The order of elements in<a name="line.2675"></a>
+<span class="sourceLineNo">2676</span>   *          this list will correspond to the order of the provided requests.<a name="line.2676"></a>
+<span class="sourceLineNo">2677</span>   *<a name="line.2677"></a>
+<span class="sourceLineNo">2678</span>   * @throws  LDAPException  If there is a problem with any of the requests, or<a name="line.2678"></a>
+<span class="sourceLineNo">2679</span>   *                         if connections in the pool are configured to use<a name="line.2679"></a>
+<span class="sourceLineNo">2680</span>   *                         synchronous mode and therefore cannot be used to<a name="line.2680"></a>
+<span class="sourceLineNo">2681</span>   *                         process asynchronous operations.<a name="line.2681"></a>
+<span class="sourceLineNo">2682</span>   */<a name="line.2682"></a>
+<span class="sourceLineNo">2683</span>  public final List&lt;AsyncRequestID&gt; processRequestsAsync(<a name="line.2683"></a>
+<span class="sourceLineNo">2684</span>                                         final List&lt;LDAPRequest&gt; requests,<a name="line.2684"></a>
+<span class="sourceLineNo">2685</span>                                         final long maxWaitTimeMillis)<a name="line.2685"></a>
+<span class="sourceLineNo">2686</span>         throws LDAPException<a name="line.2686"></a>
+<span class="sourceLineNo">2687</span>  {<a name="line.2687"></a>
+<span class="sourceLineNo">2688</span>    // Make sure the set of requests is not null or empty.<a name="line.2688"></a>
+<span class="sourceLineNo">2689</span>    Validator.ensureNotNull(requests);<a name="line.2689"></a>
+<span class="sourceLineNo">2690</span>    Validator.ensureFalse(requests.isEmpty(),<a name="line.2690"></a>
+<span class="sourceLineNo">2691</span>         "LDAPConnectionPool.processRequests.requests must not be empty.");<a name="line.2691"></a>
+<span class="sourceLineNo">2692</span><a name="line.2692"></a>
+<span class="sourceLineNo">2693</span>    // Make sure that all the requests are acceptable.<a name="line.2693"></a>
+<span class="sourceLineNo">2694</span>    for (final LDAPRequest r : requests)<a name="line.2694"></a>
+<span class="sourceLineNo">2695</span>    {<a name="line.2695"></a>
+<span class="sourceLineNo">2696</span>      switch (r.getOperationType())<a name="line.2696"></a>
+<span class="sourceLineNo">2697</span>      {<a name="line.2697"></a>
+<span class="sourceLineNo">2698</span>        case ADD:<a name="line.2698"></a>
+<span class="sourceLineNo">2699</span>        case COMPARE:<a name="line.2699"></a>
+<span class="sourceLineNo">2700</span>        case DELETE:<a name="line.2700"></a>
+<span class="sourceLineNo">2701</span>        case MODIFY:<a name="line.2701"></a>
+<span class="sourceLineNo">2702</span>        case MODIFY_DN:<a name="line.2702"></a>
+<span class="sourceLineNo">2703</span>          // These operation types are always acceptable for asynchronous<a name="line.2703"></a>
+<span class="sourceLineNo">2704</span>          // processing.<a name="line.2704"></a>
+<span class="sourceLineNo">2705</span>          break;<a name="line.2705"></a>
+<span class="sourceLineNo">2706</span><a name="line.2706"></a>
+<span class="sourceLineNo">2707</span>        case SEARCH:<a name="line.2707"></a>
+<span class="sourceLineNo">2708</span>          // Search operations will only be acceptable if they have been<a name="line.2708"></a>
+<span class="sourceLineNo">2709</span>          // configured with an async search result listener.<a name="line.2709"></a>
+<span class="sourceLineNo">2710</span>          final SearchRequest searchRequest = (SearchRequest) r;<a name="line.2710"></a>
+<span class="sourceLineNo">2711</span>          if ((searchRequest.getSearchResultListener() == null) ||<a name="line.2711"></a>
+<span class="sourceLineNo">2712</span>              (! (searchRequest.getSearchResultListener() instanceof<a name="line.2712"></a>
+<span class="sourceLineNo">2713</span>                   AsyncSearchResultListener)))<a name="line.2713"></a>
+<span class="sourceLineNo">2714</span>          {<a name="line.2714"></a>
+<span class="sourceLineNo">2715</span>            throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.2715"></a>
+<span class="sourceLineNo">2716</span>                 ERR_POOL_PROCESS_REQUESTS_ASYNC_SEARCH_NOT_ASYNC.get(<a name="line.2716"></a>
+<span class="sourceLineNo">2717</span>                      String.valueOf(r)));<a name="line.2717"></a>
+<span class="sourceLineNo">2718</span>          }<a name="line.2718"></a>
+<span class="sourceLineNo">2719</span>          break;<a name="line.2719"></a>
+<span class="sourceLineNo">2720</span><a name="line.2720"></a>
+<span class="sourceLineNo">2721</span>        case ABANDON:<a name="line.2721"></a>
+<span class="sourceLineNo">2722</span>        case BIND:<a name="line.2722"></a>
+<span class="sourceLineNo">2723</span>        case EXTENDED:<a name="line.2723"></a>
+<span class="sourceLineNo">2724</span>        case UNBIND:<a name="line.2724"></a>
+<span class="sourceLineNo">2725</span>        default:<a name="line.2725"></a>
+<span class="sourceLineNo">2726</span>          // These operation types are never acceptable for asynchronous<a name="line.2726"></a>
+<span class="sourceLineNo">2727</span>          // processing.<a name="line.2727"></a>
+<span class="sourceLineNo">2728</span>          throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.2728"></a>
+<span class="sourceLineNo">2729</span>               ERR_POOL_PROCESS_REQUESTS_ASYNC_OP_NOT_ASYNC.get(<a name="line.2729"></a>
+<span class="sourceLineNo">2730</span>                    String.valueOf(r)));<a name="line.2730"></a>
+<span class="sourceLineNo">2731</span>      }<a name="line.2731"></a>
+<span class="sourceLineNo">2732</span>    }<a name="line.2732"></a>
+<span class="sourceLineNo">2733</span><a name="line.2733"></a>
 <span class="sourceLineNo">2734</span><a name="line.2734"></a>
-<span class="sourceLineNo">2735</span><a name="line.2735"></a>
-<span class="sourceLineNo">2736</span>    final LDAPConnection conn;<a name="line.2736"></a>
-<span class="sourceLineNo">2737</span>    try<a name="line.2737"></a>
-<span class="sourceLineNo">2738</span>    {<a name="line.2738"></a>
-<span class="sourceLineNo">2739</span>      conn = getConnection();<a name="line.2739"></a>
-<span class="sourceLineNo">2740</span>    }<a name="line.2740"></a>
-<span class="sourceLineNo">2741</span>    catch (final LDAPException le)<a name="line.2741"></a>
-<span class="sourceLineNo">2742</span>    {<a name="line.2742"></a>
-<span class="sourceLineNo">2743</span>      debugException(le);<a name="line.2743"></a>
-<span class="sourceLineNo">2744</span>      throw new LDAPSearchException(le);<a name="line.2744"></a>
-<span class="sourceLineNo">2745</span>    }<a name="line.2745"></a>
+<span class="sourceLineNo">2735</span>    final LDAPConnection conn;<a name="line.2735"></a>
+<span class="sourceLineNo">2736</span>    try<a name="line.2736"></a>
+<span class="sourceLineNo">2737</span>    {<a name="line.2737"></a>
+<span class="sourceLineNo">2738</span>      conn = getConnection();<a name="line.2738"></a>
+<span class="sourceLineNo">2739</span>    }<a name="line.2739"></a>
+<span class="sourceLineNo">2740</span>    catch (final LDAPException le)<a name="line.2740"></a>
+<span class="sourceLineNo">2741</span>    {<a name="line.2741"></a>
+<span class="sourceLineNo">2742</span>      Debug.debugException(le);<a name="line.2742"></a>
+<span class="sourceLineNo">2743</span>      throw new LDAPSearchException(le);<a name="line.2743"></a>
+<span class="sourceLineNo">2744</span>    }<a name="line.2744"></a>
+<span class="sourceLineNo">2745</span><a name="line.2745"></a>
 <span class="sourceLineNo">2746</span><a name="line.2746"></a>
-<span class="sourceLineNo">2747</span><a name="line.2747"></a>
-<span class="sourceLineNo">2748</span>    final ArrayList&lt;AsyncRequestID&gt; requestIDs =<a name="line.2748"></a>
-<span class="sourceLineNo">2749</span>         new ArrayList&lt;AsyncRequestID&gt;();<a name="line.2749"></a>
-<span class="sourceLineNo">2750</span>    boolean isDefunct = false;<a name="line.2750"></a>
-<span class="sourceLineNo">2751</span><a name="line.2751"></a>
-<span class="sourceLineNo">2752</span>    try<a name="line.2752"></a>
-<span class="sourceLineNo">2753</span>    {<a name="line.2753"></a>
-<span class="sourceLineNo">2754</span>      // Make sure that the connection is not configured to use synchronous<a name="line.2754"></a>
-<span class="sourceLineNo">2755</span>      // mode, because asynchronous operations are not allowed in that mode.<a name="line.2755"></a>
-<span class="sourceLineNo">2756</span>      if (conn.synchronousMode())<a name="line.2756"></a>
-<span class="sourceLineNo">2757</span>      {<a name="line.2757"></a>
-<span class="sourceLineNo">2758</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.2758"></a>
-<span class="sourceLineNo">2759</span>             ERR_POOL_PROCESS_REQUESTS_ASYNC_SYNCHRONOUS_MODE.get());<a name="line.2759"></a>
-<span class="sourceLineNo">2760</span>      }<a name="line.2760"></a>
+<span class="sourceLineNo">2747</span>    final ArrayList&lt;AsyncRequestID&gt; requestIDs =<a name="line.2747"></a>
+<span class="sourceLineNo">2748</span>         new ArrayList&lt;&gt;(requests.size());<a name="line.2748"></a>
+<span class="sourceLineNo">2749</span>    boolean isDefunct = false;<a name="line.2749"></a>
+<span class="sourceLineNo">2750</span><a name="line.2750"></a>
+<span class="sourceLineNo">2751</span>    try<a name="line.2751"></a>
+<span class="sourceLineNo">2752</span>    {<a name="line.2752"></a>
+<span class="sourceLineNo">2753</span>      // Make sure that the connection is not configured to use synchronous<a name="line.2753"></a>
+<span class="sourceLineNo">2754</span>      // mode, because asynchronous operations are not allowed in that mode.<a name="line.2754"></a>
+<span class="sourceLineNo">2755</span>      if (conn.synchronousMode())<a name="line.2755"></a>
+<span class="sourceLineNo">2756</span>      {<a name="line.2756"></a>
+<span class="sourceLineNo">2757</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.2757"></a>
+<span class="sourceLineNo">2758</span>             ERR_POOL_PROCESS_REQUESTS_ASYNC_SYNCHRONOUS_MODE.get());<a name="line.2758"></a>
+<span class="sourceLineNo">2759</span>      }<a name="line.2759"></a>
+<span class="sourceLineNo">2760</span><a name="line.2760"></a>
 <span class="sourceLineNo">2761</span><a name="line.2761"></a>
-<span class="sourceLineNo">2762</span><a name="line.2762"></a>
-<span class="sourceLineNo">2763</span>      // Issue all of the requests.  If an exception is encountered while<a name="line.2763"></a>
-<span class="sourceLineNo">2764</span>      // issuing a request, then convert it into an AsyncRequestID with the<a name="line.2764"></a>
-<span class="sourceLineNo">2765</span>      // exception as the result.<a name="line.2765"></a>
-<span class="sourceLineNo">2766</span>      for (final LDAPRequest r : requests)<a name="line.2766"></a>
-<span class="sourceLineNo">2767</span>      {<a name="line.2767"></a>
-<span class="sourceLineNo">2768</span>        AsyncRequestID requestID = null;<a name="line.2768"></a>
-<span class="sourceLineNo">2769</span>        try<a name="line.2769"></a>
-<span class="sourceLineNo">2770</span>        {<a name="line.2770"></a>
-<span class="sourceLineNo">2771</span>          switch (r.getOperationType())<a name="line.2771"></a>
-<span class="sourceLineNo">2772</span>          {<a name="line.2772"></a>
-<span class="sourceLineNo">2773</span>            case ADD:<a name="line.2773"></a>
-<span class="sourceLineNo">2774</span>              requestID = conn.asyncAdd((AddRequest) r, null);<a name="line.2774"></a>
-<span class="sourceLineNo">2775</span>              break;<a name="line.2775"></a>
-<span class="sourceLineNo">2776</span>            case COMPARE:<a name="line.2776"></a>
-<span class="sourceLineNo">2777</span>              requestID = conn.asyncCompare((CompareRequest) r, null);<a name="line.2777"></a>
-<span class="sourceLineNo">2778</span>              break;<a name="line.2778"></a>
-<span class="sourceLineNo">2779</span>            case DELETE:<a name="line.2779"></a>
-<span class="sourceLineNo">2780</span>              requestID = conn.asyncDelete((DeleteRequest) r, null);<a name="line.2780"></a>
-<span class="sourceLineNo">2781</span>              break;<a name="line.2781"></a>
-<span class="sourceLineNo">2782</span>            case MODIFY:<a name="line.2782"></a>
-<span class="sourceLineNo">2783</span>              requestID = conn.asyncModify((ModifyRequest) r, null);<a name="line.2783"></a>
-<span class="sourceLineNo">2784</span>              break;<a name="line.2784"></a>
-<span class="sourceLineNo">2785</span>            case MODIFY_DN:<a name="line.2785"></a>
-<span class="sourceLineNo">2786</span>              requestID = conn.asyncModifyDN((ModifyDNRequest) r, null);<a name="line.2786"></a>
-<span class="sourceLineNo">2787</span>              break;<a name="line.2787"></a>
-<span class="sourceLineNo">2788</span>            case SEARCH:<a name="line.2788"></a>
-<span class="sourceLineNo">2789</span>              requestID = conn.asyncSearch((SearchRequest) r);<a name="line.2789"></a>
-<span class="sourceLineNo">2790</span>              break;<a name="line.2790"></a>
-<span class="sourceLineNo">2791</span>          }<a name="line.2791"></a>
-<span class="sourceLineNo">2792</span>        }<a name="line.2792"></a>
-<span class="sourceLineNo">2793</span>        catch (final LDAPException le)<a name="line.2793"></a>
-<span class="sourceLineNo">2794</span>        {<a name="line.2794"></a>
-<span class="sourceLineNo">2795</span>          debugException(le);<a name="line.2795"></a>
-<span class="sourceLineNo">2796</span>          requestID = new AsyncRequestID(r.getLastMessageID(), conn);<a name="line.2796"></a>
-<span class="sourceLineNo">2797</span>          requestID.setResult(le.toLDAPResult());<a name="line.2797"></a>
-<span class="sourceLineNo">2798</span>        }<a name="line.2798"></a>
-<span class="sourceLineNo">2799</span><a name="line.2799"></a>
-<span class="sourceLineNo">2800</span>        requestIDs.add(requestID);<a name="line.2800"></a>
-<span class="sourceLineNo">2801</span>      }<a name="line.2801"></a>
+<span class="sourceLineNo">2762</span>      // Issue all of the requests.  If an exception is encountered while<a name="line.2762"></a>
+<span class="sourceLineNo">2763</span>      // issuing a request, then convert it into an AsyncRequestID with the<a name="line.2763"></a>
+<span class="sourceLineNo">2764</span>      // exception as the result.<a name="line.2764"></a>
+<span class="sourceLineNo">2765</span>      for (final LDAPRequest r : requests)<a name="line.2765"></a>
+<span class="sourceLineNo">2766</span>      {<a name="line.2766"></a>
+<span class="sourceLineNo">2767</span>        AsyncRequestID requestID = null;<a name="line.2767"></a>
+<span class="sourceLineNo">2768</span>        try<a name="line.2768"></a>
+<span class="sourceLineNo">2769</span>        {<a name="line.2769"></a>
+<span class="sourceLineNo">2770</span>          switch (r.getOperationType())<a name="line.2770"></a>
+<span class="sourceLineNo">2771</span>          {<a name="line.2771"></a>
+<span class="sourceLineNo">2772</span>            case ADD:<a name="line.2772"></a>
+<span class="sourceLineNo">2773</span>              requestID = conn.asyncAdd((AddRequest) r, null);<a name="line.2773"></a>
+<span class="sourceLineNo">2774</span>              break;<a name="line.2774"></a>
+<span class="sourceLineNo">2775</span>            case COMPARE:<a name="line.2775"></a>
+<span class="sourceLineNo">2776</span>              requestID = conn.asyncCompare((CompareRequest) r, null);<a name="line.2776"></a>
+<span class="sourceLineNo">2777</span>              break;<a name="line.2777"></a>
+<span class="sourceLineNo">2778</span>            case DELETE:<a name="line.2778"></a>
+<span class="sourceLineNo">2779</span>              requestID = conn.asyncDelete((DeleteRequest) r, null);<a name="line.2779"></a>
+<span class="sourceLineNo">2780</span>              break;<a name="line.2780"></a>
+<span class="sourceLineNo">2781</span>            case MODIFY:<a name="line.2781"></a>
+<span class="sourceLineNo">2782</span>              requestID = conn.asyncModify((ModifyRequest) r, null);<a name="line.2782"></a>
+<span class="sourceLineNo">2783</span>              break;<a name="line.2783"></a>
+<span class="sourceLineNo">2784</span>            case MODIFY_DN:<a name="line.2784"></a>
+<span class="sourceLineNo">2785</span>              requestID = conn.asyncModifyDN((ModifyDNRequest) r, null);<a name="line.2785"></a>
+<span class="sourceLineNo">2786</span>              break;<a name="line.2786"></a>
+<span class="sourceLineNo">2787</span>            case SEARCH:<a name="line.2787"></a>
+<span class="sourceLineNo">2788</span>              requestID = conn.asyncSearch((SearchRequest) r);<a name="line.2788"></a>
+<span class="sourceLineNo">2789</span>              break;<a name="line.2789"></a>
+<span class="sourceLineNo">2790</span>          }<a name="line.2790"></a>
+<span class="sourceLineNo">2791</span>        }<a name="line.2791"></a>
+<span class="sourceLineNo">2792</span>        catch (final LDAPException le)<a name="line.2792"></a>
+<span class="sourceLineNo">2793</span>        {<a name="line.2793"></a>
+<span class="sourceLineNo">2794</span>          Debug.debugException(le);<a name="line.2794"></a>
+<span class="sourceLineNo">2795</span>          requestID = new AsyncRequestID(r.getLastMessageID(), conn);<a name="line.2795"></a>
+<span class="sourceLineNo">2796</span>          requestID.setResult(le.toLDAPResult());<a name="line.2796"></a>
+<span class="sourceLineNo">2797</span>        }<a name="line.2797"></a>
+<span class="sourceLineNo">2798</span><a name="line.2798"></a>
+<span class="sourceLineNo">2799</span>        requestIDs.add(requestID);<a name="line.2799"></a>
+<span class="sourceLineNo">2800</span>      }<a name="line.2800"></a>
+<span class="sourceLineNo">2801</span><a name="line.2801"></a>
 <span class="sourceLineNo">2802</span><a name="line.2802"></a>
-<span class="sourceLineNo">2803</span><a name="line.2803"></a>
-<span class="sourceLineNo">2804</span>      // Wait for the operations to complete.  If any operation does not<a name="line.2804"></a>
-<span class="sourceLineNo">2805</span>      // complete before the specified timeout, then create a failure result for<a name="line.2805"></a>
-<span class="sourceLineNo">2806</span>      // it.  If any operation does not complete successfully, then attempt to<a name="line.2806"></a>
-<span class="sourceLineNo">2807</span>      // determine whether the failure may indicate that the connection is no<a name="line.2807"></a>
-<span class="sourceLineNo">2808</span>      // longer valid.<a name="line.2808"></a>
-<span class="sourceLineNo">2809</span>      final long startWaitingTime = System.currentTimeMillis();<a name="line.2809"></a>
-<span class="sourceLineNo">2810</span>      final long stopWaitingTime;<a name="line.2810"></a>
-<span class="sourceLineNo">2811</span>      if (maxWaitTimeMillis &gt; 0)<a name="line.2811"></a>
-<span class="sourceLineNo">2812</span>      {<a name="line.2812"></a>
-<span class="sourceLineNo">2813</span>        stopWaitingTime = startWaitingTime + maxWaitTimeMillis;<a name="line.2813"></a>
-<span class="sourceLineNo">2814</span>      }<a name="line.2814"></a>
-<span class="sourceLineNo">2815</span>      else<a name="line.2815"></a>
-<span class="sourceLineNo">2816</span>      {<a name="line.2816"></a>
-<span class="sourceLineNo">2817</span>        stopWaitingTime = Long.MAX_VALUE;<a name="line.2817"></a>
-<span class="sourceLineNo">2818</span>      }<a name="line.2818"></a>
-<span class="sourceLineNo">2819</span><a name="line.2819"></a>
-<span class="sourceLineNo">2820</span>      for (final AsyncRequestID requestID : requestIDs)<a name="line.2820"></a>
-<span class="sourceLineNo">2821</span>      {<a name="line.2821"></a>
-<span class="sourceLineNo">2822</span>        LDAPResult result;<a name="line.2822"></a>
-<span class="sourceLineNo">2823</span>        final long waitTime = stopWaitingTime - System.currentTimeMillis();<a name="line.2823"></a>
-<span class="sourceLineNo">2824</span>        if (waitTime &gt; 0)<a name="line.2824"></a>
-<span class="sourceLineNo">2825</span>        {<a name="line.2825"></a>
-<span class="sourceLineNo">2826</span>          try<a name="line.2826"></a>
-<span class="sourceLineNo">2827</span>          {<a name="line.2827"></a>
-<span class="sourceLineNo">2828</span>            result = requestID.get(waitTime, TimeUnit.MILLISECONDS);<a name="line.2828"></a>
-<span class="sourceLineNo">2829</span>          }<a name="line.2829"></a>
-<span class="sourceLineNo">2830</span>          catch (final Exception e)<a name="line.2830"></a>
-<span class="sourceLineNo">2831</span>          {<a name="line.2831"></a>
-<span class="sourceLineNo">2832</span>            debugException(e);<a name="line.2832"></a>
-<span class="sourceLineNo">2833</span>            requestID.cancel(true);<a name="line.2833"></a>
-<span class="sourceLineNo">2834</span><a name="line.2834"></a>
-<span class="sourceLineNo">2835</span>            if (e instanceof TimeoutException)<a name="line.2835"></a>
-<span class="sourceLineNo">2836</span>            {<a name="line.2836"></a>
-<span class="sourceLineNo">2837</span>              result = new LDAPResult(requestID.getMessageID(),<a name="line.2837"></a>
-<span class="sourceLineNo">2838</span>                   ResultCode.TIMEOUT,<a name="line.2838"></a>
-<span class="sourceLineNo">2839</span>                   ERR_POOL_PROCESS_REQUESTS_ASYNC_RESULT_TIMEOUT.get(<a name="line.2839"></a>
-<span class="sourceLineNo">2840</span>                        (System.currentTimeMillis() - startWaitingTime)),<a name="line.2840"></a>
-<span class="sourceLineNo">2841</span>                   null, NO_STRINGS, NO_CONTROLS);<a name="line.2841"></a>
-<span class="sourceLineNo">2842</span>            }<a name="line.2842"></a>
-<span class="sourceLineNo">2843</span>            else<a name="line.2843"></a>
-<span class="sourceLineNo">2844</span>            {<a name="line.2844"></a>
-<span class="sourceLineNo">2845</span>              result = new LDAPResult(requestID.getMessageID(),<a name="line.2845"></a>
-<span class="sourceLineNo">2846</span>                   ResultCode.LOCAL_ERROR,<a name="line.2846"></a>
-<span class="sourceLineNo">2847</span>                   ERR_POOL_PROCESS_REQUESTS_ASYNC_RESULT_EXCEPTION.get(<a name="line.2847"></a>
-<span class="sourceLineNo">2848</span>                        getExceptionMessage(e)),<a name="line.2848"></a>
-<span class="sourceLineNo">2849</span>                   null, NO_STRINGS, NO_CONTROLS);<a name="line.2849"></a>
-<span class="sourceLineNo">2850</span>            }<a name="line.2850"></a>
-<span class="sourceLineNo">2851</span>            requestID.setResult(result);<a name="line.2851"></a>
-<span class="sourceLineNo">2852</span>          }<a name="line.2852"></a>
-<span class="sourceLineNo">2853</span>        }<a name="line.2853"></a>
-<span class="sourceLineNo">2854</span>        else<a name="line.2854"></a>
-<span class="sourceLineNo">2855</span>        {<a name="line.2855"></a>
-<span class="sourceLineNo">2856</span>          requestID.cancel(true);<a name="line.2856"></a>
-<span class="sourceLineNo">2857</span>          result = new LDAPResult(requestID.getMessageID(),<a name="line.2857"></a>
-<span class="sourceLineNo">2858</span>               ResultCode.TIMEOUT,<a name="line.2858"></a>
-<span class="sourceLineNo">2859</span>               ERR_POOL_PROCESS_REQUESTS_ASYNC_RESULT_TIMEOUT.get(<a name="line.2859"></a>
-<span class="sourceLineNo">2860</span>                    (System.currentTimeMillis() - startWaitingTime)),<a name="line.2860"></a>
-<span class="sourceLineNo">2861</span>               null, NO_STRINGS, NO_CONTROLS);<a name="line.2861"></a>
-<span class="sourceLineNo">2862</span>          requestID.setResult(result);<a name="line.2862"></a>
-<span class="sourceLineNo">2863</span>        }<a name="line.2863"></a>
+<span class="sourceLineNo">2803</span>      // Wait for the operations to complete.  If any operation does not<a name="line.2803"></a>
+<span class="sourceLineNo">2804</span>      // complete before the specified timeout, then create a failure result for<a name="line.2804"></a>
+<span class="sourceLineNo">2805</span>      // it.  If any operation does not complete successfully, then attempt to<a name="line.2805"></a>
+<span class="sourceLineNo">2806</span>      // determine whether the failure may indicate that the connection is no<a name="line.2806"></a>
+<span class="sourceLineNo">2807</span>      // longer valid.<a name="line.2807"></a>
+<span class="sourceLineNo">2808</span>      final long startWaitingTime = System.currentTimeMillis();<a name="line.2808"></a>
+<span class="sourceLineNo">2809</span>      final long stopWaitingTime;<a name="line.2809"></a>
+<span class="sourceLineNo">2810</span>      if (maxWaitTimeMillis &gt; 0)<a name="line.2810"></a>
+<span class="sourceLineNo">2811</span>      {<a name="line.2811"></a>
+<span class="sourceLineNo">2812</span>        stopWaitingTime = startWaitingTime + maxWaitTimeMillis;<a name="line.2812"></a>
+<span class="sourceLineNo">2813</span>      }<a name="line.2813"></a>
+<span class="sourceLineNo">2814</span>      else<a name="line.2814"></a>
+<span class="sourceLineNo">2815</span>      {<a name="line.2815"></a>
+<span class="sourceLineNo">2816</span>        stopWaitingTime = Long.MAX_VALUE;<a name="line.2816"></a>
+<span class="sourceLineNo">2817</span>      }<a name="line.2817"></a>
+<span class="sourceLineNo">2818</span><a name="line.2818"></a>
+<span class="sourceLineNo">2819</span>      for (final AsyncRequestID requestID : requestIDs)<a name="line.2819"></a>
+<span class="sourceLineNo">2820</span>      {<a name="line.2820"></a>
+<span class="sourceLineNo">2821</span>        LDAPResult result;<a name="line.2821"></a>
+<span class="sourceLineNo">2822</span>        final long waitTime = stopWaitingTime - System.currentTimeMillis();<a name="line.2822"></a>
+<span class="sourceLineNo">2823</span>        if (waitTime &gt; 0)<a name="line.2823"></a>
+<span class="sourceLineNo">2824</span>        {<a name="line.2824"></a>
+<span class="sourceLineNo">2825</span>          try<a name="line.2825"></a>
+<span class="sourceLineNo">2826</span>          {<a name="line.2826"></a>
+<span class="sourceLineNo">2827</span>            result = requestID.get(waitTime, TimeUnit.MILLISECONDS);<a name="line.2827"></a>
+<span class="sourceLineNo">2828</span>          }<a name="line.2828"></a>
+<span class="sourceLineNo">2829</span>          catch (final Exception e)<a name="line.2829"></a>
+<span class="sourceLineNo">2830</span>          {<a name="line.2830"></a>
+<span class="sourceLineNo">2831</span>            Debug.debugException(e);<a name="line.2831"></a>
+<span class="sourceLineNo">2832</span>            requestID.cancel(true);<a name="line.2832"></a>
+<span class="sourceLineNo">2833</span><a name="line.2833"></a>
+<span class="sourceLineNo">2834</span>            if (e instanceof TimeoutException)<a name="line.2834"></a>
+<span class="sourceLineNo">2835</span>            {<a name="line.2835"></a>
+<span class="sourceLineNo">2836</span>              result = new LDAPResult(requestID.getMessageID(),<a name="line.2836"></a>
+<span class="sourceLineNo">2837</span>                   ResultCode.TIMEOUT,<a name="line.2837"></a>
+<span class="sourceLineNo">2838</span>                   ERR_POOL_PROCESS_REQUESTS_ASYNC_RESULT_TIMEOUT.get(<a name="line.2838"></a>
+<span class="sourceLineNo">2839</span>                        (System.currentTimeMillis() - startWaitingTime)),<a name="line.2839"></a>
+<span class="sourceLineNo">2840</span>                   null, StaticUtils.NO_STRINGS, StaticUtils.NO_CONTROLS);<a name="line.2840"></a>
+<span class="sourceLineNo">2841</span>            }<a name="line.2841"></a>
+<span class="sourceLineNo">2842</span>            else<a name="line.2842"></a>
+<span class="sourceLineNo">2843</span>            {<a name="line.2843"></a>
+<span class="sourceLineNo">2844</span>              result = new LDAPResult(requestID.getMessageID(),<a name="line.2844"></a>
+<span class="sourceLineNo">2845</span>                   ResultCode.LOCAL_ERROR,<a name="line.2845"></a>
+<span class="sourceLineNo">2846</span>                   ERR_POOL_PROCESS_REQUESTS_ASYNC_RESULT_EXCEPTION.get(<a name="line.2846"></a>
+<span class="sourceLineNo">2847</span>                        StaticUtils.getExceptionMessage(e)),<a name="line.2847"></a>
+<span class="sourceLineNo">2848</span>                   null, StaticUtils.NO_STRINGS, StaticUtils.NO_CONTROLS);<a name="line.2848"></a>
+<span class="sourceLineNo">2849</span>            }<a name="line.2849"></a>
+<span class="sourceLineNo">2850</span>            requestID.setResult(result);<a name="line.2850"></a>
+<span class="sourceLineNo">2851</span>          }<a name="line.2851"></a>
+<span class="sourceLineNo">2852</span>        }<a name="line.2852"></a>
+<span class="sourceLineNo">2853</span>        else<a name="line.2853"></a>
+<span class="sourceLineNo">2854</span>        {<a name="line.2854"></a>
+<span class="sourceLineNo">2855</span>          requestID.cancel(true);<a name="line.2855"></a>
+<span class="sourceLineNo">2856</span>          result = new LDAPResult(requestID.getMessageID(),<a name="line.2856"></a>
+<span class="sourceLineNo">2857</span>               ResultCode.TIMEOUT,<a name="line.2857"></a>
+<span class="sourceLineNo">2858</span>               ERR_POOL_PROCESS_REQUESTS_ASYNC_RESULT_TIMEOUT.get(<a name="line.2858"></a>
+<span class="sourceLineNo">2859</span>                    (System.currentTimeMillis() - startWaitingTime)),<a name="line.2859"></a>
+<span class="sourceLineNo">2860</span>               null, StaticUtils.NO_STRINGS, StaticUtils.NO_CONTROLS);<a name="line.2860"></a>
+<span class="sourceLineNo">2861</span>          requestID.setResult(result);<a name="line.2861"></a>
+<span class="sourceLineNo">2862</span>        }<a name="line.2862"></a>
+<span class="sourceLineNo">2863</span><a name="line.2863"></a>
 <span class="sourceLineNo">2864</span><a name="line.2864"></a>
-<span class="sourceLineNo">2865</span><a name="line.2865"></a>
-<span class="sourceLineNo">2866</span>        // See if we think that the connection may be defunct.<a name="line.2866"></a>
-<span class="sourceLineNo">2867</span>        if (! ResultCode.isConnectionUsable(result.getResultCode()))<a name="line.2867"></a>
-<span class="sourceLineNo">2868</span>        {<a name="line.2868"></a>
-<span class="sourceLineNo">2869</span>          isDefunct = true;<a name="line.2869"></a>
-<span class="sourceLineNo">2870</span>        }<a name="line.2870"></a>
-<span class="sourceLineNo">2871</span>      }<a name="line.2871"></a>
-<span class="sourceLineNo">2872</span><a name="line.2872"></a>
-<span class="sourceLineNo">2873</span>      return requestIDs;<a name="line.2873"></a>
-<span class="sourceLineNo">2874</span>    }<a name="line.2874"></a>
-<span class="sourceLineNo">2875</span>    finally<a name="line.2875"></a>
-<span class="sourceLineNo">2876</span>    {<a name="line.2876"></a>
-<span class="sourceLineNo">2877</span>      if (isDefunct)<a name="line.2877"></a>
-<span class="sourceLineNo">2878</span>      {<a name="line.2878"></a>
-<span class="sourceLineNo">2879</span>        releaseDefunctConnection(conn);<a name="line.2879"></a>
-<span class="sourceLineNo">2880</span>      }<a name="line.2880"></a>
-<span class="sourceLineNo">2881</span>      else<a name="line.2881"></a>
-<span class="sourceLineNo">2882</span>      {<a name="line.2882"></a>
-<span class="sourceLineNo">2883</span>        releaseConnection(conn);<a name="line.2883"></a>
-<span class="sourceLineNo">2884</span>      }<a name="line.2884"></a>
-<span class="sourceLineNo">2885</span>    }<a name="line.2885"></a>
-<span class="sourceLineNo">2886</span>  }<a name="line.2886"></a>
+<span class="sourceLineNo">2865</span>        // See if we think that the connection may be defunct.<a name="line.2865"></a>
+<span class="sourceLineNo">2866</span>        if (! ResultCode.isConnectionUsable(result.getResultCode()))<a name="line.2866"></a>
+<span class="sourceLineNo">2867</span>        {<a name="line.2867"></a>
+<span class="sourceLineNo">2868</span>          isDefunct = true;<a name="line.2868"></a>
+<span class="sourceLineNo">2869</span>        }<a name="line.2869"></a>
+<span class="sourceLineNo">2870</span>      }<a name="line.2870"></a>
+<span class="sourceLineNo">2871</span><a name="line.2871"></a>
+<span class="sourceLineNo">2872</span>      return requestIDs;<a name="line.2872"></a>
+<span class="sourceLineNo">2873</span>    }<a name="line.2873"></a>
+<span class="sourceLineNo">2874</span>    finally<a name="line.2874"></a>
+<span class="sourceLineNo">2875</span>    {<a name="line.2875"></a>
+<span class="sourceLineNo">2876</span>      if (isDefunct)<a name="line.2876"></a>
+<span class="sourceLineNo">2877</span>      {<a name="line.2877"></a>
+<span class="sourceLineNo">2878</span>        releaseDefunctConnection(conn);<a name="line.2878"></a>
+<span class="sourceLineNo">2879</span>      }<a name="line.2879"></a>
+<span class="sourceLineNo">2880</span>      else<a name="line.2880"></a>
+<span class="sourceLineNo">2881</span>      {<a name="line.2881"></a>
+<span class="sourceLineNo">2882</span>        releaseConnection(conn);<a name="line.2882"></a>
+<span class="sourceLineNo">2883</span>      }<a name="line.2883"></a>
+<span class="sourceLineNo">2884</span>    }<a name="line.2884"></a>
+<span class="sourceLineNo">2885</span>  }<a name="line.2885"></a>
+<span class="sourceLineNo">2886</span><a name="line.2886"></a>
 <span class="sourceLineNo">2887</span><a name="line.2887"></a>
 <span class="sourceLineNo">2888</span><a name="line.2888"></a>
-<span class="sourceLineNo">2889</span><a name="line.2889"></a>
-<span class="sourceLineNo">2890</span>  /**<a name="line.2890"></a>
-<span class="sourceLineNo">2891</span>   * Examines the provided {@code Throwable} object to determine whether it<a name="line.2891"></a>
-<span class="sourceLineNo">2892</span>   * represents an {@code LDAPException} that indicates the associated<a name="line.2892"></a>
-<span class="sourceLineNo">2893</span>   * connection may no longer be valid.  If that is the case, and if such<a name="line.2893"></a>
-<span class="sourceLineNo">2894</span>   * operations should be retried, then no exception will be thrown.  Otherwise,<a name="line.2894"></a>
-<span class="sourceLineNo">2895</span>   * an appropriate {@code LDAPException} will be thrown.<a name="line.2895"></a>
-<span class="sourceLineNo">2896</span>   *<a name="line.2896"></a>
-<span class="sourceLineNo">2897</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.2897"></a>
-<span class="sourceLineNo">2898</span>   * @param  o     The type of operation for which to make the determination.<a name="line.2898"></a>
-<span class="sourceLineNo">2899</span>   * @param  conn  The connection to be released to the pool.<a name="line.2899"></a>
-<span class="sourceLineNo">2900</span>   *<a name="line.2900"></a>
-<span class="sourceLineNo">2901</span>   * @throws  LDAPException  To indicate that a problem occurred during LDAP<a name="line.2901"></a>
-<span class="sourceLineNo">2902</span>   *                         processing and the operation should not be retried.<a name="line.2902"></a>
-<span class="sourceLineNo">2903</span>   */<a name="line.2903"></a>
-<span class="sourceLineNo">2904</span>  private void throwLDAPExceptionIfShouldNotRetry(final Throwable t,<a name="line.2904"></a>
-<span class="sourceLineNo">2905</span>                                                  final OperationType o,<a name="line.2905"></a>
-<span class="sourceLineNo">2906</span>                                                  final LDAPConnection conn)<a name="line.2906"></a>
-<span class="sourceLineNo">2907</span>          throws LDAPException<a name="line.2907"></a>
-<span class="sourceLineNo">2908</span>  {<a name="line.2908"></a>
-<span class="sourceLineNo">2909</span>    if ((t instanceof LDAPException) &amp;&amp;<a name="line.2909"></a>
-<span class="sourceLineNo">2910</span>        getOperationTypesToRetryDueToInvalidConnections().contains(o))<a name="line.2910"></a>
-<span class="sourceLineNo">2911</span>    {<a name="line.2911"></a>
-<span class="sourceLineNo">2912</span>      final LDAPException le = (LDAPException) t;<a name="line.2912"></a>
-<span class="sourceLineNo">2913</span>      final LDAPConnectionPoolHealthCheck healthCheck = getHealthCheck();<a name="line.2913"></a>
-<span class="sourceLineNo">2914</span><a name="line.2914"></a>
-<span class="sourceLineNo">2915</span>      try<a name="line.2915"></a>
-<span class="sourceLineNo">2916</span>      {<a name="line.2916"></a>
-<span class="sourceLineNo">2917</span>        healthCheck.ensureConnectionValidAfterException(conn, le);<a name="line.2917"></a>
-<span class="sourceLineNo">2918</span>      }<a name="line.2918"></a>
-<span class="sourceLineNo">2919</span>      catch (final Exception e)<a name="line.2919"></a>
-<span class="sourceLineNo">2920</span>      {<a name="line.2920"></a>
-<span class="sourceLineNo">2921</span>        // If we have gotten this exception, then it indicates that the<a name="line.2921"></a>
-<span class="sourceLineNo">2922</span>        // connection is no longer valid and the operation should be retried.<a name="line.2922"></a>
-<span class="sourceLineNo">2923</span>        debugException(e);<a name="line.2923"></a>
-<span class="sourceLineNo">2924</span>        return;<a name="line.2924"></a>
-<span class="sourceLineNo">2925</span>      }<a name="line.2925"></a>
-<span class="sourceLineNo">2926</span>    }<a name="line.2926"></a>
-<span class="sourceLineNo">2927</span><a name="line.2927"></a>
-<span class="sourceLineNo">2928</span>    throwLDAPException(t, conn);<a name="line.2928"></a>
-<span class="sourceLineNo">2929</span>  }<a name="line.2929"></a>
+<span class="sourceLineNo">2889</span>  /**<a name="line.2889"></a>
+<span class="sourceLineNo">2890</span>   * Examines the provided {@code Throwable} object to determine whether it<a name="line.2890"></a>
+<span class="sourceLineNo">2891</span>   * represents an {@code LDAPException} that indicates the associated<a name="line.2891"></a>
+<span class="sourceLineNo">2892</span>   * connection may no longer be valid.  If that is the case, and if such<a name="line.2892"></a>
+<span class="sourceLineNo">2893</span>   * operations should be retried, then no exception will be thrown.  Otherwise,<a name="line.2893"></a>
+<span class="sourceLineNo">2894</span>   * an appropriate {@code LDAPException} will be thrown.<a name="line.2894"></a>
+<span class="sourceLineNo">2895</span>   *<a name="line.2895"></a>
+<span class="sourceLineNo">2896</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.2896"></a>
+<span class="sourceLineNo">2897</span>   * @param  o     The type of operation for which to make the determination.<a name="line.2897"></a>
+<span class="sourceLineNo">2898</span>   * @param  conn  The connection to be released to the pool.<a name="line.2898"></a>
+<span class="sourceLineNo">2899</span>   *<a name="line.2899"></a>
+<span class="sourceLineNo">2900</span>   * @throws  LDAPException  To indicate that a problem occurred during LDAP<a name="line.2900"></a>
+<span class="sourceLineNo">2901</span>   *                         processing and the operation should not be retried.<a name="line.2901"></a>
+<span class="sourceLineNo">2902</span>   */<a name="line.2902"></a>
+<span class="sourceLineNo">2903</span>  private void throwLDAPExceptionIfShouldNotRetry(final Throwable t,<a name="line.2903"></a>
+<span class="sourceLineNo">2904</span>                                                  final OperationType o,<a name="line.2904"></a>
+<span class="sourceLineNo">2905</span>                                                  final LDAPConnection conn)<a name="line.2905"></a>
+<span class="sourceLineNo">2906</span>          throws LDAPException<a name="line.2906"></a>
+<span class="sourceLineNo">2907</span>  {<a name="line.2907"></a>
+<span class="sourceLineNo">2908</span>    if ((t instanceof LDAPException) &amp;&amp;<a name="line.2908"></a>
+<span class="sourceLineNo">2909</span>        getOperationTypesToRetryDueToInvalidConnections().contains(o))<a name="line.2909"></a>
+<span class="sourceLineNo">2910</span>    {<a name="line.2910"></a>
+<span class="sourceLineNo">2911</span>      final LDAPException le = (LDAPException) t;<a name="line.2911"></a>
+<span class="sourceLineNo">2912</span>      final LDAPConnectionPoolHealthCheck healthCheck = getHealthCheck();<a name="line.2912"></a>
+<span class="sourceLineNo">2913</span><a name="line.2913"></a>
+<span class="sourceLineNo">2914</span>      try<a name="line.2914"></a>
+<span class="sourceLineNo">2915</span>      {<a name="line.2915"></a>
+<span class="sourceLineNo">2916</span>        healthCheck.ensureConnectionValidAfterException(conn, le);<a name="line.2916"></a>
+<span class="sourceLineNo">2917</span>      }<a name="line.2917"></a>
+<span class="sourceLineNo">2918</span>      catch (final Exception e)<a name="line.2918"></a>
+<span class="sourceLineNo">2919</span>      {<a name="line.2919"></a>
+<span class="sourceLineNo">2920</span>        // If we have gotten this exception, then it indicates that the<a name="line.2920"></a>
+<span class="sourceLineNo">2921</span>        // connection is no longer valid and the operation should be retried.<a name="line.2921"></a>
+<span class="sourceLineNo">2922</span>        Debug.debugException(e);<a name="line.2922"></a>
+<span class="sourceLineNo">2923</span>        return;<a name="line.2923"></a>
+<span class="sourceLineNo">2924</span>      }<a name="line.2924"></a>
+<span class="sourceLineNo">2925</span>    }<a name="line.2925"></a>
+<span class="sourceLineNo">2926</span><a name="line.2926"></a>
+<span class="sourceLineNo">2927</span>    throwLDAPException(t, conn);<a name="line.2927"></a>
+<span class="sourceLineNo">2928</span>  }<a name="line.2928"></a>
+<span class="sourceLineNo">2929</span><a name="line.2929"></a>
 <span class="sourceLineNo">2930</span><a name="line.2930"></a>
 <span class="sourceLineNo">2931</span><a name="line.2931"></a>
-<span class="sourceLineNo">2932</span><a name="line.2932"></a>
-<span class="sourceLineNo">2933</span>  /**<a name="line.2933"></a>
-<span class="sourceLineNo">2934</span>   * Examines the provided {@code Throwable} object to determine whether it<a name="line.2934"></a>
-<span class="sourceLineNo">2935</span>   * represents an {@code LDAPException} that indicates the associated<a name="line.2935"></a>
-<span class="sourceLineNo">2936</span>   * connection may no longer be valid.  If that is the case, and if such<a name="line.2936"></a>
-<span class="sourceLineNo">2937</span>   * operations should be retried, then no exception will be thrown.  Otherwise,<a name="line.2937"></a>
-<span class="sourceLineNo">2938</span>   * an appropriate {@code LDAPSearchException} will be thrown.<a name="line.2938"></a>
-<span class="sourceLineNo">2939</span>   *<a name="line.2939"></a>
-<span class="sourceLineNo">2940</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.2940"></a>
-<span class="sourceLineNo">2941</span>   * @param  conn  The connection to be released to the pool.<a name="line.2941"></a>
-<span class="sourceLineNo">2942</span>   *<a name="line.2942"></a>
-<span class="sourceLineNo">2943</span>   * @throws  LDAPSearchException  To indicate that a problem occurred during<a name="line.2943"></a>
-<span class="sourceLineNo">2944</span>   *                               LDAP processing and the operation should not<a name="line.2944"></a>
-<span class="sourceLineNo">2945</span>   *                               be retried.<a name="line.2945"></a>
-<span class="sourceLineNo">2946</span>   */<a name="line.2946"></a>
-<span class="sourceLineNo">2947</span>  private void throwLDAPSearchExceptionIfShouldNotRetry(final Throwable t,<a name="line.2947"></a>
-<span class="sourceLineNo">2948</span>                    final LDAPConnection conn)<a name="line.2948"></a>
-<span class="sourceLineNo">2949</span>          throws LDAPSearchException<a name="line.2949"></a>
-<span class="sourceLineNo">2950</span>  {<a name="line.2950"></a>
-<span class="sourceLineNo">2951</span>    if ((t instanceof LDAPException) &amp;&amp;<a name="line.2951"></a>
-<span class="sourceLineNo">2952</span>        getOperationTypesToRetryDueToInvalidConnections().contains(<a name="line.2952"></a>
-<span class="sourceLineNo">2953</span>             OperationType.SEARCH))<a name="line.2953"></a>
-<span class="sourceLineNo">2954</span>    {<a name="line.2954"></a>
-<span class="sourceLineNo">2955</span>      final LDAPException le = (LDAPException) t;<a name="line.2955"></a>
-<span class="sourceLineNo">2956</span>      final LDAPConnectionPoolHealthCheck healthCheck = getHealthCheck();<a name="line.2956"></a>
-<span class="sourceLineNo">2957</span><a name="line.2957"></a>
-<span class="sourceLineNo">2958</span>      try<a name="line.2958"></a>
-<span class="sourceLineNo">2959</span>      {<a name="line.2959"></a>
-<span class="sourceLineNo">2960</span>        healthCheck.ensureConnectionValidAfterException(conn, le);<a name="line.2960"></a>
-<span class="sourceLineNo">2961</span>      }<a name="line.2961"></a>
-<span class="sourceLineNo">2962</span>      catch (final Exception e)<a name="line.2962"></a>
-<span class="sourceLineNo">2963</span>      {<a name="line.2963"></a>
-<span class="sourceLineNo">2964</span>        // If we have gotten this exception, then it indicates that the<a name="line.2964"></a>
-<span class="sourceLineNo">2965</span>        // connection is no longer valid and the operation should be retried.<a name="line.2965"></a>
-<span class="sourceLineNo">2966</span>        debugException(e);<a name="line.2966"></a>
-<span class="sourceLineNo">2967</span>        return;<a name="line.2967"></a>
-<span class="sourceLineNo">2968</span>      }<a name="line.2968"></a>
-<span class="sourceLineNo">2969</span>    }<a name="line.2969"></a>
-<span class="sourceLineNo">2970</span><a name="line.2970"></a>
-<span class="sourceLineNo">2971</span>    throwLDAPSearchException(t, conn);<a name="line.2971"></a>
-<span class="sourceLineNo">2972</span>  }<a name="line.2972"></a>
+<span class="sourceLineNo">2932</span>  /**<a name="line.2932"></a>
+<span class="sourceLineNo">2933</span>   * Examines the provided {@code Throwable} object to determine whether it<a name="line.2933"></a>
+<span class="sourceLineNo">2934</span>   * represents an {@code LDAPException} that indicates the associated<a name="line.2934"></a>
+<span class="sourceLineNo">2935</span>   * connection may no longer be valid.  If that is the case, and if such<a name="line.2935"></a>
+<span class="sourceLineNo">2936</span>   * operations should be retried, then no exception will be thrown.  Otherwise,<a name="line.2936"></a>
+<span class="sourceLineNo">2937</span>   * an appropriate {@code LDAPSearchException} will be thrown.<a name="line.2937"></a>
+<span class="sourceLineNo">2938</span>   *<a name="line.2938"></a>
+<span class="sourceLineNo">2939</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.2939"></a>
+<span class="sourceLineNo">2940</span>   * @param  conn  The connection to be released to the pool.<a name="line.2940"></a>
+<span class="sourceLineNo">2941</span>   *<a name="line.2941"></a>
+<span class="sourceLineNo">2942</span>   * @throws  LDAPSearchException  To indicate that a problem occurred during<a name="line.2942"></a>
+<span class="sourceLineNo">2943</span>   *                               LDAP processing and the operation should not<a name="line.2943"></a>
+<span class="sourceLineNo">2944</span>   *                               be retried.<a name="line.2944"></a>
+<span class="sourceLineNo">2945</span>   */<a name="line.2945"></a>
+<span class="sourceLineNo">2946</span>  private void throwLDAPSearchExceptionIfShouldNotRetry(final Throwable t,<a name="line.2946"></a>
+<span class="sourceLineNo">2947</span>                    final LDAPConnection conn)<a name="line.2947"></a>
+<span class="sourceLineNo">2948</span>          throws LDAPSearchException<a name="line.2948"></a>
+<span class="sourceLineNo">2949</span>  {<a name="line.2949"></a>
+<span class="sourceLineNo">2950</span>    if ((t instanceof LDAPException) &amp;&amp;<a name="line.2950"></a>
+<span class="sourceLineNo">2951</span>        getOperationTypesToRetryDueToInvalidConnections().contains(<a name="line.2951"></a>
+<span class="sourceLineNo">2952</span>             OperationType.SEARCH))<a name="line.2952"></a>
+<span class="sourceLineNo">2953</span>    {<a name="line.2953"></a>
+<span class="sourceLineNo">2954</span>      final LDAPException le = (LDAPException) t;<a name="line.2954"></a>
+<span class="sourceLineNo">2955</span>      final LDAPConnectionPoolHealthCheck healthCheck = getHealthCheck();<a name="line.2955"></a>
+<span class="sourceLineNo">2956</span><a name="line.2956"></a>
+<span class="sourceLineNo">2957</span>      try<a name="line.2957"></a>
+<span class="sourceLineNo">2958</span>      {<a name="line.2958"></a>
+<span class="sourceLineNo">2959</span>        healthCheck.ensureConnectionValidAfterException(conn, le);<a name="line.2959"></a>
+<span class="sourceLineNo">2960</span>      }<a name="line.2960"></a>
+<span class="sourceLineNo">2961</span>      catch (final Exception e)<a name="line.2961"></a>
+<span class="sourceLineNo">2962</span>      {<a name="line.2962"></a>
+<span class="sourceLineNo">2963</span>        // If we have gotten this exception, then it indicates that the<a name="line.2963"></a>
+<span class="sourceLineNo">2964</span>        // connection is no longer valid and the operation should be retried.<a name="line.2964"></a>
+<span class="sourceLineNo">2965</span>        Debug.debugException(e);<a name="line.2965"></a>
+<span class="sourceLineNo">2966</span>        return;<a name="line.2966"></a>
+<span class="sourceLineNo">2967</span>      }<a name="line.2967"></a>
+<span class="sourceLineNo">2968</span>    }<a name="line.2968"></a>
+<span class="sourceLineNo">2969</span><a name="line.2969"></a>
+<span class="sourceLineNo">2970</span>    throwLDAPSearchException(t, conn);<a name="line.2970"></a>
+<span class="sourceLineNo">2971</span>  }<a name="line.2971"></a>
+<span class="sourceLineNo">2972</span><a name="line.2972"></a>
 <span class="sourceLineNo">2973</span><a name="line.2973"></a>
 <span class="sourceLineNo">2974</span><a name="line.2974"></a>
-<span class="sourceLineNo">2975</span><a name="line.2975"></a>
-<span class="sourceLineNo">2976</span>  /**<a name="line.2976"></a>
-<span class="sourceLineNo">2977</span>   * Handles the provided {@code Throwable} object by ensuring that the provided<a name="line.2977"></a>
-<span class="sourceLineNo">2978</span>   * connection is released to the pool and throwing an appropriate<a name="line.2978"></a>
-<span class="sourceLineNo">2979</span>   * {@code LDAPException} object.<a name="line.2979"></a>
-<span class="sourceLineNo">2980</span>   *<a name="line.2980"></a>
-<span class="sourceLineNo">2981</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.2981"></a>
-<span class="sourceLineNo">2982</span>   * @param  conn  The connection to be released to the pool.<a name="line.2982"></a>
-<span class="sourceLineNo">2983</span>   *<a name="line.2983"></a>
-<span class="sourceLineNo">2984</span>   * @throws  LDAPException  To indicate that a problem occurred during LDAP<a name="line.2984"></a>
-<span class="sourceLineNo">2985</span>   *                         processing.<a name="line.2985"></a>
-<span class="sourceLineNo">2986</span>   */<a name="line.2986"></a>
-<span class="sourceLineNo">2987</span>  void throwLDAPException(final Throwable t, final LDAPConnection conn)<a name="line.2987"></a>
-<span class="sourceLineNo">2988</span>       throws LDAPException<a name="line.2988"></a>
-<span class="sourceLineNo">2989</span>  {<a name="line.2989"></a>
-<span class="sourceLineNo">2990</span>    debugException(t);<a name="line.2990"></a>
-<span class="sourceLineNo">2991</span>    if (t instanceof LDAPException)<a name="line.2991"></a>
-<span class="sourceLineNo">2992</span>    {<a name="line.2992"></a>
-<span class="sourceLineNo">2993</span>      final LDAPException le = (LDAPException) t;<a name="line.2993"></a>
-<span class="sourceLineNo">2994</span>      releaseConnectionAfterException(conn, le);<a name="line.2994"></a>
-<span class="sourceLineNo">2995</span>      throw le;<a name="line.2995"></a>
-<span class="sourceLineNo">2996</span>    }<a name="line.2996"></a>
-<span class="sourceLineNo">2997</span>    else<a name="line.2997"></a>
-<span class="sourceLineNo">2998</span>    {<a name="line.2998"></a>
-<span class="sourceLineNo">2999</span>      releaseDefunctConnection(conn);<a name="line.2999"></a>
-<span class="sourceLineNo">3000</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.3000"></a>
-<span class="sourceLineNo">3001</span>           ERR_POOL_OP_EXCEPTION.get(getExceptionMessage(t)), t);<a name="line.3001"></a>
-<span class="sourceLineNo">3002</span>    }<a name="line.3002"></a>
-<span class="sourceLineNo">3003</span>  }<a name="line.3003"></a>
+<span class="sourceLineNo">2975</span>  /**<a name="line.2975"></a>
+<span class="sourceLineNo">2976</span>   * Handles the provided {@code Throwable} object by ensuring that the provided<a name="line.2976"></a>
+<span class="sourceLineNo">2977</span>   * connection is released to the pool and throwing an appropriate<a name="line.2977"></a>
+<span class="sourceLineNo">2978</span>   * {@code LDAPException} object.<a name="line.2978"></a>
+<span class="sourceLineNo">2979</span>   *<a name="line.2979"></a>
+<span class="sourceLineNo">2980</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.2980"></a>
+<span class="sourceLineNo">2981</span>   * @param  conn  The connection to be released to the pool.<a name="line.2981"></a>
+<span class="sourceLineNo">2982</span>   *<a name="line.2982"></a>
+<span class="sourceLineNo">2983</span>   * @throws  LDAPException  To indicate that a problem occurred during LDAP<a name="line.2983"></a>
+<span class="sourceLineNo">2984</span>   *                         processing.<a name="line.2984"></a>
+<span class="sourceLineNo">2985</span>   */<a name="line.2985"></a>
+<span class="sourceLineNo">2986</span>  void throwLDAPException(final Throwable t, final LDAPConnection conn)<a name="line.2986"></a>
+<span class="sourceLineNo">2987</span>       throws LDAPException<a name="line.2987"></a>
+<span class="sourceLineNo">2988</span>  {<a name="line.2988"></a>
+<span class="sourceLineNo">2989</span>    Debug.debugException(t);<a name="line.2989"></a>
+<span class="sourceLineNo">2990</span>    if (t instanceof LDAPException)<a name="line.2990"></a>
+<span class="sourceLineNo">2991</span>    {<a name="line.2991"></a>
+<span class="sourceLineNo">2992</span>      final LDAPException le = (LDAPException) t;<a name="line.2992"></a>
+<span class="sourceLineNo">2993</span>      releaseConnectionAfterException(conn, le);<a name="line.2993"></a>
+<span class="sourceLineNo">2994</span>      throw le;<a name="line.2994"></a>
+<span class="sourceLineNo">2995</span>    }<a name="line.2995"></a>
+<span class="sourceLineNo">2996</span>    else<a name="line.2996"></a>
+<span class="sourceLineNo">2997</span>    {<a name="line.2997"></a>
+<span class="sourceLineNo">2998</span>      releaseDefunctConnection(conn);<a name="line.2998"></a>
+<span class="sourceLineNo">2999</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.2999"></a>
+<span class="sourceLineNo">3000</span>           ERR_POOL_OP_EXCEPTION.get(StaticUtils.getExceptionMessage(t)), t);<a name="line.3000"></a>
+<span class="sourceLineNo">3001</span>    }<a name="line.3001"></a>
+<span class="sourceLineNo">3002</span>  }<a name="line.3002"></a>
+<span class="sourceLineNo">3003</span><a name="line.3003"></a>
 <span class="sourceLineNo">3004</span><a name="line.3004"></a>
 <span class="sourceLineNo">3005</span><a name="line.3005"></a>
-<span class="sourceLineNo">3006</span><a name="line.3006"></a>
-<span class="sourceLineNo">3007</span>  /**<a name="line.3007"></a>
-<span class="sourceLineNo">3008</span>   * Handles the provided {@code Throwable} object by ensuring that the provided<a name="line.3008"></a>
-<span class="sourceLineNo">3009</span>   * connection is released to the pool and throwing an appropriate<a name="line.3009"></a>
-<span class="sourceLineNo">3010</span>   * {@code LDAPSearchException} object.<a name="line.3010"></a>
-<span class="sourceLineNo">3011</span>   *<a name="line.3011"></a>
-<span class="sourceLineNo">3012</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.3012"></a>
-<span class="sourceLineNo">3013</span>   * @param  conn  The connection to be released to the pool.<a name="line.3013"></a>
-<span class="sourceLineNo">3014</span>   *<a name="line.3014"></a>
-<span class="sourceLineNo">3015</span>   * @throws  LDAPSearchException  To indicate that a problem occurred during<a name="line.3015"></a>
-<span class="sourceLineNo">3016</span>   *                               LDAP search processing.<a name="line.3016"></a>
-<span class="sourceLineNo">3017</span>   */<a name="line.3017"></a>
-<span class="sourceLineNo">3018</span>  void throwLDAPSearchException(final Throwable t, final LDAPConnection conn)<a name="line.3018"></a>
-<span class="sourceLineNo">3019</span>       throws LDAPSearchException<a name="line.3019"></a>
-<span class="sourceLineNo">3020</span>  {<a name="line.3020"></a>
-<span class="sourceLineNo">3021</span>    debugException(t);<a name="line.3021"></a>
-<span class="sourceLineNo">3022</span>    if (t instanceof LDAPException)<a name="line.3022"></a>
-<span class="sourceLineNo">3023</span>    {<a name="line.3023"></a>
-<span class="sourceLineNo">3024</span>      final LDAPSearchException lse;<a name="line.3024"></a>
-<span class="sourceLineNo">3025</span>      if (t instanceof LDAPSearchException)<a name="line.3025"></a>
-<span class="sourceLineNo">3026</span>      {<a name="line.3026"></a>
-<span class="sourceLineNo">3027</span>        lse = (LDAPSearchException) t;<a name="line.3027"></a>
-<span class="sourceLineNo">3028</span>      }<a name="line.3028"></a>
-<span class="sourceLineNo">3029</span>      else<a name="line.3029"></a>
-<span class="sourceLineNo">3030</span>      {<a name="line.3030"></a>
-<span class="sourceLineNo">3031</span>        lse = new LDAPSearchException((LDAPException) t);<a name="line.3031"></a>
-<span class="sourceLineNo">3032</span>      }<a name="line.3032"></a>
-<span class="sourceLineNo">3033</span><a name="line.3033"></a>
-<span class="sourceLineNo">3034</span>      releaseConnectionAfterException(conn, lse);<a name="line.3034"></a>
-<span class="sourceLineNo">3035</span>      throw lse;<a name="line.3035"></a>
-<span class="sourceLineNo">3036</span>    }<a name="line.3036"></a>
-<span class="sourceLineNo">3037</span>    else<a name="line.3037"></a>
-<span class="sourceLineNo">3038</span>    {<a name="line.3038"></a>
-<span class="sourceLineNo">3039</span>      releaseDefunctConnection(conn);<a name="line.3039"></a>
-<span class="sourceLineNo">3040</span>      throw new LDAPSearchException(ResultCode.LOCAL_ERROR,<a name="line.3040"></a>
-<span class="sourceLineNo">3041</span>           ERR_POOL_OP_EXCEPTION.get(getExceptionMessage(t)), t);<a name="line.3041"></a>
-<span class="sourceLineNo">3042</span>    }<a name="line.3042"></a>
-<span class="sourceLineNo">3043</span>  }<a name="line.3043"></a>
+<span class="sourceLineNo">3006</span>  /**<a name="line.3006"></a>
+<span class="sourceLineNo">3007</span>   * Handles the provided {@code Throwable} object by ensuring that the provided<a name="line.3007"></a>
+<span class="sourceLineNo">3008</span>   * connection is released to the pool and throwing an appropriate<a name="line.3008"></a>
+<span class="sourceLineNo">3009</span>   * {@code LDAPSearchException} object.<a name="line.3009"></a>
+<span class="sourceLineNo">3010</span>   *<a name="line.3010"></a>
+<span class="sourceLineNo">3011</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.3011"></a>
+<span class="sourceLineNo">3012</span>   * @param  conn  The connection to be released to the pool.<a name="line.3012"></a>
+<span class="sourceLineNo">3013</span>   *<a name="line.3013"></a>
+<span class="sourceLineNo">3014</span>   * @throws  LDAPSearchException  To indicate that a problem occurred during<a name="line.3014"></a>
+<span class="sourceLineNo">3015</span>   *                               LDAP search processing.<a name="line.3015"></a>
+<span class="sourceLineNo">3016</span>   */<a name="line.3016"></a>
+<span class="sourceLineNo">3017</span>  void throwLDAPSearchException(final Throwable t, final LDAPConnection conn)<a name="line.3017"></a>
+<span class="sourceLineNo">3018</span>       throws LDAPSearchException<a name="line.3018"></a>
+<span class="sourceLineNo">3019</span>  {<a name="line.3019"></a>
+<span class="sourceLineNo">3020</span>    Debug.debugException(t);<a name="line.3020"></a>
+<span class="sourceLineNo">3021</span>    if (t instanceof LDAPException)<a name="line.3021"></a>
+<span class="sourceLineNo">3022</span>    {<a name="line.3022"></a>
+<span class="sourceLineNo">3023</span>      final LDAPSearchException lse;<a name="line.3023"></a>
+<span class="sourceLineNo">3024</span>      if (t instanceof LDAPSearchException)<a name="line.3024"></a>
+<span class="sourceLineNo">3025</span>      {<a name="line.3025"></a>
+<span class="sourceLineNo">3026</span>        lse = (LDAPSearchException) t;<a name="line.3026"></a>
+<span class="sourceLineNo">3027</span>      }<a name="line.3027"></a>
+<span class="sourceLineNo">3028</span>      else<a name="line.3028"></a>
+<span class="sourceLineNo">3029</span>      {<a name="line.3029"></a>
+<span class="sourceLineNo">3030</span>        lse = new LDAPSearchException((LDAPException) t);<a name="line.3030"></a>
+<span class="sourceLineNo">3031</span>      }<a name="line.3031"></a>
+<span class="sourceLineNo">3032</span><a name="line.3032"></a>
+<span class="sourceLineNo">3033</span>      releaseConnectionAfterException(conn, lse);<a name="line.3033"></a>
+<span class="sourceLineNo">3034</span>      throw lse;<a name="line.3034"></a>
+<span class="sourceLineNo">3035</span>    }<a name="line.3035"></a>
+<span class="sourceLineNo">3036</span>    else<a name="line.3036"></a>
+<span class="sourceLineNo">3037</span>    {<a name="line.3037"></a>
+<span class="sourceLineNo">3038</span>      releaseDefunctConnection(conn);<a name="line.3038"></a>
+<span class="sourceLineNo">3039</span>      throw new LDAPSearchException(ResultCode.LOCAL_ERROR,<a name="line.3039"></a>
+<span class="sourceLineNo">3040</span>           ERR_POOL_OP_EXCEPTION.get(StaticUtils.getExceptionMessage(t)), t);<a name="line.3040"></a>
+<span class="sourceLineNo">3041</span>    }<a name="line.3041"></a>
+<span class="sourceLineNo">3042</span>  }<a name="line.3042"></a>
+<span class="sourceLineNo">3043</span><a name="line.3043"></a>
 <span class="sourceLineNo">3044</span><a name="line.3044"></a>
 <span class="sourceLineNo">3045</span><a name="line.3045"></a>
-<span class="sourceLineNo">3046</span><a name="line.3046"></a>
-<span class="sourceLineNo">3047</span>  /**<a name="line.3047"></a>
-<span class="sourceLineNo">3048</span>   * Retrieves a string representation of this connection pool.<a name="line.3048"></a>
-<span class="sourceLineNo">3049</span>   *<a name="line.3049"></a>
-<span class="sourceLineNo">3050</span>   * @return  A string representation of this connection pool.<a name="line.3050"></a>
-<span class="sourceLineNo">3051</span>   */<a name="line.3051"></a>
-<span class="sourceLineNo">3052</span>  @Override()<a name="line.3052"></a>
-<span class="sourceLineNo">3053</span>  public final String toString()<a name="line.3053"></a>
-<span class="sourceLineNo">3054</span>  {<a name="line.3054"></a>
-<span class="sourceLineNo">3055</span>    final StringBuilder buffer = new StringBuilder();<a name="line.3055"></a>
-<span class="sourceLineNo">3056</span>    toString(buffer);<a name="line.3056"></a>
-<span class="sourceLineNo">3057</span>    return buffer.toString();<a name="line.3057"></a>
-<span class="sourceLineNo">3058</span>  }<a name="line.3058"></a>
+<span class="sourceLineNo">3046</span>  /**<a name="line.3046"></a>
+<span class="sourceLineNo">3047</span>   * Retrieves a string representation of this connection pool.<a name="line.3047"></a>
+<span class="sourceLineNo">3048</span>   *<a name="line.3048"></a>
+<span class="sourceLineNo">3049</span>   * @return  A string representation of this connection pool.<a name="line.3049"></a>
+<span class="sourceLineNo">3050</span>   */<a name="line.3050"></a>
+<span class="sourceLineNo">3051</span>  @Override()<a name="line.3051"></a>
+<span class="sourceLineNo">3052</span>  public final String toString()<a name="line.3052"></a>
+<span class="sourceLineNo">3053</span>  {<a name="line.3053"></a>
+<span class="sourceLineNo">3054</span>    final StringBuilder buffer = new StringBuilder();<a name="line.3054"></a>
+<span class="sourceLineNo">3055</span>    toString(buffer);<a name="line.3055"></a>
+<span class="sourceLineNo">3056</span>    return buffer.toString();<a name="line.3056"></a>
+<span class="sourceLineNo">3057</span>  }<a name="line.3057"></a>
+<span class="sourceLineNo">3058</span><a name="line.3058"></a>
 <span class="sourceLineNo">3059</span><a name="line.3059"></a>
 <span class="sourceLineNo">3060</span><a name="line.3060"></a>
-<span class="sourceLineNo">3061</span><a name="line.3061"></a>
-<span class="sourceLineNo">3062</span>  /**<a name="line.3062"></a>
-<span class="sourceLineNo">3063</span>   * Appends a string representation of this connection pool to the provided<a name="line.3063"></a>
-<span class="sourceLineNo">3064</span>   * buffer.<a name="line.3064"></a>
-<span class="sourceLineNo">3065</span>   *<a name="line.3065"></a>
-<span class="sourceLineNo">3066</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.3066"></a>
-<span class="sourceLineNo">3067</span>   *                 appended.<a name="line.3067"></a>
-<span class="sourceLineNo">3068</span>   */<a name="line.3068"></a>
-<span class="sourceLineNo">3069</span>  public abstract void toString(StringBuilder buffer);<a name="line.3069"></a>
-<span class="sourceLineNo">3070</span>}<a name="line.3070"></a>
+<span class="sourceLineNo">3061</span>  /**<a name="line.3061"></a>
+<span class="sourceLineNo">3062</span>   * Appends a string representation of this connection pool to the provided<a name="line.3062"></a>
+<span class="sourceLineNo">3063</span>   * buffer.<a name="line.3063"></a>
+<span class="sourceLineNo">3064</span>   *<a name="line.3064"></a>
+<span class="sourceLineNo">3065</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.3065"></a>
+<span class="sourceLineNo">3066</span>   *                 appended.<a name="line.3066"></a>
+<span class="sourceLineNo">3067</span>   */<a name="line.3067"></a>
+<span class="sourceLineNo">3068</span>  public abstract void toString(StringBuilder buffer);<a name="line.3068"></a>
+<span class="sourceLineNo">3069</span>}<a name="line.3069"></a>
 
 
 

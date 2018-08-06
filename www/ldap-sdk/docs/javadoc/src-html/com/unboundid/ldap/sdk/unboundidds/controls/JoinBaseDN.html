@@ -38,12 +38,12 @@
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.unboundidds.controls.ControlMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.StaticUtils.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.Validator.*;<a name="line.38"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.StaticUtils;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafety;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.Validator;<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>import static com.unboundid.ldap.sdk.unboundidds.controls.ControlMessages.*;<a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
@@ -56,11 +56,11 @@
 <span class="sourceLineNo">048</span> * &lt;BLOCKQUOTE&gt;<a name="line.48"></a>
 <span class="sourceLineNo">049</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.49"></a>
 <span class="sourceLineNo">050</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *   server products.  These classes provide support for proprietary<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *   functionality or for external specifications that are not considered stable<a name="line.53"></a>
-<span class="sourceLineNo">054</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *   other types of LDAP servers.<a name="line.55"></a>
+<span class="sourceLineNo">051</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *   for proprietary functionality or for external specifications that are not<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.54"></a>
+<span class="sourceLineNo">055</span> *   interoperable way with other types of LDAP servers.<a name="line.55"></a>
 <span class="sourceLineNo">056</span> * &lt;/BLOCKQUOTE&gt;<a name="line.56"></a>
 <span class="sourceLineNo">057</span> */<a name="line.57"></a>
 <span class="sourceLineNo">058</span>@NotMutable()<a name="line.58"></a>
@@ -176,7 +176,7 @@
 <span class="sourceLineNo">168</span>   */<a name="line.168"></a>
 <span class="sourceLineNo">169</span>  public static JoinBaseDN createUseCustomBaseDN(final String baseDN)<a name="line.169"></a>
 <span class="sourceLineNo">170</span>  {<a name="line.170"></a>
-<span class="sourceLineNo">171</span>    ensureNotNull(baseDN);<a name="line.171"></a>
+<span class="sourceLineNo">171</span>    Validator.ensureNotNull(baseDN);<a name="line.171"></a>
 <span class="sourceLineNo">172</span>    return new JoinBaseDN(BASE_TYPE_CUSTOM, baseDN);<a name="line.172"></a>
 <span class="sourceLineNo">173</span>  }<a name="line.173"></a>
 <span class="sourceLineNo">174</span><a name="line.174"></a>
@@ -260,53 +260,54 @@
 <span class="sourceLineNo">252</span><a name="line.252"></a>
 <span class="sourceLineNo">253</span>      default:<a name="line.253"></a>
 <span class="sourceLineNo">254</span>        throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.254"></a>
-<span class="sourceLineNo">255</span>             ERR_JOIN_BASE_DECODE_INVALID_TYPE.get(toHex(element.getType())));<a name="line.255"></a>
-<span class="sourceLineNo">256</span>    }<a name="line.256"></a>
-<span class="sourceLineNo">257</span>  }<a name="line.257"></a>
-<span class="sourceLineNo">258</span><a name="line.258"></a>
+<span class="sourceLineNo">255</span>             ERR_JOIN_BASE_DECODE_INVALID_TYPE.get(<a name="line.255"></a>
+<span class="sourceLineNo">256</span>                  StaticUtils.toHex(element.getType())));<a name="line.256"></a>
+<span class="sourceLineNo">257</span>    }<a name="line.257"></a>
+<span class="sourceLineNo">258</span>  }<a name="line.258"></a>
 <span class="sourceLineNo">259</span><a name="line.259"></a>
 <span class="sourceLineNo">260</span><a name="line.260"></a>
-<span class="sourceLineNo">261</span>  /**<a name="line.261"></a>
-<span class="sourceLineNo">262</span>   * Retrieves a string representation of this join base DN.<a name="line.262"></a>
-<span class="sourceLineNo">263</span>   *<a name="line.263"></a>
-<span class="sourceLineNo">264</span>   * @return  A string representation of this join base DN.<a name="line.264"></a>
-<span class="sourceLineNo">265</span>   */<a name="line.265"></a>
-<span class="sourceLineNo">266</span>  @Override()<a name="line.266"></a>
-<span class="sourceLineNo">267</span>  public String toString()<a name="line.267"></a>
-<span class="sourceLineNo">268</span>  {<a name="line.268"></a>
-<span class="sourceLineNo">269</span>    final StringBuilder buffer = new StringBuilder();<a name="line.269"></a>
-<span class="sourceLineNo">270</span>    toString(buffer);<a name="line.270"></a>
-<span class="sourceLineNo">271</span>    return buffer.toString();<a name="line.271"></a>
-<span class="sourceLineNo">272</span>  }<a name="line.272"></a>
-<span class="sourceLineNo">273</span><a name="line.273"></a>
+<span class="sourceLineNo">261</span><a name="line.261"></a>
+<span class="sourceLineNo">262</span>  /**<a name="line.262"></a>
+<span class="sourceLineNo">263</span>   * Retrieves a string representation of this join base DN.<a name="line.263"></a>
+<span class="sourceLineNo">264</span>   *<a name="line.264"></a>
+<span class="sourceLineNo">265</span>   * @return  A string representation of this join base DN.<a name="line.265"></a>
+<span class="sourceLineNo">266</span>   */<a name="line.266"></a>
+<span class="sourceLineNo">267</span>  @Override()<a name="line.267"></a>
+<span class="sourceLineNo">268</span>  public String toString()<a name="line.268"></a>
+<span class="sourceLineNo">269</span>  {<a name="line.269"></a>
+<span class="sourceLineNo">270</span>    final StringBuilder buffer = new StringBuilder();<a name="line.270"></a>
+<span class="sourceLineNo">271</span>    toString(buffer);<a name="line.271"></a>
+<span class="sourceLineNo">272</span>    return buffer.toString();<a name="line.272"></a>
+<span class="sourceLineNo">273</span>  }<a name="line.273"></a>
 <span class="sourceLineNo">274</span><a name="line.274"></a>
 <span class="sourceLineNo">275</span><a name="line.275"></a>
-<span class="sourceLineNo">276</span>  /**<a name="line.276"></a>
-<span class="sourceLineNo">277</span>   * Appends a string representation of this join base DN to the provided<a name="line.277"></a>
-<span class="sourceLineNo">278</span>   * buffer.<a name="line.278"></a>
-<span class="sourceLineNo">279</span>   *<a name="line.279"></a>
-<span class="sourceLineNo">280</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.280"></a>
-<span class="sourceLineNo">281</span>   */<a name="line.281"></a>
-<span class="sourceLineNo">282</span>  public void toString(final StringBuilder buffer)<a name="line.282"></a>
-<span class="sourceLineNo">283</span>  {<a name="line.283"></a>
-<span class="sourceLineNo">284</span>    switch (type)<a name="line.284"></a>
-<span class="sourceLineNo">285</span>    {<a name="line.285"></a>
-<span class="sourceLineNo">286</span>      case BASE_TYPE_SEARCH_BASE:<a name="line.286"></a>
-<span class="sourceLineNo">287</span>        buffer.append("useSearchBaseDN");<a name="line.287"></a>
-<span class="sourceLineNo">288</span>        break;<a name="line.288"></a>
-<span class="sourceLineNo">289</span><a name="line.289"></a>
-<span class="sourceLineNo">290</span>      case BASE_TYPE_SOURCE_ENTRY_DN:<a name="line.290"></a>
-<span class="sourceLineNo">291</span>        buffer.append("useSourceEntryDN");<a name="line.291"></a>
-<span class="sourceLineNo">292</span>        break;<a name="line.292"></a>
-<span class="sourceLineNo">293</span><a name="line.293"></a>
-<span class="sourceLineNo">294</span>      case BASE_TYPE_CUSTOM:<a name="line.294"></a>
-<span class="sourceLineNo">295</span>        buffer.append("useCustomBaseDN(baseDN='");<a name="line.295"></a>
-<span class="sourceLineNo">296</span>        buffer.append(customBaseDN);<a name="line.296"></a>
-<span class="sourceLineNo">297</span>        buffer.append("')");<a name="line.297"></a>
-<span class="sourceLineNo">298</span>        break;<a name="line.298"></a>
-<span class="sourceLineNo">299</span>    }<a name="line.299"></a>
-<span class="sourceLineNo">300</span>  }<a name="line.300"></a>
-<span class="sourceLineNo">301</span>}<a name="line.301"></a>
+<span class="sourceLineNo">276</span><a name="line.276"></a>
+<span class="sourceLineNo">277</span>  /**<a name="line.277"></a>
+<span class="sourceLineNo">278</span>   * Appends a string representation of this join base DN to the provided<a name="line.278"></a>
+<span class="sourceLineNo">279</span>   * buffer.<a name="line.279"></a>
+<span class="sourceLineNo">280</span>   *<a name="line.280"></a>
+<span class="sourceLineNo">281</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.281"></a>
+<span class="sourceLineNo">282</span>   */<a name="line.282"></a>
+<span class="sourceLineNo">283</span>  public void toString(final StringBuilder buffer)<a name="line.283"></a>
+<span class="sourceLineNo">284</span>  {<a name="line.284"></a>
+<span class="sourceLineNo">285</span>    switch (type)<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    {<a name="line.286"></a>
+<span class="sourceLineNo">287</span>      case BASE_TYPE_SEARCH_BASE:<a name="line.287"></a>
+<span class="sourceLineNo">288</span>        buffer.append("useSearchBaseDN");<a name="line.288"></a>
+<span class="sourceLineNo">289</span>        break;<a name="line.289"></a>
+<span class="sourceLineNo">290</span><a name="line.290"></a>
+<span class="sourceLineNo">291</span>      case BASE_TYPE_SOURCE_ENTRY_DN:<a name="line.291"></a>
+<span class="sourceLineNo">292</span>        buffer.append("useSourceEntryDN");<a name="line.292"></a>
+<span class="sourceLineNo">293</span>        break;<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>      case BASE_TYPE_CUSTOM:<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        buffer.append("useCustomBaseDN(baseDN='");<a name="line.296"></a>
+<span class="sourceLineNo">297</span>        buffer.append(customBaseDN);<a name="line.297"></a>
+<span class="sourceLineNo">298</span>        buffer.append("')");<a name="line.298"></a>
+<span class="sourceLineNo">299</span>        break;<a name="line.299"></a>
+<span class="sourceLineNo">300</span>    }<a name="line.300"></a>
+<span class="sourceLineNo">301</span>  }<a name="line.301"></a>
+<span class="sourceLineNo">302</span>}<a name="line.302"></a>
 
 
 

@@ -37,14 +37,14 @@
 <span class="sourceLineNo">029</span><a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.Attribute;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.schema.AttributeTypeDefinition;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.persist.PersistMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.StaticUtils.*;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.util.Validator.*;<a name="line.39"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.Debug;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.StaticUtils;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafety;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.Validator;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.persist.PersistMessages.*;<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
@@ -107,7 +107,7 @@
 <span class="sourceLineNo">099</span>  GetterInfo(final Method m, final Class&lt;?&gt; c)<a name="line.99"></a>
 <span class="sourceLineNo">100</span>       throws LDAPPersistException<a name="line.100"></a>
 <span class="sourceLineNo">101</span>  {<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    ensureNotNull(m, c);<a name="line.102"></a>
+<span class="sourceLineNo">102</span>    Validator.ensureNotNull(m, c);<a name="line.102"></a>
 <span class="sourceLineNo">103</span><a name="line.103"></a>
 <span class="sourceLineNo">104</span>    method = m;<a name="line.104"></a>
 <span class="sourceLineNo">105</span>    m.setAccessible(true);<a name="line.105"></a>
@@ -152,10 +152,10 @@
 <span class="sourceLineNo">144</span>    }<a name="line.144"></a>
 <span class="sourceLineNo">145</span>    catch (final Exception e)<a name="line.145"></a>
 <span class="sourceLineNo">146</span>    {<a name="line.146"></a>
-<span class="sourceLineNo">147</span>      debugException(e);<a name="line.147"></a>
+<span class="sourceLineNo">147</span>      Debug.debugException(e);<a name="line.147"></a>
 <span class="sourceLineNo">148</span>      throw new LDAPPersistException(ERR_GETTER_INFO_CANNOT_GET_ENCODER.get(<a name="line.148"></a>
 <span class="sourceLineNo">149</span>           a.encoderClass().getName(), m.getName(), c.getName(),<a name="line.149"></a>
-<span class="sourceLineNo">150</span>           getExceptionMessage(e)), e);<a name="line.150"></a>
+<span class="sourceLineNo">150</span>           StaticUtils.getExceptionMessage(e)), e);<a name="line.150"></a>
 <span class="sourceLineNo">151</span>    }<a name="line.151"></a>
 <span class="sourceLineNo">152</span><a name="line.152"></a>
 <span class="sourceLineNo">153</span>    if (! encoder.supportsType(m.getGenericReturnType()))<a name="line.153"></a>
@@ -167,9 +167,9 @@
 <span class="sourceLineNo">159</span>    }<a name="line.159"></a>
 <span class="sourceLineNo">160</span><a name="line.160"></a>
 <span class="sourceLineNo">161</span>    final String structuralClass;<a name="line.161"></a>
-<span class="sourceLineNo">162</span>    if (o.structuralClass().length() == 0)<a name="line.162"></a>
+<span class="sourceLineNo">162</span>    if (o.structuralClass().isEmpty())<a name="line.162"></a>
 <span class="sourceLineNo">163</span>    {<a name="line.163"></a>
-<span class="sourceLineNo">164</span>      structuralClass = getUnqualifiedClassName(c);<a name="line.164"></a>
+<span class="sourceLineNo">164</span>      structuralClass = StaticUtils.getUnqualifiedClassName(c);<a name="line.164"></a>
 <span class="sourceLineNo">165</span>    }<a name="line.165"></a>
 <span class="sourceLineNo">166</span>    else<a name="line.166"></a>
 <span class="sourceLineNo">167</span>    {<a name="line.167"></a>
@@ -209,12 +209,12 @@
 <span class="sourceLineNo">201</span>    }<a name="line.201"></a>
 <span class="sourceLineNo">202</span><a name="line.202"></a>
 <span class="sourceLineNo">203</span>    final String attrName = a.attribute();<a name="line.203"></a>
-<span class="sourceLineNo">204</span>    if ((attrName == null) || (attrName.length() == 0))<a name="line.204"></a>
+<span class="sourceLineNo">204</span>    if ((attrName == null) || attrName.isEmpty())<a name="line.204"></a>
 <span class="sourceLineNo">205</span>    {<a name="line.205"></a>
 <span class="sourceLineNo">206</span>      final String methodName = m.getName();<a name="line.206"></a>
 <span class="sourceLineNo">207</span>      if (methodName.startsWith("get") &amp;&amp; (methodName.length() &gt;= 4))<a name="line.207"></a>
 <span class="sourceLineNo">208</span>      {<a name="line.208"></a>
-<span class="sourceLineNo">209</span>        attributeName = toInitialLowerCase(methodName.substring(3));<a name="line.209"></a>
+<span class="sourceLineNo">209</span>        attributeName = StaticUtils.toInitialLowerCase(methodName.substring(3));<a name="line.209"></a>
 <span class="sourceLineNo">210</span>      }<a name="line.210"></a>
 <span class="sourceLineNo">211</span>      else<a name="line.211"></a>
 <span class="sourceLineNo">212</span>      {<a name="line.212"></a>
@@ -426,13 +426,14 @@
 <span class="sourceLineNo">418</span>    }<a name="line.418"></a>
 <span class="sourceLineNo">419</span>    catch (final Exception e)<a name="line.419"></a>
 <span class="sourceLineNo">420</span>    {<a name="line.420"></a>
-<span class="sourceLineNo">421</span>      debugException(e);<a name="line.421"></a>
-<span class="sourceLineNo">422</span>      throw new LDAPPersistException(ERR_GETTER_INFO_CANNOT_ENCODE.get(<a name="line.422"></a>
-<span class="sourceLineNo">423</span>           method.getName(), containingClass.getName(), getExceptionMessage(e)),<a name="line.423"></a>
-<span class="sourceLineNo">424</span>           e);<a name="line.424"></a>
-<span class="sourceLineNo">425</span>    }<a name="line.425"></a>
-<span class="sourceLineNo">426</span>  }<a name="line.426"></a>
-<span class="sourceLineNo">427</span>}<a name="line.427"></a>
+<span class="sourceLineNo">421</span>      Debug.debugException(e);<a name="line.421"></a>
+<span class="sourceLineNo">422</span>      throw new LDAPPersistException(<a name="line.422"></a>
+<span class="sourceLineNo">423</span>           ERR_GETTER_INFO_CANNOT_ENCODE.get(method.getName(),<a name="line.423"></a>
+<span class="sourceLineNo">424</span>                containingClass.getName(), StaticUtils.getExceptionMessage(e)),<a name="line.424"></a>
+<span class="sourceLineNo">425</span>           e);<a name="line.425"></a>
+<span class="sourceLineNo">426</span>    }<a name="line.426"></a>
+<span class="sourceLineNo">427</span>  }<a name="line.427"></a>
+<span class="sourceLineNo">428</span>}<a name="line.428"></a>
 
 
 

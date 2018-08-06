@@ -39,9 +39,9 @@
 <span class="sourceLineNo">031</span>import com.unboundid.util.NotMutable;<a name="line.31"></a>
 <span class="sourceLineNo">032</span>import com.unboundid.util.ThreadSafety;<a name="line.32"></a>
 <span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.33"></a>
-<span class="sourceLineNo">034</span><a name="line.34"></a>
-<span class="sourceLineNo">035</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.util.Validator.*;<a name="line.36"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.Validator;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.controls.ControlMessages.*;<a name="line.36"></a>
 <span class="sourceLineNo">037</span><a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
@@ -117,7 +117,7 @@
 <span class="sourceLineNo">109</span>    super(AUTHORIZATION_IDENTITY_RESPONSE_OID, false,<a name="line.109"></a>
 <span class="sourceLineNo">110</span>          new ASN1OctetString(authorizationID));<a name="line.110"></a>
 <span class="sourceLineNo">111</span><a name="line.111"></a>
-<span class="sourceLineNo">112</span>    ensureNotNull(authorizationID);<a name="line.112"></a>
+<span class="sourceLineNo">112</span>    Validator.ensureNotNull(authorizationID);<a name="line.112"></a>
 <span class="sourceLineNo">113</span><a name="line.113"></a>
 <span class="sourceLineNo">114</span>    this.authorizationID = authorizationID;<a name="line.114"></a>
 <span class="sourceLineNo">115</span>  }<a name="line.115"></a>

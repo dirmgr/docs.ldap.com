@@ -34,14 +34,14 @@
 <span class="sourceLineNo">026</span>import java.nio.ByteBuffer;<a name="line.26"></a>
 <span class="sourceLineNo">027</span>import java.util.ArrayList;<a name="line.27"></a>
 <span class="sourceLineNo">028</span><a name="line.28"></a>
-<span class="sourceLineNo">029</span>import com.unboundid.util.NotMutable;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import com.unboundid.util.ThreadSafety;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.31"></a>
-<span class="sourceLineNo">032</span><a name="line.32"></a>
-<span class="sourceLineNo">033</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import static com.unboundid.util.Debug.*;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import static com.unboundid.util.StaticUtils.*;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.util.Validator.*;<a name="line.36"></a>
+<span class="sourceLineNo">029</span>import com.unboundid.util.Debug;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import com.unboundid.util.NotMutable;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import com.unboundid.util.StaticUtils;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.ThreadSafety;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.Validator;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.36"></a>
 <span class="sourceLineNo">037</span><a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
@@ -176,7 +176,7 @@
 <span class="sourceLineNo">168</span>  /**<a name="line.168"></a>
 <span class="sourceLineNo">169</span>   * The default set of attributes that will be used if none is provided.<a name="line.169"></a>
 <span class="sourceLineNo">170</span>   */<a name="line.170"></a>
-<span class="sourceLineNo">171</span>  private static final String[] DEFAULT_ATTRIBUTES = NO_STRINGS;<a name="line.171"></a>
+<span class="sourceLineNo">171</span>  private static final String[] DEFAULT_ATTRIBUTES = StaticUtils.NO_STRINGS;<a name="line.171"></a>
 <span class="sourceLineNo">172</span><a name="line.172"></a>
 <span class="sourceLineNo">173</span><a name="line.173"></a>
 <span class="sourceLineNo">174</span><a name="line.174"></a>
@@ -244,7 +244,7 @@
 <span class="sourceLineNo">236</span>  public LDAPURL(final String urlString)<a name="line.236"></a>
 <span class="sourceLineNo">237</span>         throws LDAPException<a name="line.237"></a>
 <span class="sourceLineNo">238</span>  {<a name="line.238"></a>
-<span class="sourceLineNo">239</span>    ensureNotNull(urlString);<a name="line.239"></a>
+<span class="sourceLineNo">239</span>    Validator.ensureNotNull(urlString);<a name="line.239"></a>
 <span class="sourceLineNo">240</span><a name="line.240"></a>
 <span class="sourceLineNo">241</span>    this.urlString = urlString;<a name="line.241"></a>
 <span class="sourceLineNo">242</span><a name="line.242"></a>
@@ -258,7 +258,7 @@
 <span class="sourceLineNo">250</span>                              ERR_LDAPURL_NO_COLON_SLASHES.get());<a name="line.250"></a>
 <span class="sourceLineNo">251</span>    }<a name="line.251"></a>
 <span class="sourceLineNo">252</span><a name="line.252"></a>
-<span class="sourceLineNo">253</span>    scheme = toLowerCase(urlString.substring(0, colonPos));<a name="line.253"></a>
+<span class="sourceLineNo">253</span>    scheme = StaticUtils.toLowerCase(urlString.substring(0, colonPos));<a name="line.253"></a>
 <span class="sourceLineNo">254</span>    final int defaultPort;<a name="line.254"></a>
 <span class="sourceLineNo">255</span>    if (scheme.equals("ldap"))<a name="line.255"></a>
 <span class="sourceLineNo">256</span>    {<a name="line.256"></a>
@@ -401,8 +401,8 @@
 <span class="sourceLineNo">393</span>      filterProvided = false;<a name="line.393"></a>
 <span class="sourceLineNo">394</span><a name="line.394"></a>
 <span class="sourceLineNo">395</span>      final String scopeStr =<a name="line.395"></a>
-<span class="sourceLineNo">396</span>           toLowerCase(urlString.substring(questionMark2Pos+1));<a name="line.396"></a>
-<span class="sourceLineNo">397</span>      if (scopeStr.length() == 0)<a name="line.397"></a>
+<span class="sourceLineNo">396</span>           StaticUtils.toLowerCase(urlString.substring(questionMark2Pos+1));<a name="line.396"></a>
+<span class="sourceLineNo">397</span>      if (scopeStr.isEmpty())<a name="line.397"></a>
 <span class="sourceLineNo">398</span>      {<a name="line.398"></a>
 <span class="sourceLineNo">399</span>        scope         = SearchScope.BASE;<a name="line.399"></a>
 <span class="sourceLineNo">400</span>        scopeProvided = false;<a name="line.400"></a>
@@ -435,9 +435,9 @@
 <span class="sourceLineNo">427</span>      return;<a name="line.427"></a>
 <span class="sourceLineNo">428</span>    }<a name="line.428"></a>
 <span class="sourceLineNo">429</span><a name="line.429"></a>
-<span class="sourceLineNo">430</span>    final String scopeStr =<a name="line.430"></a>
-<span class="sourceLineNo">431</span>         toLowerCase(urlString.substring(questionMark2Pos+1, questionMark3Pos));<a name="line.431"></a>
-<span class="sourceLineNo">432</span>    if (scopeStr.length() == 0)<a name="line.432"></a>
+<span class="sourceLineNo">430</span>    final String scopeStr = StaticUtils.toLowerCase(<a name="line.430"></a>
+<span class="sourceLineNo">431</span>         urlString.substring(questionMark2Pos+1, questionMark3Pos));<a name="line.431"></a>
+<span class="sourceLineNo">432</span>    if (scopeStr.isEmpty())<a name="line.432"></a>
 <span class="sourceLineNo">433</span>    {<a name="line.433"></a>
 <span class="sourceLineNo">434</span>      scope         = SearchScope.BASE;<a name="line.434"></a>
 <span class="sourceLineNo">435</span>      scopeProvided = false;<a name="line.435"></a>
@@ -472,7 +472,7 @@
 <span class="sourceLineNo">464</span>    // The remainder of the value must be the filter.<a name="line.464"></a>
 <span class="sourceLineNo">465</span>    final String filterStr =<a name="line.465"></a>
 <span class="sourceLineNo">466</span>         percentDecode(urlString.substring(questionMark3Pos+1));<a name="line.466"></a>
-<span class="sourceLineNo">467</span>    if (filterStr.length() == 0)<a name="line.467"></a>
+<span class="sourceLineNo">467</span>    if (filterStr.isEmpty())<a name="line.467"></a>
 <span class="sourceLineNo">468</span>    {<a name="line.468"></a>
 <span class="sourceLineNo">469</span>      filter = DEFAULT_FILTER;<a name="line.469"></a>
 <span class="sourceLineNo">470</span>      filterProvided = false;<a name="line.470"></a>
@@ -516,11 +516,11 @@
 <span class="sourceLineNo">508</span>                 final SearchScope scope, final Filter filter)<a name="line.508"></a>
 <span class="sourceLineNo">509</span>         throws LDAPException<a name="line.509"></a>
 <span class="sourceLineNo">510</span>  {<a name="line.510"></a>
-<span class="sourceLineNo">511</span>    ensureNotNull(scheme);<a name="line.511"></a>
+<span class="sourceLineNo">511</span>    Validator.ensureNotNull(scheme);<a name="line.511"></a>
 <span class="sourceLineNo">512</span><a name="line.512"></a>
 <span class="sourceLineNo">513</span>    final StringBuilder buffer = new StringBuilder();<a name="line.513"></a>
 <span class="sourceLineNo">514</span><a name="line.514"></a>
-<span class="sourceLineNo">515</span>    this.scheme = toLowerCase(scheme);<a name="line.515"></a>
+<span class="sourceLineNo">515</span>    this.scheme = StaticUtils.toLowerCase(scheme);<a name="line.515"></a>
 <span class="sourceLineNo">516</span>    final int defaultPort;<a name="line.516"></a>
 <span class="sourceLineNo">517</span>    if (scheme.equals("ldap"))<a name="line.517"></a>
 <span class="sourceLineNo">518</span>    {<a name="line.518"></a>
@@ -543,7 +543,7 @@
 <span class="sourceLineNo">535</span>    buffer.append(scheme);<a name="line.535"></a>
 <span class="sourceLineNo">536</span>    buffer.append("://");<a name="line.536"></a>
 <span class="sourceLineNo">537</span><a name="line.537"></a>
-<span class="sourceLineNo">538</span>    if ((host == null) || (host.length() == 0))<a name="line.538"></a>
+<span class="sourceLineNo">538</span>    if ((host == null) || host.isEmpty())<a name="line.538"></a>
 <span class="sourceLineNo">539</span>    {<a name="line.539"></a>
 <span class="sourceLineNo">540</span>      this.host = null;<a name="line.540"></a>
 <span class="sourceLineNo">541</span>    }<a name="line.541"></a>
@@ -565,7 +565,7 @@
 <span class="sourceLineNo">557</span>      buffer.append(':');<a name="line.557"></a>
 <span class="sourceLineNo">558</span>      buffer.append(port);<a name="line.558"></a>
 <span class="sourceLineNo">559</span><a name="line.559"></a>
-<span class="sourceLineNo">560</span>      if ((port &lt; 1) || (port &gt; 65535))<a name="line.560"></a>
+<span class="sourceLineNo">560</span>      if ((port &lt; 1) || (port &gt; 65_535))<a name="line.560"></a>
 <span class="sourceLineNo">561</span>      {<a name="line.561"></a>
 <span class="sourceLineNo">562</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.562"></a>
 <span class="sourceLineNo">563</span>                                ERR_LDAPURL_INVALID_PORT.get(port));<a name="line.563"></a>
@@ -744,7 +744,7 @@
 <span class="sourceLineNo">736</span>          {<a name="line.736"></a>
 <span class="sourceLineNo">737</span>            final int decodedPort =<a name="line.737"></a>
 <span class="sourceLineNo">738</span>                 Integer.parseInt(hostPort.substring(closingBracketPos+2));<a name="line.738"></a>
-<span class="sourceLineNo">739</span>            if ((decodedPort &gt;= 1) &amp;&amp; (decodedPort &lt;= 65535))<a name="line.739"></a>
+<span class="sourceLineNo">739</span>            if ((decodedPort &gt;= 1) &amp;&amp; (decodedPort &lt;= 65_535))<a name="line.739"></a>
 <span class="sourceLineNo">740</span>            {<a name="line.740"></a>
 <span class="sourceLineNo">741</span>              return decodedPort;<a name="line.741"></a>
 <span class="sourceLineNo">742</span>            }<a name="line.742"></a>
@@ -757,7 +757,7 @@
 <span class="sourceLineNo">749</span>          }<a name="line.749"></a>
 <span class="sourceLineNo">750</span>          catch (final NumberFormatException nfe)<a name="line.750"></a>
 <span class="sourceLineNo">751</span>          {<a name="line.751"></a>
-<span class="sourceLineNo">752</span>            debugException(nfe);<a name="line.752"></a>
+<span class="sourceLineNo">752</span>            Debug.debugException(nfe);<a name="line.752"></a>
 <span class="sourceLineNo">753</span>            throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.753"></a>
 <span class="sourceLineNo">754</span>                                    ERR_LDAPURL_PORT_NOT_INT.get(hostPort),<a name="line.754"></a>
 <span class="sourceLineNo">755</span>                                    nfe);<a name="line.755"></a>
@@ -783,7 +783,7 @@
 <span class="sourceLineNo">775</span>      {<a name="line.775"></a>
 <span class="sourceLineNo">776</span>        final int decodedPort =<a name="line.776"></a>
 <span class="sourceLineNo">777</span>             Integer.parseInt(hostPort.substring(colonPos+1));<a name="line.777"></a>
-<span class="sourceLineNo">778</span>        if ((decodedPort &gt;= 1) &amp;&amp; (decodedPort &lt;= 65535))<a name="line.778"></a>
+<span class="sourceLineNo">778</span>        if ((decodedPort &gt;= 1) &amp;&amp; (decodedPort &lt;= 65_535))<a name="line.778"></a>
 <span class="sourceLineNo">779</span>        {<a name="line.779"></a>
 <span class="sourceLineNo">780</span>          hostBuffer.append(hostPort.substring(0, colonPos));<a name="line.780"></a>
 <span class="sourceLineNo">781</span>          return decodedPort;<a name="line.781"></a>
@@ -796,7 +796,7 @@
 <span class="sourceLineNo">788</span>      }<a name="line.788"></a>
 <span class="sourceLineNo">789</span>      catch (final NumberFormatException nfe)<a name="line.789"></a>
 <span class="sourceLineNo">790</span>      {<a name="line.790"></a>
-<span class="sourceLineNo">791</span>        debugException(nfe);<a name="line.791"></a>
+<span class="sourceLineNo">791</span>        Debug.debugException(nfe);<a name="line.791"></a>
 <span class="sourceLineNo">792</span>        throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.792"></a>
 <span class="sourceLineNo">793</span>                                ERR_LDAPURL_PORT_NOT_INT.get(hostPort), nfe);<a name="line.793"></a>
 <span class="sourceLineNo">794</span>      }<a name="line.794"></a>
@@ -824,7 +824,7 @@
 <span class="sourceLineNo">816</span>      return DEFAULT_ATTRIBUTES;<a name="line.816"></a>
 <span class="sourceLineNo">817</span>    }<a name="line.817"></a>
 <span class="sourceLineNo">818</span><a name="line.818"></a>
-<span class="sourceLineNo">819</span>    final ArrayList&lt;String&gt; attrList = new ArrayList&lt;String&gt;();<a name="line.819"></a>
+<span class="sourceLineNo">819</span>    final ArrayList&lt;String&gt; attrList = new ArrayList&lt;&gt;(10);<a name="line.819"></a>
 <span class="sourceLineNo">820</span>    int startPos = 0;<a name="line.820"></a>
 <span class="sourceLineNo">821</span>    while (startPos &lt; length)<a name="line.821"></a>
 <span class="sourceLineNo">822</span>    {<a name="line.822"></a>
@@ -833,7 +833,7 @@
 <span class="sourceLineNo">825</span>      {<a name="line.825"></a>
 <span class="sourceLineNo">826</span>        // There are no more commas, so there can only be one attribute left.<a name="line.826"></a>
 <span class="sourceLineNo">827</span>        final String attrName = s.substring(startPos).trim();<a name="line.827"></a>
-<span class="sourceLineNo">828</span>        if (attrName.length() == 0)<a name="line.828"></a>
+<span class="sourceLineNo">828</span>        if (attrName.isEmpty())<a name="line.828"></a>
 <span class="sourceLineNo">829</span>        {<a name="line.829"></a>
 <span class="sourceLineNo">830</span>          // This is only acceptable if the attribute list is empty (there was<a name="line.830"></a>
 <span class="sourceLineNo">831</span>          // probably a space in the attribute list string, which is technically<a name="line.831"></a>
@@ -859,7 +859,7 @@
 <span class="sourceLineNo">851</span>      else<a name="line.851"></a>
 <span class="sourceLineNo">852</span>      {<a name="line.852"></a>
 <span class="sourceLineNo">853</span>        final String attrName = s.substring(startPos, commaPos).trim();<a name="line.853"></a>
-<span class="sourceLineNo">854</span>        if (attrName.length() == 0)<a name="line.854"></a>
+<span class="sourceLineNo">854</span>        if (attrName.isEmpty())<a name="line.854"></a>
 <span class="sourceLineNo">855</span>        {<a name="line.855"></a>
 <span class="sourceLineNo">856</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.856"></a>
 <span class="sourceLineNo">857</span>                                  ERR_LDAPURL_ATTRLIST_EMPTY_ATTRIBUTE.get());<a name="line.857"></a>
@@ -1076,7 +1076,7 @@
 <span class="sourceLineNo">1068</span>        final byte[] byteArray = new byte[byteBuffer.limit()];<a name="line.1068"></a>
 <span class="sourceLineNo">1069</span>        byteBuffer.get(byteArray);<a name="line.1069"></a>
 <span class="sourceLineNo">1070</span><a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>        buffer.append(toUTF8String(byteArray));<a name="line.1071"></a>
+<span class="sourceLineNo">1071</span>        buffer.append(StaticUtils.toUTF8String(byteArray));<a name="line.1071"></a>
 <span class="sourceLineNo">1072</span>      }<a name="line.1072"></a>
 <span class="sourceLineNo">1073</span>      else<a name="line.1073"></a>
 <span class="sourceLineNo">1074</span>      {<a name="line.1074"></a>
@@ -1188,344 +1188,345 @@
 <span class="sourceLineNo">1180</span>          break;<a name="line.1180"></a>
 <span class="sourceLineNo">1181</span><a name="line.1181"></a>
 <span class="sourceLineNo">1182</span>        default:<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>          final byte[] charBytes = getBytes(new String(new char[] { c }));<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>          for (final byte b : charBytes)<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>          {<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>            buffer.append('%');<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>            toHex(b, buffer);<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>          }<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>          break;<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>      }<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>    }<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>  }<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span><a name="line.1193"></a>
+<span class="sourceLineNo">1183</span>          final byte[] charBytes =<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>               StaticUtils.getBytes(new String(new char[] { c }));<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>          for (final byte b : charBytes)<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>          {<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>            buffer.append('%');<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>            StaticUtils.toHex(b, buffer);<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>          }<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>          break;<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>      }<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>    }<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>  }<a name="line.1193"></a>
 <span class="sourceLineNo">1194</span><a name="line.1194"></a>
 <span class="sourceLineNo">1195</span><a name="line.1195"></a>
-<span class="sourceLineNo">1196</span>  /**<a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>   * Retrieves the scheme for this LDAP URL.  It will either be "ldap", "ldaps",<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>   * or "ldapi".<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>   *<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>   * @return  The scheme for this LDAP URL.<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>   */<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>  public String getScheme()<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>  {<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>    return scheme;<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>  }<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span><a name="line.1206"></a>
+<span class="sourceLineNo">1196</span><a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>  /**<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>   * Retrieves the scheme for this LDAP URL.  It will either be "ldap", "ldaps",<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>   * or "ldapi".<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>   *<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>   * @return  The scheme for this LDAP URL.<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>   */<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>  public String getScheme()<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>  {<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>    return scheme;<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>  }<a name="line.1206"></a>
 <span class="sourceLineNo">1207</span><a name="line.1207"></a>
 <span class="sourceLineNo">1208</span><a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>  /**<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>   * Retrieves the host for this LDAP URL.<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>   *<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>   * @return  The host for this LDAP URL, or {@code null} if the URL does not<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>   *          include a host and the client is supposed to have some external<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>   *          knowledge of what the host should be.<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>   */<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>  public String getHost()<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>  {<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>    return host;<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>  }<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span><a name="line.1220"></a>
+<span class="sourceLineNo">1209</span><a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>  /**<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>   * Retrieves the host for this LDAP URL.<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>   *<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>   * @return  The host for this LDAP URL, or {@code null} if the URL does not<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>   *          include a host and the client is supposed to have some external<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>   *          knowledge of what the host should be.<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>   */<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>  public String getHost()<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>  {<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>    return host;<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>  }<a name="line.1220"></a>
 <span class="sourceLineNo">1221</span><a name="line.1221"></a>
 <span class="sourceLineNo">1222</span><a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>  /**<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>   * Indicates whether the URL explicitly included a host address.<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>   *<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>   * @return  {@code true} if the URL explicitly included a host address, or<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>   *          {@code false} if it did not.<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span>   */<a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>  public boolean hostProvided()<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>  {<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span>    return (host != null);<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>  }<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span><a name="line.1233"></a>
+<span class="sourceLineNo">1223</span><a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>  /**<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>   * Indicates whether the URL explicitly included a host address.<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>   *<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>   * @return  {@code true} if the URL explicitly included a host address, or<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>   *          {@code false} if it did not.<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>   */<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>  public boolean hostProvided()<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>  {<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>    return (host != null);<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>  }<a name="line.1233"></a>
 <span class="sourceLineNo">1234</span><a name="line.1234"></a>
 <span class="sourceLineNo">1235</span><a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>  /**<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>   * Retrieves the port for this LDAP URL.<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>   *<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>   * @return  The port for this LDAP URL.<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>   */<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>  public int getPort()<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>  {<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>    return port;<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>  }<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span><a name="line.1245"></a>
+<span class="sourceLineNo">1236</span><a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>  /**<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>   * Retrieves the port for this LDAP URL.<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>   *<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>   * @return  The port for this LDAP URL.<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>   */<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>  public int getPort()<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>  {<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>    return port;<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>  }<a name="line.1245"></a>
 <span class="sourceLineNo">1246</span><a name="line.1246"></a>
 <span class="sourceLineNo">1247</span><a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>  /**<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>   * Indicates whether the URL explicitly included a port number.<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>   *<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>   * @return  {@code true} if the URL explicitly included a port number, or<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>   *          {@code false} if it did not and the default should be used.<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>   */<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>  public boolean portProvided()<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>  {<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>    return portProvided;<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>  }<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span><a name="line.1258"></a>
+<span class="sourceLineNo">1248</span><a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>  /**<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>   * Indicates whether the URL explicitly included a port number.<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>   *<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>   * @return  {@code true} if the URL explicitly included a port number, or<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>   *          {@code false} if it did not and the default should be used.<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>   */<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>  public boolean portProvided()<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>  {<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>    return portProvided;<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>  }<a name="line.1258"></a>
 <span class="sourceLineNo">1259</span><a name="line.1259"></a>
 <span class="sourceLineNo">1260</span><a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>  /**<a name="line.1261"></a>
-<span class="sourceLineNo">1262</span>   * Retrieves the base DN for this LDAP URL.<a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>   *<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span>   * @return  The base DN for this LDAP URL.<a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>   */<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>  public DN getBaseDN()<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>  {<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>    return baseDN;<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>  }<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span><a name="line.1270"></a>
+<span class="sourceLineNo">1261</span><a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>  /**<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span>   * Retrieves the base DN for this LDAP URL.<a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>   *<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>   * @return  The base DN for this LDAP URL.<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>   */<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>  public DN getBaseDN()<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>  {<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span>    return baseDN;<a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>  }<a name="line.1270"></a>
 <span class="sourceLineNo">1271</span><a name="line.1271"></a>
 <span class="sourceLineNo">1272</span><a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>  /**<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>   * Indicates whether the URL explicitly included a base DN.<a name="line.1274"></a>
-<span class="sourceLineNo">1275</span>   *<a name="line.1275"></a>
-<span class="sourceLineNo">1276</span>   * @return  {@code true} if the URL explicitly included a base DN, or<a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>   *          {@code false} if it did not and the default should be used.<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>   */<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>  public boolean baseDNProvided()<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span>  {<a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>    return baseDNProvided;<a name="line.1281"></a>
-<span class="sourceLineNo">1282</span>  }<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span><a name="line.1283"></a>
+<span class="sourceLineNo">1273</span><a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>  /**<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>   * Indicates whether the URL explicitly included a base DN.<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>   *<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>   * @return  {@code true} if the URL explicitly included a base DN, or<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>   *          {@code false} if it did not and the default should be used.<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>   */<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>  public boolean baseDNProvided()<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>  {<a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>    return baseDNProvided;<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>  }<a name="line.1283"></a>
 <span class="sourceLineNo">1284</span><a name="line.1284"></a>
 <span class="sourceLineNo">1285</span><a name="line.1285"></a>
-<span class="sourceLineNo">1286</span>  /**<a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>   * Retrieves the attribute list for this LDAP URL.<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>   *<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span>   * @return  The attribute list for this LDAP URL.<a name="line.1289"></a>
-<span class="sourceLineNo">1290</span>   */<a name="line.1290"></a>
-<span class="sourceLineNo">1291</span>  public String[] getAttributes()<a name="line.1291"></a>
-<span class="sourceLineNo">1292</span>  {<a name="line.1292"></a>
-<span class="sourceLineNo">1293</span>    return attributes;<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>  }<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span><a name="line.1295"></a>
+<span class="sourceLineNo">1286</span><a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>  /**<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span>   * Retrieves the attribute list for this LDAP URL.<a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>   *<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>   * @return  The attribute list for this LDAP URL.<a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>   */<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>  public String[] getAttributes()<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>  {<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span>    return attributes;<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>  }<a name="line.1295"></a>
 <span class="sourceLineNo">1296</span><a name="line.1296"></a>
 <span class="sourceLineNo">1297</span><a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>  /**<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>   * Indicates whether the URL explicitly included an attribute list.<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>   *<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>   * @return  {@code true} if the URL explicitly included an attribute list, or<a name="line.1301"></a>
-<span class="sourceLineNo">1302</span>   *          {@code false} if it did not and the default should be used.<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>   */<a name="line.1303"></a>
-<span class="sourceLineNo">1304</span>  public boolean attributesProvided()<a name="line.1304"></a>
-<span class="sourceLineNo">1305</span>  {<a name="line.1305"></a>
-<span class="sourceLineNo">1306</span>    return attributesProvided;<a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>  }<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span><a name="line.1308"></a>
+<span class="sourceLineNo">1298</span><a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>  /**<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span>   * Indicates whether the URL explicitly included an attribute list.<a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>   *<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>   * @return  {@code true} if the URL explicitly included an attribute list, or<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>   *          {@code false} if it did not and the default should be used.<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>   */<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>  public boolean attributesProvided()<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span>  {<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>    return attributesProvided;<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>  }<a name="line.1308"></a>
 <span class="sourceLineNo">1309</span><a name="line.1309"></a>
 <span class="sourceLineNo">1310</span><a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>  /**<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>   * Retrieves the scope for this LDAP URL.<a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>   *<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>   * @return  The scope for this LDAP URL.<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span>   */<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>  public SearchScope getScope()<a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>  {<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>    return scope;<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>  }<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span><a name="line.1320"></a>
+<span class="sourceLineNo">1311</span><a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>  /**<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>   * Retrieves the scope for this LDAP URL.<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>   *<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>   * @return  The scope for this LDAP URL.<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>   */<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span>  public SearchScope getScope()<a name="line.1317"></a>
+<span class="sourceLineNo">1318</span>  {<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>    return scope;<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>  }<a name="line.1320"></a>
 <span class="sourceLineNo">1321</span><a name="line.1321"></a>
 <span class="sourceLineNo">1322</span><a name="line.1322"></a>
-<span class="sourceLineNo">1323</span>  /**<a name="line.1323"></a>
-<span class="sourceLineNo">1324</span>   * Indicates whether the URL explicitly included a search scope.<a name="line.1324"></a>
-<span class="sourceLineNo">1325</span>   *<a name="line.1325"></a>
-<span class="sourceLineNo">1326</span>   * @return  {@code true} if the URL explicitly included a search scope, or<a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>   *          {@code false} if it did not and the default should be used.<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>   */<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>  public boolean scopeProvided()<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>  {<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>    return scopeProvided;<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>  }<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span><a name="line.1333"></a>
+<span class="sourceLineNo">1323</span><a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>  /**<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>   * Indicates whether the URL explicitly included a search scope.<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>   *<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>   * @return  {@code true} if the URL explicitly included a search scope, or<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span>   *          {@code false} if it did not and the default should be used.<a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>   */<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>  public boolean scopeProvided()<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span>  {<a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>    return scopeProvided;<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>  }<a name="line.1333"></a>
 <span class="sourceLineNo">1334</span><a name="line.1334"></a>
 <span class="sourceLineNo">1335</span><a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>  /**<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>   * Retrieves the filter for this LDAP URL.<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>   *<a name="line.1338"></a>
-<span class="sourceLineNo">1339</span>   * @return  The filter for this LDAP URL.<a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>   */<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>  public Filter getFilter()<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span>  {<a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>    return filter;<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>  }<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span><a name="line.1345"></a>
+<span class="sourceLineNo">1336</span><a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>  /**<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>   * Retrieves the filter for this LDAP URL.<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>   *<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>   * @return  The filter for this LDAP URL.<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>   */<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>  public Filter getFilter()<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>  {<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>    return filter;<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>  }<a name="line.1345"></a>
 <span class="sourceLineNo">1346</span><a name="line.1346"></a>
 <span class="sourceLineNo">1347</span><a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>  /**<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span>   * Indicates whether the URL explicitly included a search filter.<a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>   *<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>   * @return  {@code true} if the URL explicitly included a search filter, or<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>   *          {@code false} if it did not and the default should be used.<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span>   */<a name="line.1353"></a>
-<span class="sourceLineNo">1354</span>  public boolean filterProvided()<a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>  {<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>    return filterProvided;<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span>  }<a name="line.1357"></a>
-<span class="sourceLineNo">1358</span><a name="line.1358"></a>
+<span class="sourceLineNo">1348</span><a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>  /**<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>   * Indicates whether the URL explicitly included a search filter.<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span>   *<a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>   * @return  {@code true} if the URL explicitly included a search filter, or<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>   *          {@code false} if it did not and the default should be used.<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>   */<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>  public boolean filterProvided()<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>  {<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>    return filterProvided;<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>  }<a name="line.1358"></a>
 <span class="sourceLineNo">1359</span><a name="line.1359"></a>
 <span class="sourceLineNo">1360</span><a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>  /**<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>   * Creates a search request containing the base DN, scope, filter, and<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>   * requested attributes from this LDAP URL.<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>   *<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>   * @return  The search request created from the base DN, scope, filter, and<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>   *          requested attributes from this LDAP URL.<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>   */<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>  public SearchRequest toSearchRequest()<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span>  {<a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>    return new SearchRequest(baseDN.toString(), scope, filter, attributes);<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>  }<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span><a name="line.1372"></a>
+<span class="sourceLineNo">1361</span><a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>  /**<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>   * Creates a search request containing the base DN, scope, filter, and<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>   * requested attributes from this LDAP URL.<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>   *<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>   * @return  The search request created from the base DN, scope, filter, and<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>   *          requested attributes from this LDAP URL.<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>   */<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>  public SearchRequest toSearchRequest()<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>  {<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>    return new SearchRequest(baseDN.toString(), scope, filter, attributes);<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>  }<a name="line.1372"></a>
 <span class="sourceLineNo">1373</span><a name="line.1373"></a>
 <span class="sourceLineNo">1374</span><a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>  /**<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>   * Retrieves a hash code for this LDAP URL.<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>   *<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>   * @return  A hash code for this LDAP URL.<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>   */<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>  @Override()<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>  public int hashCode()<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>  {<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>    return toNormalizedString().hashCode();<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>  }<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span><a name="line.1385"></a>
+<span class="sourceLineNo">1375</span><a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>  /**<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>   * Retrieves a hash code for this LDAP URL.<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>   *<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>   * @return  A hash code for this LDAP URL.<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>   */<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>  @Override()<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>  public int hashCode()<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>  {<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>    return toNormalizedString().hashCode();<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>  }<a name="line.1385"></a>
 <span class="sourceLineNo">1386</span><a name="line.1386"></a>
 <span class="sourceLineNo">1387</span><a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>  /**<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>   * Indicates whether the provided object is equal to this LDAP URL.  In order<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>   * to be considered equal, the provided object must be an LDAP URL with the<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>   * same normalized string representation.<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>   *<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>   * @param  o  The object for which to make the determination.<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>   *<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>   * @return  {@code true} if the provided object is equal to this LDAP URL, or<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>   *          {@code false} if not.<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>   */<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>  @Override()<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>  public boolean equals(final Object o)<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>  {<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>    if (o == null)<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>    {<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>      return false;<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>    }<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span><a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>    if (o == this)<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>    {<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>      return true;<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>    }<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span><a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>    if (! (o instanceof LDAPURL))<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>    {<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>      return false;<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>    }<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span><a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>    final LDAPURL url = (LDAPURL) o;<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>    return toNormalizedString().equals(url.toNormalizedString());<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>  }<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span><a name="line.1419"></a>
+<span class="sourceLineNo">1388</span><a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>  /**<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>   * Indicates whether the provided object is equal to this LDAP URL.  In order<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>   * to be considered equal, the provided object must be an LDAP URL with the<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>   * same normalized string representation.<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>   *<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>   * @param  o  The object for which to make the determination.<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>   *<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>   * @return  {@code true} if the provided object is equal to this LDAP URL, or<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>   *          {@code false} if not.<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>   */<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>  @Override()<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>  public boolean equals(final Object o)<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>  {<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>    if (o == null)<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>    {<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>      return false;<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>    }<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span><a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>    if (o == this)<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>    {<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>      return true;<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>    }<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span><a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>    if (! (o instanceof LDAPURL))<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>    {<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>      return false;<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>    }<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span><a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>    final LDAPURL url = (LDAPURL) o;<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>    return toNormalizedString().equals(url.toNormalizedString());<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>  }<a name="line.1419"></a>
 <span class="sourceLineNo">1420</span><a name="line.1420"></a>
 <span class="sourceLineNo">1421</span><a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>  /**<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>   * Retrieves a string representation of this LDAP URL.<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>   *<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>   * @return  A string representation of this LDAP URL.<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>   */<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>  @Override()<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>  public String toString()<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>  {<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>    return urlString;<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>  }<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span><a name="line.1432"></a>
+<span class="sourceLineNo">1422</span><a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>  /**<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>   * Retrieves a string representation of this LDAP URL.<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>   *<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>   * @return  A string representation of this LDAP URL.<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>   */<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>  @Override()<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>  public String toString()<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>  {<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>    return urlString;<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>  }<a name="line.1432"></a>
 <span class="sourceLineNo">1433</span><a name="line.1433"></a>
 <span class="sourceLineNo">1434</span><a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>  /**<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span>   * Retrieves a normalized string representation of this LDAP URL.<a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>   *<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>   * @return  A normalized string representation of this LDAP URL.<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>   */<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>  public String toNormalizedString()<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>  {<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>    if (normalizedURLString == null)<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>    {<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>      final StringBuilder buffer = new StringBuilder();<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>      toNormalizedString(buffer);<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>      normalizedURLString = buffer.toString();<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>    }<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span><a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>    return normalizedURLString;<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>  }<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span><a name="line.1451"></a>
+<span class="sourceLineNo">1435</span><a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>  /**<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>   * Retrieves a normalized string representation of this LDAP URL.<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>   *<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>   * @return  A normalized string representation of this LDAP URL.<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>   */<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>  public String toNormalizedString()<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>  {<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>    if (normalizedURLString == null)<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>    {<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>      final StringBuilder buffer = new StringBuilder();<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>      toNormalizedString(buffer);<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>      normalizedURLString = buffer.toString();<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>    }<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span><a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>    return normalizedURLString;<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>  }<a name="line.1451"></a>
 <span class="sourceLineNo">1452</span><a name="line.1452"></a>
 <span class="sourceLineNo">1453</span><a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>  /**<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>   * Appends a normalized string representation of this LDAP URL to the provided<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>   * buffer.<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>   *<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>   * @param  buffer  The buffer to which to append the normalized string<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>   *                 representation of this LDAP URL.<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>   */<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>  public void toNormalizedString(final StringBuilder buffer)<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>  {<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>    buffer.append(scheme);<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>    buffer.append("://");<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span><a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>    if (host != null)<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>    {<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>      if (host.indexOf(':') &gt;= 0)<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>      {<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>        buffer.append('[');<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>        buffer.append(toLowerCase(host));<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>        buffer.append(']');<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>      }<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>      else<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>      {<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>        buffer.append(toLowerCase(host));<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>      }<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>    }<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span><a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>    if (! scheme.equals("ldapi"))<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>    {<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>      buffer.append(':');<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>      buffer.append(port);<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>    }<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span><a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>    buffer.append('/');<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>    percentEncode(baseDN.toNormalizedString(), buffer);<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>    buffer.append('?');<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span><a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>    for (int i=0; i &lt; attributes.length; i++)<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>    {<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>      if (i &gt; 0)<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>      {<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>        buffer.append(',');<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>      }<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span><a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>      buffer.append(toLowerCase(attributes[i]));<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>    }<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span><a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>    buffer.append('?');<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>    switch (scope.intValue())<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>    {<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>      case 0:  // BASE<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>        buffer.append("base");<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>        break;<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>      case 1:  // ONE<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>        buffer.append("one");<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>        break;<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>      case 2:  // SUB<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>        buffer.append("sub");<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>        break;<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>      case 3:  // SUBORDINATE_SUBTREE<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>        buffer.append("subordinates");<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>        break;<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>    }<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span><a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>    buffer.append('?');<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>    percentEncode(filter.toNormalizedString(), buffer);<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>  }<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>}<a name="line.1520"></a>
+<span class="sourceLineNo">1454</span><a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>  /**<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>   * Appends a normalized string representation of this LDAP URL to the provided<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>   * buffer.<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>   *<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>   * @param  buffer  The buffer to which to append the normalized string<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>   *                 representation of this LDAP URL.<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>   */<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>  public void toNormalizedString(final StringBuilder buffer)<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>  {<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>    buffer.append(scheme);<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>    buffer.append("://");<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span><a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>    if (host != null)<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>    {<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>      if (host.indexOf(':') &gt;= 0)<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>      {<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>        buffer.append('[');<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>        buffer.append(StaticUtils.toLowerCase(host));<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>        buffer.append(']');<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>      }<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>      else<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>      {<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>        buffer.append(StaticUtils.toLowerCase(host));<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>      }<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>    }<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span><a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>    if (! scheme.equals("ldapi"))<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>    {<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>      buffer.append(':');<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>      buffer.append(port);<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>    }<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span><a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>    buffer.append('/');<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>    percentEncode(baseDN.toNormalizedString(), buffer);<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>    buffer.append('?');<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span><a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>    for (int i=0; i &lt; attributes.length; i++)<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>    {<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>      if (i &gt; 0)<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>      {<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>        buffer.append(',');<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>      }<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span><a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>      buffer.append(StaticUtils.toLowerCase(attributes[i]));<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>    }<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span><a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>    buffer.append('?');<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>    switch (scope.intValue())<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>    {<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>      case 0:  // BASE<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>        buffer.append("base");<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>        break;<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>      case 1:  // ONE<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>        buffer.append("one");<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>        break;<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>      case 2:  // SUB<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>        buffer.append("sub");<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>        break;<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>      case 3:  // SUBORDINATE_SUBTREE<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>        buffer.append("subordinates");<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>        break;<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>    }<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span><a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>    buffer.append('?');<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>    percentEncode(filter.toNormalizedString(), buffer);<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>  }<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>}<a name="line.1521"></a>
 
 
 

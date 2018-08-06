@@ -40,13 +40,13 @@
 <span class="sourceLineNo">032</span><a name="line.32"></a>
 <span class="sourceLineNo">033</span>import com.unboundid.ldap.sdk.Attribute;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import com.unboundid.ldap.sdk.Entry;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import com.unboundid.util.NotMutable;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafety;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.37"></a>
-<span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.unboundidds.monitors.MonitorMessages.*;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import static com.unboundid.util.Debug.*;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import static com.unboundid.util.StaticUtils.*;<a name="line.41"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.Debug;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.NotMutable;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.StaticUtils;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import com.unboundid.util.ThreadSafety;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.39"></a>
+<span class="sourceLineNo">040</span><a name="line.40"></a>
+<span class="sourceLineNo">041</span>import static com.unboundid.ldap.sdk.unboundidds.monitors.MonitorMessages.*;<a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
 <span class="sourceLineNo">044</span><a name="line.44"></a>
@@ -59,11 +59,11 @@
 <span class="sourceLineNo">051</span> * &lt;BLOCKQUOTE&gt;<a name="line.51"></a>
 <span class="sourceLineNo">052</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.52"></a>
 <span class="sourceLineNo">053</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.53"></a>
-<span class="sourceLineNo">054</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *   server products.  These classes provide support for proprietary<a name="line.55"></a>
-<span class="sourceLineNo">056</span> *   functionality or for external specifications that are not considered stable<a name="line.56"></a>
-<span class="sourceLineNo">057</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.57"></a>
-<span class="sourceLineNo">058</span> *   other types of LDAP servers.<a name="line.58"></a>
+<span class="sourceLineNo">054</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.54"></a>
+<span class="sourceLineNo">055</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *   for proprietary functionality or for external specifications that are not<a name="line.56"></a>
+<span class="sourceLineNo">057</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *   interoperable way with other types of LDAP servers.<a name="line.58"></a>
 <span class="sourceLineNo">059</span> * &lt;/BLOCKQUOTE&gt;<a name="line.59"></a>
 <span class="sourceLineNo">060</span> * &lt;BR&gt;<a name="line.60"></a>
 <span class="sourceLineNo">061</span> * The information that may be available in the memory usage monitor entry<a name="line.61"></a>
@@ -360,22 +360,22 @@
 <span class="sourceLineNo">352</span>    reservedMemoryPercentFull = getLong(ATTR_RESERVED_MEMORY_PERCENT_FULL);<a name="line.352"></a>
 <span class="sourceLineNo">353</span><a name="line.353"></a>
 <span class="sourceLineNo">354</span><a name="line.354"></a>
-<span class="sourceLineNo">355</span>    final TreeMap&lt;Long,Long&gt; pauses = new TreeMap&lt;Long,Long&gt;();<a name="line.355"></a>
+<span class="sourceLineNo">355</span>    final TreeMap&lt;Long,Long&gt; pauses = new TreeMap&lt;&gt;();<a name="line.355"></a>
 <span class="sourceLineNo">356</span><a name="line.356"></a>
-<span class="sourceLineNo">357</span>    final TreeSet&lt;String&gt; mpNames = new TreeSet&lt;String&gt;();<a name="line.357"></a>
-<span class="sourceLineNo">358</span>    final TreeSet&lt;String&gt; gcNames = new TreeSet&lt;String&gt;();<a name="line.358"></a>
+<span class="sourceLineNo">357</span>    final TreeSet&lt;String&gt; mpNames = new TreeSet&lt;&gt;();<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    final TreeSet&lt;String&gt; gcNames = new TreeSet&lt;&gt;();<a name="line.358"></a>
 <span class="sourceLineNo">359</span><a name="line.359"></a>
-<span class="sourceLineNo">360</span>    final TreeMap&lt;String,Long&gt; averageDurations = new TreeMap&lt;String,Long&gt;();<a name="line.360"></a>
-<span class="sourceLineNo">361</span>    final TreeMap&lt;String,Long&gt; currentBytesUsed = new TreeMap&lt;String,Long&gt;();<a name="line.361"></a>
-<span class="sourceLineNo">362</span>    final TreeMap&lt;String,Long&gt; lastBytesUsed    = new TreeMap&lt;String,Long&gt;();<a name="line.362"></a>
-<span class="sourceLineNo">363</span>    final TreeMap&lt;String,Long&gt; recentDurations  = new TreeMap&lt;String,Long&gt;();<a name="line.363"></a>
-<span class="sourceLineNo">364</span>    final TreeMap&lt;String,Long&gt; totalCounts      = new TreeMap&lt;String,Long&gt;();<a name="line.364"></a>
-<span class="sourceLineNo">365</span>    final TreeMap&lt;String,Long&gt; totalDurations   = new TreeMap&lt;String,Long&gt;();<a name="line.365"></a>
+<span class="sourceLineNo">360</span>    final TreeMap&lt;String,Long&gt; averageDurations = new TreeMap&lt;&gt;();<a name="line.360"></a>
+<span class="sourceLineNo">361</span>    final TreeMap&lt;String,Long&gt; currentBytesUsed = new TreeMap&lt;&gt;();<a name="line.361"></a>
+<span class="sourceLineNo">362</span>    final TreeMap&lt;String,Long&gt; lastBytesUsed    = new TreeMap&lt;&gt;();<a name="line.362"></a>
+<span class="sourceLineNo">363</span>    final TreeMap&lt;String,Long&gt; recentDurations  = new TreeMap&lt;&gt;();<a name="line.363"></a>
+<span class="sourceLineNo">364</span>    final TreeMap&lt;String,Long&gt; totalCounts      = new TreeMap&lt;&gt;();<a name="line.364"></a>
+<span class="sourceLineNo">365</span>    final TreeMap&lt;String,Long&gt; totalDurations   = new TreeMap&lt;&gt;();<a name="line.365"></a>
 <span class="sourceLineNo">366</span><a name="line.366"></a>
 <span class="sourceLineNo">367</span>    for (final Attribute a : entry.getAttributes())<a name="line.367"></a>
 <span class="sourceLineNo">368</span>    {<a name="line.368"></a>
 <span class="sourceLineNo">369</span>      final String name      = a.getName();<a name="line.369"></a>
-<span class="sourceLineNo">370</span>      final String lowerName = toLowerCase(name);<a name="line.370"></a>
+<span class="sourceLineNo">370</span>      final String lowerName = StaticUtils.toLowerCase(name);<a name="line.370"></a>
 <span class="sourceLineNo">371</span><a name="line.371"></a>
 <span class="sourceLineNo">372</span>      if (lowerName.startsWith(ATTR_PREFIX_DETECTED_PAUSE))<a name="line.372"></a>
 <span class="sourceLineNo">373</span>      {<a name="line.373"></a>
@@ -393,7 +393,7 @@
 <span class="sourceLineNo">385</span>          }<a name="line.385"></a>
 <span class="sourceLineNo">386</span>          catch (final Exception e)<a name="line.386"></a>
 <span class="sourceLineNo">387</span>          {<a name="line.387"></a>
-<span class="sourceLineNo">388</span>            debugException(e);<a name="line.388"></a>
+<span class="sourceLineNo">388</span>            Debug.debugException(e);<a name="line.388"></a>
 <span class="sourceLineNo">389</span>          }<a name="line.389"></a>
 <span class="sourceLineNo">390</span>        }<a name="line.390"></a>
 <span class="sourceLineNo">391</span>        else if (timeStr.endsWith("s"))<a name="line.391"></a>
@@ -406,7 +406,7 @@
 <span class="sourceLineNo">398</span>          }<a name="line.398"></a>
 <span class="sourceLineNo">399</span>          catch (final Exception e)<a name="line.399"></a>
 <span class="sourceLineNo">400</span>          {<a name="line.400"></a>
-<span class="sourceLineNo">401</span>            debugException(e);<a name="line.401"></a>
+<span class="sourceLineNo">401</span>            Debug.debugException(e);<a name="line.401"></a>
 <span class="sourceLineNo">402</span>          }<a name="line.402"></a>
 <span class="sourceLineNo">403</span>        }<a name="line.403"></a>
 <span class="sourceLineNo">404</span>      }<a name="line.404"></a>
@@ -420,7 +420,7 @@
 <span class="sourceLineNo">412</span>        final Long l = getLong(name);<a name="line.412"></a>
 <span class="sourceLineNo">413</span>        if (l != null)<a name="line.413"></a>
 <span class="sourceLineNo">414</span>        {<a name="line.414"></a>
-<span class="sourceLineNo">415</span>          averageDurations.put(toLowerCase(gcName), l);<a name="line.415"></a>
+<span class="sourceLineNo">415</span>          averageDurations.put(StaticUtils.toLowerCase(gcName), l);<a name="line.415"></a>
 <span class="sourceLineNo">416</span>        }<a name="line.416"></a>
 <span class="sourceLineNo">417</span><a name="line.417"></a>
 <span class="sourceLineNo">418</span>        continue;<a name="line.418"></a>
@@ -435,7 +435,7 @@
 <span class="sourceLineNo">427</span>        final Long l = getLong(name);<a name="line.427"></a>
 <span class="sourceLineNo">428</span>        if (l != null)<a name="line.428"></a>
 <span class="sourceLineNo">429</span>        {<a name="line.429"></a>
-<span class="sourceLineNo">430</span>          lastBytesUsed.put(toLowerCase(mpName), l);<a name="line.430"></a>
+<span class="sourceLineNo">430</span>          lastBytesUsed.put(StaticUtils.toLowerCase(mpName), l);<a name="line.430"></a>
 <span class="sourceLineNo">431</span>        }<a name="line.431"></a>
 <span class="sourceLineNo">432</span><a name="line.432"></a>
 <span class="sourceLineNo">433</span>        continue;<a name="line.433"></a>
@@ -450,7 +450,7 @@
 <span class="sourceLineNo">442</span>        final Long l = getLong(name);<a name="line.442"></a>
 <span class="sourceLineNo">443</span>        if (l != null)<a name="line.443"></a>
 <span class="sourceLineNo">444</span>        {<a name="line.444"></a>
-<span class="sourceLineNo">445</span>          currentBytesUsed.put(toLowerCase(mpName), l);<a name="line.445"></a>
+<span class="sourceLineNo">445</span>          currentBytesUsed.put(StaticUtils.toLowerCase(mpName), l);<a name="line.445"></a>
 <span class="sourceLineNo">446</span>        }<a name="line.446"></a>
 <span class="sourceLineNo">447</span><a name="line.447"></a>
 <span class="sourceLineNo">448</span>        continue;<a name="line.448"></a>
@@ -465,7 +465,7 @@
 <span class="sourceLineNo">457</span>        final Long l = getLong(name);<a name="line.457"></a>
 <span class="sourceLineNo">458</span>        if (l != null)<a name="line.458"></a>
 <span class="sourceLineNo">459</span>        {<a name="line.459"></a>
-<span class="sourceLineNo">460</span>          recentDurations.put(toLowerCase(gcName), l);<a name="line.460"></a>
+<span class="sourceLineNo">460</span>          recentDurations.put(StaticUtils.toLowerCase(gcName), l);<a name="line.460"></a>
 <span class="sourceLineNo">461</span>        }<a name="line.461"></a>
 <span class="sourceLineNo">462</span><a name="line.462"></a>
 <span class="sourceLineNo">463</span>        continue;<a name="line.463"></a>
@@ -480,7 +480,7 @@
 <span class="sourceLineNo">472</span>        final Long l = getLong(name);<a name="line.472"></a>
 <span class="sourceLineNo">473</span>        if (l != null)<a name="line.473"></a>
 <span class="sourceLineNo">474</span>        {<a name="line.474"></a>
-<span class="sourceLineNo">475</span>          totalCounts.put(toLowerCase(gcName), l);<a name="line.475"></a>
+<span class="sourceLineNo">475</span>          totalCounts.put(StaticUtils.toLowerCase(gcName), l);<a name="line.475"></a>
 <span class="sourceLineNo">476</span>        }<a name="line.476"></a>
 <span class="sourceLineNo">477</span><a name="line.477"></a>
 <span class="sourceLineNo">478</span>        continue;<a name="line.478"></a>
@@ -495,7 +495,7 @@
 <span class="sourceLineNo">487</span>        final Long l = getLong(name);<a name="line.487"></a>
 <span class="sourceLineNo">488</span>        if (l != null)<a name="line.488"></a>
 <span class="sourceLineNo">489</span>        {<a name="line.489"></a>
-<span class="sourceLineNo">490</span>          totalDurations.put(toLowerCase(gcName), l);<a name="line.490"></a>
+<span class="sourceLineNo">490</span>          totalDurations.put(StaticUtils.toLowerCase(gcName), l);<a name="line.490"></a>
 <span class="sourceLineNo">491</span>        }<a name="line.491"></a>
 <span class="sourceLineNo">492</span><a name="line.492"></a>
 <span class="sourceLineNo">493</span>        continue;<a name="line.493"></a>
@@ -504,9 +504,9 @@
 <span class="sourceLineNo">496</span><a name="line.496"></a>
 <span class="sourceLineNo">497</span><a name="line.497"></a>
 <span class="sourceLineNo">498</span>    garbageCollectors =<a name="line.498"></a>
-<span class="sourceLineNo">499</span>         Collections.unmodifiableList(new ArrayList&lt;String&gt;(gcNames));<a name="line.499"></a>
+<span class="sourceLineNo">499</span>         Collections.unmodifiableList(new ArrayList&lt;&gt;(gcNames));<a name="line.499"></a>
 <span class="sourceLineNo">500</span><a name="line.500"></a>
-<span class="sourceLineNo">501</span>    memoryPools = Collections.unmodifiableList(new ArrayList&lt;String&gt;(mpNames));<a name="line.501"></a>
+<span class="sourceLineNo">501</span>    memoryPools = Collections.unmodifiableList(new ArrayList&lt;&gt;(mpNames));<a name="line.501"></a>
 <span class="sourceLineNo">502</span><a name="line.502"></a>
 <span class="sourceLineNo">503</span>    totalCollectionCountPerGC = Collections.unmodifiableMap(totalCounts);<a name="line.503"></a>
 <span class="sourceLineNo">504</span><a name="line.504"></a>
@@ -654,484 +654,489 @@
 <span class="sourceLineNo">646</span>   */<a name="line.646"></a>
 <span class="sourceLineNo">647</span>  public Long getTotalCollectionCount(final String collectorName)<a name="line.647"></a>
 <span class="sourceLineNo">648</span>  {<a name="line.648"></a>
-<span class="sourceLineNo">649</span>    return totalCollectionCountPerGC.get(toLowerCase(collectorName));<a name="line.649"></a>
-<span class="sourceLineNo">650</span>  }<a name="line.650"></a>
-<span class="sourceLineNo">651</span><a name="line.651"></a>
+<span class="sourceLineNo">649</span>    return totalCollectionCountPerGC.get(<a name="line.649"></a>
+<span class="sourceLineNo">650</span>         StaticUtils.toLowerCase(collectorName));<a name="line.650"></a>
+<span class="sourceLineNo">651</span>  }<a name="line.651"></a>
 <span class="sourceLineNo">652</span><a name="line.652"></a>
 <span class="sourceLineNo">653</span><a name="line.653"></a>
-<span class="sourceLineNo">654</span>  /**<a name="line.654"></a>
-<span class="sourceLineNo">655</span>   * Retrieves a map containing the total length of time (in milliseconds) spent<a name="line.655"></a>
-<span class="sourceLineNo">656</span>   * performing garbage collection per collector.<a name="line.656"></a>
-<span class="sourceLineNo">657</span>   *<a name="line.657"></a>
-<span class="sourceLineNo">658</span>   * @return  A map containing the total length of time (in milliseconds) spent<a name="line.658"></a>
-<span class="sourceLineNo">659</span>   *          performing garbage collection per collector.<a name="line.659"></a>
-<span class="sourceLineNo">660</span>   */<a name="line.660"></a>
-<span class="sourceLineNo">661</span>  public Map&lt;String,Long&gt; getTotalCollectionDurations()<a name="line.661"></a>
-<span class="sourceLineNo">662</span>  {<a name="line.662"></a>
-<span class="sourceLineNo">663</span>    return totalCollectionDurationPerGC;<a name="line.663"></a>
-<span class="sourceLineNo">664</span>  }<a name="line.664"></a>
-<span class="sourceLineNo">665</span><a name="line.665"></a>
+<span class="sourceLineNo">654</span><a name="line.654"></a>
+<span class="sourceLineNo">655</span>  /**<a name="line.655"></a>
+<span class="sourceLineNo">656</span>   * Retrieves a map containing the total length of time (in milliseconds) spent<a name="line.656"></a>
+<span class="sourceLineNo">657</span>   * performing garbage collection per collector.<a name="line.657"></a>
+<span class="sourceLineNo">658</span>   *<a name="line.658"></a>
+<span class="sourceLineNo">659</span>   * @return  A map containing the total length of time (in milliseconds) spent<a name="line.659"></a>
+<span class="sourceLineNo">660</span>   *          performing garbage collection per collector.<a name="line.660"></a>
+<span class="sourceLineNo">661</span>   */<a name="line.661"></a>
+<span class="sourceLineNo">662</span>  public Map&lt;String,Long&gt; getTotalCollectionDurations()<a name="line.662"></a>
+<span class="sourceLineNo">663</span>  {<a name="line.663"></a>
+<span class="sourceLineNo">664</span>    return totalCollectionDurationPerGC;<a name="line.664"></a>
+<span class="sourceLineNo">665</span>  }<a name="line.665"></a>
 <span class="sourceLineNo">666</span><a name="line.666"></a>
 <span class="sourceLineNo">667</span><a name="line.667"></a>
-<span class="sourceLineNo">668</span>  /**<a name="line.668"></a>
-<span class="sourceLineNo">669</span>   * Retrieves the total length of time (in milliseconds) spent performing<a name="line.669"></a>
-<span class="sourceLineNo">670</span>   * garbage collection for the specified collector.<a name="line.670"></a>
-<span class="sourceLineNo">671</span>   *<a name="line.671"></a>
-<span class="sourceLineNo">672</span>   * @param  collectorName  The name of the garbage collector for which to<a name="line.672"></a>
-<span class="sourceLineNo">673</span>   *                        retrieve the information.<a name="line.673"></a>
-<span class="sourceLineNo">674</span>   *<a name="line.674"></a>
-<span class="sourceLineNo">675</span>   * @return  The total length of time (in milliseconds) spent performing<a name="line.675"></a>
-<span class="sourceLineNo">676</span>   *          garbage collection for the specified collector, or {@code null} if<a name="line.676"></a>
-<span class="sourceLineNo">677</span>   *          that information is not available.<a name="line.677"></a>
-<span class="sourceLineNo">678</span>   */<a name="line.678"></a>
-<span class="sourceLineNo">679</span>  public Long getTotalCollectionDuration(final String collectorName)<a name="line.679"></a>
-<span class="sourceLineNo">680</span>  {<a name="line.680"></a>
-<span class="sourceLineNo">681</span>    return totalCollectionDurationPerGC.get(toLowerCase(collectorName));<a name="line.681"></a>
-<span class="sourceLineNo">682</span>  }<a name="line.682"></a>
-<span class="sourceLineNo">683</span><a name="line.683"></a>
-<span class="sourceLineNo">684</span><a name="line.684"></a>
+<span class="sourceLineNo">668</span><a name="line.668"></a>
+<span class="sourceLineNo">669</span>  /**<a name="line.669"></a>
+<span class="sourceLineNo">670</span>   * Retrieves the total length of time (in milliseconds) spent performing<a name="line.670"></a>
+<span class="sourceLineNo">671</span>   * garbage collection for the specified collector.<a name="line.671"></a>
+<span class="sourceLineNo">672</span>   *<a name="line.672"></a>
+<span class="sourceLineNo">673</span>   * @param  collectorName  The name of the garbage collector for which to<a name="line.673"></a>
+<span class="sourceLineNo">674</span>   *                        retrieve the information.<a name="line.674"></a>
+<span class="sourceLineNo">675</span>   *<a name="line.675"></a>
+<span class="sourceLineNo">676</span>   * @return  The total length of time (in milliseconds) spent performing<a name="line.676"></a>
+<span class="sourceLineNo">677</span>   *          garbage collection for the specified collector, or {@code null} if<a name="line.677"></a>
+<span class="sourceLineNo">678</span>   *          that information is not available.<a name="line.678"></a>
+<span class="sourceLineNo">679</span>   */<a name="line.679"></a>
+<span class="sourceLineNo">680</span>  public Long getTotalCollectionDuration(final String collectorName)<a name="line.680"></a>
+<span class="sourceLineNo">681</span>  {<a name="line.681"></a>
+<span class="sourceLineNo">682</span>    return totalCollectionDurationPerGC.get(<a name="line.682"></a>
+<span class="sourceLineNo">683</span>         StaticUtils.toLowerCase(collectorName));<a name="line.683"></a>
+<span class="sourceLineNo">684</span>  }<a name="line.684"></a>
 <span class="sourceLineNo">685</span><a name="line.685"></a>
-<span class="sourceLineNo">686</span>  /**<a name="line.686"></a>
-<span class="sourceLineNo">687</span>   * Retrieves a map containing the average garbage collection duration (in<a name="line.687"></a>
-<span class="sourceLineNo">688</span>   * milliseconds) per garbage collector.<a name="line.688"></a>
-<span class="sourceLineNo">689</span>   *<a name="line.689"></a>
-<span class="sourceLineNo">690</span>   * @return  A map containing the average garbage collection duration (in<a name="line.690"></a>
-<span class="sourceLineNo">691</span>   *          milliseconds) per garbage collector.<a name="line.691"></a>
-<span class="sourceLineNo">692</span>   */<a name="line.692"></a>
-<span class="sourceLineNo">693</span>  public Map&lt;String,Long&gt; getAverageCollectionDurations()<a name="line.693"></a>
-<span class="sourceLineNo">694</span>  {<a name="line.694"></a>
-<span class="sourceLineNo">695</span>    return averageCollectionDurationPerGC;<a name="line.695"></a>
-<span class="sourceLineNo">696</span>  }<a name="line.696"></a>
-<span class="sourceLineNo">697</span><a name="line.697"></a>
-<span class="sourceLineNo">698</span><a name="line.698"></a>
+<span class="sourceLineNo">686</span><a name="line.686"></a>
+<span class="sourceLineNo">687</span><a name="line.687"></a>
+<span class="sourceLineNo">688</span>  /**<a name="line.688"></a>
+<span class="sourceLineNo">689</span>   * Retrieves a map containing the average garbage collection duration (in<a name="line.689"></a>
+<span class="sourceLineNo">690</span>   * milliseconds) per garbage collector.<a name="line.690"></a>
+<span class="sourceLineNo">691</span>   *<a name="line.691"></a>
+<span class="sourceLineNo">692</span>   * @return  A map containing the average garbage collection duration (in<a name="line.692"></a>
+<span class="sourceLineNo">693</span>   *          milliseconds) per garbage collector.<a name="line.693"></a>
+<span class="sourceLineNo">694</span>   */<a name="line.694"></a>
+<span class="sourceLineNo">695</span>  public Map&lt;String,Long&gt; getAverageCollectionDurations()<a name="line.695"></a>
+<span class="sourceLineNo">696</span>  {<a name="line.696"></a>
+<span class="sourceLineNo">697</span>    return averageCollectionDurationPerGC;<a name="line.697"></a>
+<span class="sourceLineNo">698</span>  }<a name="line.698"></a>
 <span class="sourceLineNo">699</span><a name="line.699"></a>
-<span class="sourceLineNo">700</span>  /**<a name="line.700"></a>
-<span class="sourceLineNo">701</span>   * Retrieves the average garbage collection duration (in milliseconds) for the<a name="line.701"></a>
-<span class="sourceLineNo">702</span>   * specified collector.<a name="line.702"></a>
-<span class="sourceLineNo">703</span>   *<a name="line.703"></a>
-<span class="sourceLineNo">704</span>   * @param  collectorName  The name of the garbage collector for which to<a name="line.704"></a>
-<span class="sourceLineNo">705</span>   *                        retrieve the information.<a name="line.705"></a>
-<span class="sourceLineNo">706</span>   *<a name="line.706"></a>
-<span class="sourceLineNo">707</span>   * @return  The average garbage collection duration (in milliseconds) for the<a name="line.707"></a>
-<span class="sourceLineNo">708</span>   *          specified collector, or {@code null} if that information is not<a name="line.708"></a>
-<span class="sourceLineNo">709</span>   *          available.<a name="line.709"></a>
-<span class="sourceLineNo">710</span>   */<a name="line.710"></a>
-<span class="sourceLineNo">711</span>  public Long getAverageCollectionDuration(final String collectorName)<a name="line.711"></a>
-<span class="sourceLineNo">712</span>  {<a name="line.712"></a>
-<span class="sourceLineNo">713</span>    return averageCollectionDurationPerGC.get(toLowerCase(collectorName));<a name="line.713"></a>
-<span class="sourceLineNo">714</span>  }<a name="line.714"></a>
-<span class="sourceLineNo">715</span><a name="line.715"></a>
-<span class="sourceLineNo">716</span><a name="line.716"></a>
-<span class="sourceLineNo">717</span><a name="line.717"></a>
-<span class="sourceLineNo">718</span>  /**<a name="line.718"></a>
-<span class="sourceLineNo">719</span>   * Retrieves a map containing the most recent garbage collection duration (in<a name="line.719"></a>
-<span class="sourceLineNo">720</span>   * milliseconds) per garbage collector.<a name="line.720"></a>
-<span class="sourceLineNo">721</span>   *<a name="line.721"></a>
-<span class="sourceLineNo">722</span>   * @return  A map containing the duration of the most recent garbage<a name="line.722"></a>
-<span class="sourceLineNo">723</span>   *          collection duration (in milliseconds) per garbage collector.<a name="line.723"></a>
-<span class="sourceLineNo">724</span>   */<a name="line.724"></a>
-<span class="sourceLineNo">725</span>  public Map&lt;String,Long&gt; getRecentCollectionDurations()<a name="line.725"></a>
-<span class="sourceLineNo">726</span>  {<a name="line.726"></a>
-<span class="sourceLineNo">727</span>    return recentCollectionDurationPerGC;<a name="line.727"></a>
-<span class="sourceLineNo">728</span>  }<a name="line.728"></a>
-<span class="sourceLineNo">729</span><a name="line.729"></a>
-<span class="sourceLineNo">730</span><a name="line.730"></a>
-<span class="sourceLineNo">731</span><a name="line.731"></a>
-<span class="sourceLineNo">732</span>  /**<a name="line.732"></a>
-<span class="sourceLineNo">733</span>   * Retrieves the duration (in milliseconds) of the most recent garbage<a name="line.733"></a>
-<span class="sourceLineNo">734</span>   * collection for the specified collector.<a name="line.734"></a>
-<span class="sourceLineNo">735</span>   *<a name="line.735"></a>
-<span class="sourceLineNo">736</span>   * @param  collectorName  The name of the garbage collector for which to<a name="line.736"></a>
-<span class="sourceLineNo">737</span>   *                        retrieve the information.<a name="line.737"></a>
+<span class="sourceLineNo">700</span><a name="line.700"></a>
+<span class="sourceLineNo">701</span><a name="line.701"></a>
+<span class="sourceLineNo">702</span>  /**<a name="line.702"></a>
+<span class="sourceLineNo">703</span>   * Retrieves the average garbage collection duration (in milliseconds) for the<a name="line.703"></a>
+<span class="sourceLineNo">704</span>   * specified collector.<a name="line.704"></a>
+<span class="sourceLineNo">705</span>   *<a name="line.705"></a>
+<span class="sourceLineNo">706</span>   * @param  collectorName  The name of the garbage collector for which to<a name="line.706"></a>
+<span class="sourceLineNo">707</span>   *                        retrieve the information.<a name="line.707"></a>
+<span class="sourceLineNo">708</span>   *<a name="line.708"></a>
+<span class="sourceLineNo">709</span>   * @return  The average garbage collection duration (in milliseconds) for the<a name="line.709"></a>
+<span class="sourceLineNo">710</span>   *          specified collector, or {@code null} if that information is not<a name="line.710"></a>
+<span class="sourceLineNo">711</span>   *          available.<a name="line.711"></a>
+<span class="sourceLineNo">712</span>   */<a name="line.712"></a>
+<span class="sourceLineNo">713</span>  public Long getAverageCollectionDuration(final String collectorName)<a name="line.713"></a>
+<span class="sourceLineNo">714</span>  {<a name="line.714"></a>
+<span class="sourceLineNo">715</span>    return averageCollectionDurationPerGC.get(<a name="line.715"></a>
+<span class="sourceLineNo">716</span>         StaticUtils.toLowerCase(collectorName));<a name="line.716"></a>
+<span class="sourceLineNo">717</span>  }<a name="line.717"></a>
+<span class="sourceLineNo">718</span><a name="line.718"></a>
+<span class="sourceLineNo">719</span><a name="line.719"></a>
+<span class="sourceLineNo">720</span><a name="line.720"></a>
+<span class="sourceLineNo">721</span>  /**<a name="line.721"></a>
+<span class="sourceLineNo">722</span>   * Retrieves a map containing the most recent garbage collection duration (in<a name="line.722"></a>
+<span class="sourceLineNo">723</span>   * milliseconds) per garbage collector.<a name="line.723"></a>
+<span class="sourceLineNo">724</span>   *<a name="line.724"></a>
+<span class="sourceLineNo">725</span>   * @return  A map containing the duration of the most recent garbage<a name="line.725"></a>
+<span class="sourceLineNo">726</span>   *          collection duration (in milliseconds) per garbage collector.<a name="line.726"></a>
+<span class="sourceLineNo">727</span>   */<a name="line.727"></a>
+<span class="sourceLineNo">728</span>  public Map&lt;String,Long&gt; getRecentCollectionDurations()<a name="line.728"></a>
+<span class="sourceLineNo">729</span>  {<a name="line.729"></a>
+<span class="sourceLineNo">730</span>    return recentCollectionDurationPerGC;<a name="line.730"></a>
+<span class="sourceLineNo">731</span>  }<a name="line.731"></a>
+<span class="sourceLineNo">732</span><a name="line.732"></a>
+<span class="sourceLineNo">733</span><a name="line.733"></a>
+<span class="sourceLineNo">734</span><a name="line.734"></a>
+<span class="sourceLineNo">735</span>  /**<a name="line.735"></a>
+<span class="sourceLineNo">736</span>   * Retrieves the duration (in milliseconds) of the most recent garbage<a name="line.736"></a>
+<span class="sourceLineNo">737</span>   * collection for the specified collector.<a name="line.737"></a>
 <span class="sourceLineNo">738</span>   *<a name="line.738"></a>
-<span class="sourceLineNo">739</span>   * @return  The duration (in milliseconds) of the most recent garbage<a name="line.739"></a>
-<span class="sourceLineNo">740</span>   *          collection for the specified collector, or {@code null} if that<a name="line.740"></a>
-<span class="sourceLineNo">741</span>   *          information is not available.<a name="line.741"></a>
-<span class="sourceLineNo">742</span>   */<a name="line.742"></a>
-<span class="sourceLineNo">743</span>  public Long getRecentCollectionDuration(final String collectorName)<a name="line.743"></a>
-<span class="sourceLineNo">744</span>  {<a name="line.744"></a>
-<span class="sourceLineNo">745</span>    return recentCollectionDurationPerGC.get(toLowerCase(collectorName));<a name="line.745"></a>
-<span class="sourceLineNo">746</span>  }<a name="line.746"></a>
-<span class="sourceLineNo">747</span><a name="line.747"></a>
-<span class="sourceLineNo">748</span><a name="line.748"></a>
-<span class="sourceLineNo">749</span><a name="line.749"></a>
-<span class="sourceLineNo">750</span>  /**<a name="line.750"></a>
-<span class="sourceLineNo">751</span>   * Retrieves a map containing the current number of bytes used per memory<a name="line.751"></a>
-<span class="sourceLineNo">752</span>   * pool.<a name="line.752"></a>
-<span class="sourceLineNo">753</span>   *<a name="line.753"></a>
-<span class="sourceLineNo">754</span>   * @return  A map containing the current number of bytes used per memory pool.<a name="line.754"></a>
-<span class="sourceLineNo">755</span>   */<a name="line.755"></a>
-<span class="sourceLineNo">756</span>  public Map&lt;String,Long&gt; getCurrentBytesUsed()<a name="line.756"></a>
-<span class="sourceLineNo">757</span>  {<a name="line.757"></a>
-<span class="sourceLineNo">758</span>    return currentBytesUsedPerMP;<a name="line.758"></a>
-<span class="sourceLineNo">759</span>  }<a name="line.759"></a>
-<span class="sourceLineNo">760</span><a name="line.760"></a>
-<span class="sourceLineNo">761</span><a name="line.761"></a>
-<span class="sourceLineNo">762</span><a name="line.762"></a>
-<span class="sourceLineNo">763</span>  /**<a name="line.763"></a>
-<span class="sourceLineNo">764</span>   * Retrieves the current number of bytes used for the specified memory pool.<a name="line.764"></a>
-<span class="sourceLineNo">765</span>   *<a name="line.765"></a>
-<span class="sourceLineNo">766</span>   * @param  poolName  The name of the memory pool for which to retrieve the<a name="line.766"></a>
-<span class="sourceLineNo">767</span>   *                   information.<a name="line.767"></a>
-<span class="sourceLineNo">768</span>   *<a name="line.768"></a>
-<span class="sourceLineNo">769</span>   * @return  The current number of bytes used for the specified memory pool, or<a name="line.769"></a>
-<span class="sourceLineNo">770</span>   *          {@code null} if that information is not available.<a name="line.770"></a>
-<span class="sourceLineNo">771</span>   */<a name="line.771"></a>
-<span class="sourceLineNo">772</span>  public Long getCurrentBytesUsed(final String poolName)<a name="line.772"></a>
-<span class="sourceLineNo">773</span>  {<a name="line.773"></a>
-<span class="sourceLineNo">774</span>    return currentBytesUsedPerMP.get(toLowerCase(poolName));<a name="line.774"></a>
-<span class="sourceLineNo">775</span>  }<a name="line.775"></a>
-<span class="sourceLineNo">776</span><a name="line.776"></a>
-<span class="sourceLineNo">777</span><a name="line.777"></a>
-<span class="sourceLineNo">778</span><a name="line.778"></a>
-<span class="sourceLineNo">779</span>  /**<a name="line.779"></a>
-<span class="sourceLineNo">780</span>   * Retrieves a map containing the number of bytes used after the last garbage<a name="line.780"></a>
-<span class="sourceLineNo">781</span>   * collection per memory pool.<a name="line.781"></a>
-<span class="sourceLineNo">782</span>   *<a name="line.782"></a>
-<span class="sourceLineNo">783</span>   * @return  A map containing the number of bytes used after the last garbage<a name="line.783"></a>
-<span class="sourceLineNo">784</span>   *          collection per memory pool.<a name="line.784"></a>
-<span class="sourceLineNo">785</span>   */<a name="line.785"></a>
-<span class="sourceLineNo">786</span>  public Map&lt;String,Long&gt; getBytesUsedAfterLastCollection()<a name="line.786"></a>
-<span class="sourceLineNo">787</span>  {<a name="line.787"></a>
-<span class="sourceLineNo">788</span>    return bytesUsedAfterLastCollectionPerMP;<a name="line.788"></a>
-<span class="sourceLineNo">789</span>  }<a name="line.789"></a>
-<span class="sourceLineNo">790</span><a name="line.790"></a>
-<span class="sourceLineNo">791</span><a name="line.791"></a>
-<span class="sourceLineNo">792</span><a name="line.792"></a>
-<span class="sourceLineNo">793</span>  /**<a name="line.793"></a>
-<span class="sourceLineNo">794</span>   * Retrieves the number of bytes used after the last garbage collection for<a name="line.794"></a>
-<span class="sourceLineNo">795</span>   * the specified memory pool.<a name="line.795"></a>
-<span class="sourceLineNo">796</span>   *<a name="line.796"></a>
-<span class="sourceLineNo">797</span>   * @param  poolName  The name of the memory pool for which to retrieve the<a name="line.797"></a>
-<span class="sourceLineNo">798</span>   *                   information.<a name="line.798"></a>
-<span class="sourceLineNo">799</span>   *<a name="line.799"></a>
-<span class="sourceLineNo">800</span>   * @return  The number of bytes used after the last garbage collection for the<a name="line.800"></a>
-<span class="sourceLineNo">801</span>   *          specified memory pool, or {@code null} if that information is not<a name="line.801"></a>
-<span class="sourceLineNo">802</span>   *          available.<a name="line.802"></a>
-<span class="sourceLineNo">803</span>   */<a name="line.803"></a>
-<span class="sourceLineNo">804</span>  public Long getBytesUsedAfterLastCollection(final String poolName)<a name="line.804"></a>
-<span class="sourceLineNo">805</span>  {<a name="line.805"></a>
-<span class="sourceLineNo">806</span>    return bytesUsedAfterLastCollectionPerMP.get(toLowerCase(poolName));<a name="line.806"></a>
-<span class="sourceLineNo">807</span>  }<a name="line.807"></a>
-<span class="sourceLineNo">808</span><a name="line.808"></a>
-<span class="sourceLineNo">809</span><a name="line.809"></a>
-<span class="sourceLineNo">810</span><a name="line.810"></a>
-<span class="sourceLineNo">811</span>  /**<a name="line.811"></a>
-<span class="sourceLineNo">812</span>   * Retrieves the amount of non-heap memory consumed by the JVM.<a name="line.812"></a>
-<span class="sourceLineNo">813</span>   *<a name="line.813"></a>
-<span class="sourceLineNo">814</span>   * @return  The amount of non-heap memory consumed by the JVM, or {@code null}<a name="line.814"></a>
-<span class="sourceLineNo">815</span>   *          if that information is not available.<a name="line.815"></a>
-<span class="sourceLineNo">816</span>   */<a name="line.816"></a>
-<span class="sourceLineNo">817</span>  public Long getNonHeapMemoryBytesUsed()<a name="line.817"></a>
-<span class="sourceLineNo">818</span>  {<a name="line.818"></a>
-<span class="sourceLineNo">819</span>    return nonHeapMemoryUsed;<a name="line.819"></a>
-<span class="sourceLineNo">820</span>  }<a name="line.820"></a>
-<span class="sourceLineNo">821</span><a name="line.821"></a>
-<span class="sourceLineNo">822</span><a name="line.822"></a>
-<span class="sourceLineNo">823</span><a name="line.823"></a>
-<span class="sourceLineNo">824</span>  /**<a name="line.824"></a>
-<span class="sourceLineNo">825</span>   * Retrieves the total amount of memory in bytes held by memory consumers.<a name="line.825"></a>
-<span class="sourceLineNo">826</span>   *<a name="line.826"></a>
-<span class="sourceLineNo">827</span>   * @return  The total amount of memory in bytes held by memory consumers, or<a name="line.827"></a>
-<span class="sourceLineNo">828</span>   *          {@code null} if that information is not available.<a name="line.828"></a>
-<span class="sourceLineNo">829</span>   */<a name="line.829"></a>
-<span class="sourceLineNo">830</span>  public Long getTotalBytesUsedByMemoryConsumers()<a name="line.830"></a>
-<span class="sourceLineNo">831</span>  {<a name="line.831"></a>
-<span class="sourceLineNo">832</span>    return totalBytesHeldByConsumers;<a name="line.832"></a>
-<span class="sourceLineNo">833</span>  }<a name="line.833"></a>
-<span class="sourceLineNo">834</span><a name="line.834"></a>
-<span class="sourceLineNo">835</span><a name="line.835"></a>
-<span class="sourceLineNo">836</span><a name="line.836"></a>
-<span class="sourceLineNo">837</span>  /**<a name="line.837"></a>
-<span class="sourceLineNo">838</span>   * Retrieves the percentage of the maximum allowed amount of tenured memory<a name="line.838"></a>
-<span class="sourceLineNo">839</span>   * that is used by memory consumers (assuming that all memory used by memory<a name="line.839"></a>
-<span class="sourceLineNo">840</span>   * consumers is contained in the tenured generation).<a name="line.840"></a>
-<span class="sourceLineNo">841</span>   *<a name="line.841"></a>
-<span class="sourceLineNo">842</span>   * @return  The percentage of the maximum allowed amount of tenured memory<a name="line.842"></a>
-<span class="sourceLineNo">843</span>   *          that is used by memory consumers, or {@code null} if that<a name="line.843"></a>
-<span class="sourceLineNo">844</span>   *          information is not available.<a name="line.844"></a>
-<span class="sourceLineNo">845</span>   */<a name="line.845"></a>
-<span class="sourceLineNo">846</span>  public Long getPercentageOfMaximumTenuredMemoryUsedByMemoryConsumers()<a name="line.846"></a>
-<span class="sourceLineNo">847</span>  {<a name="line.847"></a>
-<span class="sourceLineNo">848</span>    return percentOfMaxTenuredMemory;<a name="line.848"></a>
-<span class="sourceLineNo">849</span>  }<a name="line.849"></a>
-<span class="sourceLineNo">850</span><a name="line.850"></a>
-<span class="sourceLineNo">851</span><a name="line.851"></a>
-<span class="sourceLineNo">852</span><a name="line.852"></a>
-<span class="sourceLineNo">853</span>  /**<a name="line.853"></a>
-<span class="sourceLineNo">854</span>   * Retrieves the percentage of the committed amount of tenured memory that is<a name="line.854"></a>
-<span class="sourceLineNo">855</span>   * used by memory consumers (assuming that all memory used by memory consumers<a name="line.855"></a>
-<span class="sourceLineNo">856</span>   * is contained in the tenured generation).<a name="line.856"></a>
-<span class="sourceLineNo">857</span>   *<a name="line.857"></a>
-<span class="sourceLineNo">858</span>   * @return  The percentage of the committed amount of tenured memory that is<a name="line.858"></a>
-<span class="sourceLineNo">859</span>   *          used by memory consumers, or {@code null} if that information is<a name="line.859"></a>
-<span class="sourceLineNo">860</span>   *          not available.<a name="line.860"></a>
-<span class="sourceLineNo">861</span>   */<a name="line.861"></a>
-<span class="sourceLineNo">862</span>  public Long getPercentageOfCommittedTenuredMemoryUsedByMemoryConsumers()<a name="line.862"></a>
-<span class="sourceLineNo">863</span>  {<a name="line.863"></a>
-<span class="sourceLineNo">864</span>    return percentOfCommittedTenuredMemory;<a name="line.864"></a>
-<span class="sourceLineNo">865</span>  }<a name="line.865"></a>
-<span class="sourceLineNo">866</span><a name="line.866"></a>
-<span class="sourceLineNo">867</span><a name="line.867"></a>
-<span class="sourceLineNo">868</span><a name="line.868"></a>
-<span class="sourceLineNo">869</span>  /**<a name="line.869"></a>
-<span class="sourceLineNo">870</span>   * Retrieves the number of pauses of various durations detected by the server.<a name="line.870"></a>
-<span class="sourceLineNo">871</span>   * The value returned will contain a map between the minimum duration in<a name="line.871"></a>
-<span class="sourceLineNo">872</span>   * milliseconds for the associated bucket and the number of pauses detected of<a name="line.872"></a>
-<span class="sourceLineNo">873</span>   * at least that duration.<a name="line.873"></a>
-<span class="sourceLineNo">874</span>   *<a name="line.874"></a>
-<span class="sourceLineNo">875</span>   * @return  The number of pauses of various durations detected by the server.<a name="line.875"></a>
-<span class="sourceLineNo">876</span>   */<a name="line.876"></a>
-<span class="sourceLineNo">877</span>  public Map&lt;Long,Long&gt; getDetectedPauseCounts()<a name="line.877"></a>
-<span class="sourceLineNo">878</span>  {<a name="line.878"></a>
-<span class="sourceLineNo">879</span>    return detectedPauses;<a name="line.879"></a>
-<span class="sourceLineNo">880</span>  }<a name="line.880"></a>
-<span class="sourceLineNo">881</span><a name="line.881"></a>
-<span class="sourceLineNo">882</span><a name="line.882"></a>
-<span class="sourceLineNo">883</span><a name="line.883"></a>
-<span class="sourceLineNo">884</span>  /**<a name="line.884"></a>
-<span class="sourceLineNo">885</span>   * Retrieves the duration of the longest pause detected by the server.<a name="line.885"></a>
-<span class="sourceLineNo">886</span>   *<a name="line.886"></a>
-<span class="sourceLineNo">887</span>   * @return  The duration of the longest pause detected by the server, or<a name="line.887"></a>
-<span class="sourceLineNo">888</span>   *          {@code null} if that information is not available.<a name="line.888"></a>
-<span class="sourceLineNo">889</span>   */<a name="line.889"></a>
-<span class="sourceLineNo">890</span>  public Long getMaxDetectedPauseTimeMillis()<a name="line.890"></a>
-<span class="sourceLineNo">891</span>  {<a name="line.891"></a>
-<span class="sourceLineNo">892</span>    return maxDetectedPauseTime;<a name="line.892"></a>
-<span class="sourceLineNo">893</span>  }<a name="line.893"></a>
-<span class="sourceLineNo">894</span><a name="line.894"></a>
-<span class="sourceLineNo">895</span><a name="line.895"></a>
-<span class="sourceLineNo">896</span><a name="line.896"></a>
-<span class="sourceLineNo">897</span>  /**<a name="line.897"></a>
-<span class="sourceLineNo">898</span>   * {@inheritDoc}<a name="line.898"></a>
-<span class="sourceLineNo">899</span>   */<a name="line.899"></a>
-<span class="sourceLineNo">900</span>  @Override()<a name="line.900"></a>
-<span class="sourceLineNo">901</span>  public String getMonitorDisplayName()<a name="line.901"></a>
-<span class="sourceLineNo">902</span>  {<a name="line.902"></a>
-<span class="sourceLineNo">903</span>    return INFO_MEMORY_USAGE_MONITOR_DISPNAME.get();<a name="line.903"></a>
-<span class="sourceLineNo">904</span>  }<a name="line.904"></a>
-<span class="sourceLineNo">905</span><a name="line.905"></a>
-<span class="sourceLineNo">906</span><a name="line.906"></a>
-<span class="sourceLineNo">907</span><a name="line.907"></a>
-<span class="sourceLineNo">908</span>  /**<a name="line.908"></a>
-<span class="sourceLineNo">909</span>   * {@inheritDoc}<a name="line.909"></a>
-<span class="sourceLineNo">910</span>   */<a name="line.910"></a>
-<span class="sourceLineNo">911</span>  @Override()<a name="line.911"></a>
-<span class="sourceLineNo">912</span>  public String getMonitorDescription()<a name="line.912"></a>
-<span class="sourceLineNo">913</span>  {<a name="line.913"></a>
-<span class="sourceLineNo">914</span>    return INFO_MEMORY_USAGE_MONITOR_DESC.get();<a name="line.914"></a>
-<span class="sourceLineNo">915</span>  }<a name="line.915"></a>
-<span class="sourceLineNo">916</span><a name="line.916"></a>
-<span class="sourceLineNo">917</span><a name="line.917"></a>
-<span class="sourceLineNo">918</span><a name="line.918"></a>
-<span class="sourceLineNo">919</span>  /**<a name="line.919"></a>
-<span class="sourceLineNo">920</span>   * {@inheritDoc}<a name="line.920"></a>
-<span class="sourceLineNo">921</span>   */<a name="line.921"></a>
-<span class="sourceLineNo">922</span>  @Override()<a name="line.922"></a>
-<span class="sourceLineNo">923</span>  public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()<a name="line.923"></a>
-<span class="sourceLineNo">924</span>  {<a name="line.924"></a>
-<span class="sourceLineNo">925</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs =<a name="line.925"></a>
-<span class="sourceLineNo">926</span>         new LinkedHashMap&lt;String,MonitorAttribute&gt;();<a name="line.926"></a>
-<span class="sourceLineNo">927</span><a name="line.927"></a>
-<span class="sourceLineNo">928</span>    if (maxReservableMemoryMB != null)<a name="line.928"></a>
-<span class="sourceLineNo">929</span>    {<a name="line.929"></a>
-<span class="sourceLineNo">930</span>      addMonitorAttribute(attrs,<a name="line.930"></a>
-<span class="sourceLineNo">931</span>           ATTR_MAX_RESERVABLE_MEMORY_MB,<a name="line.931"></a>
-<span class="sourceLineNo">932</span>           INFO_MEMORY_USAGE_DISPNAME_MAX_MEM.get(),<a name="line.932"></a>
-<span class="sourceLineNo">933</span>           INFO_MEMORY_USAGE_DESC_MAX_MEM.get(),<a name="line.933"></a>
-<span class="sourceLineNo">934</span>           maxReservableMemoryMB);<a name="line.934"></a>
-<span class="sourceLineNo">935</span>    }<a name="line.935"></a>
-<span class="sourceLineNo">936</span><a name="line.936"></a>
-<span class="sourceLineNo">937</span>    if (currentReservedMemoryMB != null)<a name="line.937"></a>
-<span class="sourceLineNo">938</span>    {<a name="line.938"></a>
-<span class="sourceLineNo">939</span>      addMonitorAttribute(attrs,<a name="line.939"></a>
-<span class="sourceLineNo">940</span>           ATTR_CURRENT_RESERVED_MEMORY_MB,<a name="line.940"></a>
-<span class="sourceLineNo">941</span>           INFO_MEMORY_USAGE_DISPNAME_CURRENT_MEM.get(),<a name="line.941"></a>
-<span class="sourceLineNo">942</span>           INFO_MEMORY_USAGE_DESC_CURRENT_MEM.get(),<a name="line.942"></a>
-<span class="sourceLineNo">943</span>           currentReservedMemoryMB);<a name="line.943"></a>
-<span class="sourceLineNo">944</span>    }<a name="line.944"></a>
-<span class="sourceLineNo">945</span><a name="line.945"></a>
-<span class="sourceLineNo">946</span>    if (usedReservedMemoryMB != null)<a name="line.946"></a>
-<span class="sourceLineNo">947</span>    {<a name="line.947"></a>
-<span class="sourceLineNo">948</span>      addMonitorAttribute(attrs,<a name="line.948"></a>
-<span class="sourceLineNo">949</span>           ATTR_USED_MEMORY_MB,<a name="line.949"></a>
-<span class="sourceLineNo">950</span>           INFO_MEMORY_USAGE_DISPNAME_USED_MEM.get(),<a name="line.950"></a>
-<span class="sourceLineNo">951</span>           INFO_MEMORY_USAGE_DESC_USED_MEM.get(),<a name="line.951"></a>
-<span class="sourceLineNo">952</span>           usedReservedMemoryMB);<a name="line.952"></a>
-<span class="sourceLineNo">953</span>    }<a name="line.953"></a>
-<span class="sourceLineNo">954</span><a name="line.954"></a>
-<span class="sourceLineNo">955</span>    if (freeReservedMemoryMB != null)<a name="line.955"></a>
-<span class="sourceLineNo">956</span>    {<a name="line.956"></a>
-<span class="sourceLineNo">957</span>      addMonitorAttribute(attrs,<a name="line.957"></a>
-<span class="sourceLineNo">958</span>           ATTR_FREE_MEMORY_MB,<a name="line.958"></a>
-<span class="sourceLineNo">959</span>           INFO_MEMORY_USAGE_DISPNAME_FREE_MEM.get(),<a name="line.959"></a>
-<span class="sourceLineNo">960</span>           INFO_MEMORY_USAGE_DESC_FREE_MEM.get(),<a name="line.960"></a>
-<span class="sourceLineNo">961</span>           freeReservedMemoryMB);<a name="line.961"></a>
-<span class="sourceLineNo">962</span>    }<a name="line.962"></a>
-<span class="sourceLineNo">963</span><a name="line.963"></a>
-<span class="sourceLineNo">964</span>    if (reservedMemoryPercentFull != null)<a name="line.964"></a>
-<span class="sourceLineNo">965</span>    {<a name="line.965"></a>
-<span class="sourceLineNo">966</span>      addMonitorAttribute(attrs,<a name="line.966"></a>
-<span class="sourceLineNo">967</span>           ATTR_RESERVED_MEMORY_PERCENT_FULL,<a name="line.967"></a>
-<span class="sourceLineNo">968</span>           INFO_MEMORY_USAGE_DISPNAME_RESERVED_PCT.get(),<a name="line.968"></a>
-<span class="sourceLineNo">969</span>           INFO_MEMORY_USAGE_DESC_RESERVED_PCT.get(),<a name="line.969"></a>
-<span class="sourceLineNo">970</span>           reservedMemoryPercentFull);<a name="line.970"></a>
-<span class="sourceLineNo">971</span>    }<a name="line.971"></a>
-<span class="sourceLineNo">972</span><a name="line.972"></a>
-<span class="sourceLineNo">973</span>    if (! garbageCollectors.isEmpty())<a name="line.973"></a>
-<span class="sourceLineNo">974</span>    {<a name="line.974"></a>
-<span class="sourceLineNo">975</span>      addMonitorAttribute(attrs,<a name="line.975"></a>
-<span class="sourceLineNo">976</span>           "gcNames",<a name="line.976"></a>
-<span class="sourceLineNo">977</span>           INFO_MEMORY_USAGE_DISPNAME_GC_NAMES.get(),<a name="line.977"></a>
-<span class="sourceLineNo">978</span>           INFO_MEMORY_USAGE_DESC_GC_NAMES.get(),<a name="line.978"></a>
-<span class="sourceLineNo">979</span>           garbageCollectors);<a name="line.979"></a>
-<span class="sourceLineNo">980</span>    }<a name="line.980"></a>
-<span class="sourceLineNo">981</span><a name="line.981"></a>
-<span class="sourceLineNo">982</span>    if (! totalCollectionCountPerGC.isEmpty())<a name="line.982"></a>
-<span class="sourceLineNo">983</span>    {<a name="line.983"></a>
-<span class="sourceLineNo">984</span>      for (final String name : totalCollectionCountPerGC.keySet())<a name="line.984"></a>
-<span class="sourceLineNo">985</span>      {<a name="line.985"></a>
-<span class="sourceLineNo">986</span>        addMonitorAttribute(attrs,<a name="line.986"></a>
-<span class="sourceLineNo">987</span>            "totalCollectionCount-" + name,<a name="line.987"></a>
-<span class="sourceLineNo">988</span>            INFO_MEMORY_USAGE_DISPNAME_TOTAL_COLLECTION_COUNT.get(name),<a name="line.988"></a>
-<span class="sourceLineNo">989</span>            INFO_MEMORY_USAGE_DESC_TOTAL_COLLECTION_COUNT.get(name),<a name="line.989"></a>
-<span class="sourceLineNo">990</span>            totalCollectionCountPerGC.get(name));<a name="line.990"></a>
-<span class="sourceLineNo">991</span>      }<a name="line.991"></a>
-<span class="sourceLineNo">992</span>    }<a name="line.992"></a>
-<span class="sourceLineNo">993</span><a name="line.993"></a>
-<span class="sourceLineNo">994</span>    if (! totalCollectionDurationPerGC.isEmpty())<a name="line.994"></a>
-<span class="sourceLineNo">995</span>    {<a name="line.995"></a>
-<span class="sourceLineNo">996</span>      for (final String name : totalCollectionDurationPerGC.keySet())<a name="line.996"></a>
-<span class="sourceLineNo">997</span>      {<a name="line.997"></a>
-<span class="sourceLineNo">998</span>        addMonitorAttribute(attrs,<a name="line.998"></a>
-<span class="sourceLineNo">999</span>            "totalCollectionDuration-" + name,<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>            INFO_MEMORY_USAGE_DISPNAME_TOTAL_COLLECTION_DURATION.get(name),<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>            INFO_MEMORY_USAGE_DESC_TOTAL_COLLECTION_DURATION.get(name),<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>            totalCollectionDurationPerGC.get(name));<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>      }<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>    }<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span><a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>    if (! averageCollectionDurationPerGC.isEmpty())<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>    {<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>      for (final String name : averageCollectionDurationPerGC.keySet())<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>      {<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>        addMonitorAttribute(attrs,<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>            "averageCollectionDuration-" + name,<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>            INFO_MEMORY_USAGE_DISPNAME_AVERAGE_COLLECTION_DURATION.get(name),<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>            INFO_MEMORY_USAGE_DESC_AVERAGE_COLLECTION_DURATION.get(name),<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>            averageCollectionDurationPerGC.get(name));<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>      }<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>    }<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span><a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>    if (! recentCollectionDurationPerGC.isEmpty())<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>    {<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>      for (final String name : recentCollectionDurationPerGC.keySet())<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>      {<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>        addMonitorAttribute(attrs,<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>            "recentCollectionDuration-" + name,<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>            INFO_MEMORY_USAGE_DISPNAME_RECENT_COLLECTION_DURATION.get(name),<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>            INFO_MEMORY_USAGE_DESC_RECENT_COLLECTION_DURATION.get(name),<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>            recentCollectionDurationPerGC.get(name));<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>      }<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>    }<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span><a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>    if (! memoryPools.isEmpty())<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>    {<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>      addMonitorAttribute(attrs,<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>           "memoryPools",<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>           INFO_MEMORY_USAGE_DISPNAME_MEMORY_POOLS.get(),<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>           INFO_MEMORY_USAGE_DESC_MEMORY_POOLS.get(),<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>           memoryPools);<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>    }<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span><a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>    if (! currentBytesUsedPerMP.isEmpty())<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>    {<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>      for (final String name : currentBytesUsedPerMP.keySet())<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>      {<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>        addMonitorAttribute(attrs,<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span>            "currentBytesUsed-" + name,<a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>            INFO_MEMORY_USAGE_DISPNAME_CURRENT_BYTES_USED.get(name),<a name="line.1045"></a>
-<span class="sourceLineNo">1046</span>            INFO_MEMORY_USAGE_DESC_CURRENT_BYTES_USED.get(name),<a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>            currentBytesUsedPerMP.get(name));<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span>      }<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>    }<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span><a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>    if (! bytesUsedAfterLastCollectionPerMP.isEmpty())<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>    {<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>      for (final String name : bytesUsedAfterLastCollectionPerMP.keySet())<a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>      {<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>        addMonitorAttribute(attrs,<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>            "bytesUsedAfterLastCollection-" + name,<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>            INFO_MEMORY_USAGE_DISPNAME_BYTES_USED_AFTER_COLLECTION.get(name),<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>            INFO_MEMORY_USAGE_DESC_BYTES_USED_AFTER_COLLECTION.get(name),<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>            bytesUsedAfterLastCollectionPerMP.get(name));<a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>      }<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span>    }<a name="line.1061"></a>
-<span class="sourceLineNo">1062</span><a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>    if (nonHeapMemoryUsed != null)<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>    {<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>      addMonitorAttribute(attrs,<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>           ATTR_NON_HEAP_USED,<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>           INFO_MEMORY_USAGE_DISPNAME_NON_HEAP_MEMORY.get(),<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>           INFO_MEMORY_USAGE_DESC_NON_HEAP_MEMORY.get(),<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span>           nonHeapMemoryUsed);<a name="line.1069"></a>
-<span class="sourceLineNo">1070</span>    }<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span><a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>    if (totalBytesHeldByConsumers != null)<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>    {<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>      addMonitorAttribute(attrs,<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>           ATTR_TOTAL_CONSUMER_MEMORY,<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>           INFO_MEMORY_USAGE_DISPNAME_TOTAL_CONSUMER_MEMORY.get(),<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>           INFO_MEMORY_USAGE_DESC_TOTAL_CONSUMER_MEMORY.get(),<a name="line.1077"></a>
-<span class="sourceLineNo">1078</span>           totalBytesHeldByConsumers);<a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>    }<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span><a name="line.1080"></a>
-<span class="sourceLineNo">1081</span>    if (percentOfMaxTenuredMemory != null)<a name="line.1081"></a>
-<span class="sourceLineNo">1082</span>    {<a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>      addMonitorAttribute(attrs,<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>           ATTR_TOTAL_CONSUMER_MEMORY_AS_PCT_OF_MAX,<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>           INFO_MEMORY_USAGE_DISPNAME_CONSUMERS_AS_PCT_OF_MAX.get(),<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>           INFO_MEMORY_USAGE_DESC_CONSUMERS_AS_PCT_OF_MAX.get(),<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>           percentOfMaxTenuredMemory);<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>    }<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span><a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>    if (percentOfCommittedTenuredMemory != null)<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>    {<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>      addMonitorAttribute(attrs,<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>           ATTR_TOTAL_CONSUMER_MEMORY_AS_PCT_OF_COMMITTED,<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span>           INFO_MEMORY_USAGE_DISPNAME_CONSUMERS_AS_PCT_OF_COMMITTED.get(),<a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>           INFO_MEMORY_USAGE_DESC_CONSUMERS_AS_PCT_OF_COMMITTED.get(),<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span>           percentOfCommittedTenuredMemory);<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>    }<a name="line.1097"></a>
-<span class="sourceLineNo">1098</span><a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>    if (! detectedPauses.isEmpty())<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>    {<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>      final ArrayList&lt;String&gt; values =<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>           new ArrayList&lt;String&gt;(detectedPauses.size());<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>      for (final Map.Entry&lt;Long,Long&gt; e : detectedPauses.entrySet())<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span>      {<a name="line.1104"></a>
-<span class="sourceLineNo">1105</span>        values.add(e.getKey() + "ms=" + e.getValue());<a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>      }<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span><a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>      addMonitorAttribute(attrs,<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>           PROPERTY_DETECTED_PAUSE_COUNTS,<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span>           INFO_MEMORY_USAGE_DISPNAME_DETECTED_PAUSES.get(),<a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>           INFO_MEMORY_USAGE_DESC_DETECTED_PAUSES.get(),<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span>           values);<a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>    }<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span><a name="line.1114"></a>
-<span class="sourceLineNo">1115</span>    if (maxDetectedPauseTime != null)<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>    {<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>      addMonitorAttribute(attrs,<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>           ATTR_LONGEST_PAUSE_TIME,<a name="line.1118"></a>
-<span class="sourceLineNo">1119</span>           INFO_MEMORY_USAGE_DISPNAME_MAX_PAUSE_TIME.get(),<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span>           INFO_MEMORY_USAGE_DESC_MAX_PAUSE_TIME.get(),<a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>           maxDetectedPauseTime);<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>    }<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span><a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>    return Collections.unmodifiableMap(attrs);<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>  }<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>}<a name="line.1126"></a>
+<span class="sourceLineNo">739</span>   * @param  collectorName  The name of the garbage collector for which to<a name="line.739"></a>
+<span class="sourceLineNo">740</span>   *                        retrieve the information.<a name="line.740"></a>
+<span class="sourceLineNo">741</span>   *<a name="line.741"></a>
+<span class="sourceLineNo">742</span>   * @return  The duration (in milliseconds) of the most recent garbage<a name="line.742"></a>
+<span class="sourceLineNo">743</span>   *          collection for the specified collector, or {@code null} if that<a name="line.743"></a>
+<span class="sourceLineNo">744</span>   *          information is not available.<a name="line.744"></a>
+<span class="sourceLineNo">745</span>   */<a name="line.745"></a>
+<span class="sourceLineNo">746</span>  public Long getRecentCollectionDuration(final String collectorName)<a name="line.746"></a>
+<span class="sourceLineNo">747</span>  {<a name="line.747"></a>
+<span class="sourceLineNo">748</span>    return recentCollectionDurationPerGC.get(<a name="line.748"></a>
+<span class="sourceLineNo">749</span>         StaticUtils.toLowerCase(collectorName));<a name="line.749"></a>
+<span class="sourceLineNo">750</span>  }<a name="line.750"></a>
+<span class="sourceLineNo">751</span><a name="line.751"></a>
+<span class="sourceLineNo">752</span><a name="line.752"></a>
+<span class="sourceLineNo">753</span><a name="line.753"></a>
+<span class="sourceLineNo">754</span>  /**<a name="line.754"></a>
+<span class="sourceLineNo">755</span>   * Retrieves a map containing the current number of bytes used per memory<a name="line.755"></a>
+<span class="sourceLineNo">756</span>   * pool.<a name="line.756"></a>
+<span class="sourceLineNo">757</span>   *<a name="line.757"></a>
+<span class="sourceLineNo">758</span>   * @return  A map containing the current number of bytes used per memory pool.<a name="line.758"></a>
+<span class="sourceLineNo">759</span>   */<a name="line.759"></a>
+<span class="sourceLineNo">760</span>  public Map&lt;String,Long&gt; getCurrentBytesUsed()<a name="line.760"></a>
+<span class="sourceLineNo">761</span>  {<a name="line.761"></a>
+<span class="sourceLineNo">762</span>    return currentBytesUsedPerMP;<a name="line.762"></a>
+<span class="sourceLineNo">763</span>  }<a name="line.763"></a>
+<span class="sourceLineNo">764</span><a name="line.764"></a>
+<span class="sourceLineNo">765</span><a name="line.765"></a>
+<span class="sourceLineNo">766</span><a name="line.766"></a>
+<span class="sourceLineNo">767</span>  /**<a name="line.767"></a>
+<span class="sourceLineNo">768</span>   * Retrieves the current number of bytes used for the specified memory pool.<a name="line.768"></a>
+<span class="sourceLineNo">769</span>   *<a name="line.769"></a>
+<span class="sourceLineNo">770</span>   * @param  poolName  The name of the memory pool for which to retrieve the<a name="line.770"></a>
+<span class="sourceLineNo">771</span>   *                   information.<a name="line.771"></a>
+<span class="sourceLineNo">772</span>   *<a name="line.772"></a>
+<span class="sourceLineNo">773</span>   * @return  The current number of bytes used for the specified memory pool, or<a name="line.773"></a>
+<span class="sourceLineNo">774</span>   *          {@code null} if that information is not available.<a name="line.774"></a>
+<span class="sourceLineNo">775</span>   */<a name="line.775"></a>
+<span class="sourceLineNo">776</span>  public Long getCurrentBytesUsed(final String poolName)<a name="line.776"></a>
+<span class="sourceLineNo">777</span>  {<a name="line.777"></a>
+<span class="sourceLineNo">778</span>    return currentBytesUsedPerMP.get(StaticUtils.toLowerCase(poolName));<a name="line.778"></a>
+<span class="sourceLineNo">779</span>  }<a name="line.779"></a>
+<span class="sourceLineNo">780</span><a name="line.780"></a>
+<span class="sourceLineNo">781</span><a name="line.781"></a>
+<span class="sourceLineNo">782</span><a name="line.782"></a>
+<span class="sourceLineNo">783</span>  /**<a name="line.783"></a>
+<span class="sourceLineNo">784</span>   * Retrieves a map containing the number of bytes used after the last garbage<a name="line.784"></a>
+<span class="sourceLineNo">785</span>   * collection per memory pool.<a name="line.785"></a>
+<span class="sourceLineNo">786</span>   *<a name="line.786"></a>
+<span class="sourceLineNo">787</span>   * @return  A map containing the number of bytes used after the last garbage<a name="line.787"></a>
+<span class="sourceLineNo">788</span>   *          collection per memory pool.<a name="line.788"></a>
+<span class="sourceLineNo">789</span>   */<a name="line.789"></a>
+<span class="sourceLineNo">790</span>  public Map&lt;String,Long&gt; getBytesUsedAfterLastCollection()<a name="line.790"></a>
+<span class="sourceLineNo">791</span>  {<a name="line.791"></a>
+<span class="sourceLineNo">792</span>    return bytesUsedAfterLastCollectionPerMP;<a name="line.792"></a>
+<span class="sourceLineNo">793</span>  }<a name="line.793"></a>
+<span class="sourceLineNo">794</span><a name="line.794"></a>
+<span class="sourceLineNo">795</span><a name="line.795"></a>
+<span class="sourceLineNo">796</span><a name="line.796"></a>
+<span class="sourceLineNo">797</span>  /**<a name="line.797"></a>
+<span class="sourceLineNo">798</span>   * Retrieves the number of bytes used after the last garbage collection for<a name="line.798"></a>
+<span class="sourceLineNo">799</span>   * the specified memory pool.<a name="line.799"></a>
+<span class="sourceLineNo">800</span>   *<a name="line.800"></a>
+<span class="sourceLineNo">801</span>   * @param  poolName  The name of the memory pool for which to retrieve the<a name="line.801"></a>
+<span class="sourceLineNo">802</span>   *                   information.<a name="line.802"></a>
+<span class="sourceLineNo">803</span>   *<a name="line.803"></a>
+<span class="sourceLineNo">804</span>   * @return  The number of bytes used after the last garbage collection for the<a name="line.804"></a>
+<span class="sourceLineNo">805</span>   *          specified memory pool, or {@code null} if that information is not<a name="line.805"></a>
+<span class="sourceLineNo">806</span>   *          available.<a name="line.806"></a>
+<span class="sourceLineNo">807</span>   */<a name="line.807"></a>
+<span class="sourceLineNo">808</span>  public Long getBytesUsedAfterLastCollection(final String poolName)<a name="line.808"></a>
+<span class="sourceLineNo">809</span>  {<a name="line.809"></a>
+<span class="sourceLineNo">810</span>    return bytesUsedAfterLastCollectionPerMP.get(<a name="line.810"></a>
+<span class="sourceLineNo">811</span>         StaticUtils.toLowerCase(poolName));<a name="line.811"></a>
+<span class="sourceLineNo">812</span>  }<a name="line.812"></a>
+<span class="sourceLineNo">813</span><a name="line.813"></a>
+<span class="sourceLineNo">814</span><a name="line.814"></a>
+<span class="sourceLineNo">815</span><a name="line.815"></a>
+<span class="sourceLineNo">816</span>  /**<a name="line.816"></a>
+<span class="sourceLineNo">817</span>   * Retrieves the amount of non-heap memory consumed by the JVM.<a name="line.817"></a>
+<span class="sourceLineNo">818</span>   *<a name="line.818"></a>
+<span class="sourceLineNo">819</span>   * @return  The amount of non-heap memory consumed by the JVM, or {@code null}<a name="line.819"></a>
+<span class="sourceLineNo">820</span>   *          if that information is not available.<a name="line.820"></a>
+<span class="sourceLineNo">821</span>   */<a name="line.821"></a>
+<span class="sourceLineNo">822</span>  public Long getNonHeapMemoryBytesUsed()<a name="line.822"></a>
+<span class="sourceLineNo">823</span>  {<a name="line.823"></a>
+<span class="sourceLineNo">824</span>    return nonHeapMemoryUsed;<a name="line.824"></a>
+<span class="sourceLineNo">825</span>  }<a name="line.825"></a>
+<span class="sourceLineNo">826</span><a name="line.826"></a>
+<span class="sourceLineNo">827</span><a name="line.827"></a>
+<span class="sourceLineNo">828</span><a name="line.828"></a>
+<span class="sourceLineNo">829</span>  /**<a name="line.829"></a>
+<span class="sourceLineNo">830</span>   * Retrieves the total amount of memory in bytes held by memory consumers.<a name="line.830"></a>
+<span class="sourceLineNo">831</span>   *<a name="line.831"></a>
+<span class="sourceLineNo">832</span>   * @return  The total amount of memory in bytes held by memory consumers, or<a name="line.832"></a>
+<span class="sourceLineNo">833</span>   *          {@code null} if that information is not available.<a name="line.833"></a>
+<span class="sourceLineNo">834</span>   */<a name="line.834"></a>
+<span class="sourceLineNo">835</span>  public Long getTotalBytesUsedByMemoryConsumers()<a name="line.835"></a>
+<span class="sourceLineNo">836</span>  {<a name="line.836"></a>
+<span class="sourceLineNo">837</span>    return totalBytesHeldByConsumers;<a name="line.837"></a>
+<span class="sourceLineNo">838</span>  }<a name="line.838"></a>
+<span class="sourceLineNo">839</span><a name="line.839"></a>
+<span class="sourceLineNo">840</span><a name="line.840"></a>
+<span class="sourceLineNo">841</span><a name="line.841"></a>
+<span class="sourceLineNo">842</span>  /**<a name="line.842"></a>
+<span class="sourceLineNo">843</span>   * Retrieves the percentage of the maximum allowed amount of tenured memory<a name="line.843"></a>
+<span class="sourceLineNo">844</span>   * that is used by memory consumers (assuming that all memory used by memory<a name="line.844"></a>
+<span class="sourceLineNo">845</span>   * consumers is contained in the tenured generation).<a name="line.845"></a>
+<span class="sourceLineNo">846</span>   *<a name="line.846"></a>
+<span class="sourceLineNo">847</span>   * @return  The percentage of the maximum allowed amount of tenured memory<a name="line.847"></a>
+<span class="sourceLineNo">848</span>   *          that is used by memory consumers, or {@code null} if that<a name="line.848"></a>
+<span class="sourceLineNo">849</span>   *          information is not available.<a name="line.849"></a>
+<span class="sourceLineNo">850</span>   */<a name="line.850"></a>
+<span class="sourceLineNo">851</span>  public Long getPercentageOfMaximumTenuredMemoryUsedByMemoryConsumers()<a name="line.851"></a>
+<span class="sourceLineNo">852</span>  {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>    return percentOfMaxTenuredMemory;<a name="line.853"></a>
+<span class="sourceLineNo">854</span>  }<a name="line.854"></a>
+<span class="sourceLineNo">855</span><a name="line.855"></a>
+<span class="sourceLineNo">856</span><a name="line.856"></a>
+<span class="sourceLineNo">857</span><a name="line.857"></a>
+<span class="sourceLineNo">858</span>  /**<a name="line.858"></a>
+<span class="sourceLineNo">859</span>   * Retrieves the percentage of the committed amount of tenured memory that is<a name="line.859"></a>
+<span class="sourceLineNo">860</span>   * used by memory consumers (assuming that all memory used by memory consumers<a name="line.860"></a>
+<span class="sourceLineNo">861</span>   * is contained in the tenured generation).<a name="line.861"></a>
+<span class="sourceLineNo">862</span>   *<a name="line.862"></a>
+<span class="sourceLineNo">863</span>   * @return  The percentage of the committed amount of tenured memory that is<a name="line.863"></a>
+<span class="sourceLineNo">864</span>   *          used by memory consumers, or {@code null} if that information is<a name="line.864"></a>
+<span class="sourceLineNo">865</span>   *          not available.<a name="line.865"></a>
+<span class="sourceLineNo">866</span>   */<a name="line.866"></a>
+<span class="sourceLineNo">867</span>  public Long getPercentageOfCommittedTenuredMemoryUsedByMemoryConsumers()<a name="line.867"></a>
+<span class="sourceLineNo">868</span>  {<a name="line.868"></a>
+<span class="sourceLineNo">869</span>    return percentOfCommittedTenuredMemory;<a name="line.869"></a>
+<span class="sourceLineNo">870</span>  }<a name="line.870"></a>
+<span class="sourceLineNo">871</span><a name="line.871"></a>
+<span class="sourceLineNo">872</span><a name="line.872"></a>
+<span class="sourceLineNo">873</span><a name="line.873"></a>
+<span class="sourceLineNo">874</span>  /**<a name="line.874"></a>
+<span class="sourceLineNo">875</span>   * Retrieves the number of pauses of various durations detected by the server.<a name="line.875"></a>
+<span class="sourceLineNo">876</span>   * The value returned will contain a map between the minimum duration in<a name="line.876"></a>
+<span class="sourceLineNo">877</span>   * milliseconds for the associated bucket and the number of pauses detected of<a name="line.877"></a>
+<span class="sourceLineNo">878</span>   * at least that duration.<a name="line.878"></a>
+<span class="sourceLineNo">879</span>   *<a name="line.879"></a>
+<span class="sourceLineNo">880</span>   * @return  The number of pauses of various durations detected by the server.<a name="line.880"></a>
+<span class="sourceLineNo">881</span>   */<a name="line.881"></a>
+<span class="sourceLineNo">882</span>  public Map&lt;Long,Long&gt; getDetectedPauseCounts()<a name="line.882"></a>
+<span class="sourceLineNo">883</span>  {<a name="line.883"></a>
+<span class="sourceLineNo">884</span>    return detectedPauses;<a name="line.884"></a>
+<span class="sourceLineNo">885</span>  }<a name="line.885"></a>
+<span class="sourceLineNo">886</span><a name="line.886"></a>
+<span class="sourceLineNo">887</span><a name="line.887"></a>
+<span class="sourceLineNo">888</span><a name="line.888"></a>
+<span class="sourceLineNo">889</span>  /**<a name="line.889"></a>
+<span class="sourceLineNo">890</span>   * Retrieves the duration of the longest pause detected by the server.<a name="line.890"></a>
+<span class="sourceLineNo">891</span>   *<a name="line.891"></a>
+<span class="sourceLineNo">892</span>   * @return  The duration of the longest pause detected by the server, or<a name="line.892"></a>
+<span class="sourceLineNo">893</span>   *          {@code null} if that information is not available.<a name="line.893"></a>
+<span class="sourceLineNo">894</span>   */<a name="line.894"></a>
+<span class="sourceLineNo">895</span>  public Long getMaxDetectedPauseTimeMillis()<a name="line.895"></a>
+<span class="sourceLineNo">896</span>  {<a name="line.896"></a>
+<span class="sourceLineNo">897</span>    return maxDetectedPauseTime;<a name="line.897"></a>
+<span class="sourceLineNo">898</span>  }<a name="line.898"></a>
+<span class="sourceLineNo">899</span><a name="line.899"></a>
+<span class="sourceLineNo">900</span><a name="line.900"></a>
+<span class="sourceLineNo">901</span><a name="line.901"></a>
+<span class="sourceLineNo">902</span>  /**<a name="line.902"></a>
+<span class="sourceLineNo">903</span>   * {@inheritDoc}<a name="line.903"></a>
+<span class="sourceLineNo">904</span>   */<a name="line.904"></a>
+<span class="sourceLineNo">905</span>  @Override()<a name="line.905"></a>
+<span class="sourceLineNo">906</span>  public String getMonitorDisplayName()<a name="line.906"></a>
+<span class="sourceLineNo">907</span>  {<a name="line.907"></a>
+<span class="sourceLineNo">908</span>    return INFO_MEMORY_USAGE_MONITOR_DISPNAME.get();<a name="line.908"></a>
+<span class="sourceLineNo">909</span>  }<a name="line.909"></a>
+<span class="sourceLineNo">910</span><a name="line.910"></a>
+<span class="sourceLineNo">911</span><a name="line.911"></a>
+<span class="sourceLineNo">912</span><a name="line.912"></a>
+<span class="sourceLineNo">913</span>  /**<a name="line.913"></a>
+<span class="sourceLineNo">914</span>   * {@inheritDoc}<a name="line.914"></a>
+<span class="sourceLineNo">915</span>   */<a name="line.915"></a>
+<span class="sourceLineNo">916</span>  @Override()<a name="line.916"></a>
+<span class="sourceLineNo">917</span>  public String getMonitorDescription()<a name="line.917"></a>
+<span class="sourceLineNo">918</span>  {<a name="line.918"></a>
+<span class="sourceLineNo">919</span>    return INFO_MEMORY_USAGE_MONITOR_DESC.get();<a name="line.919"></a>
+<span class="sourceLineNo">920</span>  }<a name="line.920"></a>
+<span class="sourceLineNo">921</span><a name="line.921"></a>
+<span class="sourceLineNo">922</span><a name="line.922"></a>
+<span class="sourceLineNo">923</span><a name="line.923"></a>
+<span class="sourceLineNo">924</span>  /**<a name="line.924"></a>
+<span class="sourceLineNo">925</span>   * {@inheritDoc}<a name="line.925"></a>
+<span class="sourceLineNo">926</span>   */<a name="line.926"></a>
+<span class="sourceLineNo">927</span>  @Override()<a name="line.927"></a>
+<span class="sourceLineNo">928</span>  public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()<a name="line.928"></a>
+<span class="sourceLineNo">929</span>  {<a name="line.929"></a>
+<span class="sourceLineNo">930</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs =<a name="line.930"></a>
+<span class="sourceLineNo">931</span>         new LinkedHashMap&lt;&gt;(50);<a name="line.931"></a>
+<span class="sourceLineNo">932</span><a name="line.932"></a>
+<span class="sourceLineNo">933</span>    if (maxReservableMemoryMB != null)<a name="line.933"></a>
+<span class="sourceLineNo">934</span>    {<a name="line.934"></a>
+<span class="sourceLineNo">935</span>      addMonitorAttribute(attrs,<a name="line.935"></a>
+<span class="sourceLineNo">936</span>           ATTR_MAX_RESERVABLE_MEMORY_MB,<a name="line.936"></a>
+<span class="sourceLineNo">937</span>           INFO_MEMORY_USAGE_DISPNAME_MAX_MEM.get(),<a name="line.937"></a>
+<span class="sourceLineNo">938</span>           INFO_MEMORY_USAGE_DESC_MAX_MEM.get(),<a name="line.938"></a>
+<span class="sourceLineNo">939</span>           maxReservableMemoryMB);<a name="line.939"></a>
+<span class="sourceLineNo">940</span>    }<a name="line.940"></a>
+<span class="sourceLineNo">941</span><a name="line.941"></a>
+<span class="sourceLineNo">942</span>    if (currentReservedMemoryMB != null)<a name="line.942"></a>
+<span class="sourceLineNo">943</span>    {<a name="line.943"></a>
+<span class="sourceLineNo">944</span>      addMonitorAttribute(attrs,<a name="line.944"></a>
+<span class="sourceLineNo">945</span>           ATTR_CURRENT_RESERVED_MEMORY_MB,<a name="line.945"></a>
+<span class="sourceLineNo">946</span>           INFO_MEMORY_USAGE_DISPNAME_CURRENT_MEM.get(),<a name="line.946"></a>
+<span class="sourceLineNo">947</span>           INFO_MEMORY_USAGE_DESC_CURRENT_MEM.get(),<a name="line.947"></a>
+<span class="sourceLineNo">948</span>           currentReservedMemoryMB);<a name="line.948"></a>
+<span class="sourceLineNo">949</span>    }<a name="line.949"></a>
+<span class="sourceLineNo">950</span><a name="line.950"></a>
+<span class="sourceLineNo">951</span>    if (usedReservedMemoryMB != null)<a name="line.951"></a>
+<span class="sourceLineNo">952</span>    {<a name="line.952"></a>
+<span class="sourceLineNo">953</span>      addMonitorAttribute(attrs,<a name="line.953"></a>
+<span class="sourceLineNo">954</span>           ATTR_USED_MEMORY_MB,<a name="line.954"></a>
+<span class="sourceLineNo">955</span>           INFO_MEMORY_USAGE_DISPNAME_USED_MEM.get(),<a name="line.955"></a>
+<span class="sourceLineNo">956</span>           INFO_MEMORY_USAGE_DESC_USED_MEM.get(),<a name="line.956"></a>
+<span class="sourceLineNo">957</span>           usedReservedMemoryMB);<a name="line.957"></a>
+<span class="sourceLineNo">958</span>    }<a name="line.958"></a>
+<span class="sourceLineNo">959</span><a name="line.959"></a>
+<span class="sourceLineNo">960</span>    if (freeReservedMemoryMB != null)<a name="line.960"></a>
+<span class="sourceLineNo">961</span>    {<a name="line.961"></a>
+<span class="sourceLineNo">962</span>      addMonitorAttribute(attrs,<a name="line.962"></a>
+<span class="sourceLineNo">963</span>           ATTR_FREE_MEMORY_MB,<a name="line.963"></a>
+<span class="sourceLineNo">964</span>           INFO_MEMORY_USAGE_DISPNAME_FREE_MEM.get(),<a name="line.964"></a>
+<span class="sourceLineNo">965</span>           INFO_MEMORY_USAGE_DESC_FREE_MEM.get(),<a name="line.965"></a>
+<span class="sourceLineNo">966</span>           freeReservedMemoryMB);<a name="line.966"></a>
+<span class="sourceLineNo">967</span>    }<a name="line.967"></a>
+<span class="sourceLineNo">968</span><a name="line.968"></a>
+<span class="sourceLineNo">969</span>    if (reservedMemoryPercentFull != null)<a name="line.969"></a>
+<span class="sourceLineNo">970</span>    {<a name="line.970"></a>
+<span class="sourceLineNo">971</span>      addMonitorAttribute(attrs,<a name="line.971"></a>
+<span class="sourceLineNo">972</span>           ATTR_RESERVED_MEMORY_PERCENT_FULL,<a name="line.972"></a>
+<span class="sourceLineNo">973</span>           INFO_MEMORY_USAGE_DISPNAME_RESERVED_PCT.get(),<a name="line.973"></a>
+<span class="sourceLineNo">974</span>           INFO_MEMORY_USAGE_DESC_RESERVED_PCT.get(),<a name="line.974"></a>
+<span class="sourceLineNo">975</span>           reservedMemoryPercentFull);<a name="line.975"></a>
+<span class="sourceLineNo">976</span>    }<a name="line.976"></a>
+<span class="sourceLineNo">977</span><a name="line.977"></a>
+<span class="sourceLineNo">978</span>    if (! garbageCollectors.isEmpty())<a name="line.978"></a>
+<span class="sourceLineNo">979</span>    {<a name="line.979"></a>
+<span class="sourceLineNo">980</span>      addMonitorAttribute(attrs,<a name="line.980"></a>
+<span class="sourceLineNo">981</span>           "gcNames",<a name="line.981"></a>
+<span class="sourceLineNo">982</span>           INFO_MEMORY_USAGE_DISPNAME_GC_NAMES.get(),<a name="line.982"></a>
+<span class="sourceLineNo">983</span>           INFO_MEMORY_USAGE_DESC_GC_NAMES.get(),<a name="line.983"></a>
+<span class="sourceLineNo">984</span>           garbageCollectors);<a name="line.984"></a>
+<span class="sourceLineNo">985</span>    }<a name="line.985"></a>
+<span class="sourceLineNo">986</span><a name="line.986"></a>
+<span class="sourceLineNo">987</span>    if (! totalCollectionCountPerGC.isEmpty())<a name="line.987"></a>
+<span class="sourceLineNo">988</span>    {<a name="line.988"></a>
+<span class="sourceLineNo">989</span>      for (final String name : totalCollectionCountPerGC.keySet())<a name="line.989"></a>
+<span class="sourceLineNo">990</span>      {<a name="line.990"></a>
+<span class="sourceLineNo">991</span>        addMonitorAttribute(attrs,<a name="line.991"></a>
+<span class="sourceLineNo">992</span>            "totalCollectionCount-" + name,<a name="line.992"></a>
+<span class="sourceLineNo">993</span>            INFO_MEMORY_USAGE_DISPNAME_TOTAL_COLLECTION_COUNT.get(name),<a name="line.993"></a>
+<span class="sourceLineNo">994</span>            INFO_MEMORY_USAGE_DESC_TOTAL_COLLECTION_COUNT.get(name),<a name="line.994"></a>
+<span class="sourceLineNo">995</span>            totalCollectionCountPerGC.get(name));<a name="line.995"></a>
+<span class="sourceLineNo">996</span>      }<a name="line.996"></a>
+<span class="sourceLineNo">997</span>    }<a name="line.997"></a>
+<span class="sourceLineNo">998</span><a name="line.998"></a>
+<span class="sourceLineNo">999</span>    if (! totalCollectionDurationPerGC.isEmpty())<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>    {<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>      for (final String name : totalCollectionDurationPerGC.keySet())<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>      {<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>        addMonitorAttribute(attrs,<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>            "totalCollectionDuration-" + name,<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>            INFO_MEMORY_USAGE_DISPNAME_TOTAL_COLLECTION_DURATION.get(name),<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>            INFO_MEMORY_USAGE_DESC_TOTAL_COLLECTION_DURATION.get(name),<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>            totalCollectionDurationPerGC.get(name));<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>      }<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>    }<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span><a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>    if (! averageCollectionDurationPerGC.isEmpty())<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>    {<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>      for (final String name : averageCollectionDurationPerGC.keySet())<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>      {<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>        addMonitorAttribute(attrs,<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>            "averageCollectionDuration-" + name,<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>            INFO_MEMORY_USAGE_DISPNAME_AVERAGE_COLLECTION_DURATION.get(name),<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>            INFO_MEMORY_USAGE_DESC_AVERAGE_COLLECTION_DURATION.get(name),<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>            averageCollectionDurationPerGC.get(name));<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>      }<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>    }<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span><a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>    if (! recentCollectionDurationPerGC.isEmpty())<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>    {<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>      for (final String name : recentCollectionDurationPerGC.keySet())<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>      {<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>        addMonitorAttribute(attrs,<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>            "recentCollectionDuration-" + name,<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>            INFO_MEMORY_USAGE_DISPNAME_RECENT_COLLECTION_DURATION.get(name),<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>            INFO_MEMORY_USAGE_DESC_RECENT_COLLECTION_DURATION.get(name),<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>            recentCollectionDurationPerGC.get(name));<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>      }<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>    }<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span><a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>    if (! memoryPools.isEmpty())<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>    {<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>      addMonitorAttribute(attrs,<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>           "memoryPools",<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>           INFO_MEMORY_USAGE_DISPNAME_MEMORY_POOLS.get(),<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>           INFO_MEMORY_USAGE_DESC_MEMORY_POOLS.get(),<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>           memoryPools);<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>    }<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span><a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>    if (! currentBytesUsedPerMP.isEmpty())<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>    {<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>      for (final String name : currentBytesUsedPerMP.keySet())<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>      {<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>        addMonitorAttribute(attrs,<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>            "currentBytesUsed-" + name,<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>            INFO_MEMORY_USAGE_DISPNAME_CURRENT_BYTES_USED.get(name),<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>            INFO_MEMORY_USAGE_DESC_CURRENT_BYTES_USED.get(name),<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>            currentBytesUsedPerMP.get(name));<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>      }<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>    }<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span><a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>    if (! bytesUsedAfterLastCollectionPerMP.isEmpty())<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>    {<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>      for (final String name : bytesUsedAfterLastCollectionPerMP.keySet())<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>      {<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>        addMonitorAttribute(attrs,<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>            "bytesUsedAfterLastCollection-" + name,<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>            INFO_MEMORY_USAGE_DISPNAME_BYTES_USED_AFTER_COLLECTION.get(name),<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>            INFO_MEMORY_USAGE_DESC_BYTES_USED_AFTER_COLLECTION.get(name),<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>            bytesUsedAfterLastCollectionPerMP.get(name));<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>      }<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>    }<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span><a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>    if (nonHeapMemoryUsed != null)<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>    {<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>      addMonitorAttribute(attrs,<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>           ATTR_NON_HEAP_USED,<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>           INFO_MEMORY_USAGE_DISPNAME_NON_HEAP_MEMORY.get(),<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>           INFO_MEMORY_USAGE_DESC_NON_HEAP_MEMORY.get(),<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>           nonHeapMemoryUsed);<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>    }<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span><a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>    if (totalBytesHeldByConsumers != null)<a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>    {<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>      addMonitorAttribute(attrs,<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>           ATTR_TOTAL_CONSUMER_MEMORY,<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>           INFO_MEMORY_USAGE_DISPNAME_TOTAL_CONSUMER_MEMORY.get(),<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>           INFO_MEMORY_USAGE_DESC_TOTAL_CONSUMER_MEMORY.get(),<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>           totalBytesHeldByConsumers);<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>    }<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span><a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>    if (percentOfMaxTenuredMemory != null)<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>    {<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>      addMonitorAttribute(attrs,<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>           ATTR_TOTAL_CONSUMER_MEMORY_AS_PCT_OF_MAX,<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>           INFO_MEMORY_USAGE_DISPNAME_CONSUMERS_AS_PCT_OF_MAX.get(),<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>           INFO_MEMORY_USAGE_DESC_CONSUMERS_AS_PCT_OF_MAX.get(),<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>           percentOfMaxTenuredMemory);<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>    }<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span><a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>    if (percentOfCommittedTenuredMemory != null)<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>    {<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span>      addMonitorAttribute(attrs,<a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>           ATTR_TOTAL_CONSUMER_MEMORY_AS_PCT_OF_COMMITTED,<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>           INFO_MEMORY_USAGE_DISPNAME_CONSUMERS_AS_PCT_OF_COMMITTED.get(),<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>           INFO_MEMORY_USAGE_DESC_CONSUMERS_AS_PCT_OF_COMMITTED.get(),<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>           percentOfCommittedTenuredMemory);<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>    }<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span><a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>    if (! detectedPauses.isEmpty())<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>    {<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>      final ArrayList&lt;String&gt; values =<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>           new ArrayList&lt;&gt;(detectedPauses.size());<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>      for (final Map.Entry&lt;Long,Long&gt; e : detectedPauses.entrySet())<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>      {<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>        values.add(e.getKey() + "ms=" + e.getValue());<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>      }<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span><a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>      addMonitorAttribute(attrs,<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>           PROPERTY_DETECTED_PAUSE_COUNTS,<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>           INFO_MEMORY_USAGE_DISPNAME_DETECTED_PAUSES.get(),<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>           INFO_MEMORY_USAGE_DESC_DETECTED_PAUSES.get(),<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>           values);<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>    }<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span><a name="line.1119"></a>
+<span class="sourceLineNo">1120</span>    if (maxDetectedPauseTime != null)<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span>    {<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>      addMonitorAttribute(attrs,<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>           ATTR_LONGEST_PAUSE_TIME,<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span>           INFO_MEMORY_USAGE_DISPNAME_MAX_PAUSE_TIME.get(),<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>           INFO_MEMORY_USAGE_DESC_MAX_PAUSE_TIME.get(),<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>           maxDetectedPauseTime);<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>    }<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span><a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>    return Collections.unmodifiableMap(attrs);<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>  }<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>}<a name="line.1131"></a>
 
 
 

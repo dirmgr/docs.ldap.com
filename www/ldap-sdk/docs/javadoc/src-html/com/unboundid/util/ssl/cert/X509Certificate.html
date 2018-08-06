@@ -1501,8 +1501,8 @@
 <span class="sourceLineNo">1493</span>  private static BigInteger generateSerialNumber()<a name="line.1493"></a>
 <span class="sourceLineNo">1494</span>  {<a name="line.1494"></a>
 <span class="sourceLineNo">1495</span>    final UUID uuid = UUID.randomUUID();<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>    final long msb = uuid.getMostSignificantBits() &amp; 0x7FFFFFFFFFFFFFFFL;<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>    final long lsb = uuid.getLeastSignificantBits() &amp; 0x7FFFFFFFFFFFFFFFL;<a name="line.1497"></a>
+<span class="sourceLineNo">1496</span>    final long msb = uuid.getMostSignificantBits() &amp; 0x7FFF_FFFF_FFFF_FFFFL;<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>    final long lsb = uuid.getLeastSignificantBits() &amp; 0x7FFF_FFFF_FFFF_FFFFL;<a name="line.1497"></a>
 <span class="sourceLineNo">1498</span>    return BigInteger.valueOf(msb).shiftLeft(64).add(BigInteger.valueOf(lsb));<a name="line.1498"></a>
 <span class="sourceLineNo">1499</span>  }<a name="line.1499"></a>
 <span class="sourceLineNo">1500</span><a name="line.1500"></a>

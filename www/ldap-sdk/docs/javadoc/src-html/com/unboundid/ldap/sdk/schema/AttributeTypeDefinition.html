@@ -37,14 +37,14 @@
 <span class="sourceLineNo">029</span><a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.NotMutable;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.schema.SchemaMessages.*;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import static com.unboundid.util.Debug.*;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import static com.unboundid.util.StaticUtils.*;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import static com.unboundid.util.Validator.*;<a name="line.39"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.Debug;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.NotMutable;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.StaticUtils;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import com.unboundid.util.ThreadSafety;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import com.unboundid.util.Validator;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>import static com.unboundid.ldap.sdk.schema.SchemaMessages.*;<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
@@ -124,7 +124,7 @@
 <span class="sourceLineNo">116</span>  public AttributeTypeDefinition(final String s)<a name="line.116"></a>
 <span class="sourceLineNo">117</span>         throws LDAPException<a name="line.117"></a>
 <span class="sourceLineNo">118</span>  {<a name="line.118"></a>
-<span class="sourceLineNo">119</span>    ensureNotNull(s);<a name="line.119"></a>
+<span class="sourceLineNo">119</span>    Validator.ensureNotNull(s);<a name="line.119"></a>
 <span class="sourceLineNo">120</span><a name="line.120"></a>
 <span class="sourceLineNo">121</span>    attributeTypeString = s.trim();<a name="line.121"></a>
 <span class="sourceLineNo">122</span><a name="line.122"></a>
@@ -155,13 +155,13 @@
 <span class="sourceLineNo">147</span>    // Technically, attribute type elements are supposed to appear in a specific<a name="line.147"></a>
 <span class="sourceLineNo">148</span>    // order, but we'll be lenient and allow remaining elements to come in any<a name="line.148"></a>
 <span class="sourceLineNo">149</span>    // order.<a name="line.149"></a>
-<span class="sourceLineNo">150</span>    final ArrayList&lt;String&gt; nameList = new ArrayList&lt;String&gt;(1);<a name="line.150"></a>
+<span class="sourceLineNo">150</span>    final ArrayList&lt;String&gt; nameList = new ArrayList&lt;&gt;(1);<a name="line.150"></a>
 <span class="sourceLineNo">151</span>    AttributeUsage       attrUsage   = null;<a name="line.151"></a>
 <span class="sourceLineNo">152</span>    Boolean              collective  = null;<a name="line.152"></a>
 <span class="sourceLineNo">153</span>    Boolean              noUserMod   = null;<a name="line.153"></a>
 <span class="sourceLineNo">154</span>    Boolean              obsolete    = null;<a name="line.154"></a>
 <span class="sourceLineNo">155</span>    Boolean              singleValue = null;<a name="line.155"></a>
-<span class="sourceLineNo">156</span>    final Map&lt;String,String[]&gt; exts  = new LinkedHashMap&lt;String,String[]&gt;();<a name="line.156"></a>
+<span class="sourceLineNo">156</span>    final Map&lt;String,String[]&gt; exts  = new LinkedHashMap&lt;&gt;(5);<a name="line.156"></a>
 <span class="sourceLineNo">157</span>    String               descr       = null;<a name="line.157"></a>
 <span class="sourceLineNo">158</span>    String               eqRule      = null;<a name="line.158"></a>
 <span class="sourceLineNo">159</span>    String               ordRule     = null;<a name="line.159"></a>
@@ -193,7 +193,7 @@
 <span class="sourceLineNo">185</span>        pos--;<a name="line.185"></a>
 <span class="sourceLineNo">186</span>      }<a name="line.186"></a>
 <span class="sourceLineNo">187</span><a name="line.187"></a>
-<span class="sourceLineNo">188</span>      final String lowerToken = toLowerCase(token);<a name="line.188"></a>
+<span class="sourceLineNo">188</span>      final String lowerToken = StaticUtils.toLowerCase(token);<a name="line.188"></a>
 <span class="sourceLineNo">189</span>      if (lowerToken.equals(")"))<a name="line.189"></a>
 <span class="sourceLineNo">190</span>      {<a name="line.190"></a>
 <span class="sourceLineNo">191</span>        // This indicates that we're at the end of the value.  There should not<a name="line.191"></a>
@@ -384,7 +384,7 @@
 <span class="sourceLineNo">376</span>          buffer = new StringBuilder();<a name="line.376"></a>
 <span class="sourceLineNo">377</span>          pos = readOID(attributeTypeString, pos, length, buffer);<a name="line.377"></a>
 <span class="sourceLineNo">378</span><a name="line.378"></a>
-<span class="sourceLineNo">379</span>          final String usageStr = toLowerCase(buffer.toString());<a name="line.379"></a>
+<span class="sourceLineNo">379</span>          final String usageStr = StaticUtils.toLowerCase(buffer.toString());<a name="line.379"></a>
 <span class="sourceLineNo">380</span>          if (usageStr.equals("userapplications"))<a name="line.380"></a>
 <span class="sourceLineNo">381</span>          {<a name="line.381"></a>
 <span class="sourceLineNo">382</span>            attrUsage = AttributeUsage.USER_APPLICATIONS;<a name="line.382"></a>
@@ -419,7 +419,7 @@
 <span class="sourceLineNo">411</span>      {<a name="line.411"></a>
 <span class="sourceLineNo">412</span>        pos = skipSpaces(attributeTypeString, pos, length);<a name="line.412"></a>
 <span class="sourceLineNo">413</span><a name="line.413"></a>
-<span class="sourceLineNo">414</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;String&gt;();<a name="line.414"></a>
+<span class="sourceLineNo">414</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;&gt;(5);<a name="line.414"></a>
 <span class="sourceLineNo">415</span>        pos = readQDStrings(attributeTypeString, pos, length, valueList);<a name="line.415"></a>
 <span class="sourceLineNo">416</span><a name="line.416"></a>
 <span class="sourceLineNo">417</span>        final String[] values = new String[valueList.size()];<a name="line.417"></a>
@@ -579,7 +579,7 @@
 <span class="sourceLineNo">571</span>                                 final AttributeUsage usage,<a name="line.571"></a>
 <span class="sourceLineNo">572</span>                                 final Map&lt;String,String[]&gt; extensions)<a name="line.572"></a>
 <span class="sourceLineNo">573</span>  {<a name="line.573"></a>
-<span class="sourceLineNo">574</span>    ensureNotNull(oid);<a name="line.574"></a>
+<span class="sourceLineNo">574</span>    Validator.ensureNotNull(oid);<a name="line.574"></a>
 <span class="sourceLineNo">575</span><a name="line.575"></a>
 <span class="sourceLineNo">576</span>    this.oid                   = oid;<a name="line.576"></a>
 <span class="sourceLineNo">577</span>    this.description           = description;<a name="line.577"></a>
@@ -595,7 +595,7 @@
 <span class="sourceLineNo">587</span><a name="line.587"></a>
 <span class="sourceLineNo">588</span>    if (names == null)<a name="line.588"></a>
 <span class="sourceLineNo">589</span>    {<a name="line.589"></a>
-<span class="sourceLineNo">590</span>      this.names = NO_STRINGS;<a name="line.590"></a>
+<span class="sourceLineNo">590</span>      this.names = StaticUtils.NO_STRINGS;<a name="line.590"></a>
 <span class="sourceLineNo">591</span>    }<a name="line.591"></a>
 <span class="sourceLineNo">592</span>    else<a name="line.592"></a>
 <span class="sourceLineNo">593</span>    {<a name="line.593"></a>
@@ -1185,7 +1185,7 @@
 <span class="sourceLineNo">1177</span>      }<a name="line.1177"></a>
 <span class="sourceLineNo">1178</span>      catch (final Exception e)<a name="line.1178"></a>
 <span class="sourceLineNo">1179</span>      {<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>        debugException(e);<a name="line.1180"></a>
+<span class="sourceLineNo">1180</span>        Debug.debugException(e);<a name="line.1180"></a>
 <span class="sourceLineNo">1181</span>        return -1;<a name="line.1181"></a>
 <span class="sourceLineNo">1182</span>      }<a name="line.1182"></a>
 <span class="sourceLineNo">1183</span>    }<a name="line.1183"></a>
@@ -1314,17 +1314,17 @@
 <span class="sourceLineNo">1306</span><a name="line.1306"></a>
 <span class="sourceLineNo">1307</span>    final AttributeTypeDefinition d = (AttributeTypeDefinition) o;<a name="line.1307"></a>
 <span class="sourceLineNo">1308</span>    return(oid.equals(d.oid) &amp;&amp;<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>         stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>         bothNullOrEqual(usage, d.usage) &amp;&amp;<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>         bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>         bothNullOrEqualIgnoreCase(equalityMatchingRule,<a name="line.1312"></a>
+<span class="sourceLineNo">1309</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>         StaticUtils.bothNullOrEqual(usage, d.usage) &amp;&amp;<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span>         StaticUtils.bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>         StaticUtils.bothNullOrEqualIgnoreCase(equalityMatchingRule,<a name="line.1312"></a>
 <span class="sourceLineNo">1313</span>              d.equalityMatchingRule) &amp;&amp;<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>         bothNullOrEqualIgnoreCase(orderingMatchingRule,<a name="line.1314"></a>
+<span class="sourceLineNo">1314</span>         StaticUtils.bothNullOrEqualIgnoreCase(orderingMatchingRule,<a name="line.1314"></a>
 <span class="sourceLineNo">1315</span>              d.orderingMatchingRule) &amp;&amp;<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>         bothNullOrEqualIgnoreCase(substringMatchingRule,<a name="line.1316"></a>
+<span class="sourceLineNo">1316</span>         StaticUtils.bothNullOrEqualIgnoreCase(substringMatchingRule,<a name="line.1316"></a>
 <span class="sourceLineNo">1317</span>              d.substringMatchingRule) &amp;&amp;<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>         bothNullOrEqualIgnoreCase(superiorType, d.superiorType) &amp;&amp;<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>         bothNullOrEqualIgnoreCase(syntaxOID, d.syntaxOID) &amp;&amp;<a name="line.1319"></a>
+<span class="sourceLineNo">1318</span>         StaticUtils.bothNullOrEqualIgnoreCase(superiorType, d.superiorType) &amp;&amp;<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>         StaticUtils.bothNullOrEqualIgnoreCase(syntaxOID, d.syntaxOID) &amp;&amp;<a name="line.1319"></a>
 <span class="sourceLineNo">1320</span>         (isCollective == d.isCollective) &amp;&amp;<a name="line.1320"></a>
 <span class="sourceLineNo">1321</span>         (isNoUserModification == d.isNoUserModification) &amp;&amp;<a name="line.1321"></a>
 <span class="sourceLineNo">1322</span>         (isObsolete == d.isObsolete) &amp;&amp;<a name="line.1322"></a>

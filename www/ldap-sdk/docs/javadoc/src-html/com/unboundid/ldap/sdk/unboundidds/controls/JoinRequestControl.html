@@ -35,13 +35,13 @@
 <span class="sourceLineNo">027</span>import com.unboundid.ldap.sdk.Control;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import com.unboundid.util.NotMutable;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import com.unboundid.util.ThreadSafety;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.32"></a>
-<span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>import static com.unboundid.ldap.sdk.unboundidds.controls.ControlMessages.*;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import static com.unboundid.util.Debug.*;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import static com.unboundid.util.StaticUtils.*;<a name="line.36"></a>
+<span class="sourceLineNo">030</span>import com.unboundid.util.Debug;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import com.unboundid.util.NotMutable;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import com.unboundid.util.StaticUtils;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import com.unboundid.util.ThreadSafety;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>import static com.unboundid.ldap.sdk.unboundidds.controls.ControlMessages.*;<a name="line.36"></a>
 <span class="sourceLineNo">037</span><a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
@@ -54,11 +54,11 @@
 <span class="sourceLineNo">046</span> * &lt;BLOCKQUOTE&gt;<a name="line.46"></a>
 <span class="sourceLineNo">047</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.47"></a>
 <span class="sourceLineNo">048</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.49"></a>
-<span class="sourceLineNo">050</span> *   server products.  These classes provide support for proprietary<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *   functionality or for external specifications that are not considered stable<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *   other types of LDAP servers.<a name="line.53"></a>
+<span class="sourceLineNo">049</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *   for proprietary functionality or for external specifications that are not<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *   interoperable way with other types of LDAP servers.<a name="line.53"></a>
 <span class="sourceLineNo">054</span> * &lt;/BLOCKQUOTE&gt;<a name="line.54"></a>
 <span class="sourceLineNo">055</span> * &lt;BR&gt;<a name="line.55"></a>
 <span class="sourceLineNo">056</span> * This request control has an OID of 1.3.6.1.4.1.30221.2.5.9, and the<a name="line.56"></a>
@@ -162,51 +162,53 @@
 <span class="sourceLineNo">154</span>    }<a name="line.154"></a>
 <span class="sourceLineNo">155</span>    catch (final Exception e)<a name="line.155"></a>
 <span class="sourceLineNo">156</span>    {<a name="line.156"></a>
-<span class="sourceLineNo">157</span>      debugException(e);<a name="line.157"></a>
+<span class="sourceLineNo">157</span>      Debug.debugException(e);<a name="line.157"></a>
 <span class="sourceLineNo">158</span><a name="line.158"></a>
 <span class="sourceLineNo">159</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.159"></a>
-<span class="sourceLineNo">160</span>           ERR_JOIN_REQUEST_VALUE_CANNOT_DECODE.get(getExceptionMessage(e)), e);<a name="line.160"></a>
-<span class="sourceLineNo">161</span>    }<a name="line.161"></a>
-<span class="sourceLineNo">162</span><a name="line.162"></a>
-<span class="sourceLineNo">163</span>    joinRequestValue = JoinRequestValue.decode(valueElement);<a name="line.163"></a>
-<span class="sourceLineNo">164</span>  }<a name="line.164"></a>
-<span class="sourceLineNo">165</span><a name="line.165"></a>
-<span class="sourceLineNo">166</span><a name="line.166"></a>
+<span class="sourceLineNo">160</span>           ERR_JOIN_REQUEST_VALUE_CANNOT_DECODE.get(<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                StaticUtils.getExceptionMessage(e)),<a name="line.161"></a>
+<span class="sourceLineNo">162</span>           e);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    }<a name="line.163"></a>
+<span class="sourceLineNo">164</span><a name="line.164"></a>
+<span class="sourceLineNo">165</span>    joinRequestValue = JoinRequestValue.decode(valueElement);<a name="line.165"></a>
+<span class="sourceLineNo">166</span>  }<a name="line.166"></a>
 <span class="sourceLineNo">167</span><a name="line.167"></a>
-<span class="sourceLineNo">168</span>  /**<a name="line.168"></a>
-<span class="sourceLineNo">169</span>   * Retrieves the join request value for this join request control.<a name="line.169"></a>
-<span class="sourceLineNo">170</span>   *<a name="line.170"></a>
-<span class="sourceLineNo">171</span>   * @return  The join request value for this join request control.<a name="line.171"></a>
-<span class="sourceLineNo">172</span>   */<a name="line.172"></a>
-<span class="sourceLineNo">173</span>  public JoinRequestValue getJoinRequestValue()<a name="line.173"></a>
-<span class="sourceLineNo">174</span>  {<a name="line.174"></a>
-<span class="sourceLineNo">175</span>    return joinRequestValue;<a name="line.175"></a>
-<span class="sourceLineNo">176</span>  }<a name="line.176"></a>
-<span class="sourceLineNo">177</span><a name="line.177"></a>
-<span class="sourceLineNo">178</span><a name="line.178"></a>
+<span class="sourceLineNo">168</span><a name="line.168"></a>
+<span class="sourceLineNo">169</span><a name="line.169"></a>
+<span class="sourceLineNo">170</span>  /**<a name="line.170"></a>
+<span class="sourceLineNo">171</span>   * Retrieves the join request value for this join request control.<a name="line.171"></a>
+<span class="sourceLineNo">172</span>   *<a name="line.172"></a>
+<span class="sourceLineNo">173</span>   * @return  The join request value for this join request control.<a name="line.173"></a>
+<span class="sourceLineNo">174</span>   */<a name="line.174"></a>
+<span class="sourceLineNo">175</span>  public JoinRequestValue getJoinRequestValue()<a name="line.175"></a>
+<span class="sourceLineNo">176</span>  {<a name="line.176"></a>
+<span class="sourceLineNo">177</span>    return joinRequestValue;<a name="line.177"></a>
+<span class="sourceLineNo">178</span>  }<a name="line.178"></a>
 <span class="sourceLineNo">179</span><a name="line.179"></a>
-<span class="sourceLineNo">180</span>  /**<a name="line.180"></a>
-<span class="sourceLineNo">181</span>   * {@inheritDoc}<a name="line.181"></a>
-<span class="sourceLineNo">182</span>   */<a name="line.182"></a>
-<span class="sourceLineNo">183</span>  @Override()<a name="line.183"></a>
-<span class="sourceLineNo">184</span>  public String getControlName()<a name="line.184"></a>
-<span class="sourceLineNo">185</span>  {<a name="line.185"></a>
-<span class="sourceLineNo">186</span>    return INFO_CONTROL_NAME_JOIN_REQUEST.get();<a name="line.186"></a>
-<span class="sourceLineNo">187</span>  }<a name="line.187"></a>
-<span class="sourceLineNo">188</span><a name="line.188"></a>
-<span class="sourceLineNo">189</span><a name="line.189"></a>
+<span class="sourceLineNo">180</span><a name="line.180"></a>
+<span class="sourceLineNo">181</span><a name="line.181"></a>
+<span class="sourceLineNo">182</span>  /**<a name="line.182"></a>
+<span class="sourceLineNo">183</span>   * {@inheritDoc}<a name="line.183"></a>
+<span class="sourceLineNo">184</span>   */<a name="line.184"></a>
+<span class="sourceLineNo">185</span>  @Override()<a name="line.185"></a>
+<span class="sourceLineNo">186</span>  public String getControlName()<a name="line.186"></a>
+<span class="sourceLineNo">187</span>  {<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    return INFO_CONTROL_NAME_JOIN_REQUEST.get();<a name="line.188"></a>
+<span class="sourceLineNo">189</span>  }<a name="line.189"></a>
 <span class="sourceLineNo">190</span><a name="line.190"></a>
-<span class="sourceLineNo">191</span>  /**<a name="line.191"></a>
-<span class="sourceLineNo">192</span>   * {@inheritDoc}<a name="line.192"></a>
-<span class="sourceLineNo">193</span>   */<a name="line.193"></a>
-<span class="sourceLineNo">194</span>  @Override()<a name="line.194"></a>
-<span class="sourceLineNo">195</span>  public void toString(final StringBuilder buffer)<a name="line.195"></a>
-<span class="sourceLineNo">196</span>  {<a name="line.196"></a>
-<span class="sourceLineNo">197</span>    buffer.append("JoinRequestControl(value=");<a name="line.197"></a>
-<span class="sourceLineNo">198</span>    joinRequestValue.toString(buffer);<a name="line.198"></a>
-<span class="sourceLineNo">199</span>    buffer.append(')');<a name="line.199"></a>
-<span class="sourceLineNo">200</span>  }<a name="line.200"></a>
-<span class="sourceLineNo">201</span>}<a name="line.201"></a>
+<span class="sourceLineNo">191</span><a name="line.191"></a>
+<span class="sourceLineNo">192</span><a name="line.192"></a>
+<span class="sourceLineNo">193</span>  /**<a name="line.193"></a>
+<span class="sourceLineNo">194</span>   * {@inheritDoc}<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   */<a name="line.195"></a>
+<span class="sourceLineNo">196</span>  @Override()<a name="line.196"></a>
+<span class="sourceLineNo">197</span>  public void toString(final StringBuilder buffer)<a name="line.197"></a>
+<span class="sourceLineNo">198</span>  {<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    buffer.append("JoinRequestControl(value=");<a name="line.199"></a>
+<span class="sourceLineNo">200</span>    joinRequestValue.toString(buffer);<a name="line.200"></a>
+<span class="sourceLineNo">201</span>    buffer.append(')');<a name="line.201"></a>
+<span class="sourceLineNo">202</span>  }<a name="line.202"></a>
+<span class="sourceLineNo">203</span>}<a name="line.203"></a>
 
 
 

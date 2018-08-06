@@ -46,15 +46,15 @@
 <span class="sourceLineNo">038</span>import com.unboundid.ldap.protocol.LDAPMessage;<a name="line.38"></a>
 <span class="sourceLineNo">039</span>import com.unboundid.ldap.protocol.LDAPResponse;<a name="line.39"></a>
 <span class="sourceLineNo">040</span>import com.unboundid.ldap.protocol.ProtocolOp;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import com.unboundid.util.InternalUseOnly;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>import com.unboundid.util.LDAPSDKUsageException;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>import com.unboundid.util.NotMutable;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import com.unboundid.util.ThreadSafety;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.45"></a>
-<span class="sourceLineNo">046</span><a name="line.46"></a>
-<span class="sourceLineNo">047</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.47"></a>
-<span class="sourceLineNo">048</span>import static com.unboundid.util.Debug.*;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>import static com.unboundid.util.StaticUtils.*;<a name="line.49"></a>
+<span class="sourceLineNo">041</span>import com.unboundid.util.Debug;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import com.unboundid.util.InternalUseOnly;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import com.unboundid.util.LDAPSDKUsageException;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import com.unboundid.util.NotMutable;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import com.unboundid.util.StaticUtils;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import com.unboundid.util.ThreadSafety;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import com.unboundid.util.ThreadSafetyLevel;<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>import static com.unboundid.ldap.sdk.LDAPMessages.*;<a name="line.49"></a>
 <span class="sourceLineNo">050</span><a name="line.50"></a>
 <span class="sourceLineNo">051</span><a name="line.51"></a>
 <span class="sourceLineNo">052</span><a name="line.52"></a>
@@ -111,7 +111,7 @@
 <span class="sourceLineNo">103</span><a name="line.103"></a>
 <span class="sourceLineNo">104</span>  // The queue that will be used to receive response messages from the server.<a name="line.104"></a>
 <span class="sourceLineNo">105</span>  private final LinkedBlockingQueue&lt;LDAPResponse&gt; responseQueue =<a name="line.105"></a>
-<span class="sourceLineNo">106</span>       new LinkedBlockingQueue&lt;LDAPResponse&gt;();<a name="line.106"></a>
+<span class="sourceLineNo">106</span>       new LinkedBlockingQueue&lt;&gt;();<a name="line.106"></a>
 <span class="sourceLineNo">107</span><a name="line.107"></a>
 <span class="sourceLineNo">108</span>  // The password provider that should be used to obtain the password for this<a name="line.108"></a>
 <span class="sourceLineNo">109</span>  // simple bind request.<a name="line.109"></a>
@@ -471,7 +471,7 @@
 <span class="sourceLineNo">463</span>      }<a name="line.463"></a>
 <span class="sourceLineNo">464</span>      catch (final LDAPException le)<a name="line.464"></a>
 <span class="sourceLineNo">465</span>      {<a name="line.465"></a>
-<span class="sourceLineNo">466</span>        debugException(le);<a name="line.466"></a>
+<span class="sourceLineNo">466</span>        Debug.debugException(le);<a name="line.466"></a>
 <span class="sourceLineNo">467</span>        throw new LDAPRuntimeException(le);<a name="line.467"></a>
 <span class="sourceLineNo">468</span>      }<a name="line.468"></a>
 <span class="sourceLineNo">469</span><a name="line.469"></a>
@@ -530,7 +530,7 @@
 <span class="sourceLineNo">522</span>      {<a name="line.522"></a>
 <span class="sourceLineNo">523</span>        final LDAPException le = new LDAPException(ResultCode.PARAM_ERROR,<a name="line.523"></a>
 <span class="sourceLineNo">524</span>             ERR_SIMPLE_BIND_DN_WITHOUT_PASSWORD.get());<a name="line.524"></a>
-<span class="sourceLineNo">525</span>        debugCodingError(le);<a name="line.525"></a>
+<span class="sourceLineNo">525</span>        Debug.debugCodingError(le);<a name="line.525"></a>
 <span class="sourceLineNo">526</span>        throw le;<a name="line.526"></a>
 <span class="sourceLineNo">527</span>      }<a name="line.527"></a>
 <span class="sourceLineNo">528</span>    }<a name="line.528"></a>
@@ -558,7 +558,7 @@
 <span class="sourceLineNo">550</span>    {<a name="line.550"></a>
 <span class="sourceLineNo">551</span>      // Send the request to the server.<a name="line.551"></a>
 <span class="sourceLineNo">552</span>      final long responseTimeout = getResponseTimeoutMillis(connection);<a name="line.552"></a>
-<span class="sourceLineNo">553</span>      debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.553"></a>
+<span class="sourceLineNo">553</span>      Debug.debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.553"></a>
 <span class="sourceLineNo">554</span>      final long requestTime = System.nanoTime();<a name="line.554"></a>
 <span class="sourceLineNo">555</span>      connection.getConnectionStatistics().incrementNumBindRequests();<a name="line.555"></a>
 <span class="sourceLineNo">556</span>      connection.sendMessage(message, responseTimeout);<a name="line.556"></a>
@@ -578,7 +578,7 @@
 <span class="sourceLineNo">570</span>      }<a name="line.570"></a>
 <span class="sourceLineNo">571</span>      catch (final InterruptedException ie)<a name="line.571"></a>
 <span class="sourceLineNo">572</span>      {<a name="line.572"></a>
-<span class="sourceLineNo">573</span>        debugException(ie);<a name="line.573"></a>
+<span class="sourceLineNo">573</span>        Debug.debugException(ie);<a name="line.573"></a>
 <span class="sourceLineNo">574</span>        Thread.currentThread().interrupt();<a name="line.574"></a>
 <span class="sourceLineNo">575</span>        throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.575"></a>
 <span class="sourceLineNo">576</span>             ERR_BIND_INTERRUPTED.get(connection.getHostPort()), ie);<a name="line.576"></a>
@@ -623,7 +623,7 @@
 <span class="sourceLineNo">615</span><a name="line.615"></a>
 <span class="sourceLineNo">616</span>    // Send the request to the server.<a name="line.616"></a>
 <span class="sourceLineNo">617</span>    final long requestTime = System.nanoTime();<a name="line.617"></a>
-<span class="sourceLineNo">618</span>    debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.618"></a>
+<span class="sourceLineNo">618</span>    Debug.debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.618"></a>
 <span class="sourceLineNo">619</span>    connection.getConnectionStatistics().incrementNumBindRequests();<a name="line.619"></a>
 <span class="sourceLineNo">620</span>    try<a name="line.620"></a>
 <span class="sourceLineNo">621</span>    {<a name="line.621"></a>
@@ -631,7 +631,7 @@
 <span class="sourceLineNo">623</span>    }<a name="line.623"></a>
 <span class="sourceLineNo">624</span>    catch (final LDAPException le)<a name="line.624"></a>
 <span class="sourceLineNo">625</span>    {<a name="line.625"></a>
-<span class="sourceLineNo">626</span>      debugException(le);<a name="line.626"></a>
+<span class="sourceLineNo">626</span>      Debug.debugException(le);<a name="line.626"></a>
 <span class="sourceLineNo">627</span><a name="line.627"></a>
 <span class="sourceLineNo">628</span>      if (allowRetry)<a name="line.628"></a>
 <span class="sourceLineNo">629</span>      {<a name="line.629"></a>
@@ -691,273 +691,275 @@
 <span class="sourceLineNo">683</span>  {<a name="line.683"></a>
 <span class="sourceLineNo">684</span>    if (response == null)<a name="line.684"></a>
 <span class="sourceLineNo">685</span>    {<a name="line.685"></a>
-<span class="sourceLineNo">686</span>      final long waitTime = nanosToMillis(System.nanoTime() - requestTime);<a name="line.686"></a>
-<span class="sourceLineNo">687</span>      throw new LDAPException(ResultCode.TIMEOUT,<a name="line.687"></a>
-<span class="sourceLineNo">688</span>           ERR_SIMPLE_BIND_CLIENT_TIMEOUT.get(waitTime, messageID,<a name="line.688"></a>
-<span class="sourceLineNo">689</span>                bindDN.stringValue(), connection.getHostPort()));<a name="line.689"></a>
-<span class="sourceLineNo">690</span>    }<a name="line.690"></a>
-<span class="sourceLineNo">691</span><a name="line.691"></a>
-<span class="sourceLineNo">692</span>    connection.getConnectionStatistics().incrementNumBindResponses(<a name="line.692"></a>
-<span class="sourceLineNo">693</span>         System.nanoTime() - requestTime);<a name="line.693"></a>
-<span class="sourceLineNo">694</span>    if (response instanceof ConnectionClosedResponse)<a name="line.694"></a>
-<span class="sourceLineNo">695</span>    {<a name="line.695"></a>
-<span class="sourceLineNo">696</span>      // The connection was closed while waiting for the response.<a name="line.696"></a>
-<span class="sourceLineNo">697</span>      if (allowRetry)<a name="line.697"></a>
-<span class="sourceLineNo">698</span>      {<a name="line.698"></a>
-<span class="sourceLineNo">699</span>        final BindResult retryResult = reconnectAndRetry(connection,<a name="line.699"></a>
-<span class="sourceLineNo">700</span>             ResultCode.SERVER_DOWN);<a name="line.700"></a>
-<span class="sourceLineNo">701</span>        if (retryResult != null)<a name="line.701"></a>
-<span class="sourceLineNo">702</span>        {<a name="line.702"></a>
-<span class="sourceLineNo">703</span>          return retryResult;<a name="line.703"></a>
-<span class="sourceLineNo">704</span>        }<a name="line.704"></a>
-<span class="sourceLineNo">705</span>      }<a name="line.705"></a>
-<span class="sourceLineNo">706</span><a name="line.706"></a>
-<span class="sourceLineNo">707</span>      final ConnectionClosedResponse ccr = (ConnectionClosedResponse) response;<a name="line.707"></a>
-<span class="sourceLineNo">708</span>      final String message = ccr.getMessage();<a name="line.708"></a>
-<span class="sourceLineNo">709</span>      if (message == null)<a name="line.709"></a>
-<span class="sourceLineNo">710</span>      {<a name="line.710"></a>
-<span class="sourceLineNo">711</span>        throw new LDAPException(ccr.getResultCode(),<a name="line.711"></a>
-<span class="sourceLineNo">712</span>             ERR_CONN_CLOSED_WAITING_FOR_BIND_RESPONSE.get(<a name="line.712"></a>
-<span class="sourceLineNo">713</span>                  connection.getHostPort(), toString()));<a name="line.713"></a>
-<span class="sourceLineNo">714</span>      }<a name="line.714"></a>
-<span class="sourceLineNo">715</span>      else<a name="line.715"></a>
-<span class="sourceLineNo">716</span>      {<a name="line.716"></a>
-<span class="sourceLineNo">717</span>        throw new LDAPException(ccr.getResultCode(),<a name="line.717"></a>
-<span class="sourceLineNo">718</span>             ERR_CONN_CLOSED_WAITING_FOR_BIND_RESPONSE_WITH_MESSAGE.get(<a name="line.718"></a>
-<span class="sourceLineNo">719</span>                  connection.getHostPort(), toString(), message));<a name="line.719"></a>
-<span class="sourceLineNo">720</span>      }<a name="line.720"></a>
-<span class="sourceLineNo">721</span>    }<a name="line.721"></a>
-<span class="sourceLineNo">722</span><a name="line.722"></a>
-<span class="sourceLineNo">723</span>    final BindResult bindResult = (BindResult) response;<a name="line.723"></a>
-<span class="sourceLineNo">724</span>    if (allowRetry)<a name="line.724"></a>
-<span class="sourceLineNo">725</span>    {<a name="line.725"></a>
-<span class="sourceLineNo">726</span>      final BindResult retryResult = reconnectAndRetry(connection,<a name="line.726"></a>
-<span class="sourceLineNo">727</span>           bindResult.getResultCode());<a name="line.727"></a>
-<span class="sourceLineNo">728</span>      if (retryResult != null)<a name="line.728"></a>
-<span class="sourceLineNo">729</span>      {<a name="line.729"></a>
-<span class="sourceLineNo">730</span>        return retryResult;<a name="line.730"></a>
-<span class="sourceLineNo">731</span>      }<a name="line.731"></a>
-<span class="sourceLineNo">732</span>    }<a name="line.732"></a>
-<span class="sourceLineNo">733</span><a name="line.733"></a>
-<span class="sourceLineNo">734</span>    return bindResult;<a name="line.734"></a>
-<span class="sourceLineNo">735</span>  }<a name="line.735"></a>
-<span class="sourceLineNo">736</span><a name="line.736"></a>
+<span class="sourceLineNo">686</span>      final long waitTime =<a name="line.686"></a>
+<span class="sourceLineNo">687</span>           StaticUtils.nanosToMillis(System.nanoTime() - requestTime);<a name="line.687"></a>
+<span class="sourceLineNo">688</span>      throw new LDAPException(ResultCode.TIMEOUT,<a name="line.688"></a>
+<span class="sourceLineNo">689</span>           ERR_SIMPLE_BIND_CLIENT_TIMEOUT.get(waitTime, messageID,<a name="line.689"></a>
+<span class="sourceLineNo">690</span>                bindDN.stringValue(), connection.getHostPort()));<a name="line.690"></a>
+<span class="sourceLineNo">691</span>    }<a name="line.691"></a>
+<span class="sourceLineNo">692</span><a name="line.692"></a>
+<span class="sourceLineNo">693</span>    connection.getConnectionStatistics().incrementNumBindResponses(<a name="line.693"></a>
+<span class="sourceLineNo">694</span>         System.nanoTime() - requestTime);<a name="line.694"></a>
+<span class="sourceLineNo">695</span>    if (response instanceof ConnectionClosedResponse)<a name="line.695"></a>
+<span class="sourceLineNo">696</span>    {<a name="line.696"></a>
+<span class="sourceLineNo">697</span>      // The connection was closed while waiting for the response.<a name="line.697"></a>
+<span class="sourceLineNo">698</span>      if (allowRetry)<a name="line.698"></a>
+<span class="sourceLineNo">699</span>      {<a name="line.699"></a>
+<span class="sourceLineNo">700</span>        final BindResult retryResult = reconnectAndRetry(connection,<a name="line.700"></a>
+<span class="sourceLineNo">701</span>             ResultCode.SERVER_DOWN);<a name="line.701"></a>
+<span class="sourceLineNo">702</span>        if (retryResult != null)<a name="line.702"></a>
+<span class="sourceLineNo">703</span>        {<a name="line.703"></a>
+<span class="sourceLineNo">704</span>          return retryResult;<a name="line.704"></a>
+<span class="sourceLineNo">705</span>        }<a name="line.705"></a>
+<span class="sourceLineNo">706</span>      }<a name="line.706"></a>
+<span class="sourceLineNo">707</span><a name="line.707"></a>
+<span class="sourceLineNo">708</span>      final ConnectionClosedResponse ccr = (ConnectionClosedResponse) response;<a name="line.708"></a>
+<span class="sourceLineNo">709</span>      final String message = ccr.getMessage();<a name="line.709"></a>
+<span class="sourceLineNo">710</span>      if (message == null)<a name="line.710"></a>
+<span class="sourceLineNo">711</span>      {<a name="line.711"></a>
+<span class="sourceLineNo">712</span>        throw new LDAPException(ccr.getResultCode(),<a name="line.712"></a>
+<span class="sourceLineNo">713</span>             ERR_CONN_CLOSED_WAITING_FOR_BIND_RESPONSE.get(<a name="line.713"></a>
+<span class="sourceLineNo">714</span>                  connection.getHostPort(), toString()));<a name="line.714"></a>
+<span class="sourceLineNo">715</span>      }<a name="line.715"></a>
+<span class="sourceLineNo">716</span>      else<a name="line.716"></a>
+<span class="sourceLineNo">717</span>      {<a name="line.717"></a>
+<span class="sourceLineNo">718</span>        throw new LDAPException(ccr.getResultCode(),<a name="line.718"></a>
+<span class="sourceLineNo">719</span>             ERR_CONN_CLOSED_WAITING_FOR_BIND_RESPONSE_WITH_MESSAGE.get(<a name="line.719"></a>
+<span class="sourceLineNo">720</span>                  connection.getHostPort(), toString(), message));<a name="line.720"></a>
+<span class="sourceLineNo">721</span>      }<a name="line.721"></a>
+<span class="sourceLineNo">722</span>    }<a name="line.722"></a>
+<span class="sourceLineNo">723</span><a name="line.723"></a>
+<span class="sourceLineNo">724</span>    final BindResult bindResult = (BindResult) response;<a name="line.724"></a>
+<span class="sourceLineNo">725</span>    if (allowRetry)<a name="line.725"></a>
+<span class="sourceLineNo">726</span>    {<a name="line.726"></a>
+<span class="sourceLineNo">727</span>      final BindResult retryResult = reconnectAndRetry(connection,<a name="line.727"></a>
+<span class="sourceLineNo">728</span>           bindResult.getResultCode());<a name="line.728"></a>
+<span class="sourceLineNo">729</span>      if (retryResult != null)<a name="line.729"></a>
+<span class="sourceLineNo">730</span>      {<a name="line.730"></a>
+<span class="sourceLineNo">731</span>        return retryResult;<a name="line.731"></a>
+<span class="sourceLineNo">732</span>      }<a name="line.732"></a>
+<span class="sourceLineNo">733</span>    }<a name="line.733"></a>
+<span class="sourceLineNo">734</span><a name="line.734"></a>
+<span class="sourceLineNo">735</span>    return bindResult;<a name="line.735"></a>
+<span class="sourceLineNo">736</span>  }<a name="line.736"></a>
 <span class="sourceLineNo">737</span><a name="line.737"></a>
 <span class="sourceLineNo">738</span><a name="line.738"></a>
-<span class="sourceLineNo">739</span>  /**<a name="line.739"></a>
-<span class="sourceLineNo">740</span>   * Attempts to re-establish the connection and retry processing this request<a name="line.740"></a>
-<span class="sourceLineNo">741</span>   * on it.<a name="line.741"></a>
-<span class="sourceLineNo">742</span>   *<a name="line.742"></a>
-<span class="sourceLineNo">743</span>   * @param  connection  The connection to be re-established.<a name="line.743"></a>
-<span class="sourceLineNo">744</span>   * @param  resultCode  The result code for the previous operation attempt.<a name="line.744"></a>
-<span class="sourceLineNo">745</span>   *<a name="line.745"></a>
-<span class="sourceLineNo">746</span>   * @return  The result from re-trying the bind, or {@code null} if it could<a name="line.746"></a>
-<span class="sourceLineNo">747</span>   *          not be re-tried.<a name="line.747"></a>
-<span class="sourceLineNo">748</span>   */<a name="line.748"></a>
-<span class="sourceLineNo">749</span>  private BindResult reconnectAndRetry(final LDAPConnection connection,<a name="line.749"></a>
-<span class="sourceLineNo">750</span>                                       final ResultCode resultCode)<a name="line.750"></a>
-<span class="sourceLineNo">751</span>  {<a name="line.751"></a>
-<span class="sourceLineNo">752</span>    try<a name="line.752"></a>
-<span class="sourceLineNo">753</span>    {<a name="line.753"></a>
-<span class="sourceLineNo">754</span>      // We will only want to retry for certain result codes that indicate a<a name="line.754"></a>
-<span class="sourceLineNo">755</span>      // connection problem.<a name="line.755"></a>
-<span class="sourceLineNo">756</span>      switch (resultCode.intValue())<a name="line.756"></a>
-<span class="sourceLineNo">757</span>      {<a name="line.757"></a>
-<span class="sourceLineNo">758</span>        case ResultCode.SERVER_DOWN_INT_VALUE:<a name="line.758"></a>
-<span class="sourceLineNo">759</span>        case ResultCode.DECODING_ERROR_INT_VALUE:<a name="line.759"></a>
-<span class="sourceLineNo">760</span>        case ResultCode.CONNECT_ERROR_INT_VALUE:<a name="line.760"></a>
-<span class="sourceLineNo">761</span>          connection.reconnect();<a name="line.761"></a>
-<span class="sourceLineNo">762</span>          return processSync(connection, false);<a name="line.762"></a>
-<span class="sourceLineNo">763</span>      }<a name="line.763"></a>
-<span class="sourceLineNo">764</span>    }<a name="line.764"></a>
-<span class="sourceLineNo">765</span>    catch (final Exception e)<a name="line.765"></a>
-<span class="sourceLineNo">766</span>    {<a name="line.766"></a>
-<span class="sourceLineNo">767</span>      debugException(e);<a name="line.767"></a>
-<span class="sourceLineNo">768</span>    }<a name="line.768"></a>
-<span class="sourceLineNo">769</span><a name="line.769"></a>
-<span class="sourceLineNo">770</span>    return null;<a name="line.770"></a>
-<span class="sourceLineNo">771</span>  }<a name="line.771"></a>
-<span class="sourceLineNo">772</span><a name="line.772"></a>
+<span class="sourceLineNo">739</span><a name="line.739"></a>
+<span class="sourceLineNo">740</span>  /**<a name="line.740"></a>
+<span class="sourceLineNo">741</span>   * Attempts to re-establish the connection and retry processing this request<a name="line.741"></a>
+<span class="sourceLineNo">742</span>   * on it.<a name="line.742"></a>
+<span class="sourceLineNo">743</span>   *<a name="line.743"></a>
+<span class="sourceLineNo">744</span>   * @param  connection  The connection to be re-established.<a name="line.744"></a>
+<span class="sourceLineNo">745</span>   * @param  resultCode  The result code for the previous operation attempt.<a name="line.745"></a>
+<span class="sourceLineNo">746</span>   *<a name="line.746"></a>
+<span class="sourceLineNo">747</span>   * @return  The result from re-trying the bind, or {@code null} if it could<a name="line.747"></a>
+<span class="sourceLineNo">748</span>   *          not be re-tried.<a name="line.748"></a>
+<span class="sourceLineNo">749</span>   */<a name="line.749"></a>
+<span class="sourceLineNo">750</span>  private BindResult reconnectAndRetry(final LDAPConnection connection,<a name="line.750"></a>
+<span class="sourceLineNo">751</span>                                       final ResultCode resultCode)<a name="line.751"></a>
+<span class="sourceLineNo">752</span>  {<a name="line.752"></a>
+<span class="sourceLineNo">753</span>    try<a name="line.753"></a>
+<span class="sourceLineNo">754</span>    {<a name="line.754"></a>
+<span class="sourceLineNo">755</span>      // We will only want to retry for certain result codes that indicate a<a name="line.755"></a>
+<span class="sourceLineNo">756</span>      // connection problem.<a name="line.756"></a>
+<span class="sourceLineNo">757</span>      switch (resultCode.intValue())<a name="line.757"></a>
+<span class="sourceLineNo">758</span>      {<a name="line.758"></a>
+<span class="sourceLineNo">759</span>        case ResultCode.SERVER_DOWN_INT_VALUE:<a name="line.759"></a>
+<span class="sourceLineNo">760</span>        case ResultCode.DECODING_ERROR_INT_VALUE:<a name="line.760"></a>
+<span class="sourceLineNo">761</span>        case ResultCode.CONNECT_ERROR_INT_VALUE:<a name="line.761"></a>
+<span class="sourceLineNo">762</span>          connection.reconnect();<a name="line.762"></a>
+<span class="sourceLineNo">763</span>          return processSync(connection, false);<a name="line.763"></a>
+<span class="sourceLineNo">764</span>      }<a name="line.764"></a>
+<span class="sourceLineNo">765</span>    }<a name="line.765"></a>
+<span class="sourceLineNo">766</span>    catch (final Exception e)<a name="line.766"></a>
+<span class="sourceLineNo">767</span>    {<a name="line.767"></a>
+<span class="sourceLineNo">768</span>      Debug.debugException(e);<a name="line.768"></a>
+<span class="sourceLineNo">769</span>    }<a name="line.769"></a>
+<span class="sourceLineNo">770</span><a name="line.770"></a>
+<span class="sourceLineNo">771</span>    return null;<a name="line.771"></a>
+<span class="sourceLineNo">772</span>  }<a name="line.772"></a>
 <span class="sourceLineNo">773</span><a name="line.773"></a>
 <span class="sourceLineNo">774</span><a name="line.774"></a>
-<span class="sourceLineNo">775</span>  /**<a name="line.775"></a>
-<span class="sourceLineNo">776</span>   * {@inheritDoc}<a name="line.776"></a>
-<span class="sourceLineNo">777</span>   */<a name="line.777"></a>
-<span class="sourceLineNo">778</span>  @Override()<a name="line.778"></a>
-<span class="sourceLineNo">779</span>  public SimpleBindRequest getRebindRequest(final String host, final int port)<a name="line.779"></a>
-<span class="sourceLineNo">780</span>  {<a name="line.780"></a>
-<span class="sourceLineNo">781</span>    return new SimpleBindRequest(bindDN, password, passwordProvider,<a name="line.781"></a>
-<span class="sourceLineNo">782</span>         getControls());<a name="line.782"></a>
-<span class="sourceLineNo">783</span>  }<a name="line.783"></a>
-<span class="sourceLineNo">784</span><a name="line.784"></a>
+<span class="sourceLineNo">775</span><a name="line.775"></a>
+<span class="sourceLineNo">776</span>  /**<a name="line.776"></a>
+<span class="sourceLineNo">777</span>   * {@inheritDoc}<a name="line.777"></a>
+<span class="sourceLineNo">778</span>   */<a name="line.778"></a>
+<span class="sourceLineNo">779</span>  @Override()<a name="line.779"></a>
+<span class="sourceLineNo">780</span>  public SimpleBindRequest getRebindRequest(final String host, final int port)<a name="line.780"></a>
+<span class="sourceLineNo">781</span>  {<a name="line.781"></a>
+<span class="sourceLineNo">782</span>    return new SimpleBindRequest(bindDN, password, passwordProvider,<a name="line.782"></a>
+<span class="sourceLineNo">783</span>         getControls());<a name="line.783"></a>
+<span class="sourceLineNo">784</span>  }<a name="line.784"></a>
 <span class="sourceLineNo">785</span><a name="line.785"></a>
 <span class="sourceLineNo">786</span><a name="line.786"></a>
-<span class="sourceLineNo">787</span>  /**<a name="line.787"></a>
-<span class="sourceLineNo">788</span>   * {@inheritDoc}<a name="line.788"></a>
-<span class="sourceLineNo">789</span>   */<a name="line.789"></a>
-<span class="sourceLineNo">790</span>  @InternalUseOnly()<a name="line.790"></a>
-<span class="sourceLineNo">791</span>  @Override()<a name="line.791"></a>
-<span class="sourceLineNo">792</span>  public void responseReceived(final LDAPResponse response)<a name="line.792"></a>
-<span class="sourceLineNo">793</span>         throws LDAPException<a name="line.793"></a>
-<span class="sourceLineNo">794</span>  {<a name="line.794"></a>
-<span class="sourceLineNo">795</span>    try<a name="line.795"></a>
-<span class="sourceLineNo">796</span>    {<a name="line.796"></a>
-<span class="sourceLineNo">797</span>      responseQueue.put(response);<a name="line.797"></a>
-<span class="sourceLineNo">798</span>    }<a name="line.798"></a>
-<span class="sourceLineNo">799</span>    catch (final Exception e)<a name="line.799"></a>
-<span class="sourceLineNo">800</span>    {<a name="line.800"></a>
-<span class="sourceLineNo">801</span>      debugException(e);<a name="line.801"></a>
-<span class="sourceLineNo">802</span><a name="line.802"></a>
-<span class="sourceLineNo">803</span>      if (e instanceof InterruptedException)<a name="line.803"></a>
-<span class="sourceLineNo">804</span>      {<a name="line.804"></a>
-<span class="sourceLineNo">805</span>        Thread.currentThread().interrupt();<a name="line.805"></a>
-<span class="sourceLineNo">806</span>      }<a name="line.806"></a>
-<span class="sourceLineNo">807</span><a name="line.807"></a>
-<span class="sourceLineNo">808</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.808"></a>
-<span class="sourceLineNo">809</span>           ERR_EXCEPTION_HANDLING_RESPONSE.get(getExceptionMessage(e)), e);<a name="line.809"></a>
-<span class="sourceLineNo">810</span>    }<a name="line.810"></a>
-<span class="sourceLineNo">811</span>  }<a name="line.811"></a>
-<span class="sourceLineNo">812</span><a name="line.812"></a>
-<span class="sourceLineNo">813</span><a name="line.813"></a>
-<span class="sourceLineNo">814</span><a name="line.814"></a>
-<span class="sourceLineNo">815</span>  /**<a name="line.815"></a>
-<span class="sourceLineNo">816</span>   * {@inheritDoc}<a name="line.816"></a>
-<span class="sourceLineNo">817</span>   */<a name="line.817"></a>
-<span class="sourceLineNo">818</span>  @Override()<a name="line.818"></a>
-<span class="sourceLineNo">819</span>  public String getBindType()<a name="line.819"></a>
-<span class="sourceLineNo">820</span>  {<a name="line.820"></a>
-<span class="sourceLineNo">821</span>    return "SIMPLE";<a name="line.821"></a>
-<span class="sourceLineNo">822</span>  }<a name="line.822"></a>
-<span class="sourceLineNo">823</span><a name="line.823"></a>
-<span class="sourceLineNo">824</span><a name="line.824"></a>
-<span class="sourceLineNo">825</span><a name="line.825"></a>
-<span class="sourceLineNo">826</span>  /**<a name="line.826"></a>
-<span class="sourceLineNo">827</span>   * {@inheritDoc}<a name="line.827"></a>
-<span class="sourceLineNo">828</span>   */<a name="line.828"></a>
-<span class="sourceLineNo">829</span>  @Override()<a name="line.829"></a>
-<span class="sourceLineNo">830</span>  public int getLastMessageID()<a name="line.830"></a>
-<span class="sourceLineNo">831</span>  {<a name="line.831"></a>
-<span class="sourceLineNo">832</span>    return messageID;<a name="line.832"></a>
-<span class="sourceLineNo">833</span>  }<a name="line.833"></a>
-<span class="sourceLineNo">834</span><a name="line.834"></a>
-<span class="sourceLineNo">835</span><a name="line.835"></a>
-<span class="sourceLineNo">836</span><a name="line.836"></a>
-<span class="sourceLineNo">837</span>  /**<a name="line.837"></a>
-<span class="sourceLineNo">838</span>   * {@inheritDoc}<a name="line.838"></a>
-<span class="sourceLineNo">839</span>   */<a name="line.839"></a>
-<span class="sourceLineNo">840</span>  @Override()<a name="line.840"></a>
-<span class="sourceLineNo">841</span>  public SimpleBindRequest duplicate()<a name="line.841"></a>
-<span class="sourceLineNo">842</span>  {<a name="line.842"></a>
-<span class="sourceLineNo">843</span>    return duplicate(getControls());<a name="line.843"></a>
-<span class="sourceLineNo">844</span>  }<a name="line.844"></a>
-<span class="sourceLineNo">845</span><a name="line.845"></a>
-<span class="sourceLineNo">846</span><a name="line.846"></a>
-<span class="sourceLineNo">847</span><a name="line.847"></a>
-<span class="sourceLineNo">848</span>  /**<a name="line.848"></a>
-<span class="sourceLineNo">849</span>   * {@inheritDoc}<a name="line.849"></a>
-<span class="sourceLineNo">850</span>   */<a name="line.850"></a>
-<span class="sourceLineNo">851</span>  @Override()<a name="line.851"></a>
-<span class="sourceLineNo">852</span>  public SimpleBindRequest duplicate(final Control[] controls)<a name="line.852"></a>
-<span class="sourceLineNo">853</span>  {<a name="line.853"></a>
-<span class="sourceLineNo">854</span>    final SimpleBindRequest bindRequest =<a name="line.854"></a>
-<span class="sourceLineNo">855</span>         new SimpleBindRequest(bindDN, password, passwordProvider, controls);<a name="line.855"></a>
-<span class="sourceLineNo">856</span>    bindRequest.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.856"></a>
-<span class="sourceLineNo">857</span>    return bindRequest;<a name="line.857"></a>
-<span class="sourceLineNo">858</span>  }<a name="line.858"></a>
-<span class="sourceLineNo">859</span><a name="line.859"></a>
-<span class="sourceLineNo">860</span><a name="line.860"></a>
-<span class="sourceLineNo">861</span><a name="line.861"></a>
-<span class="sourceLineNo">862</span>  /**<a name="line.862"></a>
-<span class="sourceLineNo">863</span>   * {@inheritDoc}<a name="line.863"></a>
-<span class="sourceLineNo">864</span>   */<a name="line.864"></a>
-<span class="sourceLineNo">865</span>  @Override()<a name="line.865"></a>
-<span class="sourceLineNo">866</span>  public void toString(final StringBuilder buffer)<a name="line.866"></a>
-<span class="sourceLineNo">867</span>  {<a name="line.867"></a>
-<span class="sourceLineNo">868</span>    buffer.append("SimpleBindRequest(dn='");<a name="line.868"></a>
-<span class="sourceLineNo">869</span>    buffer.append(bindDN);<a name="line.869"></a>
-<span class="sourceLineNo">870</span>    buffer.append('\'');<a name="line.870"></a>
-<span class="sourceLineNo">871</span><a name="line.871"></a>
-<span class="sourceLineNo">872</span>    final Control[] controls = getControls();<a name="line.872"></a>
-<span class="sourceLineNo">873</span>    if (controls.length &gt; 0)<a name="line.873"></a>
-<span class="sourceLineNo">874</span>    {<a name="line.874"></a>
-<span class="sourceLineNo">875</span>      buffer.append(", controls={");<a name="line.875"></a>
-<span class="sourceLineNo">876</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.876"></a>
-<span class="sourceLineNo">877</span>      {<a name="line.877"></a>
-<span class="sourceLineNo">878</span>        if (i &gt; 0)<a name="line.878"></a>
-<span class="sourceLineNo">879</span>        {<a name="line.879"></a>
-<span class="sourceLineNo">880</span>          buffer.append(", ");<a name="line.880"></a>
-<span class="sourceLineNo">881</span>        }<a name="line.881"></a>
-<span class="sourceLineNo">882</span><a name="line.882"></a>
-<span class="sourceLineNo">883</span>        buffer.append(controls[i]);<a name="line.883"></a>
-<span class="sourceLineNo">884</span>      }<a name="line.884"></a>
-<span class="sourceLineNo">885</span>      buffer.append('}');<a name="line.885"></a>
-<span class="sourceLineNo">886</span>    }<a name="line.886"></a>
-<span class="sourceLineNo">887</span><a name="line.887"></a>
-<span class="sourceLineNo">888</span>    buffer.append(')');<a name="line.888"></a>
-<span class="sourceLineNo">889</span>  }<a name="line.889"></a>
+<span class="sourceLineNo">787</span><a name="line.787"></a>
+<span class="sourceLineNo">788</span>  /**<a name="line.788"></a>
+<span class="sourceLineNo">789</span>   * {@inheritDoc}<a name="line.789"></a>
+<span class="sourceLineNo">790</span>   */<a name="line.790"></a>
+<span class="sourceLineNo">791</span>  @InternalUseOnly()<a name="line.791"></a>
+<span class="sourceLineNo">792</span>  @Override()<a name="line.792"></a>
+<span class="sourceLineNo">793</span>  public void responseReceived(final LDAPResponse response)<a name="line.793"></a>
+<span class="sourceLineNo">794</span>         throws LDAPException<a name="line.794"></a>
+<span class="sourceLineNo">795</span>  {<a name="line.795"></a>
+<span class="sourceLineNo">796</span>    try<a name="line.796"></a>
+<span class="sourceLineNo">797</span>    {<a name="line.797"></a>
+<span class="sourceLineNo">798</span>      responseQueue.put(response);<a name="line.798"></a>
+<span class="sourceLineNo">799</span>    }<a name="line.799"></a>
+<span class="sourceLineNo">800</span>    catch (final Exception e)<a name="line.800"></a>
+<span class="sourceLineNo">801</span>    {<a name="line.801"></a>
+<span class="sourceLineNo">802</span>      Debug.debugException(e);<a name="line.802"></a>
+<span class="sourceLineNo">803</span><a name="line.803"></a>
+<span class="sourceLineNo">804</span>      if (e instanceof InterruptedException)<a name="line.804"></a>
+<span class="sourceLineNo">805</span>      {<a name="line.805"></a>
+<span class="sourceLineNo">806</span>        Thread.currentThread().interrupt();<a name="line.806"></a>
+<span class="sourceLineNo">807</span>      }<a name="line.807"></a>
+<span class="sourceLineNo">808</span><a name="line.808"></a>
+<span class="sourceLineNo">809</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.809"></a>
+<span class="sourceLineNo">810</span>           ERR_EXCEPTION_HANDLING_RESPONSE.get(<a name="line.810"></a>
+<span class="sourceLineNo">811</span>                StaticUtils.getExceptionMessage(e)),<a name="line.811"></a>
+<span class="sourceLineNo">812</span>           e);<a name="line.812"></a>
+<span class="sourceLineNo">813</span>    }<a name="line.813"></a>
+<span class="sourceLineNo">814</span>  }<a name="line.814"></a>
+<span class="sourceLineNo">815</span><a name="line.815"></a>
+<span class="sourceLineNo">816</span><a name="line.816"></a>
+<span class="sourceLineNo">817</span><a name="line.817"></a>
+<span class="sourceLineNo">818</span>  /**<a name="line.818"></a>
+<span class="sourceLineNo">819</span>   * {@inheritDoc}<a name="line.819"></a>
+<span class="sourceLineNo">820</span>   */<a name="line.820"></a>
+<span class="sourceLineNo">821</span>  @Override()<a name="line.821"></a>
+<span class="sourceLineNo">822</span>  public String getBindType()<a name="line.822"></a>
+<span class="sourceLineNo">823</span>  {<a name="line.823"></a>
+<span class="sourceLineNo">824</span>    return "SIMPLE";<a name="line.824"></a>
+<span class="sourceLineNo">825</span>  }<a name="line.825"></a>
+<span class="sourceLineNo">826</span><a name="line.826"></a>
+<span class="sourceLineNo">827</span><a name="line.827"></a>
+<span class="sourceLineNo">828</span><a name="line.828"></a>
+<span class="sourceLineNo">829</span>  /**<a name="line.829"></a>
+<span class="sourceLineNo">830</span>   * {@inheritDoc}<a name="line.830"></a>
+<span class="sourceLineNo">831</span>   */<a name="line.831"></a>
+<span class="sourceLineNo">832</span>  @Override()<a name="line.832"></a>
+<span class="sourceLineNo">833</span>  public int getLastMessageID()<a name="line.833"></a>
+<span class="sourceLineNo">834</span>  {<a name="line.834"></a>
+<span class="sourceLineNo">835</span>    return messageID;<a name="line.835"></a>
+<span class="sourceLineNo">836</span>  }<a name="line.836"></a>
+<span class="sourceLineNo">837</span><a name="line.837"></a>
+<span class="sourceLineNo">838</span><a name="line.838"></a>
+<span class="sourceLineNo">839</span><a name="line.839"></a>
+<span class="sourceLineNo">840</span>  /**<a name="line.840"></a>
+<span class="sourceLineNo">841</span>   * {@inheritDoc}<a name="line.841"></a>
+<span class="sourceLineNo">842</span>   */<a name="line.842"></a>
+<span class="sourceLineNo">843</span>  @Override()<a name="line.843"></a>
+<span class="sourceLineNo">844</span>  public SimpleBindRequest duplicate()<a name="line.844"></a>
+<span class="sourceLineNo">845</span>  {<a name="line.845"></a>
+<span class="sourceLineNo">846</span>    return duplicate(getControls());<a name="line.846"></a>
+<span class="sourceLineNo">847</span>  }<a name="line.847"></a>
+<span class="sourceLineNo">848</span><a name="line.848"></a>
+<span class="sourceLineNo">849</span><a name="line.849"></a>
+<span class="sourceLineNo">850</span><a name="line.850"></a>
+<span class="sourceLineNo">851</span>  /**<a name="line.851"></a>
+<span class="sourceLineNo">852</span>   * {@inheritDoc}<a name="line.852"></a>
+<span class="sourceLineNo">853</span>   */<a name="line.853"></a>
+<span class="sourceLineNo">854</span>  @Override()<a name="line.854"></a>
+<span class="sourceLineNo">855</span>  public SimpleBindRequest duplicate(final Control[] controls)<a name="line.855"></a>
+<span class="sourceLineNo">856</span>  {<a name="line.856"></a>
+<span class="sourceLineNo">857</span>    final SimpleBindRequest bindRequest =<a name="line.857"></a>
+<span class="sourceLineNo">858</span>         new SimpleBindRequest(bindDN, password, passwordProvider, controls);<a name="line.858"></a>
+<span class="sourceLineNo">859</span>    bindRequest.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.859"></a>
+<span class="sourceLineNo">860</span>    return bindRequest;<a name="line.860"></a>
+<span class="sourceLineNo">861</span>  }<a name="line.861"></a>
+<span class="sourceLineNo">862</span><a name="line.862"></a>
+<span class="sourceLineNo">863</span><a name="line.863"></a>
+<span class="sourceLineNo">864</span><a name="line.864"></a>
+<span class="sourceLineNo">865</span>  /**<a name="line.865"></a>
+<span class="sourceLineNo">866</span>   * {@inheritDoc}<a name="line.866"></a>
+<span class="sourceLineNo">867</span>   */<a name="line.867"></a>
+<span class="sourceLineNo">868</span>  @Override()<a name="line.868"></a>
+<span class="sourceLineNo">869</span>  public void toString(final StringBuilder buffer)<a name="line.869"></a>
+<span class="sourceLineNo">870</span>  {<a name="line.870"></a>
+<span class="sourceLineNo">871</span>    buffer.append("SimpleBindRequest(dn='");<a name="line.871"></a>
+<span class="sourceLineNo">872</span>    buffer.append(bindDN);<a name="line.872"></a>
+<span class="sourceLineNo">873</span>    buffer.append('\'');<a name="line.873"></a>
+<span class="sourceLineNo">874</span><a name="line.874"></a>
+<span class="sourceLineNo">875</span>    final Control[] controls = getControls();<a name="line.875"></a>
+<span class="sourceLineNo">876</span>    if (controls.length &gt; 0)<a name="line.876"></a>
+<span class="sourceLineNo">877</span>    {<a name="line.877"></a>
+<span class="sourceLineNo">878</span>      buffer.append(", controls={");<a name="line.878"></a>
+<span class="sourceLineNo">879</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.879"></a>
+<span class="sourceLineNo">880</span>      {<a name="line.880"></a>
+<span class="sourceLineNo">881</span>        if (i &gt; 0)<a name="line.881"></a>
+<span class="sourceLineNo">882</span>        {<a name="line.882"></a>
+<span class="sourceLineNo">883</span>          buffer.append(", ");<a name="line.883"></a>
+<span class="sourceLineNo">884</span>        }<a name="line.884"></a>
+<span class="sourceLineNo">885</span><a name="line.885"></a>
+<span class="sourceLineNo">886</span>        buffer.append(controls[i]);<a name="line.886"></a>
+<span class="sourceLineNo">887</span>      }<a name="line.887"></a>
+<span class="sourceLineNo">888</span>      buffer.append('}');<a name="line.888"></a>
+<span class="sourceLineNo">889</span>    }<a name="line.889"></a>
 <span class="sourceLineNo">890</span><a name="line.890"></a>
-<span class="sourceLineNo">891</span><a name="line.891"></a>
-<span class="sourceLineNo">892</span><a name="line.892"></a>
-<span class="sourceLineNo">893</span>  /**<a name="line.893"></a>
-<span class="sourceLineNo">894</span>   * {@inheritDoc}<a name="line.894"></a>
-<span class="sourceLineNo">895</span>   */<a name="line.895"></a>
-<span class="sourceLineNo">896</span>  @Override()<a name="line.896"></a>
-<span class="sourceLineNo">897</span>  public void toCode(final List&lt;String&gt; lineList, final String requestID,<a name="line.897"></a>
-<span class="sourceLineNo">898</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.898"></a>
-<span class="sourceLineNo">899</span>  {<a name="line.899"></a>
-<span class="sourceLineNo">900</span>    // Create the request variable.<a name="line.900"></a>
-<span class="sourceLineNo">901</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs =<a name="line.901"></a>
-<span class="sourceLineNo">902</span>         new ArrayList&lt;ToCodeArgHelper&gt;(3);<a name="line.902"></a>
-<span class="sourceLineNo">903</span>    constructorArgs.add(ToCodeArgHelper.createString(bindDN.stringValue(),<a name="line.903"></a>
-<span class="sourceLineNo">904</span>         "Bind DN"));<a name="line.904"></a>
-<span class="sourceLineNo">905</span>    constructorArgs.add(ToCodeArgHelper.createString("---redacted-password---",<a name="line.905"></a>
-<span class="sourceLineNo">906</span>         "Bind Password"));<a name="line.906"></a>
-<span class="sourceLineNo">907</span><a name="line.907"></a>
-<span class="sourceLineNo">908</span>    final Control[] controls = getControls();<a name="line.908"></a>
-<span class="sourceLineNo">909</span>    if (controls.length &gt; 0)<a name="line.909"></a>
-<span class="sourceLineNo">910</span>    {<a name="line.910"></a>
-<span class="sourceLineNo">911</span>      constructorArgs.add(ToCodeArgHelper.createControlArray(controls,<a name="line.911"></a>
-<span class="sourceLineNo">912</span>           "Bind Controls"));<a name="line.912"></a>
-<span class="sourceLineNo">913</span>    }<a name="line.913"></a>
-<span class="sourceLineNo">914</span><a name="line.914"></a>
-<span class="sourceLineNo">915</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, "SimpleBindRequest",<a name="line.915"></a>
-<span class="sourceLineNo">916</span>         requestID + "Request", "new SimpleBindRequest", constructorArgs);<a name="line.916"></a>
-<span class="sourceLineNo">917</span><a name="line.917"></a>
-<span class="sourceLineNo">918</span><a name="line.918"></a>
-<span class="sourceLineNo">919</span>    // Add lines for processing the request and obtaining the result.<a name="line.919"></a>
-<span class="sourceLineNo">920</span>    if (includeProcessing)<a name="line.920"></a>
-<span class="sourceLineNo">921</span>    {<a name="line.921"></a>
-<span class="sourceLineNo">922</span>      // Generate a string with the appropriate indent.<a name="line.922"></a>
-<span class="sourceLineNo">923</span>      final StringBuilder buffer = new StringBuilder();<a name="line.923"></a>
-<span class="sourceLineNo">924</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.924"></a>
-<span class="sourceLineNo">925</span>      {<a name="line.925"></a>
-<span class="sourceLineNo">926</span>        buffer.append(' ');<a name="line.926"></a>
-<span class="sourceLineNo">927</span>      }<a name="line.927"></a>
-<span class="sourceLineNo">928</span>      final String indent = buffer.toString();<a name="line.928"></a>
-<span class="sourceLineNo">929</span><a name="line.929"></a>
-<span class="sourceLineNo">930</span>      lineList.add("");<a name="line.930"></a>
-<span class="sourceLineNo">931</span>      lineList.add(indent + "try");<a name="line.931"></a>
-<span class="sourceLineNo">932</span>      lineList.add(indent + '{');<a name="line.932"></a>
-<span class="sourceLineNo">933</span>      lineList.add(indent + "  BindResult " + requestID +<a name="line.933"></a>
-<span class="sourceLineNo">934</span>           "Result = connection.bind(" + requestID + "Request);");<a name="line.934"></a>
-<span class="sourceLineNo">935</span>      lineList.add(indent + "  // The bind was processed successfully.");<a name="line.935"></a>
-<span class="sourceLineNo">936</span>      lineList.add(indent + '}');<a name="line.936"></a>
-<span class="sourceLineNo">937</span>      lineList.add(indent + "catch (LDAPException e)");<a name="line.937"></a>
-<span class="sourceLineNo">938</span>      lineList.add(indent + '{');<a name="line.938"></a>
-<span class="sourceLineNo">939</span>      lineList.add(indent + "  // The bind failed.  Maybe the following will " +<a name="line.939"></a>
-<span class="sourceLineNo">940</span>           "help explain why.");<a name="line.940"></a>
-<span class="sourceLineNo">941</span>      lineList.add(indent + "  // Note that the connection is now likely in " +<a name="line.941"></a>
-<span class="sourceLineNo">942</span>           "an unauthenticated state.");<a name="line.942"></a>
-<span class="sourceLineNo">943</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.943"></a>
-<span class="sourceLineNo">944</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.944"></a>
-<span class="sourceLineNo">945</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.945"></a>
-<span class="sourceLineNo">946</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.946"></a>
-<span class="sourceLineNo">947</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.947"></a>
-<span class="sourceLineNo">948</span>           "e.getResponseControls();");<a name="line.948"></a>
-<span class="sourceLineNo">949</span>      lineList.add(indent + '}');<a name="line.949"></a>
-<span class="sourceLineNo">950</span>    }<a name="line.950"></a>
-<span class="sourceLineNo">951</span>  }<a name="line.951"></a>
-<span class="sourceLineNo">952</span>}<a name="line.952"></a>
+<span class="sourceLineNo">891</span>    buffer.append(')');<a name="line.891"></a>
+<span class="sourceLineNo">892</span>  }<a name="line.892"></a>
+<span class="sourceLineNo">893</span><a name="line.893"></a>
+<span class="sourceLineNo">894</span><a name="line.894"></a>
+<span class="sourceLineNo">895</span><a name="line.895"></a>
+<span class="sourceLineNo">896</span>  /**<a name="line.896"></a>
+<span class="sourceLineNo">897</span>   * {@inheritDoc}<a name="line.897"></a>
+<span class="sourceLineNo">898</span>   */<a name="line.898"></a>
+<span class="sourceLineNo">899</span>  @Override()<a name="line.899"></a>
+<span class="sourceLineNo">900</span>  public void toCode(final List&lt;String&gt; lineList, final String requestID,<a name="line.900"></a>
+<span class="sourceLineNo">901</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.901"></a>
+<span class="sourceLineNo">902</span>  {<a name="line.902"></a>
+<span class="sourceLineNo">903</span>    // Create the request variable.<a name="line.903"></a>
+<span class="sourceLineNo">904</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs = new ArrayList&lt;&gt;(3);<a name="line.904"></a>
+<span class="sourceLineNo">905</span>    constructorArgs.add(ToCodeArgHelper.createString(bindDN.stringValue(),<a name="line.905"></a>
+<span class="sourceLineNo">906</span>         "Bind DN"));<a name="line.906"></a>
+<span class="sourceLineNo">907</span>    constructorArgs.add(ToCodeArgHelper.createString("---redacted-password---",<a name="line.907"></a>
+<span class="sourceLineNo">908</span>         "Bind Password"));<a name="line.908"></a>
+<span class="sourceLineNo">909</span><a name="line.909"></a>
+<span class="sourceLineNo">910</span>    final Control[] controls = getControls();<a name="line.910"></a>
+<span class="sourceLineNo">911</span>    if (controls.length &gt; 0)<a name="line.911"></a>
+<span class="sourceLineNo">912</span>    {<a name="line.912"></a>
+<span class="sourceLineNo">913</span>      constructorArgs.add(ToCodeArgHelper.createControlArray(controls,<a name="line.913"></a>
+<span class="sourceLineNo">914</span>           "Bind Controls"));<a name="line.914"></a>
+<span class="sourceLineNo">915</span>    }<a name="line.915"></a>
+<span class="sourceLineNo">916</span><a name="line.916"></a>
+<span class="sourceLineNo">917</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, "SimpleBindRequest",<a name="line.917"></a>
+<span class="sourceLineNo">918</span>         requestID + "Request", "new SimpleBindRequest", constructorArgs);<a name="line.918"></a>
+<span class="sourceLineNo">919</span><a name="line.919"></a>
+<span class="sourceLineNo">920</span><a name="line.920"></a>
+<span class="sourceLineNo">921</span>    // Add lines for processing the request and obtaining the result.<a name="line.921"></a>
+<span class="sourceLineNo">922</span>    if (includeProcessing)<a name="line.922"></a>
+<span class="sourceLineNo">923</span>    {<a name="line.923"></a>
+<span class="sourceLineNo">924</span>      // Generate a string with the appropriate indent.<a name="line.924"></a>
+<span class="sourceLineNo">925</span>      final StringBuilder buffer = new StringBuilder();<a name="line.925"></a>
+<span class="sourceLineNo">926</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.926"></a>
+<span class="sourceLineNo">927</span>      {<a name="line.927"></a>
+<span class="sourceLineNo">928</span>        buffer.append(' ');<a name="line.928"></a>
+<span class="sourceLineNo">929</span>      }<a name="line.929"></a>
+<span class="sourceLineNo">930</span>      final String indent = buffer.toString();<a name="line.930"></a>
+<span class="sourceLineNo">931</span><a name="line.931"></a>
+<span class="sourceLineNo">932</span>      lineList.add("");<a name="line.932"></a>
+<span class="sourceLineNo">933</span>      lineList.add(indent + "try");<a name="line.933"></a>
+<span class="sourceLineNo">934</span>      lineList.add(indent + '{');<a name="line.934"></a>
+<span class="sourceLineNo">935</span>      lineList.add(indent + "  BindResult " + requestID +<a name="line.935"></a>
+<span class="sourceLineNo">936</span>           "Result = connection.bind(" + requestID + "Request);");<a name="line.936"></a>
+<span class="sourceLineNo">937</span>      lineList.add(indent + "  // The bind was processed successfully.");<a name="line.937"></a>
+<span class="sourceLineNo">938</span>      lineList.add(indent + '}');<a name="line.938"></a>
+<span class="sourceLineNo">939</span>      lineList.add(indent + "catch (LDAPException e)");<a name="line.939"></a>
+<span class="sourceLineNo">940</span>      lineList.add(indent + '{');<a name="line.940"></a>
+<span class="sourceLineNo">941</span>      lineList.add(indent + "  // The bind failed.  Maybe the following will " +<a name="line.941"></a>
+<span class="sourceLineNo">942</span>           "help explain why.");<a name="line.942"></a>
+<span class="sourceLineNo">943</span>      lineList.add(indent + "  // Note that the connection is now likely in " +<a name="line.943"></a>
+<span class="sourceLineNo">944</span>           "an unauthenticated state.");<a name="line.944"></a>
+<span class="sourceLineNo">945</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.945"></a>
+<span class="sourceLineNo">946</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.946"></a>
+<span class="sourceLineNo">947</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.947"></a>
+<span class="sourceLineNo">948</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.948"></a>
+<span class="sourceLineNo">949</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.949"></a>
+<span class="sourceLineNo">950</span>           "e.getResponseControls();");<a name="line.950"></a>
+<span class="sourceLineNo">951</span>      lineList.add(indent + '}');<a name="line.951"></a>
+<span class="sourceLineNo">952</span>    }<a name="line.952"></a>
+<span class="sourceLineNo">953</span>  }<a name="line.953"></a>
+<span class="sourceLineNo">954</span>}<a name="line.954"></a>
 
 
 

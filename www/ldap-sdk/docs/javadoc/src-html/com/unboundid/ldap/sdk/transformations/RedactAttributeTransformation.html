@@ -178,7 +178,7 @@
 <span class="sourceLineNo">170</span><a name="line.170"></a>
 <span class="sourceLineNo">171</span>    // Identify all of the names that may be used to reference the attributes<a name="line.171"></a>
 <span class="sourceLineNo">172</span>    // to redact.<a name="line.172"></a>
-<span class="sourceLineNo">173</span>    final HashSet&lt;String&gt; attrNames = new HashSet&lt;String&gt;(3*attributes.size());<a name="line.173"></a>
+<span class="sourceLineNo">173</span>    final HashSet&lt;String&gt; attrNames = new HashSet&lt;&gt;(3*attributes.size());<a name="line.173"></a>
 <span class="sourceLineNo">174</span>    for (final String attrName : attributes)<a name="line.174"></a>
 <span class="sourceLineNo">175</span>    {<a name="line.175"></a>
 <span class="sourceLineNo">176</span>      final String baseName =<a name="line.176"></a>
@@ -231,7 +231,7 @@
 <span class="sourceLineNo">223</span>    // Create a copy of the entry with all appropriate attributes redacted.<a name="line.223"></a>
 <span class="sourceLineNo">224</span>    final Collection&lt;Attribute&gt; originalAttributes = e.getAttributes();<a name="line.224"></a>
 <span class="sourceLineNo">225</span>    final ArrayList&lt;Attribute&gt; newAttributes =<a name="line.225"></a>
-<span class="sourceLineNo">226</span>         new ArrayList&lt;Attribute&gt;(originalAttributes.size());<a name="line.226"></a>
+<span class="sourceLineNo">226</span>         new ArrayList&lt;&gt;(originalAttributes.size());<a name="line.226"></a>
 <span class="sourceLineNo">227</span>    for (final Attribute a : originalAttributes)<a name="line.227"></a>
 <span class="sourceLineNo">228</span>    {<a name="line.228"></a>
 <span class="sourceLineNo">229</span>      final String baseName = StaticUtils.toLowerCase(a.getBaseName());<a name="line.229"></a>

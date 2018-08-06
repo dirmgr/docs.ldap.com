@@ -64,11 +64,11 @@
 <span class="sourceLineNo">056</span> * &lt;BLOCKQUOTE&gt;<a name="line.56"></a>
 <span class="sourceLineNo">057</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.57"></a>
 <span class="sourceLineNo">058</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.59"></a>
-<span class="sourceLineNo">060</span> *   server products.  These classes provide support for proprietary<a name="line.60"></a>
-<span class="sourceLineNo">061</span> *   functionality or for external specifications that are not considered stable<a name="line.61"></a>
-<span class="sourceLineNo">062</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.62"></a>
-<span class="sourceLineNo">063</span> *   other types of LDAP servers.<a name="line.63"></a>
+<span class="sourceLineNo">059</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.59"></a>
+<span class="sourceLineNo">060</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.60"></a>
+<span class="sourceLineNo">061</span> *   for proprietary functionality or for external specifications that are not<a name="line.61"></a>
+<span class="sourceLineNo">062</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.62"></a>
+<span class="sourceLineNo">063</span> *   interoperable way with other types of LDAP servers.<a name="line.63"></a>
 <span class="sourceLineNo">064</span> * &lt;/BLOCKQUOTE&gt;<a name="line.64"></a>
 <span class="sourceLineNo">065</span> * &lt;BR&gt;<a name="line.65"></a>
 <span class="sourceLineNo">066</span> * The criticality for this control should always be {@code TRUE}.  The<a name="line.66"></a>
@@ -293,7 +293,7 @@
 <span class="sourceLineNo">285</span>                                final Boolean mustChangePassword,<a name="line.285"></a>
 <span class="sourceLineNo">286</span>                                final Boolean disableAccount)<a name="line.286"></a>
 <span class="sourceLineNo">287</span>  {<a name="line.287"></a>
-<span class="sourceLineNo">288</span>    final ArrayList&lt;Attribute&gt; attributes = new ArrayList&lt;Attribute&gt;(6);<a name="line.288"></a>
+<span class="sourceLineNo">288</span>    final ArrayList&lt;Attribute&gt; attributes = new ArrayList&lt;&gt;(6);<a name="line.288"></a>
 <span class="sourceLineNo">289</span>    attributes.add(new Attribute(ATTR_SOFT_DELETED_ENTRY_DN,<a name="line.289"></a>
 <span class="sourceLineNo">290</span>         softDeletedEntryDN));<a name="line.290"></a>
 <span class="sourceLineNo">291</span><a name="line.291"></a>

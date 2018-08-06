@@ -50,11 +50,11 @@
 <span class="sourceLineNo">042</span> * &lt;BLOCKQUOTE&gt;<a name="line.42"></a>
 <span class="sourceLineNo">043</span> *   &lt;B&gt;NOTE:&lt;/B&gt;  This class, and other classes within the<a name="line.43"></a>
 <span class="sourceLineNo">044</span> *   {@code com.unboundid.ldap.sdk.unboundidds} package structure, are only<a name="line.44"></a>
-<span class="sourceLineNo">045</span> *   supported for use against Ping Identity, UnboundID, and Alcatel-Lucent 8661<a name="line.45"></a>
-<span class="sourceLineNo">046</span> *   server products.  These classes provide support for proprietary<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *   functionality or for external specifications that are not considered stable<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *   or mature enough to be guaranteed to work in an interoperable way with<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *   other types of LDAP servers.<a name="line.49"></a>
+<span class="sourceLineNo">045</span> *   supported for use against Ping Identity, UnboundID, and<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *   Nokia/Alcatel-Lucent 8661 server products.  These classes provide support<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *   for proprietary functionality or for external specifications that are not<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *   considered stable or mature enough to be guaranteed to work in an<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *   interoperable way with other types of LDAP servers.<a name="line.49"></a>
 <span class="sourceLineNo">050</span> * &lt;/BLOCKQUOTE&gt;<a name="line.50"></a>
 <span class="sourceLineNo">051</span> */<a name="line.51"></a>
 <span class="sourceLineNo">052</span>@NotMutable()<a name="line.52"></a>
@@ -185,13 +185,13 @@
 <span class="sourceLineNo">177</span>    }<a name="line.177"></a>
 <span class="sourceLineNo">178</span><a name="line.178"></a>
 <span class="sourceLineNo">179</span>    final String refStr = getNamedValue("referralURLs");<a name="line.179"></a>
-<span class="sourceLineNo">180</span>    if ((refStr == null) || (refStr.length() == 0))<a name="line.180"></a>
+<span class="sourceLineNo">180</span>    if ((refStr == null) || refStr.isEmpty())<a name="line.180"></a>
 <span class="sourceLineNo">181</span>    {<a name="line.181"></a>
 <span class="sourceLineNo">182</span>      referralURLs = Collections.emptyList();<a name="line.182"></a>
 <span class="sourceLineNo">183</span>    }<a name="line.183"></a>
 <span class="sourceLineNo">184</span>    else<a name="line.184"></a>
 <span class="sourceLineNo">185</span>    {<a name="line.185"></a>
-<span class="sourceLineNo">186</span>      final LinkedList&lt;String&gt; refs = new LinkedList&lt;String&gt;();<a name="line.186"></a>
+<span class="sourceLineNo">186</span>      final LinkedList&lt;String&gt; refs = new LinkedList&lt;&gt;();<a name="line.186"></a>
 <span class="sourceLineNo">187</span>      int startPos = 0;<a name="line.187"></a>
 <span class="sourceLineNo">188</span>      while (true)<a name="line.188"></a>
 <span class="sourceLineNo">189</span>      {<a name="line.189"></a>
@@ -217,7 +217,7 @@
 <span class="sourceLineNo">209</span>    }<a name="line.209"></a>
 <span class="sourceLineNo">210</span>    else<a name="line.210"></a>
 <span class="sourceLineNo">211</span>    {<a name="line.211"></a>
-<span class="sourceLineNo">212</span>      final LinkedList&lt;String&gt; controlList = new LinkedList&lt;String&gt;();<a name="line.212"></a>
+<span class="sourceLineNo">212</span>      final LinkedList&lt;String&gt; controlList = new LinkedList&lt;&gt;();<a name="line.212"></a>
 <span class="sourceLineNo">213</span>      final StringTokenizer t = new StringTokenizer(controlStr, ",");<a name="line.213"></a>
 <span class="sourceLineNo">214</span>      while (t.hasMoreTokens())<a name="line.214"></a>
 <span class="sourceLineNo">215</span>      {<a name="line.215"></a>
@@ -227,13 +227,13 @@
 <span class="sourceLineNo">219</span>    }<a name="line.219"></a>
 <span class="sourceLineNo">220</span><a name="line.220"></a>
 <span class="sourceLineNo">221</span>    final String serversAccessedStr = getNamedValue("serversAccessed");<a name="line.221"></a>
-<span class="sourceLineNo">222</span>    if ((serversAccessedStr == null) || (serversAccessedStr.length() == 0))<a name="line.222"></a>
+<span class="sourceLineNo">222</span>    if ((serversAccessedStr == null) || serversAccessedStr.isEmpty())<a name="line.222"></a>
 <span class="sourceLineNo">223</span>    {<a name="line.223"></a>
 <span class="sourceLineNo">224</span>      serversAccessed = Collections.emptyList();<a name="line.224"></a>
 <span class="sourceLineNo">225</span>    }<a name="line.225"></a>
 <span class="sourceLineNo">226</span>    else<a name="line.226"></a>
 <span class="sourceLineNo">227</span>    {<a name="line.227"></a>
-<span class="sourceLineNo">228</span>      final LinkedList&lt;String&gt; servers = new LinkedList&lt;String&gt;();<a name="line.228"></a>
+<span class="sourceLineNo">228</span>      final LinkedList&lt;String&gt; servers = new LinkedList&lt;&gt;();<a name="line.228"></a>
 <span class="sourceLineNo">229</span>      final StringTokenizer tokenizer =<a name="line.229"></a>
 <span class="sourceLineNo">230</span>           new StringTokenizer(serversAccessedStr, ",");<a name="line.230"></a>
 <span class="sourceLineNo">231</span>      while (tokenizer.hasMoreTokens())<a name="line.231"></a>
@@ -246,13 +246,13 @@
 <span class="sourceLineNo">238</span>    uncachedDataAccessed = getNamedValueAsBoolean("uncachedDataAccessed");<a name="line.238"></a>
 <span class="sourceLineNo">239</span><a name="line.239"></a>
 <span class="sourceLineNo">240</span>    final String usedPrivilegesStr = getNamedValue("usedPrivileges");<a name="line.240"></a>
-<span class="sourceLineNo">241</span>    if ((usedPrivilegesStr == null) || (usedPrivilegesStr.length() == 0))<a name="line.241"></a>
+<span class="sourceLineNo">241</span>    if ((usedPrivilegesStr == null) || usedPrivilegesStr.isEmpty())<a name="line.241"></a>
 <span class="sourceLineNo">242</span>    {<a name="line.242"></a>
 <span class="sourceLineNo">243</span>      usedPrivileges = Collections.emptyList();<a name="line.243"></a>
 <span class="sourceLineNo">244</span>    }<a name="line.244"></a>
 <span class="sourceLineNo">245</span>    else<a name="line.245"></a>
 <span class="sourceLineNo">246</span>    {<a name="line.246"></a>
-<span class="sourceLineNo">247</span>      final LinkedList&lt;String&gt; privileges = new LinkedList&lt;String&gt;();<a name="line.247"></a>
+<span class="sourceLineNo">247</span>      final LinkedList&lt;String&gt; privileges = new LinkedList&lt;&gt;();<a name="line.247"></a>
 <span class="sourceLineNo">248</span>      final StringTokenizer tokenizer =<a name="line.248"></a>
 <span class="sourceLineNo">249</span>           new StringTokenizer(usedPrivilegesStr, ",");<a name="line.249"></a>
 <span class="sourceLineNo">250</span>      while (tokenizer.hasMoreTokens())<a name="line.250"></a>
@@ -265,13 +265,13 @@
 <span class="sourceLineNo">257</span>    final String preAuthZUsedPrivilegesStr =<a name="line.257"></a>
 <span class="sourceLineNo">258</span>         getNamedValue("preAuthZUsedPrivileges");<a name="line.258"></a>
 <span class="sourceLineNo">259</span>    if ((preAuthZUsedPrivilegesStr == null) ||<a name="line.259"></a>
-<span class="sourceLineNo">260</span>        (preAuthZUsedPrivilegesStr.length() == 0))<a name="line.260"></a>
+<span class="sourceLineNo">260</span>        preAuthZUsedPrivilegesStr.isEmpty())<a name="line.260"></a>
 <span class="sourceLineNo">261</span>    {<a name="line.261"></a>
 <span class="sourceLineNo">262</span>      preAuthZUsedPrivileges = Collections.emptyList();<a name="line.262"></a>
 <span class="sourceLineNo">263</span>    }<a name="line.263"></a>
 <span class="sourceLineNo">264</span>    else<a name="line.264"></a>
 <span class="sourceLineNo">265</span>    {<a name="line.265"></a>
-<span class="sourceLineNo">266</span>      final LinkedList&lt;String&gt; privileges = new LinkedList&lt;String&gt;();<a name="line.266"></a>
+<span class="sourceLineNo">266</span>      final LinkedList&lt;String&gt; privileges = new LinkedList&lt;&gt;();<a name="line.266"></a>
 <span class="sourceLineNo">267</span>      final StringTokenizer tokenizer =<a name="line.267"></a>
 <span class="sourceLineNo">268</span>           new StringTokenizer(preAuthZUsedPrivilegesStr, ",");<a name="line.268"></a>
 <span class="sourceLineNo">269</span>      while (tokenizer.hasMoreTokens())<a name="line.269"></a>
@@ -282,13 +282,13 @@
 <span class="sourceLineNo">274</span>    }<a name="line.274"></a>
 <span class="sourceLineNo">275</span><a name="line.275"></a>
 <span class="sourceLineNo">276</span>    final String missingPrivilegesStr = getNamedValue("missingPrivileges");<a name="line.276"></a>
-<span class="sourceLineNo">277</span>    if ((missingPrivilegesStr == null) || (missingPrivilegesStr.length() == 0))<a name="line.277"></a>
+<span class="sourceLineNo">277</span>    if ((missingPrivilegesStr == null) || missingPrivilegesStr.isEmpty())<a name="line.277"></a>
 <span class="sourceLineNo">278</span>    {<a name="line.278"></a>
 <span class="sourceLineNo">279</span>      missingPrivileges = Collections.emptyList();<a name="line.279"></a>
 <span class="sourceLineNo">280</span>    }<a name="line.280"></a>
 <span class="sourceLineNo">281</span>    else<a name="line.281"></a>
 <span class="sourceLineNo">282</span>    {<a name="line.282"></a>
-<span class="sourceLineNo">283</span>      final LinkedList&lt;String&gt; privileges = new LinkedList&lt;String&gt;();<a name="line.283"></a>
+<span class="sourceLineNo">283</span>      final LinkedList&lt;String&gt; privileges = new LinkedList&lt;&gt;();<a name="line.283"></a>
 <span class="sourceLineNo">284</span>      final StringTokenizer tokenizer =<a name="line.284"></a>
 <span class="sourceLineNo">285</span>           new StringTokenizer(missingPrivilegesStr, ",");<a name="line.285"></a>
 <span class="sourceLineNo">286</span>      while (tokenizer.hasMoreTokens())<a name="line.286"></a>
@@ -307,285 +307,296 @@
 <span class="sourceLineNo">299</span>   * @return  The result code for the operation, or {@code null} if it is not<a name="line.299"></a>
 <span class="sourceLineNo">300</span>   *          included in the log message.<a name="line.300"></a>
 <span class="sourceLineNo">301</span>   */<a name="line.301"></a>
-<span class="sourceLineNo">302</span>  public ResultCode getResultCode()<a name="line.302"></a>
-<span class="sourceLineNo">303</span>  {<a name="line.303"></a>
-<span class="sourceLineNo">304</span>    return resultCode;<a name="line.304"></a>
-<span class="sourceLineNo">305</span>  }<a name="line.305"></a>
-<span class="sourceLineNo">306</span><a name="line.306"></a>
+<span class="sourceLineNo">302</span>  @Override()<a name="line.302"></a>
+<span class="sourceLineNo">303</span>  public ResultCode getResultCode()<a name="line.303"></a>
+<span class="sourceLineNo">304</span>  {<a name="line.304"></a>
+<span class="sourceLineNo">305</span>    return resultCode;<a name="line.305"></a>
+<span class="sourceLineNo">306</span>  }<a name="line.306"></a>
 <span class="sourceLineNo">307</span><a name="line.307"></a>
 <span class="sourceLineNo">308</span><a name="line.308"></a>
-<span class="sourceLineNo">309</span>  /**<a name="line.309"></a>
-<span class="sourceLineNo">310</span>   * Retrieves the diagnostic message for the operation.<a name="line.310"></a>
-<span class="sourceLineNo">311</span>   *<a name="line.311"></a>
-<span class="sourceLineNo">312</span>   * @return  The diagnostic message for the operation, or {@code null} if it is<a name="line.312"></a>
-<span class="sourceLineNo">313</span>   *          not included in the log message.<a name="line.313"></a>
-<span class="sourceLineNo">314</span>   */<a name="line.314"></a>
-<span class="sourceLineNo">315</span>  public String getDiagnosticMessage()<a name="line.315"></a>
-<span class="sourceLineNo">316</span>  {<a name="line.316"></a>
-<span class="sourceLineNo">317</span>    return diagnosticMessage;<a name="line.317"></a>
-<span class="sourceLineNo">318</span>  }<a name="line.318"></a>
-<span class="sourceLineNo">319</span><a name="line.319"></a>
-<span class="sourceLineNo">320</span><a name="line.320"></a>
+<span class="sourceLineNo">309</span><a name="line.309"></a>
+<span class="sourceLineNo">310</span>  /**<a name="line.310"></a>
+<span class="sourceLineNo">311</span>   * Retrieves the diagnostic message for the operation.<a name="line.311"></a>
+<span class="sourceLineNo">312</span>   *<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   * @return  The diagnostic message for the operation, or {@code null} if it is<a name="line.313"></a>
+<span class="sourceLineNo">314</span>   *          not included in the log message.<a name="line.314"></a>
+<span class="sourceLineNo">315</span>   */<a name="line.315"></a>
+<span class="sourceLineNo">316</span>  @Override()<a name="line.316"></a>
+<span class="sourceLineNo">317</span>  public String getDiagnosticMessage()<a name="line.317"></a>
+<span class="sourceLineNo">318</span>  {<a name="line.318"></a>
+<span class="sourceLineNo">319</span>    return diagnosticMessage;<a name="line.319"></a>
+<span class="sourceLineNo">320</span>  }<a name="line.320"></a>
 <span class="sourceLineNo">321</span><a name="line.321"></a>
-<span class="sourceLineNo">322</span>  /**<a name="line.322"></a>
-<span class="sourceLineNo">323</span>   * Retrieves a message with additional information about the result of the<a name="line.323"></a>
-<span class="sourceLineNo">324</span>   * operation.<a name="line.324"></a>
-<span class="sourceLineNo">325</span>   *<a name="line.325"></a>
-<span class="sourceLineNo">326</span>   * @return  A message with additional information about the result of the<a name="line.326"></a>
-<span class="sourceLineNo">327</span>   *          operation, or {@code null} if it is not included in the log<a name="line.327"></a>
-<span class="sourceLineNo">328</span>   *          message.<a name="line.328"></a>
-<span class="sourceLineNo">329</span>   */<a name="line.329"></a>
-<span class="sourceLineNo">330</span>  public String getAdditionalInformation()<a name="line.330"></a>
-<span class="sourceLineNo">331</span>  {<a name="line.331"></a>
-<span class="sourceLineNo">332</span>    return additionalInformation;<a name="line.332"></a>
-<span class="sourceLineNo">333</span>  }<a name="line.333"></a>
-<span class="sourceLineNo">334</span><a name="line.334"></a>
-<span class="sourceLineNo">335</span><a name="line.335"></a>
-<span class="sourceLineNo">336</span><a name="line.336"></a>
-<span class="sourceLineNo">337</span>  /**<a name="line.337"></a>
-<span class="sourceLineNo">338</span>   * Retrieves the matched DN for the operation.<a name="line.338"></a>
-<span class="sourceLineNo">339</span>   *<a name="line.339"></a>
-<span class="sourceLineNo">340</span>   * @return  The matched DN for the operation, or {@code null} if it is not<a name="line.340"></a>
-<span class="sourceLineNo">341</span>   *          included in the log message.<a name="line.341"></a>
-<span class="sourceLineNo">342</span>   */<a name="line.342"></a>
-<span class="sourceLineNo">343</span>  public String getMatchedDN()<a name="line.343"></a>
-<span class="sourceLineNo">344</span>  {<a name="line.344"></a>
-<span class="sourceLineNo">345</span>    return matchedDN;<a name="line.345"></a>
-<span class="sourceLineNo">346</span>  }<a name="line.346"></a>
-<span class="sourceLineNo">347</span><a name="line.347"></a>
-<span class="sourceLineNo">348</span><a name="line.348"></a>
-<span class="sourceLineNo">349</span><a name="line.349"></a>
-<span class="sourceLineNo">350</span>  /**<a name="line.350"></a>
-<span class="sourceLineNo">351</span>   * Retrieves the list of referral URLs for the operation.<a name="line.351"></a>
-<span class="sourceLineNo">352</span>   *<a name="line.352"></a>
-<span class="sourceLineNo">353</span>   * @return  The list of referral URLs for the operation, or an empty list if<a name="line.353"></a>
-<span class="sourceLineNo">354</span>   *          it is not included in the log message.<a name="line.354"></a>
-<span class="sourceLineNo">355</span>   */<a name="line.355"></a>
-<span class="sourceLineNo">356</span>  public List&lt;String&gt; getReferralURLs()<a name="line.356"></a>
-<span class="sourceLineNo">357</span>  {<a name="line.357"></a>
-<span class="sourceLineNo">358</span>    return referralURLs;<a name="line.358"></a>
-<span class="sourceLineNo">359</span>  }<a name="line.359"></a>
-<span class="sourceLineNo">360</span><a name="line.360"></a>
-<span class="sourceLineNo">361</span><a name="line.361"></a>
-<span class="sourceLineNo">362</span><a name="line.362"></a>
-<span class="sourceLineNo">363</span>  /**<a name="line.363"></a>
-<span class="sourceLineNo">364</span>   * Retrieves the number of intermediate response messages returned in the<a name="line.364"></a>
-<span class="sourceLineNo">365</span>   * course of processing the operation.<a name="line.365"></a>
-<span class="sourceLineNo">366</span>   *<a name="line.366"></a>
-<span class="sourceLineNo">367</span>   * @return  The number of intermediate response messages returned to the<a name="line.367"></a>
-<span class="sourceLineNo">368</span>   *          client in the course of processing the operation, or {@code null}<a name="line.368"></a>
-<span class="sourceLineNo">369</span>   *          if it is not included in the log message.<a name="line.369"></a>
-<span class="sourceLineNo">370</span>   */<a name="line.370"></a>
-<span class="sourceLineNo">371</span>  public Long getIntermediateResponsesReturned()<a name="line.371"></a>
-<span class="sourceLineNo">372</span>  {<a name="line.372"></a>
-<span class="sourceLineNo">373</span>    return intermediateResponsesReturned;<a name="line.373"></a>
-<span class="sourceLineNo">374</span>  }<a name="line.374"></a>
-<span class="sourceLineNo">375</span><a name="line.375"></a>
-<span class="sourceLineNo">376</span><a name="line.376"></a>
-<span class="sourceLineNo">377</span><a name="line.377"></a>
-<span class="sourceLineNo">378</span>  /**<a name="line.378"></a>
-<span class="sourceLineNo">379</span>   * Retrieves the length of time in milliseconds required to process the<a name="line.379"></a>
-<span class="sourceLineNo">380</span>   * operation.<a name="line.380"></a>
-<span class="sourceLineNo">381</span>   *<a name="line.381"></a>
-<span class="sourceLineNo">382</span>   * @return  The length of time in milliseconds required to process the<a name="line.382"></a>
-<span class="sourceLineNo">383</span>   *          operation, or {@code null} if it is not included in the log<a name="line.383"></a>
-<span class="sourceLineNo">384</span>   *          message.<a name="line.384"></a>
-<span class="sourceLineNo">385</span>   */<a name="line.385"></a>
-<span class="sourceLineNo">386</span>  public Double getProcessingTimeMillis()<a name="line.386"></a>
-<span class="sourceLineNo">387</span>  {<a name="line.387"></a>
-<span class="sourceLineNo">388</span>    return processingTime;<a name="line.388"></a>
-<span class="sourceLineNo">389</span>  }<a name="line.389"></a>
-<span class="sourceLineNo">390</span><a name="line.390"></a>
-<span class="sourceLineNo">391</span><a name="line.391"></a>
-<span class="sourceLineNo">392</span><a name="line.392"></a>
-<span class="sourceLineNo">393</span>  /**<a name="line.393"></a>
-<span class="sourceLineNo">394</span>   * Retrieves the length of time in milliseconds the operation was required to<a name="line.394"></a>
-<span class="sourceLineNo">395</span>   * wait on the work queue.<a name="line.395"></a>
-<span class="sourceLineNo">396</span>   *<a name="line.396"></a>
-<span class="sourceLineNo">397</span>   * @return  The length of time in milliseconds the operation was required to<a name="line.397"></a>
-<span class="sourceLineNo">398</span>   *          wait on the work queue, or {@code null} if it is not included in<a name="line.398"></a>
-<span class="sourceLineNo">399</span>   *          the log message.<a name="line.399"></a>
-<span class="sourceLineNo">400</span>   */<a name="line.400"></a>
-<span class="sourceLineNo">401</span>  public Double getQueueTimeMillis()<a name="line.401"></a>
-<span class="sourceLineNo">402</span>  {<a name="line.402"></a>
-<span class="sourceLineNo">403</span>    return queueTime;<a name="line.403"></a>
-<span class="sourceLineNo">404</span>  }<a name="line.404"></a>
-<span class="sourceLineNo">405</span><a name="line.405"></a>
-<span class="sourceLineNo">406</span><a name="line.406"></a>
-<span class="sourceLineNo">407</span><a name="line.407"></a>
-<span class="sourceLineNo">408</span>  /**<a name="line.408"></a>
-<span class="sourceLineNo">409</span>   * Retrieves the OIDs of any response controls contained in the log message.<a name="line.409"></a>
-<span class="sourceLineNo">410</span>   *<a name="line.410"></a>
-<span class="sourceLineNo">411</span>   * @return  The OIDs of any response controls contained in the log message, or<a name="line.411"></a>
-<span class="sourceLineNo">412</span>   *          an empty list if it is not included in the log message.<a name="line.412"></a>
-<span class="sourceLineNo">413</span>   */<a name="line.413"></a>
-<span class="sourceLineNo">414</span>  public List&lt;String&gt; getResponseControlOIDs()<a name="line.414"></a>
-<span class="sourceLineNo">415</span>  {<a name="line.415"></a>
-<span class="sourceLineNo">416</span>    return responseControlOIDs;<a name="line.416"></a>
-<span class="sourceLineNo">417</span>  }<a name="line.417"></a>
-<span class="sourceLineNo">418</span><a name="line.418"></a>
-<span class="sourceLineNo">419</span><a name="line.419"></a>
-<span class="sourceLineNo">420</span><a name="line.420"></a>
-<span class="sourceLineNo">421</span>  /**<a name="line.421"></a>
-<span class="sourceLineNo">422</span>   * Retrieves a list of the additional servers that were accessed in the course<a name="line.422"></a>
-<span class="sourceLineNo">423</span>   * of processing the operation.  For example, if the access log message is<a name="line.423"></a>
-<span class="sourceLineNo">424</span>   * from a Directory Proxy Server instance, then this may contain a list of the<a name="line.424"></a>
-<span class="sourceLineNo">425</span>   * backend servers used to process the operation.<a name="line.425"></a>
-<span class="sourceLineNo">426</span>   *<a name="line.426"></a>
-<span class="sourceLineNo">427</span>   * @return  A list of the additional servers that were accessed in the course<a name="line.427"></a>
-<span class="sourceLineNo">428</span>   *          of processing the operation, or an empty list if it is not<a name="line.428"></a>
-<span class="sourceLineNo">429</span>   *          included in the log message.<a name="line.429"></a>
-<span class="sourceLineNo">430</span>   */<a name="line.430"></a>
-<span class="sourceLineNo">431</span>  public List&lt;String&gt; getServersAccessed()<a name="line.431"></a>
-<span class="sourceLineNo">432</span>  {<a name="line.432"></a>
-<span class="sourceLineNo">433</span>    return serversAccessed;<a name="line.433"></a>
-<span class="sourceLineNo">434</span>  }<a name="line.434"></a>
-<span class="sourceLineNo">435</span><a name="line.435"></a>
-<span class="sourceLineNo">436</span><a name="line.436"></a>
-<span class="sourceLineNo">437</span><a name="line.437"></a>
-<span class="sourceLineNo">438</span>  /**<a name="line.438"></a>
-<span class="sourceLineNo">439</span>   * Indicates whether the server accessed any uncached data in the course of<a name="line.439"></a>
-<span class="sourceLineNo">440</span>   * processing the operation.<a name="line.440"></a>
-<span class="sourceLineNo">441</span>   *<a name="line.441"></a>
-<span class="sourceLineNo">442</span>   * @return  {@code true} if the server was known to access uncached data in<a name="line.442"></a>
-<span class="sourceLineNo">443</span>   *          the course of processing the operation, {@code false} if the<a name="line.443"></a>
-<span class="sourceLineNo">444</span>   *          server was known not to access uncached data, or {@code null} if<a name="line.444"></a>
-<span class="sourceLineNo">445</span>   *          it is not included in the log message (and the server likely did<a name="line.445"></a>
-<span class="sourceLineNo">446</span>   *          not access uncached data).<a name="line.446"></a>
-<span class="sourceLineNo">447</span>   */<a name="line.447"></a>
-<span class="sourceLineNo">448</span>  public Boolean getUncachedDataAccessed()<a name="line.448"></a>
-<span class="sourceLineNo">449</span>  {<a name="line.449"></a>
-<span class="sourceLineNo">450</span>    return uncachedDataAccessed;<a name="line.450"></a>
-<span class="sourceLineNo">451</span>  }<a name="line.451"></a>
-<span class="sourceLineNo">452</span><a name="line.452"></a>
-<span class="sourceLineNo">453</span><a name="line.453"></a>
-<span class="sourceLineNo">454</span><a name="line.454"></a>
-<span class="sourceLineNo">455</span>  /**<a name="line.455"></a>
-<span class="sourceLineNo">456</span>   * Retrieves the content of the intermediate client result for the<a name="line.456"></a>
-<span class="sourceLineNo">457</span>   * operation.<a name="line.457"></a>
-<span class="sourceLineNo">458</span>   *<a name="line.458"></a>
-<span class="sourceLineNo">459</span>   * @return  The content of the intermediate client result for the operation,<a name="line.459"></a>
-<span class="sourceLineNo">460</span>   *          or {@code null} if it is not included in the log message.<a name="line.460"></a>
-<span class="sourceLineNo">461</span>   */<a name="line.461"></a>
-<span class="sourceLineNo">462</span>  public String getIntermediateClientResult()<a name="line.462"></a>
-<span class="sourceLineNo">463</span>  {<a name="line.463"></a>
-<span class="sourceLineNo">464</span>    return intermediateClientResult;<a name="line.464"></a>
-<span class="sourceLineNo">465</span>  }<a name="line.465"></a>
-<span class="sourceLineNo">466</span><a name="line.466"></a>
-<span class="sourceLineNo">467</span><a name="line.467"></a>
-<span class="sourceLineNo">468</span><a name="line.468"></a>
-<span class="sourceLineNo">469</span>  /**<a name="line.469"></a>
-<span class="sourceLineNo">470</span>   * Retrieves the alternate authorization DN for the operation.<a name="line.470"></a>
-<span class="sourceLineNo">471</span>   *<a name="line.471"></a>
-<span class="sourceLineNo">472</span>   * @return  The alternate authorization DN for the operation, or {@code null}<a name="line.472"></a>
-<span class="sourceLineNo">473</span>   *          if it is not included in the log message.<a name="line.473"></a>
-<span class="sourceLineNo">474</span>   */<a name="line.474"></a>
-<span class="sourceLineNo">475</span>  public String getAlternateAuthorizationDN()<a name="line.475"></a>
-<span class="sourceLineNo">476</span>  {<a name="line.476"></a>
-<span class="sourceLineNo">477</span>    return authzDN;<a name="line.477"></a>
-<span class="sourceLineNo">478</span>  }<a name="line.478"></a>
+<span class="sourceLineNo">322</span><a name="line.322"></a>
+<span class="sourceLineNo">323</span><a name="line.323"></a>
+<span class="sourceLineNo">324</span>  /**<a name="line.324"></a>
+<span class="sourceLineNo">325</span>   * Retrieves a message with additional information about the result of the<a name="line.325"></a>
+<span class="sourceLineNo">326</span>   * operation.<a name="line.326"></a>
+<span class="sourceLineNo">327</span>   *<a name="line.327"></a>
+<span class="sourceLineNo">328</span>   * @return  A message with additional information about the result of the<a name="line.328"></a>
+<span class="sourceLineNo">329</span>   *          operation, or {@code null} if it is not included in the log<a name="line.329"></a>
+<span class="sourceLineNo">330</span>   *          message.<a name="line.330"></a>
+<span class="sourceLineNo">331</span>   */<a name="line.331"></a>
+<span class="sourceLineNo">332</span>  @Override()<a name="line.332"></a>
+<span class="sourceLineNo">333</span>  public String getAdditionalInformation()<a name="line.333"></a>
+<span class="sourceLineNo">334</span>  {<a name="line.334"></a>
+<span class="sourceLineNo">335</span>    return additionalInformation;<a name="line.335"></a>
+<span class="sourceLineNo">336</span>  }<a name="line.336"></a>
+<span class="sourceLineNo">337</span><a name="line.337"></a>
+<span class="sourceLineNo">338</span><a name="line.338"></a>
+<span class="sourceLineNo">339</span><a name="line.339"></a>
+<span class="sourceLineNo">340</span>  /**<a name="line.340"></a>
+<span class="sourceLineNo">341</span>   * Retrieves the matched DN for the operation.<a name="line.341"></a>
+<span class="sourceLineNo">342</span>   *<a name="line.342"></a>
+<span class="sourceLineNo">343</span>   * @return  The matched DN for the operation, or {@code null} if it is not<a name="line.343"></a>
+<span class="sourceLineNo">344</span>   *          included in the log message.<a name="line.344"></a>
+<span class="sourceLineNo">345</span>   */<a name="line.345"></a>
+<span class="sourceLineNo">346</span>  @Override()<a name="line.346"></a>
+<span class="sourceLineNo">347</span>  public String getMatchedDN()<a name="line.347"></a>
+<span class="sourceLineNo">348</span>  {<a name="line.348"></a>
+<span class="sourceLineNo">349</span>    return matchedDN;<a name="line.349"></a>
+<span class="sourceLineNo">350</span>  }<a name="line.350"></a>
+<span class="sourceLineNo">351</span><a name="line.351"></a>
+<span class="sourceLineNo">352</span><a name="line.352"></a>
+<span class="sourceLineNo">353</span><a name="line.353"></a>
+<span class="sourceLineNo">354</span>  /**<a name="line.354"></a>
+<span class="sourceLineNo">355</span>   * Retrieves the list of referral URLs for the operation.<a name="line.355"></a>
+<span class="sourceLineNo">356</span>   *<a name="line.356"></a>
+<span class="sourceLineNo">357</span>   * @return  The list of referral URLs for the operation, or an empty list if<a name="line.357"></a>
+<span class="sourceLineNo">358</span>   *          it is not included in the log message.<a name="line.358"></a>
+<span class="sourceLineNo">359</span>   */<a name="line.359"></a>
+<span class="sourceLineNo">360</span>  @Override()<a name="line.360"></a>
+<span class="sourceLineNo">361</span>  public List&lt;String&gt; getReferralURLs()<a name="line.361"></a>
+<span class="sourceLineNo">362</span>  {<a name="line.362"></a>
+<span class="sourceLineNo">363</span>    return referralURLs;<a name="line.363"></a>
+<span class="sourceLineNo">364</span>  }<a name="line.364"></a>
+<span class="sourceLineNo">365</span><a name="line.365"></a>
+<span class="sourceLineNo">366</span><a name="line.366"></a>
+<span class="sourceLineNo">367</span><a name="line.367"></a>
+<span class="sourceLineNo">368</span>  /**<a name="line.368"></a>
+<span class="sourceLineNo">369</span>   * Retrieves the number of intermediate response messages returned in the<a name="line.369"></a>
+<span class="sourceLineNo">370</span>   * course of processing the operation.<a name="line.370"></a>
+<span class="sourceLineNo">371</span>   *<a name="line.371"></a>
+<span class="sourceLineNo">372</span>   * @return  The number of intermediate response messages returned to the<a name="line.372"></a>
+<span class="sourceLineNo">373</span>   *          client in the course of processing the operation, or {@code null}<a name="line.373"></a>
+<span class="sourceLineNo">374</span>   *          if it is not included in the log message.<a name="line.374"></a>
+<span class="sourceLineNo">375</span>   */<a name="line.375"></a>
+<span class="sourceLineNo">376</span>  @Override()<a name="line.376"></a>
+<span class="sourceLineNo">377</span>  public Long getIntermediateResponsesReturned()<a name="line.377"></a>
+<span class="sourceLineNo">378</span>  {<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    return intermediateResponsesReturned;<a name="line.379"></a>
+<span class="sourceLineNo">380</span>  }<a name="line.380"></a>
+<span class="sourceLineNo">381</span><a name="line.381"></a>
+<span class="sourceLineNo">382</span><a name="line.382"></a>
+<span class="sourceLineNo">383</span><a name="line.383"></a>
+<span class="sourceLineNo">384</span>  /**<a name="line.384"></a>
+<span class="sourceLineNo">385</span>   * Retrieves the length of time in milliseconds required to process the<a name="line.385"></a>
+<span class="sourceLineNo">386</span>   * operation.<a name="line.386"></a>
+<span class="sourceLineNo">387</span>   *<a name="line.387"></a>
+<span class="sourceLineNo">388</span>   * @return  The length of time in milliseconds required to process the<a name="line.388"></a>
+<span class="sourceLineNo">389</span>   *          operation, or {@code null} if it is not included in the log<a name="line.389"></a>
+<span class="sourceLineNo">390</span>   *          message.<a name="line.390"></a>
+<span class="sourceLineNo">391</span>   */<a name="line.391"></a>
+<span class="sourceLineNo">392</span>  @Override()<a name="line.392"></a>
+<span class="sourceLineNo">393</span>  public Double getProcessingTimeMillis()<a name="line.393"></a>
+<span class="sourceLineNo">394</span>  {<a name="line.394"></a>
+<span class="sourceLineNo">395</span>    return processingTime;<a name="line.395"></a>
+<span class="sourceLineNo">396</span>  }<a name="line.396"></a>
+<span class="sourceLineNo">397</span><a name="line.397"></a>
+<span class="sourceLineNo">398</span><a name="line.398"></a>
+<span class="sourceLineNo">399</span><a name="line.399"></a>
+<span class="sourceLineNo">400</span>  /**<a name="line.400"></a>
+<span class="sourceLineNo">401</span>   * Retrieves the length of time in milliseconds the operation was required to<a name="line.401"></a>
+<span class="sourceLineNo">402</span>   * wait on the work queue.<a name="line.402"></a>
+<span class="sourceLineNo">403</span>   *<a name="line.403"></a>
+<span class="sourceLineNo">404</span>   * @return  The length of time in milliseconds the operation was required to<a name="line.404"></a>
+<span class="sourceLineNo">405</span>   *          wait on the work queue, or {@code null} if it is not included in<a name="line.405"></a>
+<span class="sourceLineNo">406</span>   *          the log message.<a name="line.406"></a>
+<span class="sourceLineNo">407</span>   */<a name="line.407"></a>
+<span class="sourceLineNo">408</span>  @Override()<a name="line.408"></a>
+<span class="sourceLineNo">409</span>  public Double getQueueTimeMillis()<a name="line.409"></a>
+<span class="sourceLineNo">410</span>  {<a name="line.410"></a>
+<span class="sourceLineNo">411</span>    return queueTime;<a name="line.411"></a>
+<span class="sourceLineNo">412</span>  }<a name="line.412"></a>
+<span class="sourceLineNo">413</span><a name="line.413"></a>
+<span class="sourceLineNo">414</span><a name="line.414"></a>
+<span class="sourceLineNo">415</span><a name="line.415"></a>
+<span class="sourceLineNo">416</span>  /**<a name="line.416"></a>
+<span class="sourceLineNo">417</span>   * Retrieves the OIDs of any response controls contained in the log message.<a name="line.417"></a>
+<span class="sourceLineNo">418</span>   *<a name="line.418"></a>
+<span class="sourceLineNo">419</span>   * @return  The OIDs of any response controls contained in the log message, or<a name="line.419"></a>
+<span class="sourceLineNo">420</span>   *          an empty list if it is not included in the log message.<a name="line.420"></a>
+<span class="sourceLineNo">421</span>   */<a name="line.421"></a>
+<span class="sourceLineNo">422</span>  @Override()<a name="line.422"></a>
+<span class="sourceLineNo">423</span>  public List&lt;String&gt; getResponseControlOIDs()<a name="line.423"></a>
+<span class="sourceLineNo">424</span>  {<a name="line.424"></a>
+<span class="sourceLineNo">425</span>    return responseControlOIDs;<a name="line.425"></a>
+<span class="sourceLineNo">426</span>  }<a name="line.426"></a>
+<span class="sourceLineNo">427</span><a name="line.427"></a>
+<span class="sourceLineNo">428</span><a name="line.428"></a>
+<span class="sourceLineNo">429</span><a name="line.429"></a>
+<span class="sourceLineNo">430</span>  /**<a name="line.430"></a>
+<span class="sourceLineNo">431</span>   * Retrieves a list of the additional servers that were accessed in the course<a name="line.431"></a>
+<span class="sourceLineNo">432</span>   * of processing the operation.  For example, if the access log message is<a name="line.432"></a>
+<span class="sourceLineNo">433</span>   * from a Directory Proxy Server instance, then this may contain a list of the<a name="line.433"></a>
+<span class="sourceLineNo">434</span>   * backend servers used to process the operation.<a name="line.434"></a>
+<span class="sourceLineNo">435</span>   *<a name="line.435"></a>
+<span class="sourceLineNo">436</span>   * @return  A list of the additional servers that were accessed in the course<a name="line.436"></a>
+<span class="sourceLineNo">437</span>   *          of processing the operation, or an empty list if it is not<a name="line.437"></a>
+<span class="sourceLineNo">438</span>   *          included in the log message.<a name="line.438"></a>
+<span class="sourceLineNo">439</span>   */<a name="line.439"></a>
+<span class="sourceLineNo">440</span>  @Override()<a name="line.440"></a>
+<span class="sourceLineNo">441</span>  public List&lt;String&gt; getServersAccessed()<a name="line.441"></a>
+<span class="sourceLineNo">442</span>  {<a name="line.442"></a>
+<span class="sourceLineNo">443</span>    return serversAccessed;<a name="line.443"></a>
+<span class="sourceLineNo">444</span>  }<a name="line.444"></a>
+<span class="sourceLineNo">445</span><a name="line.445"></a>
+<span class="sourceLineNo">446</span><a name="line.446"></a>
+<span class="sourceLineNo">447</span><a name="line.447"></a>
+<span class="sourceLineNo">448</span>  /**<a name="line.448"></a>
+<span class="sourceLineNo">449</span>   * Indicates whether the server accessed any uncached data in the course of<a name="line.449"></a>
+<span class="sourceLineNo">450</span>   * processing the operation.<a name="line.450"></a>
+<span class="sourceLineNo">451</span>   *<a name="line.451"></a>
+<span class="sourceLineNo">452</span>   * @return  {@code true} if the server was known to access uncached data in<a name="line.452"></a>
+<span class="sourceLineNo">453</span>   *          the course of processing the operation, {@code false} if the<a name="line.453"></a>
+<span class="sourceLineNo">454</span>   *          server was known not to access uncached data, or {@code null} if<a name="line.454"></a>
+<span class="sourceLineNo">455</span>   *          it is not included in the log message (and the server likely did<a name="line.455"></a>
+<span class="sourceLineNo">456</span>   *          not access uncached data).<a name="line.456"></a>
+<span class="sourceLineNo">457</span>   */<a name="line.457"></a>
+<span class="sourceLineNo">458</span>  public Boolean getUncachedDataAccessed()<a name="line.458"></a>
+<span class="sourceLineNo">459</span>  {<a name="line.459"></a>
+<span class="sourceLineNo">460</span>    return uncachedDataAccessed;<a name="line.460"></a>
+<span class="sourceLineNo">461</span>  }<a name="line.461"></a>
+<span class="sourceLineNo">462</span><a name="line.462"></a>
+<span class="sourceLineNo">463</span><a name="line.463"></a>
+<span class="sourceLineNo">464</span><a name="line.464"></a>
+<span class="sourceLineNo">465</span>  /**<a name="line.465"></a>
+<span class="sourceLineNo">466</span>   * Retrieves the content of the intermediate client result for the<a name="line.466"></a>
+<span class="sourceLineNo">467</span>   * operation.<a name="line.467"></a>
+<span class="sourceLineNo">468</span>   *<a name="line.468"></a>
+<span class="sourceLineNo">469</span>   * @return  The content of the intermediate client result for the operation,<a name="line.469"></a>
+<span class="sourceLineNo">470</span>   *          or {@code null} if it is not included in the log message.<a name="line.470"></a>
+<span class="sourceLineNo">471</span>   */<a name="line.471"></a>
+<span class="sourceLineNo">472</span>  @Override()<a name="line.472"></a>
+<span class="sourceLineNo">473</span>  public String getIntermediateClientResult()<a name="line.473"></a>
+<span class="sourceLineNo">474</span>  {<a name="line.474"></a>
+<span class="sourceLineNo">475</span>    return intermediateClientResult;<a name="line.475"></a>
+<span class="sourceLineNo">476</span>  }<a name="line.476"></a>
+<span class="sourceLineNo">477</span><a name="line.477"></a>
+<span class="sourceLineNo">478</span><a name="line.478"></a>
 <span class="sourceLineNo">479</span><a name="line.479"></a>
-<span class="sourceLineNo">480</span><a name="line.480"></a>
-<span class="sourceLineNo">481</span><a name="line.481"></a>
-<span class="sourceLineNo">482</span>  /**<a name="line.482"></a>
-<span class="sourceLineNo">483</span>   * Retrieves the address of the backend server to which the request has been<a name="line.483"></a>
-<span class="sourceLineNo">484</span>   * forwarded.<a name="line.484"></a>
-<span class="sourceLineNo">485</span>   *<a name="line.485"></a>
-<span class="sourceLineNo">486</span>   * @return  The address of the backend server to which the request has been<a name="line.486"></a>
-<span class="sourceLineNo">487</span>   *          forwarded, or {@code null} if it is not included in the log<a name="line.487"></a>
-<span class="sourceLineNo">488</span>   *          message.<a name="line.488"></a>
-<span class="sourceLineNo">489</span>   */<a name="line.489"></a>
-<span class="sourceLineNo">490</span>  public String getTargetHost()<a name="line.490"></a>
-<span class="sourceLineNo">491</span>  {<a name="line.491"></a>
-<span class="sourceLineNo">492</span>    return targetHost;<a name="line.492"></a>
-<span class="sourceLineNo">493</span>  }<a name="line.493"></a>
-<span class="sourceLineNo">494</span><a name="line.494"></a>
-<span class="sourceLineNo">495</span><a name="line.495"></a>
-<span class="sourceLineNo">496</span><a name="line.496"></a>
-<span class="sourceLineNo">497</span>  /**<a name="line.497"></a>
-<span class="sourceLineNo">498</span>   * Retrieves the port of the backend server to which the request has been<a name="line.498"></a>
-<span class="sourceLineNo">499</span>   * forwarded.<a name="line.499"></a>
-<span class="sourceLineNo">500</span>   *<a name="line.500"></a>
-<span class="sourceLineNo">501</span>   * @return  The port of the backend server to which the request has been<a name="line.501"></a>
-<span class="sourceLineNo">502</span>   *          forwarded, or {@code null} if it is not included in the log<a name="line.502"></a>
-<span class="sourceLineNo">503</span>   *          message.<a name="line.503"></a>
-<span class="sourceLineNo">504</span>   */<a name="line.504"></a>
-<span class="sourceLineNo">505</span>  public Integer getTargetPort()<a name="line.505"></a>
-<span class="sourceLineNo">506</span>  {<a name="line.506"></a>
-<span class="sourceLineNo">507</span>    return targetPort;<a name="line.507"></a>
-<span class="sourceLineNo">508</span>  }<a name="line.508"></a>
-<span class="sourceLineNo">509</span><a name="line.509"></a>
-<span class="sourceLineNo">510</span><a name="line.510"></a>
-<span class="sourceLineNo">511</span><a name="line.511"></a>
-<span class="sourceLineNo">512</span>  /**<a name="line.512"></a>
-<span class="sourceLineNo">513</span>   * Retrieves the protocol used to forward the request to the backend server.<a name="line.513"></a>
-<span class="sourceLineNo">514</span>   *<a name="line.514"></a>
-<span class="sourceLineNo">515</span>   * @return  The protocol used to forward the request to the backend server, or<a name="line.515"></a>
-<span class="sourceLineNo">516</span>   *          {@code null} if it is not included in the log message.<a name="line.516"></a>
-<span class="sourceLineNo">517</span>   */<a name="line.517"></a>
-<span class="sourceLineNo">518</span>  public String getTargetProtocol()<a name="line.518"></a>
-<span class="sourceLineNo">519</span>  {<a name="line.519"></a>
-<span class="sourceLineNo">520</span>    return targetProtocol;<a name="line.520"></a>
-<span class="sourceLineNo">521</span>  }<a name="line.521"></a>
+<span class="sourceLineNo">480</span>  /**<a name="line.480"></a>
+<span class="sourceLineNo">481</span>   * Retrieves the alternate authorization DN for the operation.<a name="line.481"></a>
+<span class="sourceLineNo">482</span>   *<a name="line.482"></a>
+<span class="sourceLineNo">483</span>   * @return  The alternate authorization DN for the operation, or {@code null}<a name="line.483"></a>
+<span class="sourceLineNo">484</span>   *          if it is not included in the log message.<a name="line.484"></a>
+<span class="sourceLineNo">485</span>   */<a name="line.485"></a>
+<span class="sourceLineNo">486</span>  public String getAlternateAuthorizationDN()<a name="line.486"></a>
+<span class="sourceLineNo">487</span>  {<a name="line.487"></a>
+<span class="sourceLineNo">488</span>    return authzDN;<a name="line.488"></a>
+<span class="sourceLineNo">489</span>  }<a name="line.489"></a>
+<span class="sourceLineNo">490</span><a name="line.490"></a>
+<span class="sourceLineNo">491</span><a name="line.491"></a>
+<span class="sourceLineNo">492</span><a name="line.492"></a>
+<span class="sourceLineNo">493</span>  /**<a name="line.493"></a>
+<span class="sourceLineNo">494</span>   * Retrieves the address of the backend server to which the request has been<a name="line.494"></a>
+<span class="sourceLineNo">495</span>   * forwarded.<a name="line.495"></a>
+<span class="sourceLineNo">496</span>   *<a name="line.496"></a>
+<span class="sourceLineNo">497</span>   * @return  The address of the backend server to which the request has been<a name="line.497"></a>
+<span class="sourceLineNo">498</span>   *          forwarded, or {@code null} if it is not included in the log<a name="line.498"></a>
+<span class="sourceLineNo">499</span>   *          message.<a name="line.499"></a>
+<span class="sourceLineNo">500</span>   */<a name="line.500"></a>
+<span class="sourceLineNo">501</span>  public String getTargetHost()<a name="line.501"></a>
+<span class="sourceLineNo">502</span>  {<a name="line.502"></a>
+<span class="sourceLineNo">503</span>    return targetHost;<a name="line.503"></a>
+<span class="sourceLineNo">504</span>  }<a name="line.504"></a>
+<span class="sourceLineNo">505</span><a name="line.505"></a>
+<span class="sourceLineNo">506</span><a name="line.506"></a>
+<span class="sourceLineNo">507</span><a name="line.507"></a>
+<span class="sourceLineNo">508</span>  /**<a name="line.508"></a>
+<span class="sourceLineNo">509</span>   * Retrieves the port of the backend server to which the request has been<a name="line.509"></a>
+<span class="sourceLineNo">510</span>   * forwarded.<a name="line.510"></a>
+<span class="sourceLineNo">511</span>   *<a name="line.511"></a>
+<span class="sourceLineNo">512</span>   * @return  The port of the backend server to which the request has been<a name="line.512"></a>
+<span class="sourceLineNo">513</span>   *          forwarded, or {@code null} if it is not included in the log<a name="line.513"></a>
+<span class="sourceLineNo">514</span>   *          message.<a name="line.514"></a>
+<span class="sourceLineNo">515</span>   */<a name="line.515"></a>
+<span class="sourceLineNo">516</span>  public Integer getTargetPort()<a name="line.516"></a>
+<span class="sourceLineNo">517</span>  {<a name="line.517"></a>
+<span class="sourceLineNo">518</span>    return targetPort;<a name="line.518"></a>
+<span class="sourceLineNo">519</span>  }<a name="line.519"></a>
+<span class="sourceLineNo">520</span><a name="line.520"></a>
+<span class="sourceLineNo">521</span><a name="line.521"></a>
 <span class="sourceLineNo">522</span><a name="line.522"></a>
-<span class="sourceLineNo">523</span><a name="line.523"></a>
-<span class="sourceLineNo">524</span><a name="line.524"></a>
-<span class="sourceLineNo">525</span>  /**<a name="line.525"></a>
-<span class="sourceLineNo">526</span>   * Retrieves the names of any privileges used during the course of processing<a name="line.526"></a>
-<span class="sourceLineNo">527</span>   * the operation.<a name="line.527"></a>
-<span class="sourceLineNo">528</span>   *<a name="line.528"></a>
-<span class="sourceLineNo">529</span>   * @return  The names of any privileges used during the course of processing<a name="line.529"></a>
-<span class="sourceLineNo">530</span>   *          the operation, or an empty list if no privileges were used or this<a name="line.530"></a>
-<span class="sourceLineNo">531</span>   *          is not included in the log message.<a name="line.531"></a>
-<span class="sourceLineNo">532</span>   */<a name="line.532"></a>
-<span class="sourceLineNo">533</span>  public List&lt;String&gt; getUsedPrivileges()<a name="line.533"></a>
-<span class="sourceLineNo">534</span>  {<a name="line.534"></a>
-<span class="sourceLineNo">535</span>    return usedPrivileges;<a name="line.535"></a>
-<span class="sourceLineNo">536</span>  }<a name="line.536"></a>
-<span class="sourceLineNo">537</span><a name="line.537"></a>
-<span class="sourceLineNo">538</span><a name="line.538"></a>
-<span class="sourceLineNo">539</span><a name="line.539"></a>
-<span class="sourceLineNo">540</span>  /**<a name="line.540"></a>
-<span class="sourceLineNo">541</span>   * Retrieves the names of any privileges used during the course of processing<a name="line.541"></a>
-<span class="sourceLineNo">542</span>   * the operation before an alternate authorization identity was assigned.<a name="line.542"></a>
-<span class="sourceLineNo">543</span>   *<a name="line.543"></a>
-<span class="sourceLineNo">544</span>   * @return  The names of any privileges used during the course of processing<a name="line.544"></a>
-<span class="sourceLineNo">545</span>   *          the operation before an alternate authorization identity was<a name="line.545"></a>
-<span class="sourceLineNo">546</span>   *          assigned, or an empty list if no privileges were used or this is<a name="line.546"></a>
-<span class="sourceLineNo">547</span>   *          not included in the log message.<a name="line.547"></a>
-<span class="sourceLineNo">548</span>   */<a name="line.548"></a>
-<span class="sourceLineNo">549</span>  public List&lt;String&gt; getPreAuthorizationUsedPrivileges()<a name="line.549"></a>
-<span class="sourceLineNo">550</span>  {<a name="line.550"></a>
-<span class="sourceLineNo">551</span>    return preAuthZUsedPrivileges;<a name="line.551"></a>
-<span class="sourceLineNo">552</span>  }<a name="line.552"></a>
-<span class="sourceLineNo">553</span><a name="line.553"></a>
-<span class="sourceLineNo">554</span><a name="line.554"></a>
-<span class="sourceLineNo">555</span><a name="line.555"></a>
-<span class="sourceLineNo">556</span>  /**<a name="line.556"></a>
-<span class="sourceLineNo">557</span>   * Retrieves the names of any privileges that would have been required for<a name="line.557"></a>
-<span class="sourceLineNo">558</span>   * processing the operation but that the requester did not have.<a name="line.558"></a>
-<span class="sourceLineNo">559</span>   *<a name="line.559"></a>
-<span class="sourceLineNo">560</span>   * @return  The names of any privileges that would have been required for<a name="line.560"></a>
-<span class="sourceLineNo">561</span>   *          processing the operation but that the requester did not have, or<a name="line.561"></a>
-<span class="sourceLineNo">562</span>   *          an empty list if there were no missing privileges or this is not<a name="line.562"></a>
-<span class="sourceLineNo">563</span>   *          included in the log message.<a name="line.563"></a>
-<span class="sourceLineNo">564</span>   */<a name="line.564"></a>
-<span class="sourceLineNo">565</span>  public List&lt;String&gt; getMissingPrivileges()<a name="line.565"></a>
-<span class="sourceLineNo">566</span>  {<a name="line.566"></a>
-<span class="sourceLineNo">567</span>    return missingPrivileges;<a name="line.567"></a>
-<span class="sourceLineNo">568</span>  }<a name="line.568"></a>
-<span class="sourceLineNo">569</span><a name="line.569"></a>
-<span class="sourceLineNo">570</span><a name="line.570"></a>
-<span class="sourceLineNo">571</span><a name="line.571"></a>
-<span class="sourceLineNo">572</span>  /**<a name="line.572"></a>
-<span class="sourceLineNo">573</span>   * {@inheritDoc}<a name="line.573"></a>
-<span class="sourceLineNo">574</span>   */<a name="line.574"></a>
-<span class="sourceLineNo">575</span>  @Override()<a name="line.575"></a>
-<span class="sourceLineNo">576</span>  public AccessLogMessageType getMessageType()<a name="line.576"></a>
+<span class="sourceLineNo">523</span>  /**<a name="line.523"></a>
+<span class="sourceLineNo">524</span>   * Retrieves the protocol used to forward the request to the backend server.<a name="line.524"></a>
+<span class="sourceLineNo">525</span>   *<a name="line.525"></a>
+<span class="sourceLineNo">526</span>   * @return  The protocol used to forward the request to the backend server, or<a name="line.526"></a>
+<span class="sourceLineNo">527</span>   *          {@code null} if it is not included in the log message.<a name="line.527"></a>
+<span class="sourceLineNo">528</span>   */<a name="line.528"></a>
+<span class="sourceLineNo">529</span>  public String getTargetProtocol()<a name="line.529"></a>
+<span class="sourceLineNo">530</span>  {<a name="line.530"></a>
+<span class="sourceLineNo">531</span>    return targetProtocol;<a name="line.531"></a>
+<span class="sourceLineNo">532</span>  }<a name="line.532"></a>
+<span class="sourceLineNo">533</span><a name="line.533"></a>
+<span class="sourceLineNo">534</span><a name="line.534"></a>
+<span class="sourceLineNo">535</span><a name="line.535"></a>
+<span class="sourceLineNo">536</span>  /**<a name="line.536"></a>
+<span class="sourceLineNo">537</span>   * Retrieves the names of any privileges used during the course of processing<a name="line.537"></a>
+<span class="sourceLineNo">538</span>   * the operation.<a name="line.538"></a>
+<span class="sourceLineNo">539</span>   *<a name="line.539"></a>
+<span class="sourceLineNo">540</span>   * @return  The names of any privileges used during the course of processing<a name="line.540"></a>
+<span class="sourceLineNo">541</span>   *          the operation, or an empty list if no privileges were used or this<a name="line.541"></a>
+<span class="sourceLineNo">542</span>   *          is not included in the log message.<a name="line.542"></a>
+<span class="sourceLineNo">543</span>   */<a name="line.543"></a>
+<span class="sourceLineNo">544</span>  public List&lt;String&gt; getUsedPrivileges()<a name="line.544"></a>
+<span class="sourceLineNo">545</span>  {<a name="line.545"></a>
+<span class="sourceLineNo">546</span>    return usedPrivileges;<a name="line.546"></a>
+<span class="sourceLineNo">547</span>  }<a name="line.547"></a>
+<span class="sourceLineNo">548</span><a name="line.548"></a>
+<span class="sourceLineNo">549</span><a name="line.549"></a>
+<span class="sourceLineNo">550</span><a name="line.550"></a>
+<span class="sourceLineNo">551</span>  /**<a name="line.551"></a>
+<span class="sourceLineNo">552</span>   * Retrieves the names of any privileges used during the course of processing<a name="line.552"></a>
+<span class="sourceLineNo">553</span>   * the operation before an alternate authorization identity was assigned.<a name="line.553"></a>
+<span class="sourceLineNo">554</span>   *<a name="line.554"></a>
+<span class="sourceLineNo">555</span>   * @return  The names of any privileges used during the course of processing<a name="line.555"></a>
+<span class="sourceLineNo">556</span>   *          the operation before an alternate authorization identity was<a name="line.556"></a>
+<span class="sourceLineNo">557</span>   *          assigned, or an empty list if no privileges were used or this is<a name="line.557"></a>
+<span class="sourceLineNo">558</span>   *          not included in the log message.<a name="line.558"></a>
+<span class="sourceLineNo">559</span>   */<a name="line.559"></a>
+<span class="sourceLineNo">560</span>  public List&lt;String&gt; getPreAuthorizationUsedPrivileges()<a name="line.560"></a>
+<span class="sourceLineNo">561</span>  {<a name="line.561"></a>
+<span class="sourceLineNo">562</span>    return preAuthZUsedPrivileges;<a name="line.562"></a>
+<span class="sourceLineNo">563</span>  }<a name="line.563"></a>
+<span class="sourceLineNo">564</span><a name="line.564"></a>
+<span class="sourceLineNo">565</span><a name="line.565"></a>
+<span class="sourceLineNo">566</span><a name="line.566"></a>
+<span class="sourceLineNo">567</span>  /**<a name="line.567"></a>
+<span class="sourceLineNo">568</span>   * Retrieves the names of any privileges that would have been required for<a name="line.568"></a>
+<span class="sourceLineNo">569</span>   * processing the operation but that the requester did not have.<a name="line.569"></a>
+<span class="sourceLineNo">570</span>   *<a name="line.570"></a>
+<span class="sourceLineNo">571</span>   * @return  The names of any privileges that would have been required for<a name="line.571"></a>
+<span class="sourceLineNo">572</span>   *          processing the operation but that the requester did not have, or<a name="line.572"></a>
+<span class="sourceLineNo">573</span>   *          an empty list if there were no missing privileges or this is not<a name="line.573"></a>
+<span class="sourceLineNo">574</span>   *          included in the log message.<a name="line.574"></a>
+<span class="sourceLineNo">575</span>   */<a name="line.575"></a>
+<span class="sourceLineNo">576</span>  public List&lt;String&gt; getMissingPrivileges()<a name="line.576"></a>
 <span class="sourceLineNo">577</span>  {<a name="line.577"></a>
-<span class="sourceLineNo">578</span>    return AccessLogMessageType.RESULT;<a name="line.578"></a>
+<span class="sourceLineNo">578</span>    return missingPrivileges;<a name="line.578"></a>
 <span class="sourceLineNo">579</span>  }<a name="line.579"></a>
-<span class="sourceLineNo">580</span>}<a name="line.580"></a>
+<span class="sourceLineNo">580</span><a name="line.580"></a>
+<span class="sourceLineNo">581</span><a name="line.581"></a>
+<span class="sourceLineNo">582</span><a name="line.582"></a>
+<span class="sourceLineNo">583</span>  /**<a name="line.583"></a>
+<span class="sourceLineNo">584</span>   * {@inheritDoc}<a name="line.584"></a>
+<span class="sourceLineNo">585</span>   */<a name="line.585"></a>
+<span class="sourceLineNo">586</span>  @Override()<a name="line.586"></a>
+<span class="sourceLineNo">587</span>  public AccessLogMessageType getMessageType()<a name="line.587"></a>
+<span class="sourceLineNo">588</span>  {<a name="line.588"></a>
+<span class="sourceLineNo">589</span>    return AccessLogMessageType.RESULT;<a name="line.589"></a>
+<span class="sourceLineNo">590</span>  }<a name="line.590"></a>
+<span class="sourceLineNo">591</span>}<a name="line.591"></a>
 
 
 

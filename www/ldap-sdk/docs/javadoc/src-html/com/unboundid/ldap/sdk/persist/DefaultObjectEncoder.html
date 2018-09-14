@@ -1256,20 +1256,20 @@
 <span class="sourceLineNo">1248</span>      Debug.debugException(lpe);<a name="line.1248"></a>
 <span class="sourceLineNo">1249</span>      throw lpe;<a name="line.1249"></a>
 <span class="sourceLineNo">1250</span>    }<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>    catch (final Throwable t)<a name="line.1251"></a>
+<span class="sourceLineNo">1251</span>    catch (final Exception e)<a name="line.1251"></a>
 <span class="sourceLineNo">1252</span>    {<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>      Debug.debugException(t);<a name="line.1253"></a>
+<span class="sourceLineNo">1253</span>      Debug.debugException(e);<a name="line.1253"></a>
 <span class="sourceLineNo">1254</span><a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>      if (t instanceof InvocationTargetException)<a name="line.1255"></a>
+<span class="sourceLineNo">1255</span>      if (e instanceof InvocationTargetException)<a name="line.1255"></a>
 <span class="sourceLineNo">1256</span>      {<a name="line.1256"></a>
 <span class="sourceLineNo">1257</span>        final Throwable targetException =<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>             ((InvocationTargetException) t).getTargetException();<a name="line.1258"></a>
+<span class="sourceLineNo">1258</span>             ((InvocationTargetException) e).getTargetException();<a name="line.1258"></a>
 <span class="sourceLineNo">1259</span>        throw new LDAPPersistException(<a name="line.1259"></a>
 <span class="sourceLineNo">1260</span>             StaticUtils.getExceptionMessage(targetException), targetException);<a name="line.1260"></a>
 <span class="sourceLineNo">1261</span>      }<a name="line.1261"></a>
 <span class="sourceLineNo">1262</span>      else<a name="line.1262"></a>
 <span class="sourceLineNo">1263</span>      {<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span>        throw new LDAPPersistException(StaticUtils.getExceptionMessage(t), t);<a name="line.1264"></a>
+<span class="sourceLineNo">1264</span>        throw new LDAPPersistException(StaticUtils.getExceptionMessage(e), e);<a name="line.1264"></a>
 <span class="sourceLineNo">1265</span>      }<a name="line.1265"></a>
 <span class="sourceLineNo">1266</span>    }<a name="line.1266"></a>
 <span class="sourceLineNo">1267</span>  }<a name="line.1267"></a>

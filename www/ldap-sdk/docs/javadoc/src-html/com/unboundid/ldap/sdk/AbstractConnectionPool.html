@@ -3004,77 +3004,79 @@
 <span class="sourceLineNo">2996</span>    else<a name="line.2996"></a>
 <span class="sourceLineNo">2997</span>    {<a name="line.2997"></a>
 <span class="sourceLineNo">2998</span>      releaseDefunctConnection(conn);<a name="line.2998"></a>
-<span class="sourceLineNo">2999</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.2999"></a>
-<span class="sourceLineNo">3000</span>           ERR_POOL_OP_EXCEPTION.get(StaticUtils.getExceptionMessage(t)), t);<a name="line.3000"></a>
-<span class="sourceLineNo">3001</span>    }<a name="line.3001"></a>
-<span class="sourceLineNo">3002</span>  }<a name="line.3002"></a>
-<span class="sourceLineNo">3003</span><a name="line.3003"></a>
+<span class="sourceLineNo">2999</span>      StaticUtils.rethrowIfError(t);<a name="line.2999"></a>
+<span class="sourceLineNo">3000</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.3000"></a>
+<span class="sourceLineNo">3001</span>           ERR_POOL_OP_EXCEPTION.get(StaticUtils.getExceptionMessage(t)), t);<a name="line.3001"></a>
+<span class="sourceLineNo">3002</span>    }<a name="line.3002"></a>
+<span class="sourceLineNo">3003</span>  }<a name="line.3003"></a>
 <span class="sourceLineNo">3004</span><a name="line.3004"></a>
 <span class="sourceLineNo">3005</span><a name="line.3005"></a>
-<span class="sourceLineNo">3006</span>  /**<a name="line.3006"></a>
-<span class="sourceLineNo">3007</span>   * Handles the provided {@code Throwable} object by ensuring that the provided<a name="line.3007"></a>
-<span class="sourceLineNo">3008</span>   * connection is released to the pool and throwing an appropriate<a name="line.3008"></a>
-<span class="sourceLineNo">3009</span>   * {@code LDAPSearchException} object.<a name="line.3009"></a>
-<span class="sourceLineNo">3010</span>   *<a name="line.3010"></a>
-<span class="sourceLineNo">3011</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.3011"></a>
-<span class="sourceLineNo">3012</span>   * @param  conn  The connection to be released to the pool.<a name="line.3012"></a>
-<span class="sourceLineNo">3013</span>   *<a name="line.3013"></a>
-<span class="sourceLineNo">3014</span>   * @throws  LDAPSearchException  To indicate that a problem occurred during<a name="line.3014"></a>
-<span class="sourceLineNo">3015</span>   *                               LDAP search processing.<a name="line.3015"></a>
-<span class="sourceLineNo">3016</span>   */<a name="line.3016"></a>
-<span class="sourceLineNo">3017</span>  void throwLDAPSearchException(final Throwable t, final LDAPConnection conn)<a name="line.3017"></a>
-<span class="sourceLineNo">3018</span>       throws LDAPSearchException<a name="line.3018"></a>
-<span class="sourceLineNo">3019</span>  {<a name="line.3019"></a>
-<span class="sourceLineNo">3020</span>    Debug.debugException(t);<a name="line.3020"></a>
-<span class="sourceLineNo">3021</span>    if (t instanceof LDAPException)<a name="line.3021"></a>
-<span class="sourceLineNo">3022</span>    {<a name="line.3022"></a>
-<span class="sourceLineNo">3023</span>      final LDAPSearchException lse;<a name="line.3023"></a>
-<span class="sourceLineNo">3024</span>      if (t instanceof LDAPSearchException)<a name="line.3024"></a>
-<span class="sourceLineNo">3025</span>      {<a name="line.3025"></a>
-<span class="sourceLineNo">3026</span>        lse = (LDAPSearchException) t;<a name="line.3026"></a>
-<span class="sourceLineNo">3027</span>      }<a name="line.3027"></a>
-<span class="sourceLineNo">3028</span>      else<a name="line.3028"></a>
-<span class="sourceLineNo">3029</span>      {<a name="line.3029"></a>
-<span class="sourceLineNo">3030</span>        lse = new LDAPSearchException((LDAPException) t);<a name="line.3030"></a>
-<span class="sourceLineNo">3031</span>      }<a name="line.3031"></a>
-<span class="sourceLineNo">3032</span><a name="line.3032"></a>
-<span class="sourceLineNo">3033</span>      releaseConnectionAfterException(conn, lse);<a name="line.3033"></a>
-<span class="sourceLineNo">3034</span>      throw lse;<a name="line.3034"></a>
-<span class="sourceLineNo">3035</span>    }<a name="line.3035"></a>
-<span class="sourceLineNo">3036</span>    else<a name="line.3036"></a>
-<span class="sourceLineNo">3037</span>    {<a name="line.3037"></a>
-<span class="sourceLineNo">3038</span>      releaseDefunctConnection(conn);<a name="line.3038"></a>
-<span class="sourceLineNo">3039</span>      throw new LDAPSearchException(ResultCode.LOCAL_ERROR,<a name="line.3039"></a>
-<span class="sourceLineNo">3040</span>           ERR_POOL_OP_EXCEPTION.get(StaticUtils.getExceptionMessage(t)), t);<a name="line.3040"></a>
-<span class="sourceLineNo">3041</span>    }<a name="line.3041"></a>
-<span class="sourceLineNo">3042</span>  }<a name="line.3042"></a>
-<span class="sourceLineNo">3043</span><a name="line.3043"></a>
-<span class="sourceLineNo">3044</span><a name="line.3044"></a>
+<span class="sourceLineNo">3006</span><a name="line.3006"></a>
+<span class="sourceLineNo">3007</span>  /**<a name="line.3007"></a>
+<span class="sourceLineNo">3008</span>   * Handles the provided {@code Throwable} object by ensuring that the provided<a name="line.3008"></a>
+<span class="sourceLineNo">3009</span>   * connection is released to the pool and throwing an appropriate<a name="line.3009"></a>
+<span class="sourceLineNo">3010</span>   * {@code LDAPSearchException} object.<a name="line.3010"></a>
+<span class="sourceLineNo">3011</span>   *<a name="line.3011"></a>
+<span class="sourceLineNo">3012</span>   * @param  t     The {@code Throwable} object that was caught.<a name="line.3012"></a>
+<span class="sourceLineNo">3013</span>   * @param  conn  The connection to be released to the pool.<a name="line.3013"></a>
+<span class="sourceLineNo">3014</span>   *<a name="line.3014"></a>
+<span class="sourceLineNo">3015</span>   * @throws  LDAPSearchException  To indicate that a problem occurred during<a name="line.3015"></a>
+<span class="sourceLineNo">3016</span>   *                               LDAP search processing.<a name="line.3016"></a>
+<span class="sourceLineNo">3017</span>   */<a name="line.3017"></a>
+<span class="sourceLineNo">3018</span>  void throwLDAPSearchException(final Throwable t, final LDAPConnection conn)<a name="line.3018"></a>
+<span class="sourceLineNo">3019</span>       throws LDAPSearchException<a name="line.3019"></a>
+<span class="sourceLineNo">3020</span>  {<a name="line.3020"></a>
+<span class="sourceLineNo">3021</span>    Debug.debugException(t);<a name="line.3021"></a>
+<span class="sourceLineNo">3022</span>    if (t instanceof LDAPException)<a name="line.3022"></a>
+<span class="sourceLineNo">3023</span>    {<a name="line.3023"></a>
+<span class="sourceLineNo">3024</span>      final LDAPSearchException lse;<a name="line.3024"></a>
+<span class="sourceLineNo">3025</span>      if (t instanceof LDAPSearchException)<a name="line.3025"></a>
+<span class="sourceLineNo">3026</span>      {<a name="line.3026"></a>
+<span class="sourceLineNo">3027</span>        lse = (LDAPSearchException) t;<a name="line.3027"></a>
+<span class="sourceLineNo">3028</span>      }<a name="line.3028"></a>
+<span class="sourceLineNo">3029</span>      else<a name="line.3029"></a>
+<span class="sourceLineNo">3030</span>      {<a name="line.3030"></a>
+<span class="sourceLineNo">3031</span>        lse = new LDAPSearchException((LDAPException) t);<a name="line.3031"></a>
+<span class="sourceLineNo">3032</span>      }<a name="line.3032"></a>
+<span class="sourceLineNo">3033</span><a name="line.3033"></a>
+<span class="sourceLineNo">3034</span>      releaseConnectionAfterException(conn, lse);<a name="line.3034"></a>
+<span class="sourceLineNo">3035</span>      throw lse;<a name="line.3035"></a>
+<span class="sourceLineNo">3036</span>    }<a name="line.3036"></a>
+<span class="sourceLineNo">3037</span>    else<a name="line.3037"></a>
+<span class="sourceLineNo">3038</span>    {<a name="line.3038"></a>
+<span class="sourceLineNo">3039</span>      releaseDefunctConnection(conn);<a name="line.3039"></a>
+<span class="sourceLineNo">3040</span>      StaticUtils.rethrowIfError(t);<a name="line.3040"></a>
+<span class="sourceLineNo">3041</span>      throw new LDAPSearchException(ResultCode.LOCAL_ERROR,<a name="line.3041"></a>
+<span class="sourceLineNo">3042</span>           ERR_POOL_OP_EXCEPTION.get(StaticUtils.getExceptionMessage(t)), t);<a name="line.3042"></a>
+<span class="sourceLineNo">3043</span>    }<a name="line.3043"></a>
+<span class="sourceLineNo">3044</span>  }<a name="line.3044"></a>
 <span class="sourceLineNo">3045</span><a name="line.3045"></a>
-<span class="sourceLineNo">3046</span>  /**<a name="line.3046"></a>
-<span class="sourceLineNo">3047</span>   * Retrieves a string representation of this connection pool.<a name="line.3047"></a>
-<span class="sourceLineNo">3048</span>   *<a name="line.3048"></a>
-<span class="sourceLineNo">3049</span>   * @return  A string representation of this connection pool.<a name="line.3049"></a>
-<span class="sourceLineNo">3050</span>   */<a name="line.3050"></a>
-<span class="sourceLineNo">3051</span>  @Override()<a name="line.3051"></a>
-<span class="sourceLineNo">3052</span>  public final String toString()<a name="line.3052"></a>
-<span class="sourceLineNo">3053</span>  {<a name="line.3053"></a>
-<span class="sourceLineNo">3054</span>    final StringBuilder buffer = new StringBuilder();<a name="line.3054"></a>
-<span class="sourceLineNo">3055</span>    toString(buffer);<a name="line.3055"></a>
-<span class="sourceLineNo">3056</span>    return buffer.toString();<a name="line.3056"></a>
-<span class="sourceLineNo">3057</span>  }<a name="line.3057"></a>
-<span class="sourceLineNo">3058</span><a name="line.3058"></a>
-<span class="sourceLineNo">3059</span><a name="line.3059"></a>
+<span class="sourceLineNo">3046</span><a name="line.3046"></a>
+<span class="sourceLineNo">3047</span><a name="line.3047"></a>
+<span class="sourceLineNo">3048</span>  /**<a name="line.3048"></a>
+<span class="sourceLineNo">3049</span>   * Retrieves a string representation of this connection pool.<a name="line.3049"></a>
+<span class="sourceLineNo">3050</span>   *<a name="line.3050"></a>
+<span class="sourceLineNo">3051</span>   * @return  A string representation of this connection pool.<a name="line.3051"></a>
+<span class="sourceLineNo">3052</span>   */<a name="line.3052"></a>
+<span class="sourceLineNo">3053</span>  @Override()<a name="line.3053"></a>
+<span class="sourceLineNo">3054</span>  public final String toString()<a name="line.3054"></a>
+<span class="sourceLineNo">3055</span>  {<a name="line.3055"></a>
+<span class="sourceLineNo">3056</span>    final StringBuilder buffer = new StringBuilder();<a name="line.3056"></a>
+<span class="sourceLineNo">3057</span>    toString(buffer);<a name="line.3057"></a>
+<span class="sourceLineNo">3058</span>    return buffer.toString();<a name="line.3058"></a>
+<span class="sourceLineNo">3059</span>  }<a name="line.3059"></a>
 <span class="sourceLineNo">3060</span><a name="line.3060"></a>
-<span class="sourceLineNo">3061</span>  /**<a name="line.3061"></a>
-<span class="sourceLineNo">3062</span>   * Appends a string representation of this connection pool to the provided<a name="line.3062"></a>
-<span class="sourceLineNo">3063</span>   * buffer.<a name="line.3063"></a>
-<span class="sourceLineNo">3064</span>   *<a name="line.3064"></a>
-<span class="sourceLineNo">3065</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.3065"></a>
-<span class="sourceLineNo">3066</span>   *                 appended.<a name="line.3066"></a>
-<span class="sourceLineNo">3067</span>   */<a name="line.3067"></a>
-<span class="sourceLineNo">3068</span>  public abstract void toString(StringBuilder buffer);<a name="line.3068"></a>
-<span class="sourceLineNo">3069</span>}<a name="line.3069"></a>
+<span class="sourceLineNo">3061</span><a name="line.3061"></a>
+<span class="sourceLineNo">3062</span><a name="line.3062"></a>
+<span class="sourceLineNo">3063</span>  /**<a name="line.3063"></a>
+<span class="sourceLineNo">3064</span>   * Appends a string representation of this connection pool to the provided<a name="line.3064"></a>
+<span class="sourceLineNo">3065</span>   * buffer.<a name="line.3065"></a>
+<span class="sourceLineNo">3066</span>   *<a name="line.3066"></a>
+<span class="sourceLineNo">3067</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.3067"></a>
+<span class="sourceLineNo">3068</span>   *                 appended.<a name="line.3068"></a>
+<span class="sourceLineNo">3069</span>   */<a name="line.3069"></a>
+<span class="sourceLineNo">3070</span>  public abstract void toString(StringBuilder buffer);<a name="line.3070"></a>
+<span class="sourceLineNo">3071</span>}<a name="line.3071"></a>
 
 
 

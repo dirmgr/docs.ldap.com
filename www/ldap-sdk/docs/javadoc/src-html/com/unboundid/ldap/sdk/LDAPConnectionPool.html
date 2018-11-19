@@ -1899,7 +1899,7 @@
 <span class="sourceLineNo">1891</span>    }<a name="line.1891"></a>
 <span class="sourceLineNo">1892</span><a name="line.1892"></a>
 <span class="sourceLineNo">1893</span>    final HashSet&lt;LDAPConnection&gt; examinedConnections =<a name="line.1893"></a>
-<span class="sourceLineNo">1894</span>         new HashSet&lt;&gt;(numConnections);<a name="line.1894"></a>
+<span class="sourceLineNo">1894</span>         new HashSet&lt;&gt;(StaticUtils.computeMapCapacity(numConnections));<a name="line.1894"></a>
 <span class="sourceLineNo">1895</span>    while (true)<a name="line.1895"></a>
 <span class="sourceLineNo">1896</span>    {<a name="line.1896"></a>
 <span class="sourceLineNo">1897</span>      final LDAPConnection conn = availableConnections.poll();<a name="line.1897"></a>
@@ -2869,7 +2869,7 @@
 <span class="sourceLineNo">2861</span>    // encounter the same connection twice, then we know that we don't need to<a name="line.2861"></a>
 <span class="sourceLineNo">2862</span>    // do any more work.<a name="line.2862"></a>
 <span class="sourceLineNo">2863</span>    final HashSet&lt;LDAPConnection&gt; examinedConnections =<a name="line.2863"></a>
-<span class="sourceLineNo">2864</span>         new HashSet&lt;&gt;(numConnections);<a name="line.2864"></a>
+<span class="sourceLineNo">2864</span>         new HashSet&lt;&gt;(StaticUtils.computeMapCapacity(numConnections));<a name="line.2864"></a>
 <span class="sourceLineNo">2865</span>    int numExamined = 0;<a name="line.2865"></a>
 <span class="sourceLineNo">2866</span>    int numDefunct = 0;<a name="line.2866"></a>
 <span class="sourceLineNo">2867</span>    int numExpired = 0;<a name="line.2867"></a>

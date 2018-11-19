@@ -2173,7 +2173,7 @@
 <span class="sourceLineNo">2165</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.2165"></a>
 <span class="sourceLineNo">2166</span>  {<a name="line.2166"></a>
 <span class="sourceLineNo">2167</span>    final LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt; props =<a name="line.2167"></a>
-<span class="sourceLineNo">2168</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.2168"></a>
+<span class="sourceLineNo">2168</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.2168"></a>
 <span class="sourceLineNo">2169</span><a name="line.2169"></a>
 <span class="sourceLineNo">2170</span>    props.put(PROPERTY_TASK_ID,<a name="line.2170"></a>
 <span class="sourceLineNo">2171</span>              Collections.&lt;Object&gt;singletonList(taskID));<a name="line.2171"></a>

@@ -1016,7 +1016,7 @@
 <span class="sourceLineNo">1008</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.1008"></a>
 <span class="sourceLineNo">1009</span>  {<a name="line.1009"></a>
 <span class="sourceLineNo">1010</span>    final LinkedHashMap&lt;TaskProperty, List&lt;Object&gt;&gt; props =<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>         new LinkedHashMap&lt;&gt;(7);<a name="line.1011"></a>
+<span class="sourceLineNo">1011</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(7));<a name="line.1011"></a>
 <span class="sourceLineNo">1012</span><a name="line.1012"></a>
 <span class="sourceLineNo">1013</span>    if (sleepDurationMillis != null)<a name="line.1013"></a>
 <span class="sourceLineNo">1014</span>    {<a name="line.1014"></a>

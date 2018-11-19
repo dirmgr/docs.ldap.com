@@ -574,49 +574,50 @@
 <span class="sourceLineNo">566</span>  @Override()<a name="line.566"></a>
 <span class="sourceLineNo">567</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.567"></a>
 <span class="sourceLineNo">568</span>  {<a name="line.568"></a>
-<span class="sourceLineNo">569</span>    final LinkedHashMap&lt;String[],String&gt; examples = new LinkedHashMap&lt;&gt;(1);<a name="line.569"></a>
-<span class="sourceLineNo">570</span><a name="line.570"></a>
-<span class="sourceLineNo">571</span>    final String[] args =<a name="line.571"></a>
-<span class="sourceLineNo">572</span>    {<a name="line.572"></a>
-<span class="sourceLineNo">573</span>      "--hostname", "server.example.com",<a name="line.573"></a>
-<span class="sourceLineNo">574</span>      "--port", "389",<a name="line.574"></a>
-<span class="sourceLineNo">575</span>      "--listenPort", "1389",<a name="line.575"></a>
-<span class="sourceLineNo">576</span>      "--outputFile", "/tmp/ldap-debugger.log"<a name="line.576"></a>
-<span class="sourceLineNo">577</span>    };<a name="line.577"></a>
-<span class="sourceLineNo">578</span>    final String description =<a name="line.578"></a>
-<span class="sourceLineNo">579</span>         "Listen for client connections on port 1389 on all interfaces and " +<a name="line.579"></a>
-<span class="sourceLineNo">580</span>         "forward any traffic received to server.example.com:389.  The " +<a name="line.580"></a>
-<span class="sourceLineNo">581</span>         "decoded LDAP communication will be written to the " +<a name="line.581"></a>
-<span class="sourceLineNo">582</span>         "/tmp/ldap-debugger.log log file.";<a name="line.582"></a>
-<span class="sourceLineNo">583</span>    examples.put(args, description);<a name="line.583"></a>
-<span class="sourceLineNo">584</span><a name="line.584"></a>
-<span class="sourceLineNo">585</span>    return examples;<a name="line.585"></a>
-<span class="sourceLineNo">586</span>  }<a name="line.586"></a>
-<span class="sourceLineNo">587</span><a name="line.587"></a>
+<span class="sourceLineNo">569</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.569"></a>
+<span class="sourceLineNo">570</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.570"></a>
+<span class="sourceLineNo">571</span><a name="line.571"></a>
+<span class="sourceLineNo">572</span>    final String[] args =<a name="line.572"></a>
+<span class="sourceLineNo">573</span>    {<a name="line.573"></a>
+<span class="sourceLineNo">574</span>      "--hostname", "server.example.com",<a name="line.574"></a>
+<span class="sourceLineNo">575</span>      "--port", "389",<a name="line.575"></a>
+<span class="sourceLineNo">576</span>      "--listenPort", "1389",<a name="line.576"></a>
+<span class="sourceLineNo">577</span>      "--outputFile", "/tmp/ldap-debugger.log"<a name="line.577"></a>
+<span class="sourceLineNo">578</span>    };<a name="line.578"></a>
+<span class="sourceLineNo">579</span>    final String description =<a name="line.579"></a>
+<span class="sourceLineNo">580</span>         "Listen for client connections on port 1389 on all interfaces and " +<a name="line.580"></a>
+<span class="sourceLineNo">581</span>         "forward any traffic received to server.example.com:389.  The " +<a name="line.581"></a>
+<span class="sourceLineNo">582</span>         "decoded LDAP communication will be written to the " +<a name="line.582"></a>
+<span class="sourceLineNo">583</span>         "/tmp/ldap-debugger.log log file.";<a name="line.583"></a>
+<span class="sourceLineNo">584</span>    examples.put(args, description);<a name="line.584"></a>
+<span class="sourceLineNo">585</span><a name="line.585"></a>
+<span class="sourceLineNo">586</span>    return examples;<a name="line.586"></a>
+<span class="sourceLineNo">587</span>  }<a name="line.587"></a>
 <span class="sourceLineNo">588</span><a name="line.588"></a>
 <span class="sourceLineNo">589</span><a name="line.589"></a>
-<span class="sourceLineNo">590</span>  /**<a name="line.590"></a>
-<span class="sourceLineNo">591</span>   * Retrieves the LDAP listener used to decode the communication.<a name="line.591"></a>
-<span class="sourceLineNo">592</span>   *<a name="line.592"></a>
-<span class="sourceLineNo">593</span>   * @return  The LDAP listener used to decode the communication, or<a name="line.593"></a>
-<span class="sourceLineNo">594</span>   *          {@code null} if the tool is not running.<a name="line.594"></a>
-<span class="sourceLineNo">595</span>   */<a name="line.595"></a>
-<span class="sourceLineNo">596</span>  public LDAPListener getListener()<a name="line.596"></a>
-<span class="sourceLineNo">597</span>  {<a name="line.597"></a>
-<span class="sourceLineNo">598</span>    return listener;<a name="line.598"></a>
-<span class="sourceLineNo">599</span>  }<a name="line.599"></a>
-<span class="sourceLineNo">600</span><a name="line.600"></a>
+<span class="sourceLineNo">590</span><a name="line.590"></a>
+<span class="sourceLineNo">591</span>  /**<a name="line.591"></a>
+<span class="sourceLineNo">592</span>   * Retrieves the LDAP listener used to decode the communication.<a name="line.592"></a>
+<span class="sourceLineNo">593</span>   *<a name="line.593"></a>
+<span class="sourceLineNo">594</span>   * @return  The LDAP listener used to decode the communication, or<a name="line.594"></a>
+<span class="sourceLineNo">595</span>   *          {@code null} if the tool is not running.<a name="line.595"></a>
+<span class="sourceLineNo">596</span>   */<a name="line.596"></a>
+<span class="sourceLineNo">597</span>  public LDAPListener getListener()<a name="line.597"></a>
+<span class="sourceLineNo">598</span>  {<a name="line.598"></a>
+<span class="sourceLineNo">599</span>    return listener;<a name="line.599"></a>
+<span class="sourceLineNo">600</span>  }<a name="line.600"></a>
 <span class="sourceLineNo">601</span><a name="line.601"></a>
 <span class="sourceLineNo">602</span><a name="line.602"></a>
-<span class="sourceLineNo">603</span>  /**<a name="line.603"></a>
-<span class="sourceLineNo">604</span>   * Indicates that the associated listener should shut down.<a name="line.604"></a>
-<span class="sourceLineNo">605</span>   */<a name="line.605"></a>
-<span class="sourceLineNo">606</span>  public void shutDown()<a name="line.606"></a>
-<span class="sourceLineNo">607</span>  {<a name="line.607"></a>
-<span class="sourceLineNo">608</span>    Runtime.getRuntime().removeShutdownHook(shutdownListener);<a name="line.608"></a>
-<span class="sourceLineNo">609</span>    shutdownListener.run();<a name="line.609"></a>
-<span class="sourceLineNo">610</span>  }<a name="line.610"></a>
-<span class="sourceLineNo">611</span>}<a name="line.611"></a>
+<span class="sourceLineNo">603</span><a name="line.603"></a>
+<span class="sourceLineNo">604</span>  /**<a name="line.604"></a>
+<span class="sourceLineNo">605</span>   * Indicates that the associated listener should shut down.<a name="line.605"></a>
+<span class="sourceLineNo">606</span>   */<a name="line.606"></a>
+<span class="sourceLineNo">607</span>  public void shutDown()<a name="line.607"></a>
+<span class="sourceLineNo">608</span>  {<a name="line.608"></a>
+<span class="sourceLineNo">609</span>    Runtime.getRuntime().removeShutdownHook(shutdownListener);<a name="line.609"></a>
+<span class="sourceLineNo">610</span>    shutdownListener.run();<a name="line.610"></a>
+<span class="sourceLineNo">611</span>  }<a name="line.611"></a>
+<span class="sourceLineNo">612</span>}<a name="line.612"></a>
 
 
 

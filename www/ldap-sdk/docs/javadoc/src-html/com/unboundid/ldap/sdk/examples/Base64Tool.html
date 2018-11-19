@@ -420,7 +420,7 @@
 <span class="sourceLineNo">412</span>         encodeDataFileArgument);<a name="line.412"></a>
 <span class="sourceLineNo">413</span><a name="line.413"></a>
 <span class="sourceLineNo">414</span>    final LinkedHashMap&lt;String[],String&gt; encodeExamples =<a name="line.414"></a>
-<span class="sourceLineNo">415</span>         new LinkedHashMap&lt;&gt;(3);<a name="line.415"></a>
+<span class="sourceLineNo">415</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(3));<a name="line.415"></a>
 <span class="sourceLineNo">416</span>    encodeExamples.put(<a name="line.416"></a>
 <span class="sourceLineNo">417</span>         new String[]<a name="line.417"></a>
 <span class="sourceLineNo">418</span>         {<a name="line.418"></a>
@@ -505,7 +505,7 @@
 <span class="sourceLineNo">497</span>         decodeDataFileArgument);<a name="line.497"></a>
 <span class="sourceLineNo">498</span><a name="line.498"></a>
 <span class="sourceLineNo">499</span>    final LinkedHashMap&lt;String[],String&gt; decodeExamples =<a name="line.499"></a>
-<span class="sourceLineNo">500</span>         new LinkedHashMap&lt;&gt;(3);<a name="line.500"></a>
+<span class="sourceLineNo">500</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(3));<a name="line.500"></a>
 <span class="sourceLineNo">501</span>    decodeExamples.put(<a name="line.501"></a>
 <span class="sourceLineNo">502</span>         new String[]<a name="line.502"></a>
 <span class="sourceLineNo">503</span>         {<a name="line.503"></a>
@@ -874,30 +874,31 @@
 <span class="sourceLineNo">866</span>  @Override()<a name="line.866"></a>
 <span class="sourceLineNo">867</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.867"></a>
 <span class="sourceLineNo">868</span>  {<a name="line.868"></a>
-<span class="sourceLineNo">869</span>    final LinkedHashMap&lt;String[],String&gt; examples = new LinkedHashMap&lt;&gt;(2);<a name="line.869"></a>
-<span class="sourceLineNo">870</span><a name="line.870"></a>
-<span class="sourceLineNo">871</span>    examples.put(<a name="line.871"></a>
-<span class="sourceLineNo">872</span>         new String[]<a name="line.872"></a>
-<span class="sourceLineNo">873</span>         {<a name="line.873"></a>
-<span class="sourceLineNo">874</span>           "encode",<a name="line.874"></a>
-<span class="sourceLineNo">875</span>           "--data", "Hello"<a name="line.875"></a>
-<span class="sourceLineNo">876</span>         },<a name="line.876"></a>
-<span class="sourceLineNo">877</span>         "Base64-encodes the string 'Hello' and writes the result to " +<a name="line.877"></a>
-<span class="sourceLineNo">878</span>              "standard output.");<a name="line.878"></a>
-<span class="sourceLineNo">879</span><a name="line.879"></a>
-<span class="sourceLineNo">880</span>    examples.put(<a name="line.880"></a>
-<span class="sourceLineNo">881</span>         new String[]<a name="line.881"></a>
-<span class="sourceLineNo">882</span>         {<a name="line.882"></a>
-<span class="sourceLineNo">883</span>           "decode",<a name="line.883"></a>
-<span class="sourceLineNo">884</span>           "--inputFile", "encoded-data.txt",<a name="line.884"></a>
-<span class="sourceLineNo">885</span>           "--outputFile", "decoded-data.txt",<a name="line.885"></a>
-<span class="sourceLineNo">886</span>         },<a name="line.886"></a>
-<span class="sourceLineNo">887</span>         "Base64-decodes the data contained in the 'encoded-data.txt' file " +<a name="line.887"></a>
-<span class="sourceLineNo">888</span>              "and writes the result to the 'raw-data.txt' file.");<a name="line.888"></a>
-<span class="sourceLineNo">889</span><a name="line.889"></a>
-<span class="sourceLineNo">890</span>    return examples;<a name="line.890"></a>
-<span class="sourceLineNo">891</span>  }<a name="line.891"></a>
-<span class="sourceLineNo">892</span>}<a name="line.892"></a>
+<span class="sourceLineNo">869</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.869"></a>
+<span class="sourceLineNo">870</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(2));<a name="line.870"></a>
+<span class="sourceLineNo">871</span><a name="line.871"></a>
+<span class="sourceLineNo">872</span>    examples.put(<a name="line.872"></a>
+<span class="sourceLineNo">873</span>         new String[]<a name="line.873"></a>
+<span class="sourceLineNo">874</span>         {<a name="line.874"></a>
+<span class="sourceLineNo">875</span>           "encode",<a name="line.875"></a>
+<span class="sourceLineNo">876</span>           "--data", "Hello"<a name="line.876"></a>
+<span class="sourceLineNo">877</span>         },<a name="line.877"></a>
+<span class="sourceLineNo">878</span>         "Base64-encodes the string 'Hello' and writes the result to " +<a name="line.878"></a>
+<span class="sourceLineNo">879</span>              "standard output.");<a name="line.879"></a>
+<span class="sourceLineNo">880</span><a name="line.880"></a>
+<span class="sourceLineNo">881</span>    examples.put(<a name="line.881"></a>
+<span class="sourceLineNo">882</span>         new String[]<a name="line.882"></a>
+<span class="sourceLineNo">883</span>         {<a name="line.883"></a>
+<span class="sourceLineNo">884</span>           "decode",<a name="line.884"></a>
+<span class="sourceLineNo">885</span>           "--inputFile", "encoded-data.txt",<a name="line.885"></a>
+<span class="sourceLineNo">886</span>           "--outputFile", "decoded-data.txt",<a name="line.886"></a>
+<span class="sourceLineNo">887</span>         },<a name="line.887"></a>
+<span class="sourceLineNo">888</span>         "Base64-decodes the data contained in the 'encoded-data.txt' file " +<a name="line.888"></a>
+<span class="sourceLineNo">889</span>              "and writes the result to the 'raw-data.txt' file.");<a name="line.889"></a>
+<span class="sourceLineNo">890</span><a name="line.890"></a>
+<span class="sourceLineNo">891</span>    return examples;<a name="line.891"></a>
+<span class="sourceLineNo">892</span>  }<a name="line.892"></a>
+<span class="sourceLineNo">893</span>}<a name="line.893"></a>
 
 
 

@@ -228,8 +228,8 @@
 <span class="sourceLineNo">220</span><a name="line.220"></a>
 <span class="sourceLineNo">221</span>      final ASN1Element[] backendSetIDElements =<a name="line.221"></a>
 <span class="sourceLineNo">222</span>           ASN1Set.decodeAsSet(elements[1]).elements();<a name="line.222"></a>
-<span class="sourceLineNo">223</span>      final LinkedHashSet&lt;String&gt; setIDs =<a name="line.223"></a>
-<span class="sourceLineNo">224</span>           new LinkedHashSet&lt;&gt;(backendSetIDElements.length);<a name="line.224"></a>
+<span class="sourceLineNo">223</span>      final LinkedHashSet&lt;String&gt; setIDs = new LinkedHashSet&lt;&gt;(<a name="line.223"></a>
+<span class="sourceLineNo">224</span>           StaticUtils.computeMapCapacity(backendSetIDElements.length));<a name="line.224"></a>
 <span class="sourceLineNo">225</span>      for (final ASN1Element e : backendSetIDElements)<a name="line.225"></a>
 <span class="sourceLineNo">226</span>      {<a name="line.226"></a>
 <span class="sourceLineNo">227</span>        setIDs.add(ASN1OctetString.decodeAsOctetString(e).stringValue());<a name="line.227"></a>

@@ -301,33 +301,34 @@
 <span class="sourceLineNo">293</span>  @Override()<a name="line.293"></a>
 <span class="sourceLineNo">294</span>  public JSONObject toJSONObject()<a name="line.294"></a>
 <span class="sourceLineNo">295</span>  {<a name="line.295"></a>
-<span class="sourceLineNo">296</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields = new LinkedHashMap&lt;&gt;(2);<a name="line.296"></a>
-<span class="sourceLineNo">297</span><a name="line.297"></a>
-<span class="sourceLineNo">298</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.298"></a>
-<span class="sourceLineNo">299</span><a name="line.299"></a>
-<span class="sourceLineNo">300</span>    final ArrayList&lt;JSONValue&gt; filterValues =<a name="line.300"></a>
-<span class="sourceLineNo">301</span>         new ArrayList&lt;&gt;(andFilters.size());<a name="line.301"></a>
-<span class="sourceLineNo">302</span>    for (final JSONObjectFilter f : andFilters)<a name="line.302"></a>
-<span class="sourceLineNo">303</span>    {<a name="line.303"></a>
-<span class="sourceLineNo">304</span>      filterValues.add(f.toJSONObject());<a name="line.304"></a>
-<span class="sourceLineNo">305</span>    }<a name="line.305"></a>
-<span class="sourceLineNo">306</span>    fields.put(FIELD_AND_FILTERS, new JSONArray(filterValues));<a name="line.306"></a>
-<span class="sourceLineNo">307</span><a name="line.307"></a>
-<span class="sourceLineNo">308</span>    return new JSONObject(fields);<a name="line.308"></a>
-<span class="sourceLineNo">309</span>  }<a name="line.309"></a>
-<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">296</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.296"></a>
+<span class="sourceLineNo">297</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(2));<a name="line.297"></a>
+<span class="sourceLineNo">298</span><a name="line.298"></a>
+<span class="sourceLineNo">299</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.299"></a>
+<span class="sourceLineNo">300</span><a name="line.300"></a>
+<span class="sourceLineNo">301</span>    final ArrayList&lt;JSONValue&gt; filterValues =<a name="line.301"></a>
+<span class="sourceLineNo">302</span>         new ArrayList&lt;&gt;(andFilters.size());<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    for (final JSONObjectFilter f : andFilters)<a name="line.303"></a>
+<span class="sourceLineNo">304</span>    {<a name="line.304"></a>
+<span class="sourceLineNo">305</span>      filterValues.add(f.toJSONObject());<a name="line.305"></a>
+<span class="sourceLineNo">306</span>    }<a name="line.306"></a>
+<span class="sourceLineNo">307</span>    fields.put(FIELD_AND_FILTERS, new JSONArray(filterValues));<a name="line.307"></a>
+<span class="sourceLineNo">308</span><a name="line.308"></a>
+<span class="sourceLineNo">309</span>    return new JSONObject(fields);<a name="line.309"></a>
+<span class="sourceLineNo">310</span>  }<a name="line.310"></a>
 <span class="sourceLineNo">311</span><a name="line.311"></a>
 <span class="sourceLineNo">312</span><a name="line.312"></a>
-<span class="sourceLineNo">313</span>  /**<a name="line.313"></a>
-<span class="sourceLineNo">314</span>   * {@inheritDoc}<a name="line.314"></a>
-<span class="sourceLineNo">315</span>   */<a name="line.315"></a>
-<span class="sourceLineNo">316</span>  @Override()<a name="line.316"></a>
-<span class="sourceLineNo">317</span>  protected ANDJSONObjectFilter decodeFilter(final JSONObject filterObject)<a name="line.317"></a>
-<span class="sourceLineNo">318</span>            throws JSONException<a name="line.318"></a>
-<span class="sourceLineNo">319</span>  {<a name="line.319"></a>
-<span class="sourceLineNo">320</span>    return new ANDJSONObjectFilter(getFilters(filterObject, FIELD_AND_FILTERS));<a name="line.320"></a>
-<span class="sourceLineNo">321</span>  }<a name="line.321"></a>
-<span class="sourceLineNo">322</span>}<a name="line.322"></a>
+<span class="sourceLineNo">313</span><a name="line.313"></a>
+<span class="sourceLineNo">314</span>  /**<a name="line.314"></a>
+<span class="sourceLineNo">315</span>   * {@inheritDoc}<a name="line.315"></a>
+<span class="sourceLineNo">316</span>   */<a name="line.316"></a>
+<span class="sourceLineNo">317</span>  @Override()<a name="line.317"></a>
+<span class="sourceLineNo">318</span>  protected ANDJSONObjectFilter decodeFilter(final JSONObject filterObject)<a name="line.318"></a>
+<span class="sourceLineNo">319</span>            throws JSONException<a name="line.319"></a>
+<span class="sourceLineNo">320</span>  {<a name="line.320"></a>
+<span class="sourceLineNo">321</span>    return new ANDJSONObjectFilter(getFilters(filterObject, FIELD_AND_FILTERS));<a name="line.321"></a>
+<span class="sourceLineNo">322</span>  }<a name="line.322"></a>
+<span class="sourceLineNo">323</span>}<a name="line.323"></a>
 
 
 

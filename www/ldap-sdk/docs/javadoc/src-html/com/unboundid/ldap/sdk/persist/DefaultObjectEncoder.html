@@ -392,11 +392,11 @@
 <span class="sourceLineNo">384</span>  {<a name="line.384"></a>
 <span class="sourceLineNo">385</span>    if (t.equals(Set.class) || t.equals(LinkedHashSet.class))<a name="line.385"></a>
 <span class="sourceLineNo">386</span>    {<a name="line.386"></a>
-<span class="sourceLineNo">387</span>      return new LinkedHashSet(size);<a name="line.387"></a>
+<span class="sourceLineNo">387</span>      return new LinkedHashSet(StaticUtils.computeMapCapacity(size));<a name="line.387"></a>
 <span class="sourceLineNo">388</span>    }<a name="line.388"></a>
 <span class="sourceLineNo">389</span>    else if (t.equals(HashSet.class))<a name="line.389"></a>
 <span class="sourceLineNo">390</span>    {<a name="line.390"></a>
-<span class="sourceLineNo">391</span>      return new HashSet(size);<a name="line.391"></a>
+<span class="sourceLineNo">391</span>      return new HashSet(StaticUtils.computeMapCapacity(size));<a name="line.391"></a>
 <span class="sourceLineNo">392</span>    }<a name="line.392"></a>
 <span class="sourceLineNo">393</span>    else if (t.equals(TreeSet.class))<a name="line.393"></a>
 <span class="sourceLineNo">394</span>    {<a name="line.394"></a>

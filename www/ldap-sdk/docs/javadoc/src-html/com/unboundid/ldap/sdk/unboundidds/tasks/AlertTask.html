@@ -821,7 +821,7 @@
 <span class="sourceLineNo">813</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.813"></a>
 <span class="sourceLineNo">814</span>  {<a name="line.814"></a>
 <span class="sourceLineNo">815</span>    final LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt; props =<a name="line.815"></a>
-<span class="sourceLineNo">816</span>         new LinkedHashMap&lt;&gt;(6);<a name="line.816"></a>
+<span class="sourceLineNo">816</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(6));<a name="line.816"></a>
 <span class="sourceLineNo">817</span><a name="line.817"></a>
 <span class="sourceLineNo">818</span>    if (alertType != null)<a name="line.818"></a>
 <span class="sourceLineNo">819</span>    {<a name="line.819"></a>

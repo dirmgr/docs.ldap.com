@@ -948,7 +948,7 @@
 <span class="sourceLineNo">940</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.940"></a>
 <span class="sourceLineNo">941</span>  {<a name="line.941"></a>
 <span class="sourceLineNo">942</span>    final LinkedHashMap&lt;TaskProperty, List&lt;Object&gt;&gt; props =<a name="line.942"></a>
-<span class="sourceLineNo">943</span>         new LinkedHashMap&lt;&gt;(6);<a name="line.943"></a>
+<span class="sourceLineNo">943</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(6));<a name="line.943"></a>
 <span class="sourceLineNo">944</span><a name="line.944"></a>
 <span class="sourceLineNo">945</span>    props.put(PROPERTY_TARGET_DIRECTORY,<a name="line.945"></a>
 <span class="sourceLineNo">946</span>         Collections.&lt;Object&gt;singletonList(targetDirectory));<a name="line.946"></a>

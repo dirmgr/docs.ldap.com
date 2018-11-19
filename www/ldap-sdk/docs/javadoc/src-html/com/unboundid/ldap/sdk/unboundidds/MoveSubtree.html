@@ -2633,27 +2633,28 @@
 <span class="sourceLineNo">2625</span>  @Override()<a name="line.2625"></a>
 <span class="sourceLineNo">2626</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.2626"></a>
 <span class="sourceLineNo">2627</span>  {<a name="line.2627"></a>
-<span class="sourceLineNo">2628</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap = new LinkedHashMap&lt;&gt;(1);<a name="line.2628"></a>
-<span class="sourceLineNo">2629</span><a name="line.2629"></a>
-<span class="sourceLineNo">2630</span>    final String[] args =<a name="line.2630"></a>
-<span class="sourceLineNo">2631</span>    {<a name="line.2631"></a>
-<span class="sourceLineNo">2632</span>      "--sourceHostname", "ds1.example.com",<a name="line.2632"></a>
-<span class="sourceLineNo">2633</span>      "--sourcePort", "389",<a name="line.2633"></a>
-<span class="sourceLineNo">2634</span>      "--sourceBindDN", "uid=admin,dc=example,dc=com",<a name="line.2634"></a>
-<span class="sourceLineNo">2635</span>      "--sourceBindPassword", "password",<a name="line.2635"></a>
-<span class="sourceLineNo">2636</span>      "--targetHostname", "ds2.example.com",<a name="line.2636"></a>
-<span class="sourceLineNo">2637</span>      "--targetPort", "389",<a name="line.2637"></a>
-<span class="sourceLineNo">2638</span>      "--targetBindDN", "uid=admin,dc=example,dc=com",<a name="line.2638"></a>
-<span class="sourceLineNo">2639</span>      "--targetBindPassword", "password",<a name="line.2639"></a>
-<span class="sourceLineNo">2640</span>      "--baseDN", "cn=small subtree,dc=example,dc=com",<a name="line.2640"></a>
-<span class="sourceLineNo">2641</span>      "--sizeLimit", "100",<a name="line.2641"></a>
-<span class="sourceLineNo">2642</span>      "--purpose", "Migrate a small subtree from ds1 to ds2"<a name="line.2642"></a>
-<span class="sourceLineNo">2643</span>    };<a name="line.2643"></a>
-<span class="sourceLineNo">2644</span>    exampleMap.put(args, INFO_MOVE_SUBTREE_EXAMPLE_DESCRIPTION.get());<a name="line.2644"></a>
-<span class="sourceLineNo">2645</span><a name="line.2645"></a>
-<span class="sourceLineNo">2646</span>    return exampleMap;<a name="line.2646"></a>
-<span class="sourceLineNo">2647</span>  }<a name="line.2647"></a>
-<span class="sourceLineNo">2648</span>}<a name="line.2648"></a>
+<span class="sourceLineNo">2628</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap =<a name="line.2628"></a>
+<span class="sourceLineNo">2629</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.2629"></a>
+<span class="sourceLineNo">2630</span><a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>    final String[] args =<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span>    {<a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>      "--sourceHostname", "ds1.example.com",<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>      "--sourcePort", "389",<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span>      "--sourceBindDN", "uid=admin,dc=example,dc=com",<a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>      "--sourceBindPassword", "password",<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>      "--targetHostname", "ds2.example.com",<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span>      "--targetPort", "389",<a name="line.2638"></a>
+<span class="sourceLineNo">2639</span>      "--targetBindDN", "uid=admin,dc=example,dc=com",<a name="line.2639"></a>
+<span class="sourceLineNo">2640</span>      "--targetBindPassword", "password",<a name="line.2640"></a>
+<span class="sourceLineNo">2641</span>      "--baseDN", "cn=small subtree,dc=example,dc=com",<a name="line.2641"></a>
+<span class="sourceLineNo">2642</span>      "--sizeLimit", "100",<a name="line.2642"></a>
+<span class="sourceLineNo">2643</span>      "--purpose", "Migrate a small subtree from ds1 to ds2"<a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>    };<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span>    exampleMap.put(args, INFO_MOVE_SUBTREE_EXAMPLE_DESCRIPTION.get());<a name="line.2645"></a>
+<span class="sourceLineNo">2646</span><a name="line.2646"></a>
+<span class="sourceLineNo">2647</span>    return exampleMap;<a name="line.2647"></a>
+<span class="sourceLineNo">2648</span>  }<a name="line.2648"></a>
+<span class="sourceLineNo">2649</span>}<a name="line.2649"></a>
 
 
 

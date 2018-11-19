@@ -3054,7 +3054,7 @@
 <span class="sourceLineNo">3046</span>          throws LDIFException<a name="line.3046"></a>
 <span class="sourceLineNo">3047</span>  {<a name="line.3047"></a>
 <span class="sourceLineNo">3048</span>    final LinkedHashMap&lt;String,Object&gt; attributes =<a name="line.3048"></a>
-<span class="sourceLineNo">3049</span>         new LinkedHashMap&lt;&gt;(ldifLines.size());<a name="line.3049"></a>
+<span class="sourceLineNo">3049</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(ldifLines.size()));<a name="line.3049"></a>
 <span class="sourceLineNo">3050</span>    while (iterator.hasNext())<a name="line.3050"></a>
 <span class="sourceLineNo">3051</span>    {<a name="line.3051"></a>
 <span class="sourceLineNo">3052</span>      final StringBuilder line = iterator.next();<a name="line.3052"></a>
@@ -3614,8 +3614,8 @@
 <span class="sourceLineNo">3606</span>          // Check to see if the attribute options are equivalent.<a name="line.3606"></a>
 <span class="sourceLineNo">3607</span>          final Set&lt;String&gt; expectedOptions =<a name="line.3607"></a>
 <span class="sourceLineNo">3608</span>               Attribute.getOptions(attributeName);<a name="line.3608"></a>
-<span class="sourceLineNo">3609</span>          final Set&lt;String&gt; lowerExpectedOptions =<a name="line.3609"></a>
-<span class="sourceLineNo">3610</span>               new HashSet&lt;&gt;(expectedOptions.size());<a name="line.3610"></a>
+<span class="sourceLineNo">3609</span>          final Set&lt;String&gt; lowerExpectedOptions = new HashSet&lt;&gt;(<a name="line.3609"></a>
+<span class="sourceLineNo">3610</span>               StaticUtils.computeMapCapacity(expectedOptions.size()));<a name="line.3610"></a>
 <span class="sourceLineNo">3611</span>          for (final String s : expectedOptions)<a name="line.3611"></a>
 <span class="sourceLineNo">3612</span>          {<a name="line.3612"></a>
 <span class="sourceLineNo">3613</span>            lowerExpectedOptions.add(StaticUtils.toLowerCase(s));<a name="line.3613"></a>
@@ -3623,8 +3623,8 @@
 <span class="sourceLineNo">3615</span><a name="line.3615"></a>
 <span class="sourceLineNo">3616</span>          final Set&lt;String&gt; alternateOptions =<a name="line.3616"></a>
 <span class="sourceLineNo">3617</span>               Attribute.getOptions(alternateName);<a name="line.3617"></a>
-<span class="sourceLineNo">3618</span>          final Set&lt;String&gt; lowerAlternateOptions =<a name="line.3618"></a>
-<span class="sourceLineNo">3619</span>               new HashSet&lt;&gt;(alternateOptions.size());<a name="line.3619"></a>
+<span class="sourceLineNo">3618</span>          final Set&lt;String&gt; lowerAlternateOptions = new HashSet&lt;&gt;(<a name="line.3618"></a>
+<span class="sourceLineNo">3619</span>               StaticUtils.computeMapCapacity(alternateOptions.size()));<a name="line.3619"></a>
 <span class="sourceLineNo">3620</span>          for (final String s : alternateOptions)<a name="line.3620"></a>
 <span class="sourceLineNo">3621</span>          {<a name="line.3621"></a>
 <span class="sourceLineNo">3622</span>            lowerAlternateOptions.add(StaticUtils.toLowerCase(s));<a name="line.3622"></a>

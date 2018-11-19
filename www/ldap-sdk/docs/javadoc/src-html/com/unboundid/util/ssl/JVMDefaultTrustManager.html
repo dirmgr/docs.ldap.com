@@ -190,7 +190,7 @@
 <span class="sourceLineNo">182</span>    // Iterate through the certificates in the keystore and load them into a<a name="line.182"></a>
 <span class="sourceLineNo">183</span>    // map for faster and more reliable access.<a name="line.183"></a>
 <span class="sourceLineNo">184</span>    final LinkedHashMap&lt;ASN1OctetString,X509Certificate&gt; certificateMap =<a name="line.184"></a>
-<span class="sourceLineNo">185</span>         new LinkedHashMap&lt;&gt;(50);<a name="line.185"></a>
+<span class="sourceLineNo">185</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(50));<a name="line.185"></a>
 <span class="sourceLineNo">186</span>    try<a name="line.186"></a>
 <span class="sourceLineNo">187</span>    {<a name="line.187"></a>
 <span class="sourceLineNo">188</span>      final Enumeration&lt;String&gt; aliasEnumeration = keystore.aliases();<a name="line.188"></a>
@@ -435,7 +435,7 @@
 <span class="sourceLineNo">427</span>    // If we didn't find it with known paths, then try to find it with a<a name="line.427"></a>
 <span class="sourceLineNo">428</span>    // recursive filesystem search below the Java home directory.<a name="line.428"></a>
 <span class="sourceLineNo">429</span>    final LinkedHashMap&lt;File,CertificateException&gt; exceptions =<a name="line.429"></a>
-<span class="sourceLineNo">430</span>         new LinkedHashMap&lt;&gt;(1);<a name="line.430"></a>
+<span class="sourceLineNo">430</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.430"></a>
 <span class="sourceLineNo">431</span>    final ObjectPair&lt;KeyStore,File&gt; keystorePair =<a name="line.431"></a>
 <span class="sourceLineNo">432</span>         searchForKeyStore(javaHomeDirectory, exceptions);<a name="line.432"></a>
 <span class="sourceLineNo">433</span>    if (keystorePair != null)<a name="line.433"></a>

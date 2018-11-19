@@ -587,73 +587,74 @@
 <span class="sourceLineNo">579</span>  @Override()<a name="line.579"></a>
 <span class="sourceLineNo">580</span>  public JSONObject toJSONObject()<a name="line.580"></a>
 <span class="sourceLineNo">581</span>  {<a name="line.581"></a>
-<span class="sourceLineNo">582</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields = new LinkedHashMap&lt;&gt;(4);<a name="line.582"></a>
-<span class="sourceLineNo">583</span><a name="line.583"></a>
-<span class="sourceLineNo">584</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.584"></a>
-<span class="sourceLineNo">585</span><a name="line.585"></a>
-<span class="sourceLineNo">586</span>    if (field.size() == 1)<a name="line.586"></a>
-<span class="sourceLineNo">587</span>    {<a name="line.587"></a>
-<span class="sourceLineNo">588</span>      fields.put(FIELD_FIELD_PATH, new JSONString(field.get(0)));<a name="line.588"></a>
-<span class="sourceLineNo">589</span>    }<a name="line.589"></a>
-<span class="sourceLineNo">590</span>    else<a name="line.590"></a>
-<span class="sourceLineNo">591</span>    {<a name="line.591"></a>
-<span class="sourceLineNo">592</span>      final ArrayList&lt;JSONValue&gt; fieldNameValues =<a name="line.592"></a>
-<span class="sourceLineNo">593</span>           new ArrayList&lt;&gt;(field.size());<a name="line.593"></a>
-<span class="sourceLineNo">594</span>      for (final String s : field)<a name="line.594"></a>
-<span class="sourceLineNo">595</span>      {<a name="line.595"></a>
-<span class="sourceLineNo">596</span>        fieldNameValues.add(new JSONString(s));<a name="line.596"></a>
-<span class="sourceLineNo">597</span>      }<a name="line.597"></a>
-<span class="sourceLineNo">598</span>      fields.put(FIELD_FIELD_PATH, new JSONArray(fieldNameValues));<a name="line.598"></a>
-<span class="sourceLineNo">599</span>    }<a name="line.599"></a>
-<span class="sourceLineNo">600</span><a name="line.600"></a>
-<span class="sourceLineNo">601</span>    fields.put(FIELD_REGULAR_EXPRESSION,<a name="line.601"></a>
-<span class="sourceLineNo">602</span>         new JSONString(regularExpression.toString()));<a name="line.602"></a>
-<span class="sourceLineNo">603</span><a name="line.603"></a>
-<span class="sourceLineNo">604</span>    if (matchAllElements)<a name="line.604"></a>
-<span class="sourceLineNo">605</span>    {<a name="line.605"></a>
-<span class="sourceLineNo">606</span>      fields.put(FIELD_MATCH_ALL_ELEMENTS, JSONBoolean.TRUE);<a name="line.606"></a>
-<span class="sourceLineNo">607</span>    }<a name="line.607"></a>
-<span class="sourceLineNo">608</span><a name="line.608"></a>
-<span class="sourceLineNo">609</span>    return new JSONObject(fields);<a name="line.609"></a>
-<span class="sourceLineNo">610</span>  }<a name="line.610"></a>
-<span class="sourceLineNo">611</span><a name="line.611"></a>
+<span class="sourceLineNo">582</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.582"></a>
+<span class="sourceLineNo">583</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(4));<a name="line.583"></a>
+<span class="sourceLineNo">584</span><a name="line.584"></a>
+<span class="sourceLineNo">585</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.585"></a>
+<span class="sourceLineNo">586</span><a name="line.586"></a>
+<span class="sourceLineNo">587</span>    if (field.size() == 1)<a name="line.587"></a>
+<span class="sourceLineNo">588</span>    {<a name="line.588"></a>
+<span class="sourceLineNo">589</span>      fields.put(FIELD_FIELD_PATH, new JSONString(field.get(0)));<a name="line.589"></a>
+<span class="sourceLineNo">590</span>    }<a name="line.590"></a>
+<span class="sourceLineNo">591</span>    else<a name="line.591"></a>
+<span class="sourceLineNo">592</span>    {<a name="line.592"></a>
+<span class="sourceLineNo">593</span>      final ArrayList&lt;JSONValue&gt; fieldNameValues =<a name="line.593"></a>
+<span class="sourceLineNo">594</span>           new ArrayList&lt;&gt;(field.size());<a name="line.594"></a>
+<span class="sourceLineNo">595</span>      for (final String s : field)<a name="line.595"></a>
+<span class="sourceLineNo">596</span>      {<a name="line.596"></a>
+<span class="sourceLineNo">597</span>        fieldNameValues.add(new JSONString(s));<a name="line.597"></a>
+<span class="sourceLineNo">598</span>      }<a name="line.598"></a>
+<span class="sourceLineNo">599</span>      fields.put(FIELD_FIELD_PATH, new JSONArray(fieldNameValues));<a name="line.599"></a>
+<span class="sourceLineNo">600</span>    }<a name="line.600"></a>
+<span class="sourceLineNo">601</span><a name="line.601"></a>
+<span class="sourceLineNo">602</span>    fields.put(FIELD_REGULAR_EXPRESSION,<a name="line.602"></a>
+<span class="sourceLineNo">603</span>         new JSONString(regularExpression.toString()));<a name="line.603"></a>
+<span class="sourceLineNo">604</span><a name="line.604"></a>
+<span class="sourceLineNo">605</span>    if (matchAllElements)<a name="line.605"></a>
+<span class="sourceLineNo">606</span>    {<a name="line.606"></a>
+<span class="sourceLineNo">607</span>      fields.put(FIELD_MATCH_ALL_ELEMENTS, JSONBoolean.TRUE);<a name="line.607"></a>
+<span class="sourceLineNo">608</span>    }<a name="line.608"></a>
+<span class="sourceLineNo">609</span><a name="line.609"></a>
+<span class="sourceLineNo">610</span>    return new JSONObject(fields);<a name="line.610"></a>
+<span class="sourceLineNo">611</span>  }<a name="line.611"></a>
 <span class="sourceLineNo">612</span><a name="line.612"></a>
 <span class="sourceLineNo">613</span><a name="line.613"></a>
-<span class="sourceLineNo">614</span>  /**<a name="line.614"></a>
-<span class="sourceLineNo">615</span>   * {@inheritDoc}<a name="line.615"></a>
-<span class="sourceLineNo">616</span>   */<a name="line.616"></a>
-<span class="sourceLineNo">617</span>  @Override()<a name="line.617"></a>
-<span class="sourceLineNo">618</span>  protected RegularExpressionJSONObjectFilter decodeFilter(<a name="line.618"></a>
-<span class="sourceLineNo">619</span>                 final JSONObject filterObject)<a name="line.619"></a>
-<span class="sourceLineNo">620</span>            throws JSONException<a name="line.620"></a>
-<span class="sourceLineNo">621</span>  {<a name="line.621"></a>
-<span class="sourceLineNo">622</span>    final List&lt;String&gt; fieldPath =<a name="line.622"></a>
-<span class="sourceLineNo">623</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.623"></a>
-<span class="sourceLineNo">624</span><a name="line.624"></a>
-<span class="sourceLineNo">625</span>    final String regex = getString(filterObject, FIELD_REGULAR_EXPRESSION,<a name="line.625"></a>
-<span class="sourceLineNo">626</span>         null, true);<a name="line.626"></a>
-<span class="sourceLineNo">627</span><a name="line.627"></a>
-<span class="sourceLineNo">628</span>    final Pattern pattern;<a name="line.628"></a>
-<span class="sourceLineNo">629</span>    try<a name="line.629"></a>
-<span class="sourceLineNo">630</span>    {<a name="line.630"></a>
-<span class="sourceLineNo">631</span>      pattern = Pattern.compile(regex);<a name="line.631"></a>
-<span class="sourceLineNo">632</span>    }<a name="line.632"></a>
-<span class="sourceLineNo">633</span>    catch (final Exception e)<a name="line.633"></a>
-<span class="sourceLineNo">634</span>    {<a name="line.634"></a>
-<span class="sourceLineNo">635</span>      Debug.debugException(e);<a name="line.635"></a>
-<span class="sourceLineNo">636</span>      throw new JSONException(<a name="line.636"></a>
-<span class="sourceLineNo">637</span>           ERR_REGEX_FILTER_DECODE_INVALID_REGEX.get(<a name="line.637"></a>
-<span class="sourceLineNo">638</span>                String.valueOf(filterObject), FIELD_REGULAR_EXPRESSION,<a name="line.638"></a>
-<span class="sourceLineNo">639</span>                fieldPathToName(fieldPath), StaticUtils.getExceptionMessage(e)),<a name="line.639"></a>
-<span class="sourceLineNo">640</span>           e);<a name="line.640"></a>
-<span class="sourceLineNo">641</span>    }<a name="line.641"></a>
-<span class="sourceLineNo">642</span><a name="line.642"></a>
-<span class="sourceLineNo">643</span>    final boolean matchAll =<a name="line.643"></a>
-<span class="sourceLineNo">644</span>         getBoolean(filterObject, FIELD_MATCH_ALL_ELEMENTS, false);<a name="line.644"></a>
-<span class="sourceLineNo">645</span><a name="line.645"></a>
-<span class="sourceLineNo">646</span>    return new RegularExpressionJSONObjectFilter(fieldPath, pattern, matchAll);<a name="line.646"></a>
-<span class="sourceLineNo">647</span>  }<a name="line.647"></a>
-<span class="sourceLineNo">648</span>}<a name="line.648"></a>
+<span class="sourceLineNo">614</span><a name="line.614"></a>
+<span class="sourceLineNo">615</span>  /**<a name="line.615"></a>
+<span class="sourceLineNo">616</span>   * {@inheritDoc}<a name="line.616"></a>
+<span class="sourceLineNo">617</span>   */<a name="line.617"></a>
+<span class="sourceLineNo">618</span>  @Override()<a name="line.618"></a>
+<span class="sourceLineNo">619</span>  protected RegularExpressionJSONObjectFilter decodeFilter(<a name="line.619"></a>
+<span class="sourceLineNo">620</span>                 final JSONObject filterObject)<a name="line.620"></a>
+<span class="sourceLineNo">621</span>            throws JSONException<a name="line.621"></a>
+<span class="sourceLineNo">622</span>  {<a name="line.622"></a>
+<span class="sourceLineNo">623</span>    final List&lt;String&gt; fieldPath =<a name="line.623"></a>
+<span class="sourceLineNo">624</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.624"></a>
+<span class="sourceLineNo">625</span><a name="line.625"></a>
+<span class="sourceLineNo">626</span>    final String regex = getString(filterObject, FIELD_REGULAR_EXPRESSION,<a name="line.626"></a>
+<span class="sourceLineNo">627</span>         null, true);<a name="line.627"></a>
+<span class="sourceLineNo">628</span><a name="line.628"></a>
+<span class="sourceLineNo">629</span>    final Pattern pattern;<a name="line.629"></a>
+<span class="sourceLineNo">630</span>    try<a name="line.630"></a>
+<span class="sourceLineNo">631</span>    {<a name="line.631"></a>
+<span class="sourceLineNo">632</span>      pattern = Pattern.compile(regex);<a name="line.632"></a>
+<span class="sourceLineNo">633</span>    }<a name="line.633"></a>
+<span class="sourceLineNo">634</span>    catch (final Exception e)<a name="line.634"></a>
+<span class="sourceLineNo">635</span>    {<a name="line.635"></a>
+<span class="sourceLineNo">636</span>      Debug.debugException(e);<a name="line.636"></a>
+<span class="sourceLineNo">637</span>      throw new JSONException(<a name="line.637"></a>
+<span class="sourceLineNo">638</span>           ERR_REGEX_FILTER_DECODE_INVALID_REGEX.get(<a name="line.638"></a>
+<span class="sourceLineNo">639</span>                String.valueOf(filterObject), FIELD_REGULAR_EXPRESSION,<a name="line.639"></a>
+<span class="sourceLineNo">640</span>                fieldPathToName(fieldPath), StaticUtils.getExceptionMessage(e)),<a name="line.640"></a>
+<span class="sourceLineNo">641</span>           e);<a name="line.641"></a>
+<span class="sourceLineNo">642</span>    }<a name="line.642"></a>
+<span class="sourceLineNo">643</span><a name="line.643"></a>
+<span class="sourceLineNo">644</span>    final boolean matchAll =<a name="line.644"></a>
+<span class="sourceLineNo">645</span>         getBoolean(filterObject, FIELD_MATCH_ALL_ELEMENTS, false);<a name="line.645"></a>
+<span class="sourceLineNo">646</span><a name="line.646"></a>
+<span class="sourceLineNo">647</span>    return new RegularExpressionJSONObjectFilter(fieldPath, pattern, matchAll);<a name="line.647"></a>
+<span class="sourceLineNo">648</span>  }<a name="line.648"></a>
+<span class="sourceLineNo">649</span>}<a name="line.649"></a>
 
 
 

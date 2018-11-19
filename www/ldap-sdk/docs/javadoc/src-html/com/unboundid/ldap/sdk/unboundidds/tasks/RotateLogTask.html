@@ -465,7 +465,7 @@
 <span class="sourceLineNo">457</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.457"></a>
 <span class="sourceLineNo">458</span>  {<a name="line.458"></a>
 <span class="sourceLineNo">459</span>    final LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt; props =<a name="line.459"></a>
-<span class="sourceLineNo">460</span>         new LinkedHashMap&lt;&gt;(10);<a name="line.460"></a>
+<span class="sourceLineNo">460</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(10));<a name="line.460"></a>
 <span class="sourceLineNo">461</span><a name="line.461"></a>
 <span class="sourceLineNo">462</span><a name="line.462"></a>
 <span class="sourceLineNo">463</span>    if (! paths.isEmpty())<a name="line.463"></a>

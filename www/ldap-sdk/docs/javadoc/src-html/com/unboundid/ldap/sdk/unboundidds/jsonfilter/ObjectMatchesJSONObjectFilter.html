@@ -387,7 +387,7 @@
 <span class="sourceLineNo">379</span>  public JSONObject toJSONObject()<a name="line.379"></a>
 <span class="sourceLineNo">380</span>  {<a name="line.380"></a>
 <span class="sourceLineNo">381</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.381"></a>
-<span class="sourceLineNo">382</span>         new LinkedHashMap&lt;&gt;(3);<a name="line.382"></a>
+<span class="sourceLineNo">382</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(3));<a name="line.382"></a>
 <span class="sourceLineNo">383</span><a name="line.383"></a>
 <span class="sourceLineNo">384</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.384"></a>
 <span class="sourceLineNo">385</span><a name="line.385"></a>

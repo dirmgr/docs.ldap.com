@@ -1323,506 +1323,507 @@
 <span class="sourceLineNo">1315</span>    final LDAPConnection connection = conn.get();<a name="line.1315"></a>
 <span class="sourceLineNo">1316</span><a name="line.1316"></a>
 <span class="sourceLineNo">1317</span><a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>    final HashMap&lt;String,Object&gt; saslProperties = new HashMap&lt;&gt;(2);<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>    saslProperties.put(Sasl.QOP, SASLQualityOfProtection.toString(allowedQoP));<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span>    saslProperties.put(Sasl.SERVER_AUTH, "true");<a name="line.1320"></a>
-<span class="sourceLineNo">1321</span><a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>    final SaslClient saslClient;<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span>    try<a name="line.1323"></a>
-<span class="sourceLineNo">1324</span>    {<a name="line.1324"></a>
-<span class="sourceLineNo">1325</span>      String serverName = saslClientServerName;<a name="line.1325"></a>
-<span class="sourceLineNo">1326</span>      if (serverName == null)<a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>      {<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>        serverName = connection.getConnectedAddress();<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>      }<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span><a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>      final String[] mechanisms = { GSSAPI_MECHANISM_NAME };<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>      saslClient = Sasl.createSaslClient(mechanisms, authorizationID,<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>           servicePrincipalProtocol, serverName, saslProperties, this);<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span>    }<a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>    catch (final Exception e)<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>    {<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>      Debug.debugException(e);<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.1338"></a>
-<span class="sourceLineNo">1339</span>           ERR_GSSAPI_CANNOT_CREATE_SASL_CLIENT.get(<a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>           e);<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span>    }<a name="line.1342"></a>
-<span class="sourceLineNo">1343</span><a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>    final SASLHelper helper = new SASLHelper(this, connection,<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>         GSSAPI_MECHANISM_NAME, saslClient, getControls(),<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span>         getResponseTimeoutMillis(connection), unhandledCallbackMessages);<a name="line.1346"></a>
-<span class="sourceLineNo">1347</span><a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>    try<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span>    {<a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>      return helper.processSASLBind();<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>    }<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>    finally<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span>    {<a name="line.1353"></a>
-<span class="sourceLineNo">1354</span>      messageID = helper.getMessageID();<a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>    }<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>  }<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span><a name="line.1357"></a>
+<span class="sourceLineNo">1318</span>    final HashMap&lt;String,Object&gt; saslProperties =<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>         new HashMap&lt;&gt;(StaticUtils.computeMapCapacity(2));<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>    saslProperties.put(Sasl.QOP, SASLQualityOfProtection.toString(allowedQoP));<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>    saslProperties.put(Sasl.SERVER_AUTH, "true");<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span><a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>    final SaslClient saslClient;<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>    try<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>    {<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>      String serverName = saslClientServerName;<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>      if (serverName == null)<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span>      {<a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>        serverName = connection.getConnectedAddress();<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>      }<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span><a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>      final String[] mechanisms = { GSSAPI_MECHANISM_NAME };<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>      saslClient = Sasl.createSaslClient(mechanisms, authorizationID,<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>           servicePrincipalProtocol, serverName, saslProperties, this);<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>    }<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>    catch (final Exception e)<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>    {<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>      Debug.debugException(e);<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>           ERR_GSSAPI_CANNOT_CREATE_SASL_CLIENT.get(<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>           e);<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>    }<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span><a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>    final SASLHelper helper = new SASLHelper(this, connection,<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>         GSSAPI_MECHANISM_NAME, saslClient, getControls(),<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span>         getResponseTimeoutMillis(connection), unhandledCallbackMessages);<a name="line.1347"></a>
+<span class="sourceLineNo">1348</span><a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>    try<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>    {<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span>      return helper.processSASLBind();<a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>    }<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>    finally<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>    {<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>      messageID = helper.getMessageID();<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>    }<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>  }<a name="line.1357"></a>
 <span class="sourceLineNo">1358</span><a name="line.1358"></a>
 <span class="sourceLineNo">1359</span><a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>  /**<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>   * {@inheritDoc}<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>   */<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>  @Override()<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>  public GSSAPIBindRequest getRebindRequest(final String host, final int port)<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>  {<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>    try<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>    {<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>      final GSSAPIBindRequestProperties gssapiProperties =<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span>           new GSSAPIBindRequestProperties(authenticationID, authorizationID,<a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>                password, realm, kdcAddress, configFilePath);<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>      gssapiProperties.setAllowedQoP(allowedQoP);<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span>      gssapiProperties.setServicePrincipalProtocol(servicePrincipalProtocol);<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>      gssapiProperties.setUseTicketCache(useTicketCache);<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>      gssapiProperties.setRequireCachedCredentials(requireCachedCredentials);<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>      gssapiProperties.setRenewTGT(renewTGT);<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>      gssapiProperties.setUseSubjectCredentialsOnly(useSubjectCredentialsOnly);<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>      gssapiProperties.setTicketCachePath(ticketCachePath);<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>      gssapiProperties.setEnableGSSAPIDebugging(enableGSSAPIDebugging);<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>      gssapiProperties.setJAASClientName(jaasClientName);<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>      gssapiProperties.setSASLClientServerName(saslClientServerName);<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>      gssapiProperties.setSuppressedSystemProperties(<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>           suppressedSystemProperties);<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span><a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>      return new GSSAPIBindRequest(gssapiProperties, getControls());<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>    }<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>    catch (final Exception e)<a name="line.1386"></a>
-<span class="sourceLineNo">1387</span>    {<a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>      // This should never happen.<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>      Debug.debugException(e);<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>      return null;<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>    }<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>  }<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span><a name="line.1393"></a>
+<span class="sourceLineNo">1360</span><a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>  /**<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>   * {@inheritDoc}<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>   */<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>  @Override()<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>  public GSSAPIBindRequest getRebindRequest(final String host, final int port)<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>  {<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>    try<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>    {<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>      final GSSAPIBindRequestProperties gssapiProperties =<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>           new GSSAPIBindRequestProperties(authenticationID, authorizationID,<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>                password, realm, kdcAddress, configFilePath);<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>      gssapiProperties.setAllowedQoP(allowedQoP);<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>      gssapiProperties.setServicePrincipalProtocol(servicePrincipalProtocol);<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span>      gssapiProperties.setUseTicketCache(useTicketCache);<a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>      gssapiProperties.setRequireCachedCredentials(requireCachedCredentials);<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>      gssapiProperties.setRenewTGT(renewTGT);<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>      gssapiProperties.setUseSubjectCredentialsOnly(useSubjectCredentialsOnly);<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>      gssapiProperties.setTicketCachePath(ticketCachePath);<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>      gssapiProperties.setEnableGSSAPIDebugging(enableGSSAPIDebugging);<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>      gssapiProperties.setJAASClientName(jaasClientName);<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>      gssapiProperties.setSASLClientServerName(saslClientServerName);<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>      gssapiProperties.setSuppressedSystemProperties(<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>           suppressedSystemProperties);<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span><a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>      return new GSSAPIBindRequest(gssapiProperties, getControls());<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>    }<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>    catch (final Exception e)<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>    {<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>      // This should never happen.<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>      Debug.debugException(e);<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>      return null;<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>    }<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>  }<a name="line.1393"></a>
 <span class="sourceLineNo">1394</span><a name="line.1394"></a>
 <span class="sourceLineNo">1395</span><a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>  /**<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>   * Handles any necessary callbacks required for SASL authentication.<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>   *<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>   * @param  callbacks  The set of callbacks to be handled.<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>   *<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>   * @throws  UnsupportedCallbackException  If an unsupported type of callback<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>   *                                        was received.<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>   */<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>  @InternalUseOnly()<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>  @Override()<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>  public void handle(final Callback[] callbacks)<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>         throws UnsupportedCallbackException<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>  {<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>    for (final Callback callback : callbacks)<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>    {<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>      if (callback instanceof NameCallback)<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>      {<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>        ((NameCallback) callback).setName(authenticationID);<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>      }<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>      else if (callback instanceof PasswordCallback)<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>      {<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>        if (password == null)<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>        {<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>          throw new UnsupportedCallbackException(callback,<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>               ERR_GSSAPI_NO_PASSWORD_AVAILABLE.get());<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>        }<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>        else<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>        {<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>          ((PasswordCallback) callback).setPassword(<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>               password.stringValue().toCharArray());<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>        }<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>      }<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>      else if (callback instanceof RealmCallback)<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>      {<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>        final RealmCallback rc = (RealmCallback) callback;<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>        if (realm == null)<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>        {<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>          unhandledCallbackMessages.add(<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>               ERR_GSSAPI_REALM_REQUIRED_BUT_NONE_PROVIDED.get(rc.getPrompt()));<a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>        }<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span>        else<a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>        {<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>          rc.setText(realm);<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>        }<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>      }<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>      else<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>      {<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>        // This is an unexpected callback.<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>        if (Debug.debugEnabled(DebugType.LDAP))<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>        {<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>          Debug.debug(Level.WARNING, DebugType.LDAP,<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>                "Unexpected GSSAPI SASL callback of type " +<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>                callback.getClass().getName());<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>        }<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span><a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>        unhandledCallbackMessages.add(ERR_GSSAPI_UNEXPECTED_CALLBACK.get(<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>             callback.getClass().getName()));<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>      }<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>    }<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>  }<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span><a name="line.1456"></a>
+<span class="sourceLineNo">1396</span><a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>  /**<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>   * Handles any necessary callbacks required for SASL authentication.<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>   *<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>   * @param  callbacks  The set of callbacks to be handled.<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>   *<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>   * @throws  UnsupportedCallbackException  If an unsupported type of callback<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>   *                                        was received.<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>   */<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>  @InternalUseOnly()<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>  @Override()<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>  public void handle(final Callback[] callbacks)<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>         throws UnsupportedCallbackException<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>  {<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>    for (final Callback callback : callbacks)<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>    {<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>      if (callback instanceof NameCallback)<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>      {<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>        ((NameCallback) callback).setName(authenticationID);<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>      }<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>      else if (callback instanceof PasswordCallback)<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>      {<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>        if (password == null)<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>        {<a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>          throw new UnsupportedCallbackException(callback,<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>               ERR_GSSAPI_NO_PASSWORD_AVAILABLE.get());<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>        }<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>        else<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>        {<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>          ((PasswordCallback) callback).setPassword(<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>               password.stringValue().toCharArray());<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>        }<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>      }<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>      else if (callback instanceof RealmCallback)<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>      {<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>        final RealmCallback rc = (RealmCallback) callback;<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>        if (realm == null)<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span>        {<a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>          unhandledCallbackMessages.add(<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>               ERR_GSSAPI_REALM_REQUIRED_BUT_NONE_PROVIDED.get(rc.getPrompt()));<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>        }<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>        else<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>        {<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>          rc.setText(realm);<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>        }<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>      }<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>      else<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>      {<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>        // This is an unexpected callback.<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>        if (Debug.debugEnabled(DebugType.LDAP))<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>        {<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>          Debug.debug(Level.WARNING, DebugType.LDAP,<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>                "Unexpected GSSAPI SASL callback of type " +<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>                callback.getClass().getName());<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>        }<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span><a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>        unhandledCallbackMessages.add(ERR_GSSAPI_UNEXPECTED_CALLBACK.get(<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>             callback.getClass().getName()));<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>      }<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>    }<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>  }<a name="line.1456"></a>
 <span class="sourceLineNo">1457</span><a name="line.1457"></a>
 <span class="sourceLineNo">1458</span><a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>  /**<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>   * {@inheritDoc}<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>   */<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>  @Override()<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>  public int getLastMessageID()<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>  {<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>    return messageID;<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>  }<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span><a name="line.1467"></a>
+<span class="sourceLineNo">1459</span><a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>  /**<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>   * {@inheritDoc}<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>   */<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>  @Override()<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>  public int getLastMessageID()<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>  {<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>    return messageID;<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>  }<a name="line.1467"></a>
 <span class="sourceLineNo">1468</span><a name="line.1468"></a>
 <span class="sourceLineNo">1469</span><a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>  /**<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>   * {@inheritDoc}<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>   */<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>  @Override()<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>  public GSSAPIBindRequest duplicate()<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>  {<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>    return duplicate(getControls());<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>  }<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span><a name="line.1478"></a>
+<span class="sourceLineNo">1470</span><a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>  /**<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>   * {@inheritDoc}<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>   */<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>  @Override()<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>  public GSSAPIBindRequest duplicate()<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>  {<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>    return duplicate(getControls());<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>  }<a name="line.1478"></a>
 <span class="sourceLineNo">1479</span><a name="line.1479"></a>
 <span class="sourceLineNo">1480</span><a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>  /**<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>   * {@inheritDoc}<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>   */<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>  @Override()<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>  public GSSAPIBindRequest duplicate(final Control[] controls)<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>  {<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>    try<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>    {<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>      final GSSAPIBindRequestProperties gssapiProperties =<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>           new GSSAPIBindRequestProperties(authenticationID, authorizationID,<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>                password, realm, kdcAddress, configFilePath);<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>      gssapiProperties.setAllowedQoP(allowedQoP);<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>      gssapiProperties.setServicePrincipalProtocol(servicePrincipalProtocol);<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>      gssapiProperties.setUseTicketCache(useTicketCache);<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>      gssapiProperties.setRequireCachedCredentials(requireCachedCredentials);<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>      gssapiProperties.setRenewTGT(renewTGT);<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>      gssapiProperties.setRefreshKrb5Config(refreshKrb5Config);<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>      gssapiProperties.setUseKeyTab(useKeyTab);<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>      gssapiProperties.setKeyTabPath(keyTabPath);<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>      gssapiProperties.setUseSubjectCredentialsOnly(useSubjectCredentialsOnly);<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>      gssapiProperties.setTicketCachePath(ticketCachePath);<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>      gssapiProperties.setEnableGSSAPIDebugging(enableGSSAPIDebugging);<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>      gssapiProperties.setJAASClientName(jaasClientName);<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>      gssapiProperties.setSASLClientServerName(saslClientServerName);<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>      gssapiProperties.setIsInitiator(isInitiator);<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>      gssapiProperties.setSuppressedSystemProperties(<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>           suppressedSystemProperties);<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span><a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>      final GSSAPIBindRequest bindRequest =<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>           new GSSAPIBindRequest(gssapiProperties, controls);<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>      bindRequest.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>      return bindRequest;<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>    }<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>    catch (final Exception e)<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>    {<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>      // This should never happen.<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>      Debug.debugException(e);<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>      return null;<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>    }<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>  }<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span><a name="line.1521"></a>
+<span class="sourceLineNo">1481</span><a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>  /**<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>   * {@inheritDoc}<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>   */<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>  @Override()<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>  public GSSAPIBindRequest duplicate(final Control[] controls)<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>  {<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>    try<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>    {<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>      final GSSAPIBindRequestProperties gssapiProperties =<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>           new GSSAPIBindRequestProperties(authenticationID, authorizationID,<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>                password, realm, kdcAddress, configFilePath);<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>      gssapiProperties.setAllowedQoP(allowedQoP);<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>      gssapiProperties.setServicePrincipalProtocol(servicePrincipalProtocol);<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>      gssapiProperties.setUseTicketCache(useTicketCache);<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>      gssapiProperties.setRequireCachedCredentials(requireCachedCredentials);<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>      gssapiProperties.setRenewTGT(renewTGT);<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>      gssapiProperties.setRefreshKrb5Config(refreshKrb5Config);<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>      gssapiProperties.setUseKeyTab(useKeyTab);<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>      gssapiProperties.setKeyTabPath(keyTabPath);<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>      gssapiProperties.setUseSubjectCredentialsOnly(useSubjectCredentialsOnly);<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>      gssapiProperties.setTicketCachePath(ticketCachePath);<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>      gssapiProperties.setEnableGSSAPIDebugging(enableGSSAPIDebugging);<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>      gssapiProperties.setJAASClientName(jaasClientName);<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>      gssapiProperties.setSASLClientServerName(saslClientServerName);<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>      gssapiProperties.setIsInitiator(isInitiator);<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>      gssapiProperties.setSuppressedSystemProperties(<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>           suppressedSystemProperties);<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span><a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>      final GSSAPIBindRequest bindRequest =<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>           new GSSAPIBindRequest(gssapiProperties, controls);<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>      bindRequest.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>      return bindRequest;<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>    }<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>    catch (final Exception e)<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>    {<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>      // This should never happen.<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>      Debug.debugException(e);<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>      return null;<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>    }<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>  }<a name="line.1521"></a>
 <span class="sourceLineNo">1522</span><a name="line.1522"></a>
 <span class="sourceLineNo">1523</span><a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>  /**<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>   * Clears the specified system property, unless it is one that is configured<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>   * to be suppressed.<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>   *<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>   * @param  name  The name of the property to be suppressed.<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>   */<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>  private void clearProperty(final String name)<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>  {<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>    if (! suppressedSystemProperties.contains(name))<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>    {<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>      System.clearProperty(name);<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>    }<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>  }<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span><a name="line.1537"></a>
+<span class="sourceLineNo">1524</span><a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>  /**<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>   * Clears the specified system property, unless it is one that is configured<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>   * to be suppressed.<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>   *<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>   * @param  name  The name of the property to be suppressed.<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>   */<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>  private void clearProperty(final String name)<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>  {<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>    if (! suppressedSystemProperties.contains(name))<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>    {<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>      System.clearProperty(name);<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>    }<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>  }<a name="line.1537"></a>
 <span class="sourceLineNo">1538</span><a name="line.1538"></a>
 <span class="sourceLineNo">1539</span><a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>  /**<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>   * Sets the specified system property, unless it is one that is configured to<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>   * be suppressed.<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>   *<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>   * @param  name   The name of the property to be suppressed.<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>   * @param  value  The value of the property to be suppressed.<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>   */<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>  private void setProperty(final String name, final String value)<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>  {<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>    if (! suppressedSystemProperties.contains(name))<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>    {<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>      System.setProperty(name, value);<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>    }<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>  }<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span><a name="line.1554"></a>
+<span class="sourceLineNo">1540</span><a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>  /**<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>   * Sets the specified system property, unless it is one that is configured to<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>   * be suppressed.<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>   *<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>   * @param  name   The name of the property to be suppressed.<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>   * @param  value  The value of the property to be suppressed.<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>   */<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>  private void setProperty(final String name, final String value)<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>  {<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>    if (! suppressedSystemProperties.contains(name))<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>    {<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>      System.setProperty(name, value);<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>    }<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>  }<a name="line.1554"></a>
 <span class="sourceLineNo">1555</span><a name="line.1555"></a>
 <span class="sourceLineNo">1556</span><a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>  /**<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>   * {@inheritDoc}<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>   */<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>  @Override()<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>  public void toString(final StringBuilder buffer)<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>  {<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>    buffer.append("GSSAPIBindRequest(authenticationID='");<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>    buffer.append(authenticationID);<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>    buffer.append('\'');<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span><a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>    if (authorizationID != null)<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>    {<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>      buffer.append(", authorizationID='");<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>      buffer.append(authorizationID);<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>      buffer.append('\'');<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>    }<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span><a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>    if (realm != null)<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span>    {<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>      buffer.append(", realm='");<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>      buffer.append(realm);<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>      buffer.append('\'');<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>    }<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span><a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>    buffer.append(", qop='");<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>    buffer.append(SASLQualityOfProtection.toString(allowedQoP));<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>    buffer.append('\'');<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span><a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>    if (kdcAddress != null)<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>    {<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>      buffer.append(", kdcAddress='");<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>      buffer.append(kdcAddress);<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>      buffer.append('\'');<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>    }<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span><a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>    if (isInitiator != null)<a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>    {<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>      buffer.append(", isInitiator=");<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>      buffer.append(isInitiator);<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>    }<a name="line.1596"></a>
-<span class="sourceLineNo">1597</span><a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>    buffer.append(", jaasClientName='");<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>    buffer.append(jaasClientName);<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>    buffer.append("', configFilePath='");<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>    buffer.append(configFilePath);<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span>    buffer.append("', servicePrincipalProtocol='");<a name="line.1602"></a>
-<span class="sourceLineNo">1603</span>    buffer.append(servicePrincipalProtocol);<a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>    buffer.append("', enableGSSAPIDebugging=");<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>    buffer.append(enableGSSAPIDebugging);<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span><a name="line.1606"></a>
-<span class="sourceLineNo">1607</span>    final Control[] controls = getControls();<a name="line.1607"></a>
-<span class="sourceLineNo">1608</span>    if (controls.length &gt; 0)<a name="line.1608"></a>
-<span class="sourceLineNo">1609</span>    {<a name="line.1609"></a>
-<span class="sourceLineNo">1610</span>      buffer.append(", controls={");<a name="line.1610"></a>
-<span class="sourceLineNo">1611</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>      {<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span>        if (i &gt; 0)<a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>        {<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span>          buffer.append(", ");<a name="line.1615"></a>
-<span class="sourceLineNo">1616</span>        }<a name="line.1616"></a>
-<span class="sourceLineNo">1617</span><a name="line.1617"></a>
-<span class="sourceLineNo">1618</span>        buffer.append(controls[i]);<a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>      }<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>      buffer.append('}');<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>    }<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span><a name="line.1622"></a>
-<span class="sourceLineNo">1623</span>    buffer.append(')');<a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>  }<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span><a name="line.1625"></a>
+<span class="sourceLineNo">1557</span><a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>  /**<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>   * {@inheritDoc}<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>   */<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>  @Override()<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>  public void toString(final StringBuilder buffer)<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>  {<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>    buffer.append("GSSAPIBindRequest(authenticationID='");<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>    buffer.append(authenticationID);<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>    buffer.append('\'');<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span><a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>    if (authorizationID != null)<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>    {<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>      buffer.append(", authorizationID='");<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>      buffer.append(authorizationID);<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>      buffer.append('\'');<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>    }<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span><a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>    if (realm != null)<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>    {<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>      buffer.append(", realm='");<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>      buffer.append(realm);<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>      buffer.append('\'');<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>    }<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span><a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>    buffer.append(", qop='");<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>    buffer.append(SASLQualityOfProtection.toString(allowedQoP));<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>    buffer.append('\'');<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span><a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>    if (kdcAddress != null)<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>    {<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>      buffer.append(", kdcAddress='");<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>      buffer.append(kdcAddress);<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>      buffer.append('\'');<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>    }<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span><a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>    if (isInitiator != null)<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>    {<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>      buffer.append(", isInitiator=");<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>      buffer.append(isInitiator);<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>    }<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span><a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>    buffer.append(", jaasClientName='");<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>    buffer.append(jaasClientName);<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>    buffer.append("', configFilePath='");<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>    buffer.append(configFilePath);<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>    buffer.append("', servicePrincipalProtocol='");<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>    buffer.append(servicePrincipalProtocol);<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>    buffer.append("', enableGSSAPIDebugging=");<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>    buffer.append(enableGSSAPIDebugging);<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span><a name="line.1607"></a>
+<span class="sourceLineNo">1608</span>    final Control[] controls = getControls();<a name="line.1608"></a>
+<span class="sourceLineNo">1609</span>    if (controls.length &gt; 0)<a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>    {<a name="line.1610"></a>
+<span class="sourceLineNo">1611</span>      buffer.append(", controls={");<a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span>      {<a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>        if (i &gt; 0)<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>        {<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>          buffer.append(", ");<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>        }<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span><a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>        buffer.append(controls[i]);<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>      }<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>      buffer.append('}');<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>    }<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span><a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>    buffer.append(')');<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>  }<a name="line.1625"></a>
 <span class="sourceLineNo">1626</span><a name="line.1626"></a>
 <span class="sourceLineNo">1627</span><a name="line.1627"></a>
-<span class="sourceLineNo">1628</span>  /**<a name="line.1628"></a>
-<span class="sourceLineNo">1629</span>   * {@inheritDoc}<a name="line.1629"></a>
-<span class="sourceLineNo">1630</span>   */<a name="line.1630"></a>
-<span class="sourceLineNo">1631</span>  @Override()<a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>  public void toCode(final List&lt;String&gt; lineList, final String requestID,<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.1633"></a>
-<span class="sourceLineNo">1634</span>  {<a name="line.1634"></a>
-<span class="sourceLineNo">1635</span>    // Create and update the bind request properties object.<a name="line.1635"></a>
-<span class="sourceLineNo">1636</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces,<a name="line.1636"></a>
-<span class="sourceLineNo">1637</span>         "GSSAPIBindRequestProperties", requestID + "RequestProperties",<a name="line.1637"></a>
-<span class="sourceLineNo">1638</span>         "new GSSAPIBindRequestProperties",<a name="line.1638"></a>
-<span class="sourceLineNo">1639</span>         ToCodeArgHelper.createString(authenticationID, "Authentication ID"),<a name="line.1639"></a>
-<span class="sourceLineNo">1640</span>         ToCodeArgHelper.createString("---redacted-password---", "Password"));<a name="line.1640"></a>
-<span class="sourceLineNo">1641</span><a name="line.1641"></a>
-<span class="sourceLineNo">1642</span>    if (authorizationID != null)<a name="line.1642"></a>
-<span class="sourceLineNo">1643</span>    {<a name="line.1643"></a>
-<span class="sourceLineNo">1644</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1644"></a>
-<span class="sourceLineNo">1645</span>           requestID + "RequestProperties.setAuthorizationID",<a name="line.1645"></a>
-<span class="sourceLineNo">1646</span>           ToCodeArgHelper.createString(authorizationID, null));<a name="line.1646"></a>
-<span class="sourceLineNo">1647</span>    }<a name="line.1647"></a>
-<span class="sourceLineNo">1648</span><a name="line.1648"></a>
-<span class="sourceLineNo">1649</span>    if (realm != null)<a name="line.1649"></a>
-<span class="sourceLineNo">1650</span>    {<a name="line.1650"></a>
-<span class="sourceLineNo">1651</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1651"></a>
-<span class="sourceLineNo">1652</span>           requestID + "RequestProperties.setRealm",<a name="line.1652"></a>
-<span class="sourceLineNo">1653</span>           ToCodeArgHelper.createString(realm, null));<a name="line.1653"></a>
-<span class="sourceLineNo">1654</span>    }<a name="line.1654"></a>
-<span class="sourceLineNo">1655</span><a name="line.1655"></a>
-<span class="sourceLineNo">1656</span>    final ArrayList&lt;String&gt; qopValues = new ArrayList&lt;&gt;(3);<a name="line.1656"></a>
-<span class="sourceLineNo">1657</span>    for (final SASLQualityOfProtection qop : allowedQoP)<a name="line.1657"></a>
-<span class="sourceLineNo">1658</span>    {<a name="line.1658"></a>
-<span class="sourceLineNo">1659</span>      qopValues.add("SASLQualityOfProtection." + qop.name());<a name="line.1659"></a>
-<span class="sourceLineNo">1660</span>    }<a name="line.1660"></a>
-<span class="sourceLineNo">1661</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1661"></a>
-<span class="sourceLineNo">1662</span>         requestID + "RequestProperties.setAllowedQoP",<a name="line.1662"></a>
-<span class="sourceLineNo">1663</span>         ToCodeArgHelper.createRaw(qopValues, null));<a name="line.1663"></a>
-<span class="sourceLineNo">1664</span><a name="line.1664"></a>
-<span class="sourceLineNo">1665</span>    if (kdcAddress != null)<a name="line.1665"></a>
-<span class="sourceLineNo">1666</span>    {<a name="line.1666"></a>
-<span class="sourceLineNo">1667</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1667"></a>
-<span class="sourceLineNo">1668</span>           requestID + "RequestProperties.setKDCAddress",<a name="line.1668"></a>
-<span class="sourceLineNo">1669</span>           ToCodeArgHelper.createString(kdcAddress, null));<a name="line.1669"></a>
-<span class="sourceLineNo">1670</span>    }<a name="line.1670"></a>
-<span class="sourceLineNo">1671</span><a name="line.1671"></a>
-<span class="sourceLineNo">1672</span>    if (jaasClientName != null)<a name="line.1672"></a>
-<span class="sourceLineNo">1673</span>    {<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1674"></a>
-<span class="sourceLineNo">1675</span>           requestID + "RequestProperties.setJAASClientName",<a name="line.1675"></a>
-<span class="sourceLineNo">1676</span>           ToCodeArgHelper.createString(jaasClientName, null));<a name="line.1676"></a>
-<span class="sourceLineNo">1677</span>    }<a name="line.1677"></a>
-<span class="sourceLineNo">1678</span><a name="line.1678"></a>
-<span class="sourceLineNo">1679</span>    if (configFilePath != null)<a name="line.1679"></a>
-<span class="sourceLineNo">1680</span>    {<a name="line.1680"></a>
-<span class="sourceLineNo">1681</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1681"></a>
-<span class="sourceLineNo">1682</span>           requestID + "RequestProperties.setConfigFilePath",<a name="line.1682"></a>
-<span class="sourceLineNo">1683</span>           ToCodeArgHelper.createString(configFilePath, null));<a name="line.1683"></a>
-<span class="sourceLineNo">1684</span>    }<a name="line.1684"></a>
-<span class="sourceLineNo">1685</span><a name="line.1685"></a>
-<span class="sourceLineNo">1686</span>    if (saslClientServerName != null)<a name="line.1686"></a>
-<span class="sourceLineNo">1687</span>    {<a name="line.1687"></a>
-<span class="sourceLineNo">1688</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1688"></a>
-<span class="sourceLineNo">1689</span>           requestID + "RequestProperties.setSASLClientServerName",<a name="line.1689"></a>
-<span class="sourceLineNo">1690</span>           ToCodeArgHelper.createString(saslClientServerName, null));<a name="line.1690"></a>
-<span class="sourceLineNo">1691</span>    }<a name="line.1691"></a>
-<span class="sourceLineNo">1692</span><a name="line.1692"></a>
-<span class="sourceLineNo">1693</span>    if (servicePrincipalProtocol != null)<a name="line.1693"></a>
-<span class="sourceLineNo">1694</span>    {<a name="line.1694"></a>
-<span class="sourceLineNo">1695</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1695"></a>
-<span class="sourceLineNo">1696</span>           requestID + "RequestProperties.setServicePrincipalProtocol",<a name="line.1696"></a>
-<span class="sourceLineNo">1697</span>           ToCodeArgHelper.createString(servicePrincipalProtocol, null));<a name="line.1697"></a>
-<span class="sourceLineNo">1698</span>    }<a name="line.1698"></a>
-<span class="sourceLineNo">1699</span><a name="line.1699"></a>
-<span class="sourceLineNo">1700</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1700"></a>
-<span class="sourceLineNo">1701</span>         requestID + "RequestProperties.setRefreshKrb5Config",<a name="line.1701"></a>
-<span class="sourceLineNo">1702</span>         ToCodeArgHelper.createBoolean(refreshKrb5Config, null));<a name="line.1702"></a>
-<span class="sourceLineNo">1703</span><a name="line.1703"></a>
-<span class="sourceLineNo">1704</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1704"></a>
-<span class="sourceLineNo">1705</span>         requestID + "RequestProperties.setUseKeyTab",<a name="line.1705"></a>
-<span class="sourceLineNo">1706</span>         ToCodeArgHelper.createBoolean(useKeyTab, null));<a name="line.1706"></a>
-<span class="sourceLineNo">1707</span><a name="line.1707"></a>
-<span class="sourceLineNo">1708</span>    if (keyTabPath != null)<a name="line.1708"></a>
-<span class="sourceLineNo">1709</span>    {<a name="line.1709"></a>
-<span class="sourceLineNo">1710</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1710"></a>
-<span class="sourceLineNo">1711</span>           requestID + "RequestProperties.setKeyTabPath",<a name="line.1711"></a>
-<span class="sourceLineNo">1712</span>           ToCodeArgHelper.createString(keyTabPath, null));<a name="line.1712"></a>
-<span class="sourceLineNo">1713</span>    }<a name="line.1713"></a>
-<span class="sourceLineNo">1714</span><a name="line.1714"></a>
-<span class="sourceLineNo">1715</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1715"></a>
-<span class="sourceLineNo">1716</span>         requestID + "RequestProperties.setUseSubjectCredentialsOnly",<a name="line.1716"></a>
-<span class="sourceLineNo">1717</span>         ToCodeArgHelper.createBoolean(useSubjectCredentialsOnly, null));<a name="line.1717"></a>
-<span class="sourceLineNo">1718</span><a name="line.1718"></a>
-<span class="sourceLineNo">1719</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1719"></a>
-<span class="sourceLineNo">1720</span>         requestID + "RequestProperties.setUseTicketCache",<a name="line.1720"></a>
-<span class="sourceLineNo">1721</span>         ToCodeArgHelper.createBoolean(useTicketCache, null));<a name="line.1721"></a>
-<span class="sourceLineNo">1722</span><a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1723"></a>
-<span class="sourceLineNo">1724</span>         requestID + "RequestProperties.setRequireCachedCredentials",<a name="line.1724"></a>
-<span class="sourceLineNo">1725</span>         ToCodeArgHelper.createBoolean(requireCachedCredentials, null));<a name="line.1725"></a>
-<span class="sourceLineNo">1726</span><a name="line.1726"></a>
-<span class="sourceLineNo">1727</span>    if (ticketCachePath != null)<a name="line.1727"></a>
-<span class="sourceLineNo">1728</span>    {<a name="line.1728"></a>
-<span class="sourceLineNo">1729</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1729"></a>
-<span class="sourceLineNo">1730</span>           requestID + "RequestProperties.setTicketCachePath",<a name="line.1730"></a>
-<span class="sourceLineNo">1731</span>           ToCodeArgHelper.createString(ticketCachePath, null));<a name="line.1731"></a>
-<span class="sourceLineNo">1732</span>    }<a name="line.1732"></a>
-<span class="sourceLineNo">1733</span><a name="line.1733"></a>
-<span class="sourceLineNo">1734</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1734"></a>
-<span class="sourceLineNo">1735</span>         requestID + "RequestProperties.setRenewTGT",<a name="line.1735"></a>
-<span class="sourceLineNo">1736</span>         ToCodeArgHelper.createBoolean(renewTGT, null));<a name="line.1736"></a>
-<span class="sourceLineNo">1737</span><a name="line.1737"></a>
-<span class="sourceLineNo">1738</span>    if (isInitiator != null)<a name="line.1738"></a>
-<span class="sourceLineNo">1739</span>    {<a name="line.1739"></a>
-<span class="sourceLineNo">1740</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1740"></a>
-<span class="sourceLineNo">1741</span>           requestID + "RequestProperties.setIsInitiator",<a name="line.1741"></a>
-<span class="sourceLineNo">1742</span>           ToCodeArgHelper.createBoolean(isInitiator, null));<a name="line.1742"></a>
-<span class="sourceLineNo">1743</span>    }<a name="line.1743"></a>
-<span class="sourceLineNo">1744</span><a name="line.1744"></a>
-<span class="sourceLineNo">1745</span>    if ((suppressedSystemProperties != null) &amp;&amp;<a name="line.1745"></a>
-<span class="sourceLineNo">1746</span>        (! suppressedSystemProperties.isEmpty()))<a name="line.1746"></a>
-<span class="sourceLineNo">1747</span>    {<a name="line.1747"></a>
-<span class="sourceLineNo">1748</span>      final ArrayList&lt;ToCodeArgHelper&gt; suppressedArgs =<a name="line.1748"></a>
-<span class="sourceLineNo">1749</span>           new ArrayList&lt;&gt;(suppressedSystemProperties.size());<a name="line.1749"></a>
-<span class="sourceLineNo">1750</span>      for (final String s : suppressedSystemProperties)<a name="line.1750"></a>
-<span class="sourceLineNo">1751</span>      {<a name="line.1751"></a>
-<span class="sourceLineNo">1752</span>        suppressedArgs.add(ToCodeArgHelper.createString(s, null));<a name="line.1752"></a>
-<span class="sourceLineNo">1753</span>      }<a name="line.1753"></a>
-<span class="sourceLineNo">1754</span><a name="line.1754"></a>
-<span class="sourceLineNo">1755</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, "List&lt;String&gt;",<a name="line.1755"></a>
-<span class="sourceLineNo">1756</span>           requestID + "SuppressedProperties", "Arrays.asList", suppressedArgs);<a name="line.1756"></a>
-<span class="sourceLineNo">1757</span><a name="line.1757"></a>
-<span class="sourceLineNo">1758</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1758"></a>
-<span class="sourceLineNo">1759</span>           requestID + "RequestProperties.setSuppressedSystemProperties",<a name="line.1759"></a>
-<span class="sourceLineNo">1760</span>           ToCodeArgHelper.createRaw(requestID + "SuppressedProperties", null));<a name="line.1760"></a>
-<span class="sourceLineNo">1761</span>    }<a name="line.1761"></a>
-<span class="sourceLineNo">1762</span><a name="line.1762"></a>
-<span class="sourceLineNo">1763</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1763"></a>
-<span class="sourceLineNo">1764</span>         requestID + "RequestProperties.setEnableGSSAPIDebugging",<a name="line.1764"></a>
-<span class="sourceLineNo">1765</span>         ToCodeArgHelper.createBoolean(enableGSSAPIDebugging, null));<a name="line.1765"></a>
-<span class="sourceLineNo">1766</span><a name="line.1766"></a>
+<span class="sourceLineNo">1628</span><a name="line.1628"></a>
+<span class="sourceLineNo">1629</span>  /**<a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>   * {@inheritDoc}<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>   */<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>  @Override()<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>  public void toCode(final List&lt;String&gt; lineList, final String requestID,<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>  {<a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>    // Create and update the bind request properties object.<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces,<a name="line.1637"></a>
+<span class="sourceLineNo">1638</span>         "GSSAPIBindRequestProperties", requestID + "RequestProperties",<a name="line.1638"></a>
+<span class="sourceLineNo">1639</span>         "new GSSAPIBindRequestProperties",<a name="line.1639"></a>
+<span class="sourceLineNo">1640</span>         ToCodeArgHelper.createString(authenticationID, "Authentication ID"),<a name="line.1640"></a>
+<span class="sourceLineNo">1641</span>         ToCodeArgHelper.createString("---redacted-password---", "Password"));<a name="line.1641"></a>
+<span class="sourceLineNo">1642</span><a name="line.1642"></a>
+<span class="sourceLineNo">1643</span>    if (authorizationID != null)<a name="line.1643"></a>
+<span class="sourceLineNo">1644</span>    {<a name="line.1644"></a>
+<span class="sourceLineNo">1645</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1645"></a>
+<span class="sourceLineNo">1646</span>           requestID + "RequestProperties.setAuthorizationID",<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>           ToCodeArgHelper.createString(authorizationID, null));<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span>    }<a name="line.1648"></a>
+<span class="sourceLineNo">1649</span><a name="line.1649"></a>
+<span class="sourceLineNo">1650</span>    if (realm != null)<a name="line.1650"></a>
+<span class="sourceLineNo">1651</span>    {<a name="line.1651"></a>
+<span class="sourceLineNo">1652</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>           requestID + "RequestProperties.setRealm",<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span>           ToCodeArgHelper.createString(realm, null));<a name="line.1654"></a>
+<span class="sourceLineNo">1655</span>    }<a name="line.1655"></a>
+<span class="sourceLineNo">1656</span><a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>    final ArrayList&lt;String&gt; qopValues = new ArrayList&lt;&gt;(3);<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>    for (final SASLQualityOfProtection qop : allowedQoP)<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>    {<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>      qopValues.add("SASLQualityOfProtection." + qop.name());<a name="line.1660"></a>
+<span class="sourceLineNo">1661</span>    }<a name="line.1661"></a>
+<span class="sourceLineNo">1662</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1662"></a>
+<span class="sourceLineNo">1663</span>         requestID + "RequestProperties.setAllowedQoP",<a name="line.1663"></a>
+<span class="sourceLineNo">1664</span>         ToCodeArgHelper.createRaw(qopValues, null));<a name="line.1664"></a>
+<span class="sourceLineNo">1665</span><a name="line.1665"></a>
+<span class="sourceLineNo">1666</span>    if (kdcAddress != null)<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span>    {<a name="line.1667"></a>
+<span class="sourceLineNo">1668</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>           requestID + "RequestProperties.setKDCAddress",<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span>           ToCodeArgHelper.createString(kdcAddress, null));<a name="line.1670"></a>
+<span class="sourceLineNo">1671</span>    }<a name="line.1671"></a>
+<span class="sourceLineNo">1672</span><a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>    if (jaasClientName != null)<a name="line.1673"></a>
+<span class="sourceLineNo">1674</span>    {<a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span>           requestID + "RequestProperties.setJAASClientName",<a name="line.1676"></a>
+<span class="sourceLineNo">1677</span>           ToCodeArgHelper.createString(jaasClientName, null));<a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>    }<a name="line.1678"></a>
+<span class="sourceLineNo">1679</span><a name="line.1679"></a>
+<span class="sourceLineNo">1680</span>    if (configFilePath != null)<a name="line.1680"></a>
+<span class="sourceLineNo">1681</span>    {<a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span>           requestID + "RequestProperties.setConfigFilePath",<a name="line.1683"></a>
+<span class="sourceLineNo">1684</span>           ToCodeArgHelper.createString(configFilePath, null));<a name="line.1684"></a>
+<span class="sourceLineNo">1685</span>    }<a name="line.1685"></a>
+<span class="sourceLineNo">1686</span><a name="line.1686"></a>
+<span class="sourceLineNo">1687</span>    if (saslClientServerName != null)<a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>    {<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1689"></a>
+<span class="sourceLineNo">1690</span>           requestID + "RequestProperties.setSASLClientServerName",<a name="line.1690"></a>
+<span class="sourceLineNo">1691</span>           ToCodeArgHelper.createString(saslClientServerName, null));<a name="line.1691"></a>
+<span class="sourceLineNo">1692</span>    }<a name="line.1692"></a>
+<span class="sourceLineNo">1693</span><a name="line.1693"></a>
+<span class="sourceLineNo">1694</span>    if (servicePrincipalProtocol != null)<a name="line.1694"></a>
+<span class="sourceLineNo">1695</span>    {<a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>           requestID + "RequestProperties.setServicePrincipalProtocol",<a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>           ToCodeArgHelper.createString(servicePrincipalProtocol, null));<a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>    }<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span><a name="line.1700"></a>
+<span class="sourceLineNo">1701</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>         requestID + "RequestProperties.setRefreshKrb5Config",<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span>         ToCodeArgHelper.createBoolean(refreshKrb5Config, null));<a name="line.1703"></a>
+<span class="sourceLineNo">1704</span><a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span>         requestID + "RequestProperties.setUseKeyTab",<a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>         ToCodeArgHelper.createBoolean(useKeyTab, null));<a name="line.1707"></a>
+<span class="sourceLineNo">1708</span><a name="line.1708"></a>
+<span class="sourceLineNo">1709</span>    if (keyTabPath != null)<a name="line.1709"></a>
+<span class="sourceLineNo">1710</span>    {<a name="line.1710"></a>
+<span class="sourceLineNo">1711</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1711"></a>
+<span class="sourceLineNo">1712</span>           requestID + "RequestProperties.setKeyTabPath",<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span>           ToCodeArgHelper.createString(keyTabPath, null));<a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>    }<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span><a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>         requestID + "RequestProperties.setUseSubjectCredentialsOnly",<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>         ToCodeArgHelper.createBoolean(useSubjectCredentialsOnly, null));<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span><a name="line.1719"></a>
+<span class="sourceLineNo">1720</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1720"></a>
+<span class="sourceLineNo">1721</span>         requestID + "RequestProperties.setUseTicketCache",<a name="line.1721"></a>
+<span class="sourceLineNo">1722</span>         ToCodeArgHelper.createBoolean(useTicketCache, null));<a name="line.1722"></a>
+<span class="sourceLineNo">1723</span><a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span>         requestID + "RequestProperties.setRequireCachedCredentials",<a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>         ToCodeArgHelper.createBoolean(requireCachedCredentials, null));<a name="line.1726"></a>
+<span class="sourceLineNo">1727</span><a name="line.1727"></a>
+<span class="sourceLineNo">1728</span>    if (ticketCachePath != null)<a name="line.1728"></a>
+<span class="sourceLineNo">1729</span>    {<a name="line.1729"></a>
+<span class="sourceLineNo">1730</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1730"></a>
+<span class="sourceLineNo">1731</span>           requestID + "RequestProperties.setTicketCachePath",<a name="line.1731"></a>
+<span class="sourceLineNo">1732</span>           ToCodeArgHelper.createString(ticketCachePath, null));<a name="line.1732"></a>
+<span class="sourceLineNo">1733</span>    }<a name="line.1733"></a>
+<span class="sourceLineNo">1734</span><a name="line.1734"></a>
+<span class="sourceLineNo">1735</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1735"></a>
+<span class="sourceLineNo">1736</span>         requestID + "RequestProperties.setRenewTGT",<a name="line.1736"></a>
+<span class="sourceLineNo">1737</span>         ToCodeArgHelper.createBoolean(renewTGT, null));<a name="line.1737"></a>
+<span class="sourceLineNo">1738</span><a name="line.1738"></a>
+<span class="sourceLineNo">1739</span>    if (isInitiator != null)<a name="line.1739"></a>
+<span class="sourceLineNo">1740</span>    {<a name="line.1740"></a>
+<span class="sourceLineNo">1741</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1741"></a>
+<span class="sourceLineNo">1742</span>           requestID + "RequestProperties.setIsInitiator",<a name="line.1742"></a>
+<span class="sourceLineNo">1743</span>           ToCodeArgHelper.createBoolean(isInitiator, null));<a name="line.1743"></a>
+<span class="sourceLineNo">1744</span>    }<a name="line.1744"></a>
+<span class="sourceLineNo">1745</span><a name="line.1745"></a>
+<span class="sourceLineNo">1746</span>    if ((suppressedSystemProperties != null) &amp;&amp;<a name="line.1746"></a>
+<span class="sourceLineNo">1747</span>        (! suppressedSystemProperties.isEmpty()))<a name="line.1747"></a>
+<span class="sourceLineNo">1748</span>    {<a name="line.1748"></a>
+<span class="sourceLineNo">1749</span>      final ArrayList&lt;ToCodeArgHelper&gt; suppressedArgs =<a name="line.1749"></a>
+<span class="sourceLineNo">1750</span>           new ArrayList&lt;&gt;(suppressedSystemProperties.size());<a name="line.1750"></a>
+<span class="sourceLineNo">1751</span>      for (final String s : suppressedSystemProperties)<a name="line.1751"></a>
+<span class="sourceLineNo">1752</span>      {<a name="line.1752"></a>
+<span class="sourceLineNo">1753</span>        suppressedArgs.add(ToCodeArgHelper.createString(s, null));<a name="line.1753"></a>
+<span class="sourceLineNo">1754</span>      }<a name="line.1754"></a>
+<span class="sourceLineNo">1755</span><a name="line.1755"></a>
+<span class="sourceLineNo">1756</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, "List&lt;String&gt;",<a name="line.1756"></a>
+<span class="sourceLineNo">1757</span>           requestID + "SuppressedProperties", "Arrays.asList", suppressedArgs);<a name="line.1757"></a>
+<span class="sourceLineNo">1758</span><a name="line.1758"></a>
+<span class="sourceLineNo">1759</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1759"></a>
+<span class="sourceLineNo">1760</span>           requestID + "RequestProperties.setSuppressedSystemProperties",<a name="line.1760"></a>
+<span class="sourceLineNo">1761</span>           ToCodeArgHelper.createRaw(requestID + "SuppressedProperties", null));<a name="line.1761"></a>
+<span class="sourceLineNo">1762</span>    }<a name="line.1762"></a>
+<span class="sourceLineNo">1763</span><a name="line.1763"></a>
+<span class="sourceLineNo">1764</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.1764"></a>
+<span class="sourceLineNo">1765</span>         requestID + "RequestProperties.setEnableGSSAPIDebugging",<a name="line.1765"></a>
+<span class="sourceLineNo">1766</span>         ToCodeArgHelper.createBoolean(enableGSSAPIDebugging, null));<a name="line.1766"></a>
 <span class="sourceLineNo">1767</span><a name="line.1767"></a>
-<span class="sourceLineNo">1768</span>    // Create the request variable.<a name="line.1768"></a>
-<span class="sourceLineNo">1769</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs = new ArrayList&lt;&gt;(2);<a name="line.1769"></a>
-<span class="sourceLineNo">1770</span>    constructorArgs.add(<a name="line.1770"></a>
-<span class="sourceLineNo">1771</span>         ToCodeArgHelper.createRaw(requestID + "RequestProperties", null));<a name="line.1771"></a>
-<span class="sourceLineNo">1772</span><a name="line.1772"></a>
-<span class="sourceLineNo">1773</span>    final Control[] controls = getControls();<a name="line.1773"></a>
-<span class="sourceLineNo">1774</span>    if (controls.length &gt; 0)<a name="line.1774"></a>
-<span class="sourceLineNo">1775</span>    {<a name="line.1775"></a>
-<span class="sourceLineNo">1776</span>      constructorArgs.add(ToCodeArgHelper.createControlArray(controls,<a name="line.1776"></a>
-<span class="sourceLineNo">1777</span>           "Bind Controls"));<a name="line.1777"></a>
-<span class="sourceLineNo">1778</span>    }<a name="line.1778"></a>
-<span class="sourceLineNo">1779</span><a name="line.1779"></a>
-<span class="sourceLineNo">1780</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, "GSSAPIBindRequest",<a name="line.1780"></a>
-<span class="sourceLineNo">1781</span>         requestID + "Request", "new GSSAPIBindRequest", constructorArgs);<a name="line.1781"></a>
-<span class="sourceLineNo">1782</span><a name="line.1782"></a>
+<span class="sourceLineNo">1768</span><a name="line.1768"></a>
+<span class="sourceLineNo">1769</span>    // Create the request variable.<a name="line.1769"></a>
+<span class="sourceLineNo">1770</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs = new ArrayList&lt;&gt;(2);<a name="line.1770"></a>
+<span class="sourceLineNo">1771</span>    constructorArgs.add(<a name="line.1771"></a>
+<span class="sourceLineNo">1772</span>         ToCodeArgHelper.createRaw(requestID + "RequestProperties", null));<a name="line.1772"></a>
+<span class="sourceLineNo">1773</span><a name="line.1773"></a>
+<span class="sourceLineNo">1774</span>    final Control[] controls = getControls();<a name="line.1774"></a>
+<span class="sourceLineNo">1775</span>    if (controls.length &gt; 0)<a name="line.1775"></a>
+<span class="sourceLineNo">1776</span>    {<a name="line.1776"></a>
+<span class="sourceLineNo">1777</span>      constructorArgs.add(ToCodeArgHelper.createControlArray(controls,<a name="line.1777"></a>
+<span class="sourceLineNo">1778</span>           "Bind Controls"));<a name="line.1778"></a>
+<span class="sourceLineNo">1779</span>    }<a name="line.1779"></a>
+<span class="sourceLineNo">1780</span><a name="line.1780"></a>
+<span class="sourceLineNo">1781</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, "GSSAPIBindRequest",<a name="line.1781"></a>
+<span class="sourceLineNo">1782</span>         requestID + "Request", "new GSSAPIBindRequest", constructorArgs);<a name="line.1782"></a>
 <span class="sourceLineNo">1783</span><a name="line.1783"></a>
-<span class="sourceLineNo">1784</span>    // Add lines for processing the request and obtaining the result.<a name="line.1784"></a>
-<span class="sourceLineNo">1785</span>    if (includeProcessing)<a name="line.1785"></a>
-<span class="sourceLineNo">1786</span>    {<a name="line.1786"></a>
-<span class="sourceLineNo">1787</span>      // Generate a string with the appropriate indent.<a name="line.1787"></a>
-<span class="sourceLineNo">1788</span>      final StringBuilder buffer = new StringBuilder();<a name="line.1788"></a>
-<span class="sourceLineNo">1789</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.1789"></a>
-<span class="sourceLineNo">1790</span>      {<a name="line.1790"></a>
-<span class="sourceLineNo">1791</span>        buffer.append(' ');<a name="line.1791"></a>
-<span class="sourceLineNo">1792</span>      }<a name="line.1792"></a>
-<span class="sourceLineNo">1793</span>      final String indent = buffer.toString();<a name="line.1793"></a>
-<span class="sourceLineNo">1794</span><a name="line.1794"></a>
-<span class="sourceLineNo">1795</span>      lineList.add("");<a name="line.1795"></a>
-<span class="sourceLineNo">1796</span>      lineList.add(indent + "try");<a name="line.1796"></a>
-<span class="sourceLineNo">1797</span>      lineList.add(indent + '{');<a name="line.1797"></a>
-<span class="sourceLineNo">1798</span>      lineList.add(indent + "  BindResult " + requestID +<a name="line.1798"></a>
-<span class="sourceLineNo">1799</span>           "Result = connection.bind(" + requestID + "Request);");<a name="line.1799"></a>
-<span class="sourceLineNo">1800</span>      lineList.add(indent + "  // The bind was processed successfully.");<a name="line.1800"></a>
-<span class="sourceLineNo">1801</span>      lineList.add(indent + '}');<a name="line.1801"></a>
-<span class="sourceLineNo">1802</span>      lineList.add(indent + "catch (LDAPException e)");<a name="line.1802"></a>
-<span class="sourceLineNo">1803</span>      lineList.add(indent + '{');<a name="line.1803"></a>
-<span class="sourceLineNo">1804</span>      lineList.add(indent + "  // The bind failed.  Maybe the following will " +<a name="line.1804"></a>
-<span class="sourceLineNo">1805</span>           "help explain why.");<a name="line.1805"></a>
-<span class="sourceLineNo">1806</span>      lineList.add(indent + "  // Note that the connection is now likely in " +<a name="line.1806"></a>
-<span class="sourceLineNo">1807</span>           "an unauthenticated state.");<a name="line.1807"></a>
-<span class="sourceLineNo">1808</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.1808"></a>
-<span class="sourceLineNo">1809</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.1809"></a>
-<span class="sourceLineNo">1810</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.1810"></a>
-<span class="sourceLineNo">1811</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.1811"></a>
-<span class="sourceLineNo">1812</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.1812"></a>
-<span class="sourceLineNo">1813</span>           "e.getResponseControls();");<a name="line.1813"></a>
-<span class="sourceLineNo">1814</span>      lineList.add(indent + '}');<a name="line.1814"></a>
-<span class="sourceLineNo">1815</span>    }<a name="line.1815"></a>
-<span class="sourceLineNo">1816</span>  }<a name="line.1816"></a>
-<span class="sourceLineNo">1817</span>}<a name="line.1817"></a>
+<span class="sourceLineNo">1784</span><a name="line.1784"></a>
+<span class="sourceLineNo">1785</span>    // Add lines for processing the request and obtaining the result.<a name="line.1785"></a>
+<span class="sourceLineNo">1786</span>    if (includeProcessing)<a name="line.1786"></a>
+<span class="sourceLineNo">1787</span>    {<a name="line.1787"></a>
+<span class="sourceLineNo">1788</span>      // Generate a string with the appropriate indent.<a name="line.1788"></a>
+<span class="sourceLineNo">1789</span>      final StringBuilder buffer = new StringBuilder();<a name="line.1789"></a>
+<span class="sourceLineNo">1790</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.1790"></a>
+<span class="sourceLineNo">1791</span>      {<a name="line.1791"></a>
+<span class="sourceLineNo">1792</span>        buffer.append(' ');<a name="line.1792"></a>
+<span class="sourceLineNo">1793</span>      }<a name="line.1793"></a>
+<span class="sourceLineNo">1794</span>      final String indent = buffer.toString();<a name="line.1794"></a>
+<span class="sourceLineNo">1795</span><a name="line.1795"></a>
+<span class="sourceLineNo">1796</span>      lineList.add("");<a name="line.1796"></a>
+<span class="sourceLineNo">1797</span>      lineList.add(indent + "try");<a name="line.1797"></a>
+<span class="sourceLineNo">1798</span>      lineList.add(indent + '{');<a name="line.1798"></a>
+<span class="sourceLineNo">1799</span>      lineList.add(indent + "  BindResult " + requestID +<a name="line.1799"></a>
+<span class="sourceLineNo">1800</span>           "Result = connection.bind(" + requestID + "Request);");<a name="line.1800"></a>
+<span class="sourceLineNo">1801</span>      lineList.add(indent + "  // The bind was processed successfully.");<a name="line.1801"></a>
+<span class="sourceLineNo">1802</span>      lineList.add(indent + '}');<a name="line.1802"></a>
+<span class="sourceLineNo">1803</span>      lineList.add(indent + "catch (LDAPException e)");<a name="line.1803"></a>
+<span class="sourceLineNo">1804</span>      lineList.add(indent + '{');<a name="line.1804"></a>
+<span class="sourceLineNo">1805</span>      lineList.add(indent + "  // The bind failed.  Maybe the following will " +<a name="line.1805"></a>
+<span class="sourceLineNo">1806</span>           "help explain why.");<a name="line.1806"></a>
+<span class="sourceLineNo">1807</span>      lineList.add(indent + "  // Note that the connection is now likely in " +<a name="line.1807"></a>
+<span class="sourceLineNo">1808</span>           "an unauthenticated state.");<a name="line.1808"></a>
+<span class="sourceLineNo">1809</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.1809"></a>
+<span class="sourceLineNo">1810</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.1810"></a>
+<span class="sourceLineNo">1811</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.1811"></a>
+<span class="sourceLineNo">1812</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.1812"></a>
+<span class="sourceLineNo">1813</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.1813"></a>
+<span class="sourceLineNo">1814</span>           "e.getResponseControls();");<a name="line.1814"></a>
+<span class="sourceLineNo">1815</span>      lineList.add(indent + '}');<a name="line.1815"></a>
+<span class="sourceLineNo">1816</span>    }<a name="line.1816"></a>
+<span class="sourceLineNo">1817</span>  }<a name="line.1817"></a>
+<span class="sourceLineNo">1818</span>}<a name="line.1818"></a>
 
 
 

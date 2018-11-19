@@ -1842,7 +1842,7 @@
 <span class="sourceLineNo">1834</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.1834"></a>
 <span class="sourceLineNo">1835</span>  {<a name="line.1835"></a>
 <span class="sourceLineNo">1836</span>    final LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt; props =<a name="line.1836"></a>
-<span class="sourceLineNo">1837</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.1837"></a>
+<span class="sourceLineNo">1837</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.1837"></a>
 <span class="sourceLineNo">1838</span><a name="line.1838"></a>
 <span class="sourceLineNo">1839</span>    if (backendID == null)<a name="line.1839"></a>
 <span class="sourceLineNo">1840</span>    {<a name="line.1840"></a>

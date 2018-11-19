@@ -126,7 +126,7 @@
 <span class="sourceLineNo">118</span>    interceptors.toArray(this.interceptors);<a name="line.118"></a>
 <span class="sourceLineNo">119</span><a name="line.119"></a>
 <span class="sourceLineNo">120</span>    connection       = null;<a name="line.120"></a>
-<span class="sourceLineNo">121</span>    activeOperations = new HashMap&lt;&gt;(5);<a name="line.121"></a>
+<span class="sourceLineNo">121</span>    activeOperations = new HashMap&lt;&gt;(StaticUtils.computeMapCapacity(5));<a name="line.121"></a>
 <span class="sourceLineNo">122</span>  }<a name="line.122"></a>
 <span class="sourceLineNo">123</span><a name="line.123"></a>
 <span class="sourceLineNo">124</span><a name="line.124"></a>
@@ -154,7 +154,7 @@
 <span class="sourceLineNo">146</span>    this.wrappedHandler = wrappedHandler;<a name="line.146"></a>
 <span class="sourceLineNo">147</span>    this.connection     = connection;<a name="line.147"></a>
 <span class="sourceLineNo">148</span><a name="line.148"></a>
-<span class="sourceLineNo">149</span>    activeOperations = new HashMap&lt;&gt;(5);<a name="line.149"></a>
+<span class="sourceLineNo">149</span>    activeOperations = new HashMap&lt;&gt;(StaticUtils.computeMapCapacity(5));<a name="line.149"></a>
 <span class="sourceLineNo">150</span>  }<a name="line.150"></a>
 <span class="sourceLineNo">151</span><a name="line.151"></a>
 <span class="sourceLineNo">152</span><a name="line.152"></a>

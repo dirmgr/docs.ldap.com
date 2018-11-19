@@ -1417,7 +1417,7 @@
 <span class="sourceLineNo">1409</span>  public Map&lt;TaskProperty,List&lt;Object&gt;&gt; getTaskPropertyValues()<a name="line.1409"></a>
 <span class="sourceLineNo">1410</span>  {<a name="line.1410"></a>
 <span class="sourceLineNo">1411</span>    final LinkedHashMap&lt;TaskProperty,List&lt;Object&gt;&gt; props =<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.1412"></a>
+<span class="sourceLineNo">1412</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.1412"></a>
 <span class="sourceLineNo">1413</span><a name="line.1413"></a>
 <span class="sourceLineNo">1414</span>    props.put(PROPERTY_BACKUP_DIRECTORY,<a name="line.1414"></a>
 <span class="sourceLineNo">1415</span>         Collections.&lt;Object&gt;singletonList(backupDirectory));<a name="line.1415"></a>

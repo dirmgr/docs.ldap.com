@@ -401,18 +401,19 @@
 <span class="sourceLineNo">393</span>  @Override()<a name="line.393"></a>
 <span class="sourceLineNo">394</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.394"></a>
 <span class="sourceLineNo">395</span>  {<a name="line.395"></a>
-<span class="sourceLineNo">396</span>    final LinkedHashMap&lt;String[],String&gt; examples = new LinkedHashMap&lt;&gt;(1);<a name="line.396"></a>
-<span class="sourceLineNo">397</span><a name="line.397"></a>
-<span class="sourceLineNo">398</span>    final String[] args =<a name="line.398"></a>
-<span class="sourceLineNo">399</span>    {<a name="line.399"></a>
-<span class="sourceLineNo">400</span>      "--javaClass", "com.example.MyClass",<a name="line.400"></a>
-<span class="sourceLineNo">401</span>      "--outputFile", "MyClass-schema.ldif"<a name="line.401"></a>
-<span class="sourceLineNo">402</span>    };<a name="line.402"></a>
-<span class="sourceLineNo">403</span>    examples.put(args, INFO_GEN_SCHEMA_EXAMPLE_1.get());<a name="line.403"></a>
-<span class="sourceLineNo">404</span><a name="line.404"></a>
-<span class="sourceLineNo">405</span>    return examples;<a name="line.405"></a>
-<span class="sourceLineNo">406</span>  }<a name="line.406"></a>
-<span class="sourceLineNo">407</span>}<a name="line.407"></a>
+<span class="sourceLineNo">396</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.396"></a>
+<span class="sourceLineNo">397</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.397"></a>
+<span class="sourceLineNo">398</span><a name="line.398"></a>
+<span class="sourceLineNo">399</span>    final String[] args =<a name="line.399"></a>
+<span class="sourceLineNo">400</span>    {<a name="line.400"></a>
+<span class="sourceLineNo">401</span>      "--javaClass", "com.example.MyClass",<a name="line.401"></a>
+<span class="sourceLineNo">402</span>      "--outputFile", "MyClass-schema.ldif"<a name="line.402"></a>
+<span class="sourceLineNo">403</span>    };<a name="line.403"></a>
+<span class="sourceLineNo">404</span>    examples.put(args, INFO_GEN_SCHEMA_EXAMPLE_1.get());<a name="line.404"></a>
+<span class="sourceLineNo">405</span><a name="line.405"></a>
+<span class="sourceLineNo">406</span>    return examples;<a name="line.406"></a>
+<span class="sourceLineNo">407</span>  }<a name="line.407"></a>
+<span class="sourceLineNo">408</span>}<a name="line.408"></a>
 
 
 

@@ -515,11 +515,11 @@
 <span class="sourceLineNo">507</span>         getLong(ATTR_TOTAL_CHECKPOINT_DURATION_MILLIS);<a name="line.507"></a>
 <span class="sourceLineNo">508</span><a name="line.508"></a>
 <span class="sourceLineNo">509</span>    final LinkedHashMap&lt;String,String&gt; tmpEnvStats =<a name="line.509"></a>
-<span class="sourceLineNo">510</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.510"></a>
+<span class="sourceLineNo">510</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.510"></a>
 <span class="sourceLineNo">511</span>    final LinkedHashMap&lt;String,String&gt; tmpLockStats =<a name="line.511"></a>
-<span class="sourceLineNo">512</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.512"></a>
+<span class="sourceLineNo">512</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.512"></a>
 <span class="sourceLineNo">513</span>    final LinkedHashMap&lt;String,String&gt; tmpTxnStats =<a name="line.513"></a>
-<span class="sourceLineNo">514</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.514"></a>
+<span class="sourceLineNo">514</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.514"></a>
 <span class="sourceLineNo">515</span>    for (final Attribute a : entry.getAttributes())<a name="line.515"></a>
 <span class="sourceLineNo">516</span>    {<a name="line.516"></a>
 <span class="sourceLineNo">517</span>      final String name = StaticUtils.toLowerCase(a.getName());<a name="line.517"></a>
@@ -1054,7 +1054,7 @@
 <span class="sourceLineNo">1046</span>  public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()<a name="line.1046"></a>
 <span class="sourceLineNo">1047</span>  {<a name="line.1047"></a>
 <span class="sourceLineNo">1048</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs =<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>         new LinkedHashMap&lt;&gt;(20);<a name="line.1049"></a>
+<span class="sourceLineNo">1049</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.1049"></a>
 <span class="sourceLineNo">1050</span><a name="line.1050"></a>
 <span class="sourceLineNo">1051</span>    if (backendID != null)<a name="line.1051"></a>
 <span class="sourceLineNo">1052</span>    {<a name="line.1052"></a>

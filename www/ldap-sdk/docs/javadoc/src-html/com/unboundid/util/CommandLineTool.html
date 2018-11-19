@@ -85,7 +85,7 @@
 <span class="sourceLineNo">077</span> *       {<a name="line.77"></a>
 <span class="sourceLineNo">078</span> *         System.exit(resultCode.intValue());<a name="line.78"></a>
 <span class="sourceLineNo">079</span> *       }<a name="line.79"></a>
-<span class="sourceLineNo">080</span> *     |<a name="line.80"></a>
+<span class="sourceLineNo">080</span> *     }<a name="line.80"></a>
 <span class="sourceLineNo">081</span> *<a name="line.81"></a>
 <span class="sourceLineNo">082</span> *     public ExampleCommandLineTool()<a name="line.82"></a>
 <span class="sourceLineNo">083</span> *     {<a name="line.83"></a>
@@ -448,7 +448,7 @@
 <span class="sourceLineNo">440</span>    if (logDetails.logInvocation())<a name="line.440"></a>
 <span class="sourceLineNo">441</span>    {<a name="line.441"></a>
 <span class="sourceLineNo">442</span>      final HashSet&lt;Argument&gt; argumentsSetFromPropertiesFile =<a name="line.442"></a>
-<span class="sourceLineNo">443</span>           new HashSet&lt;&gt;(10);<a name="line.443"></a>
+<span class="sourceLineNo">443</span>           new HashSet&lt;&gt;(StaticUtils.computeMapCapacity(10));<a name="line.443"></a>
 <span class="sourceLineNo">444</span>      final ArrayList&lt;ObjectPair&lt;String,String&gt;&gt; propertiesFileArgList =<a name="line.444"></a>
 <span class="sourceLineNo">445</span>           new ArrayList&lt;&gt;(10);<a name="line.445"></a>
 <span class="sourceLineNo">446</span>      getToolInvocationPropertiesFileArguments(parser,<a name="line.446"></a>
@@ -817,670 +817,670 @@
 <span class="sourceLineNo">809</span><a name="line.809"></a>
 <span class="sourceLineNo">810</span><a name="line.810"></a>
 <span class="sourceLineNo">811</span>  /**<a name="line.811"></a>
-<span class="sourceLineNo">812</span>   * Retrieves a human-readable description for this tool.<a name="line.812"></a>
-<span class="sourceLineNo">813</span>   *<a name="line.813"></a>
-<span class="sourceLineNo">814</span>   * @return  A human-readable description for this tool.<a name="line.814"></a>
-<span class="sourceLineNo">815</span>   */<a name="line.815"></a>
-<span class="sourceLineNo">816</span>  public abstract String getToolDescription();<a name="line.816"></a>
-<span class="sourceLineNo">817</span><a name="line.817"></a>
-<span class="sourceLineNo">818</span><a name="line.818"></a>
-<span class="sourceLineNo">819</span><a name="line.819"></a>
-<span class="sourceLineNo">820</span>  /**<a name="line.820"></a>
-<span class="sourceLineNo">821</span>   * Retrieves a version string for this tool, if available.<a name="line.821"></a>
-<span class="sourceLineNo">822</span>   *<a name="line.822"></a>
-<span class="sourceLineNo">823</span>   * @return  A version string for this tool, or {@code null} if none is<a name="line.823"></a>
-<span class="sourceLineNo">824</span>   *          available.<a name="line.824"></a>
-<span class="sourceLineNo">825</span>   */<a name="line.825"></a>
-<span class="sourceLineNo">826</span>  public String getToolVersion()<a name="line.826"></a>
-<span class="sourceLineNo">827</span>  {<a name="line.827"></a>
-<span class="sourceLineNo">828</span>    return null;<a name="line.828"></a>
-<span class="sourceLineNo">829</span>  }<a name="line.829"></a>
-<span class="sourceLineNo">830</span><a name="line.830"></a>
-<span class="sourceLineNo">831</span><a name="line.831"></a>
-<span class="sourceLineNo">832</span><a name="line.832"></a>
-<span class="sourceLineNo">833</span>  /**<a name="line.833"></a>
-<span class="sourceLineNo">834</span>   * Retrieves the minimum number of unnamed trailing arguments that must be<a name="line.834"></a>
-<span class="sourceLineNo">835</span>   * provided for this tool.  If a tool requires the use of trailing arguments,<a name="line.835"></a>
-<span class="sourceLineNo">836</span>   * then it must override this method and the {@link #getMaxTrailingArguments}<a name="line.836"></a>
-<span class="sourceLineNo">837</span>   * arguments to return nonzero values, and it must also override the<a name="line.837"></a>
-<span class="sourceLineNo">838</span>   * {@link #getTrailingArgumentsPlaceholder} method to return a<a name="line.838"></a>
-<span class="sourceLineNo">839</span>   * non-{@code null} value.<a name="line.839"></a>
-<span class="sourceLineNo">840</span>   *<a name="line.840"></a>
-<span class="sourceLineNo">841</span>   * @return  The minimum number of unnamed trailing arguments that may be<a name="line.841"></a>
-<span class="sourceLineNo">842</span>   *          provided for this tool.  A value of zero indicates that the tool<a name="line.842"></a>
-<span class="sourceLineNo">843</span>   *          may be invoked without any trailing arguments.<a name="line.843"></a>
-<span class="sourceLineNo">844</span>   */<a name="line.844"></a>
-<span class="sourceLineNo">845</span>  public int getMinTrailingArguments()<a name="line.845"></a>
-<span class="sourceLineNo">846</span>  {<a name="line.846"></a>
-<span class="sourceLineNo">847</span>    return 0;<a name="line.847"></a>
-<span class="sourceLineNo">848</span>  }<a name="line.848"></a>
-<span class="sourceLineNo">849</span><a name="line.849"></a>
-<span class="sourceLineNo">850</span><a name="line.850"></a>
-<span class="sourceLineNo">851</span><a name="line.851"></a>
-<span class="sourceLineNo">852</span>  /**<a name="line.852"></a>
-<span class="sourceLineNo">853</span>   * Retrieves the maximum number of unnamed trailing arguments that may be<a name="line.853"></a>
-<span class="sourceLineNo">854</span>   * provided for this tool.  If a tool supports trailing arguments, then it<a name="line.854"></a>
-<span class="sourceLineNo">855</span>   * must override this method to return a nonzero value, and must also override<a name="line.855"></a>
-<span class="sourceLineNo">856</span>   * the {@link CommandLineTool#getTrailingArgumentsPlaceholder} method to<a name="line.856"></a>
-<span class="sourceLineNo">857</span>   * return a non-{@code null} value.<a name="line.857"></a>
-<span class="sourceLineNo">858</span>   *<a name="line.858"></a>
-<span class="sourceLineNo">859</span>   * @return  The maximum number of unnamed trailing arguments that may be<a name="line.859"></a>
-<span class="sourceLineNo">860</span>   *          provided for this tool.  A value of zero indicates that trailing<a name="line.860"></a>
-<span class="sourceLineNo">861</span>   *          arguments are not allowed.  A negative value indicates that there<a name="line.861"></a>
-<span class="sourceLineNo">862</span>   *          should be no limit on the number of trailing arguments.<a name="line.862"></a>
-<span class="sourceLineNo">863</span>   */<a name="line.863"></a>
-<span class="sourceLineNo">864</span>  public int getMaxTrailingArguments()<a name="line.864"></a>
-<span class="sourceLineNo">865</span>  {<a name="line.865"></a>
-<span class="sourceLineNo">866</span>    return 0;<a name="line.866"></a>
-<span class="sourceLineNo">867</span>  }<a name="line.867"></a>
-<span class="sourceLineNo">868</span><a name="line.868"></a>
-<span class="sourceLineNo">869</span><a name="line.869"></a>
-<span class="sourceLineNo">870</span><a name="line.870"></a>
-<span class="sourceLineNo">871</span>  /**<a name="line.871"></a>
-<span class="sourceLineNo">872</span>   * Retrieves a placeholder string that should be used for trailing arguments<a name="line.872"></a>
-<span class="sourceLineNo">873</span>   * in the usage information for this tool.<a name="line.873"></a>
-<span class="sourceLineNo">874</span>   *<a name="line.874"></a>
-<span class="sourceLineNo">875</span>   * @return  A placeholder string that should be used for trailing arguments in<a name="line.875"></a>
-<span class="sourceLineNo">876</span>   *          the usage information for this tool, or {@code null} if trailing<a name="line.876"></a>
-<span class="sourceLineNo">877</span>   *          arguments are not supported.<a name="line.877"></a>
-<span class="sourceLineNo">878</span>   */<a name="line.878"></a>
-<span class="sourceLineNo">879</span>  public String getTrailingArgumentsPlaceholder()<a name="line.879"></a>
-<span class="sourceLineNo">880</span>  {<a name="line.880"></a>
-<span class="sourceLineNo">881</span>    return null;<a name="line.881"></a>
-<span class="sourceLineNo">882</span>  }<a name="line.882"></a>
-<span class="sourceLineNo">883</span><a name="line.883"></a>
-<span class="sourceLineNo">884</span><a name="line.884"></a>
-<span class="sourceLineNo">885</span><a name="line.885"></a>
-<span class="sourceLineNo">886</span>  /**<a name="line.886"></a>
-<span class="sourceLineNo">887</span>   * Indicates whether this tool should provide support for an interactive mode,<a name="line.887"></a>
-<span class="sourceLineNo">888</span>   * in which the tool offers a mode in which the arguments can be provided in<a name="line.888"></a>
-<span class="sourceLineNo">889</span>   * a text-driven menu rather than requiring them to be given on the command<a name="line.889"></a>
-<span class="sourceLineNo">890</span>   * line.  If interactive mode is supported, it may be invoked using the<a name="line.890"></a>
-<span class="sourceLineNo">891</span>   * "--interactive" argument.  Alternately, if interactive mode is supported<a name="line.891"></a>
-<span class="sourceLineNo">892</span>   * and {@link #defaultsToInteractiveMode()} returns {@code true}, then<a name="line.892"></a>
-<span class="sourceLineNo">893</span>   * interactive mode may be invoked by simply launching the tool without any<a name="line.893"></a>
-<span class="sourceLineNo">894</span>   * arguments.<a name="line.894"></a>
-<span class="sourceLineNo">895</span>   *<a name="line.895"></a>
-<span class="sourceLineNo">896</span>   * @return  {@code true} if this tool supports interactive mode, or<a name="line.896"></a>
-<span class="sourceLineNo">897</span>   *          {@code false} if not.<a name="line.897"></a>
-<span class="sourceLineNo">898</span>   */<a name="line.898"></a>
-<span class="sourceLineNo">899</span>  public boolean supportsInteractiveMode()<a name="line.899"></a>
-<span class="sourceLineNo">900</span>  {<a name="line.900"></a>
-<span class="sourceLineNo">901</span>    return false;<a name="line.901"></a>
-<span class="sourceLineNo">902</span>  }<a name="line.902"></a>
-<span class="sourceLineNo">903</span><a name="line.903"></a>
-<span class="sourceLineNo">904</span><a name="line.904"></a>
-<span class="sourceLineNo">905</span><a name="line.905"></a>
-<span class="sourceLineNo">906</span>  /**<a name="line.906"></a>
-<span class="sourceLineNo">907</span>   * Indicates whether this tool defaults to launching in interactive mode if<a name="line.907"></a>
-<span class="sourceLineNo">908</span>   * the tool is invoked without any command-line arguments.  This will only be<a name="line.908"></a>
-<span class="sourceLineNo">909</span>   * used if {@link #supportsInteractiveMode()} returns {@code true}.<a name="line.909"></a>
-<span class="sourceLineNo">910</span>   *<a name="line.910"></a>
-<span class="sourceLineNo">911</span>   * @return  {@code true} if this tool defaults to using interactive mode if<a name="line.911"></a>
-<span class="sourceLineNo">912</span>   *          launched without any command-line arguments, or {@code false} if<a name="line.912"></a>
-<span class="sourceLineNo">913</span>   *          not.<a name="line.913"></a>
-<span class="sourceLineNo">914</span>   */<a name="line.914"></a>
-<span class="sourceLineNo">915</span>  public boolean defaultsToInteractiveMode()<a name="line.915"></a>
-<span class="sourceLineNo">916</span>  {<a name="line.916"></a>
-<span class="sourceLineNo">917</span>    return false;<a name="line.917"></a>
-<span class="sourceLineNo">918</span>  }<a name="line.918"></a>
-<span class="sourceLineNo">919</span><a name="line.919"></a>
-<span class="sourceLineNo">920</span><a name="line.920"></a>
-<span class="sourceLineNo">921</span><a name="line.921"></a>
-<span class="sourceLineNo">922</span>  /**<a name="line.922"></a>
-<span class="sourceLineNo">923</span>   * Indicates whether this tool supports the use of a properties file for<a name="line.923"></a>
-<span class="sourceLineNo">924</span>   * specifying default values for arguments that aren't specified on the<a name="line.924"></a>
-<span class="sourceLineNo">925</span>   * command line.<a name="line.925"></a>
-<span class="sourceLineNo">926</span>   *<a name="line.926"></a>
-<span class="sourceLineNo">927</span>   * @return  {@code true} if this tool supports the use of a properties file<a name="line.927"></a>
-<span class="sourceLineNo">928</span>   *          for specifying default values for arguments that aren't specified<a name="line.928"></a>
-<span class="sourceLineNo">929</span>   *          on the command line, or {@code false} if not.<a name="line.929"></a>
-<span class="sourceLineNo">930</span>   */<a name="line.930"></a>
-<span class="sourceLineNo">931</span>  public boolean supportsPropertiesFile()<a name="line.931"></a>
-<span class="sourceLineNo">932</span>  {<a name="line.932"></a>
-<span class="sourceLineNo">933</span>    return false;<a name="line.933"></a>
-<span class="sourceLineNo">934</span>  }<a name="line.934"></a>
-<span class="sourceLineNo">935</span><a name="line.935"></a>
-<span class="sourceLineNo">936</span><a name="line.936"></a>
-<span class="sourceLineNo">937</span><a name="line.937"></a>
-<span class="sourceLineNo">938</span>  /**<a name="line.938"></a>
-<span class="sourceLineNo">939</span>   * Indicates whether this tool should provide arguments for redirecting output<a name="line.939"></a>
-<span class="sourceLineNo">940</span>   * to a file.  If this method returns {@code true}, then the tool will offer<a name="line.940"></a>
-<span class="sourceLineNo">941</span>   * an "--outputFile" argument that will specify the path to a file to which<a name="line.941"></a>
-<span class="sourceLineNo">942</span>   * all standard output and standard error content will be written, and it will<a name="line.942"></a>
-<span class="sourceLineNo">943</span>   * also offer a "--teeToStandardOut" argument that can only be used if the<a name="line.943"></a>
-<span class="sourceLineNo">944</span>   * "--outputFile" argument is present and will cause all output to be written<a name="line.944"></a>
-<span class="sourceLineNo">945</span>   * to both the specified output file and to standard output.<a name="line.945"></a>
-<span class="sourceLineNo">946</span>   *<a name="line.946"></a>
-<span class="sourceLineNo">947</span>   * @return  {@code true} if this tool should provide arguments for redirecting<a name="line.947"></a>
-<span class="sourceLineNo">948</span>   *          output to a file, or {@code false} if not.<a name="line.948"></a>
-<span class="sourceLineNo">949</span>   */<a name="line.949"></a>
-<span class="sourceLineNo">950</span>  protected boolean supportsOutputFile()<a name="line.950"></a>
-<span class="sourceLineNo">951</span>  {<a name="line.951"></a>
-<span class="sourceLineNo">952</span>    return false;<a name="line.952"></a>
-<span class="sourceLineNo">953</span>  }<a name="line.953"></a>
-<span class="sourceLineNo">954</span><a name="line.954"></a>
-<span class="sourceLineNo">955</span><a name="line.955"></a>
-<span class="sourceLineNo">956</span><a name="line.956"></a>
-<span class="sourceLineNo">957</span>  /**<a name="line.957"></a>
-<span class="sourceLineNo">958</span>   * Indicates whether to log messages about the launch and completion of this<a name="line.958"></a>
-<span class="sourceLineNo">959</span>   * tool into the invocation log of Ping Identity server products that may<a name="line.959"></a>
-<span class="sourceLineNo">960</span>   * include it.  This method is not needed for tools that are not expected to<a name="line.960"></a>
-<span class="sourceLineNo">961</span>   * be part of the Ping Identity server products suite.  Further, this value<a name="line.961"></a>
-<span class="sourceLineNo">962</span>   * may be overridden by settings in the server's<a name="line.962"></a>
-<span class="sourceLineNo">963</span>   * tool-invocation-logging.properties file.<a name="line.963"></a>
-<span class="sourceLineNo">964</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.964"></a>
-<span class="sourceLineNo">965</span>   * This method should generally return {@code true} for tools that may alter<a name="line.965"></a>
-<span class="sourceLineNo">966</span>   * the server configuration, data, or other state information, and<a name="line.966"></a>
-<span class="sourceLineNo">967</span>   * {@code false} for tools that do not make any changes.<a name="line.967"></a>
-<span class="sourceLineNo">968</span>   *<a name="line.968"></a>
-<span class="sourceLineNo">969</span>   * @return  {@code true} if Ping Identity server products should include<a name="line.969"></a>
-<span class="sourceLineNo">970</span>   *          messages about the launch and completion of this tool in tool<a name="line.970"></a>
-<span class="sourceLineNo">971</span>   *          invocation log files by default, or {@code false} if not.<a name="line.971"></a>
-<span class="sourceLineNo">972</span>   */<a name="line.972"></a>
-<span class="sourceLineNo">973</span>  protected boolean logToolInvocationByDefault()<a name="line.973"></a>
-<span class="sourceLineNo">974</span>  {<a name="line.974"></a>
-<span class="sourceLineNo">975</span>    return false;<a name="line.975"></a>
-<span class="sourceLineNo">976</span>  }<a name="line.976"></a>
-<span class="sourceLineNo">977</span><a name="line.977"></a>
-<span class="sourceLineNo">978</span><a name="line.978"></a>
+<span class="sourceLineNo">812</span>   * Retrieves a human-readable description for this tool.  If the description<a name="line.812"></a>
+<span class="sourceLineNo">813</span>   * should include multiple paragraphs, then this method should return the text<a name="line.813"></a>
+<span class="sourceLineNo">814</span>   * for the first paragraph, and the<a name="line.814"></a>
+<span class="sourceLineNo">815</span>   * {@link #getAdditionalDescriptionParagraphs()} method should be used to<a name="line.815"></a>
+<span class="sourceLineNo">816</span>   * return the text for the subsequent paragraphs.<a name="line.816"></a>
+<span class="sourceLineNo">817</span>   *<a name="line.817"></a>
+<span class="sourceLineNo">818</span>   * @return  A human-readable description for this tool.<a name="line.818"></a>
+<span class="sourceLineNo">819</span>   */<a name="line.819"></a>
+<span class="sourceLineNo">820</span>  public abstract String getToolDescription();<a name="line.820"></a>
+<span class="sourceLineNo">821</span><a name="line.821"></a>
+<span class="sourceLineNo">822</span><a name="line.822"></a>
+<span class="sourceLineNo">823</span><a name="line.823"></a>
+<span class="sourceLineNo">824</span>  /**<a name="line.824"></a>
+<span class="sourceLineNo">825</span>   * Retrieves additional paragraphs that should be included in the description<a name="line.825"></a>
+<span class="sourceLineNo">826</span>   * for this tool.  If the tool description should include multiple paragraphs,<a name="line.826"></a>
+<span class="sourceLineNo">827</span>   * then the {@link #getToolDescription()} method should return the text of the<a name="line.827"></a>
+<span class="sourceLineNo">828</span>   * first paragraph, and each item in the list returned by this method should<a name="line.828"></a>
+<span class="sourceLineNo">829</span>   * be the text for each subsequent paragraph.  If the tool description should<a name="line.829"></a>
+<span class="sourceLineNo">830</span>   * only have a single paragraph, then this method may return {@code null} or<a name="line.830"></a>
+<span class="sourceLineNo">831</span>   * an empty list.<a name="line.831"></a>
+<span class="sourceLineNo">832</span>   *<a name="line.832"></a>
+<span class="sourceLineNo">833</span>   * @return  Additional paragraphs that should be included in the description<a name="line.833"></a>
+<span class="sourceLineNo">834</span>   *          for this tool, or {@code null} or an empty list if only a single<a name="line.834"></a>
+<span class="sourceLineNo">835</span>   *          description paragraph (whose text is returned by the<a name="line.835"></a>
+<span class="sourceLineNo">836</span>   *          {@code getToolDescription} method) is needed.<a name="line.836"></a>
+<span class="sourceLineNo">837</span>   */<a name="line.837"></a>
+<span class="sourceLineNo">838</span>  public List&lt;String&gt; getAdditionalDescriptionParagraphs()<a name="line.838"></a>
+<span class="sourceLineNo">839</span>  {<a name="line.839"></a>
+<span class="sourceLineNo">840</span>    return Collections.emptyList();<a name="line.840"></a>
+<span class="sourceLineNo">841</span>  }<a name="line.841"></a>
+<span class="sourceLineNo">842</span><a name="line.842"></a>
+<span class="sourceLineNo">843</span><a name="line.843"></a>
+<span class="sourceLineNo">844</span><a name="line.844"></a>
+<span class="sourceLineNo">845</span>  /**<a name="line.845"></a>
+<span class="sourceLineNo">846</span>   * Retrieves a version string for this tool, if available.<a name="line.846"></a>
+<span class="sourceLineNo">847</span>   *<a name="line.847"></a>
+<span class="sourceLineNo">848</span>   * @return  A version string for this tool, or {@code null} if none is<a name="line.848"></a>
+<span class="sourceLineNo">849</span>   *          available.<a name="line.849"></a>
+<span class="sourceLineNo">850</span>   */<a name="line.850"></a>
+<span class="sourceLineNo">851</span>  public String getToolVersion()<a name="line.851"></a>
+<span class="sourceLineNo">852</span>  {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>    return null;<a name="line.853"></a>
+<span class="sourceLineNo">854</span>  }<a name="line.854"></a>
+<span class="sourceLineNo">855</span><a name="line.855"></a>
+<span class="sourceLineNo">856</span><a name="line.856"></a>
+<span class="sourceLineNo">857</span><a name="line.857"></a>
+<span class="sourceLineNo">858</span>  /**<a name="line.858"></a>
+<span class="sourceLineNo">859</span>   * Retrieves the minimum number of unnamed trailing arguments that must be<a name="line.859"></a>
+<span class="sourceLineNo">860</span>   * provided for this tool.  If a tool requires the use of trailing arguments,<a name="line.860"></a>
+<span class="sourceLineNo">861</span>   * then it must override this method and the {@link #getMaxTrailingArguments}<a name="line.861"></a>
+<span class="sourceLineNo">862</span>   * arguments to return nonzero values, and it must also override the<a name="line.862"></a>
+<span class="sourceLineNo">863</span>   * {@link #getTrailingArgumentsPlaceholder} method to return a<a name="line.863"></a>
+<span class="sourceLineNo">864</span>   * non-{@code null} value.<a name="line.864"></a>
+<span class="sourceLineNo">865</span>   *<a name="line.865"></a>
+<span class="sourceLineNo">866</span>   * @return  The minimum number of unnamed trailing arguments that may be<a name="line.866"></a>
+<span class="sourceLineNo">867</span>   *          provided for this tool.  A value of zero indicates that the tool<a name="line.867"></a>
+<span class="sourceLineNo">868</span>   *          may be invoked without any trailing arguments.<a name="line.868"></a>
+<span class="sourceLineNo">869</span>   */<a name="line.869"></a>
+<span class="sourceLineNo">870</span>  public int getMinTrailingArguments()<a name="line.870"></a>
+<span class="sourceLineNo">871</span>  {<a name="line.871"></a>
+<span class="sourceLineNo">872</span>    return 0;<a name="line.872"></a>
+<span class="sourceLineNo">873</span>  }<a name="line.873"></a>
+<span class="sourceLineNo">874</span><a name="line.874"></a>
+<span class="sourceLineNo">875</span><a name="line.875"></a>
+<span class="sourceLineNo">876</span><a name="line.876"></a>
+<span class="sourceLineNo">877</span>  /**<a name="line.877"></a>
+<span class="sourceLineNo">878</span>   * Retrieves the maximum number of unnamed trailing arguments that may be<a name="line.878"></a>
+<span class="sourceLineNo">879</span>   * provided for this tool.  If a tool supports trailing arguments, then it<a name="line.879"></a>
+<span class="sourceLineNo">880</span>   * must override this method to return a nonzero value, and must also override<a name="line.880"></a>
+<span class="sourceLineNo">881</span>   * the {@link CommandLineTool#getTrailingArgumentsPlaceholder} method to<a name="line.881"></a>
+<span class="sourceLineNo">882</span>   * return a non-{@code null} value.<a name="line.882"></a>
+<span class="sourceLineNo">883</span>   *<a name="line.883"></a>
+<span class="sourceLineNo">884</span>   * @return  The maximum number of unnamed trailing arguments that may be<a name="line.884"></a>
+<span class="sourceLineNo">885</span>   *          provided for this tool.  A value of zero indicates that trailing<a name="line.885"></a>
+<span class="sourceLineNo">886</span>   *          arguments are not allowed.  A negative value indicates that there<a name="line.886"></a>
+<span class="sourceLineNo">887</span>   *          should be no limit on the number of trailing arguments.<a name="line.887"></a>
+<span class="sourceLineNo">888</span>   */<a name="line.888"></a>
+<span class="sourceLineNo">889</span>  public int getMaxTrailingArguments()<a name="line.889"></a>
+<span class="sourceLineNo">890</span>  {<a name="line.890"></a>
+<span class="sourceLineNo">891</span>    return 0;<a name="line.891"></a>
+<span class="sourceLineNo">892</span>  }<a name="line.892"></a>
+<span class="sourceLineNo">893</span><a name="line.893"></a>
+<span class="sourceLineNo">894</span><a name="line.894"></a>
+<span class="sourceLineNo">895</span><a name="line.895"></a>
+<span class="sourceLineNo">896</span>  /**<a name="line.896"></a>
+<span class="sourceLineNo">897</span>   * Retrieves a placeholder string that should be used for trailing arguments<a name="line.897"></a>
+<span class="sourceLineNo">898</span>   * in the usage information for this tool.<a name="line.898"></a>
+<span class="sourceLineNo">899</span>   *<a name="line.899"></a>
+<span class="sourceLineNo">900</span>   * @return  A placeholder string that should be used for trailing arguments in<a name="line.900"></a>
+<span class="sourceLineNo">901</span>   *          the usage information for this tool, or {@code null} if trailing<a name="line.901"></a>
+<span class="sourceLineNo">902</span>   *          arguments are not supported.<a name="line.902"></a>
+<span class="sourceLineNo">903</span>   */<a name="line.903"></a>
+<span class="sourceLineNo">904</span>  public String getTrailingArgumentsPlaceholder()<a name="line.904"></a>
+<span class="sourceLineNo">905</span>  {<a name="line.905"></a>
+<span class="sourceLineNo">906</span>    return null;<a name="line.906"></a>
+<span class="sourceLineNo">907</span>  }<a name="line.907"></a>
+<span class="sourceLineNo">908</span><a name="line.908"></a>
+<span class="sourceLineNo">909</span><a name="line.909"></a>
+<span class="sourceLineNo">910</span><a name="line.910"></a>
+<span class="sourceLineNo">911</span>  /**<a name="line.911"></a>
+<span class="sourceLineNo">912</span>   * Indicates whether this tool should provide support for an interactive mode,<a name="line.912"></a>
+<span class="sourceLineNo">913</span>   * in which the tool offers a mode in which the arguments can be provided in<a name="line.913"></a>
+<span class="sourceLineNo">914</span>   * a text-driven menu rather than requiring them to be given on the command<a name="line.914"></a>
+<span class="sourceLineNo">915</span>   * line.  If interactive mode is supported, it may be invoked using the<a name="line.915"></a>
+<span class="sourceLineNo">916</span>   * "--interactive" argument.  Alternately, if interactive mode is supported<a name="line.916"></a>
+<span class="sourceLineNo">917</span>   * and {@link #defaultsToInteractiveMode()} returns {@code true}, then<a name="line.917"></a>
+<span class="sourceLineNo">918</span>   * interactive mode may be invoked by simply launching the tool without any<a name="line.918"></a>
+<span class="sourceLineNo">919</span>   * arguments.<a name="line.919"></a>
+<span class="sourceLineNo">920</span>   *<a name="line.920"></a>
+<span class="sourceLineNo">921</span>   * @return  {@code true} if this tool supports interactive mode, or<a name="line.921"></a>
+<span class="sourceLineNo">922</span>   *          {@code false} if not.<a name="line.922"></a>
+<span class="sourceLineNo">923</span>   */<a name="line.923"></a>
+<span class="sourceLineNo">924</span>  public boolean supportsInteractiveMode()<a name="line.924"></a>
+<span class="sourceLineNo">925</span>  {<a name="line.925"></a>
+<span class="sourceLineNo">926</span>    return false;<a name="line.926"></a>
+<span class="sourceLineNo">927</span>  }<a name="line.927"></a>
+<span class="sourceLineNo">928</span><a name="line.928"></a>
+<span class="sourceLineNo">929</span><a name="line.929"></a>
+<span class="sourceLineNo">930</span><a name="line.930"></a>
+<span class="sourceLineNo">931</span>  /**<a name="line.931"></a>
+<span class="sourceLineNo">932</span>   * Indicates whether this tool defaults to launching in interactive mode if<a name="line.932"></a>
+<span class="sourceLineNo">933</span>   * the tool is invoked without any command-line arguments.  This will only be<a name="line.933"></a>
+<span class="sourceLineNo">934</span>   * used if {@link #supportsInteractiveMode()} returns {@code true}.<a name="line.934"></a>
+<span class="sourceLineNo">935</span>   *<a name="line.935"></a>
+<span class="sourceLineNo">936</span>   * @return  {@code true} if this tool defaults to using interactive mode if<a name="line.936"></a>
+<span class="sourceLineNo">937</span>   *          launched without any command-line arguments, or {@code false} if<a name="line.937"></a>
+<span class="sourceLineNo">938</span>   *          not.<a name="line.938"></a>
+<span class="sourceLineNo">939</span>   */<a name="line.939"></a>
+<span class="sourceLineNo">940</span>  public boolean defaultsToInteractiveMode()<a name="line.940"></a>
+<span class="sourceLineNo">941</span>  {<a name="line.941"></a>
+<span class="sourceLineNo">942</span>    return false;<a name="line.942"></a>
+<span class="sourceLineNo">943</span>  }<a name="line.943"></a>
+<span class="sourceLineNo">944</span><a name="line.944"></a>
+<span class="sourceLineNo">945</span><a name="line.945"></a>
+<span class="sourceLineNo">946</span><a name="line.946"></a>
+<span class="sourceLineNo">947</span>  /**<a name="line.947"></a>
+<span class="sourceLineNo">948</span>   * Indicates whether this tool supports the use of a properties file for<a name="line.948"></a>
+<span class="sourceLineNo">949</span>   * specifying default values for arguments that aren't specified on the<a name="line.949"></a>
+<span class="sourceLineNo">950</span>   * command line.<a name="line.950"></a>
+<span class="sourceLineNo">951</span>   *<a name="line.951"></a>
+<span class="sourceLineNo">952</span>   * @return  {@code true} if this tool supports the use of a properties file<a name="line.952"></a>
+<span class="sourceLineNo">953</span>   *          for specifying default values for arguments that aren't specified<a name="line.953"></a>
+<span class="sourceLineNo">954</span>   *          on the command line, or {@code false} if not.<a name="line.954"></a>
+<span class="sourceLineNo">955</span>   */<a name="line.955"></a>
+<span class="sourceLineNo">956</span>  public boolean supportsPropertiesFile()<a name="line.956"></a>
+<span class="sourceLineNo">957</span>  {<a name="line.957"></a>
+<span class="sourceLineNo">958</span>    return false;<a name="line.958"></a>
+<span class="sourceLineNo">959</span>  }<a name="line.959"></a>
+<span class="sourceLineNo">960</span><a name="line.960"></a>
+<span class="sourceLineNo">961</span><a name="line.961"></a>
+<span class="sourceLineNo">962</span><a name="line.962"></a>
+<span class="sourceLineNo">963</span>  /**<a name="line.963"></a>
+<span class="sourceLineNo">964</span>   * Indicates whether this tool should provide arguments for redirecting output<a name="line.964"></a>
+<span class="sourceLineNo">965</span>   * to a file.  If this method returns {@code true}, then the tool will offer<a name="line.965"></a>
+<span class="sourceLineNo">966</span>   * an "--outputFile" argument that will specify the path to a file to which<a name="line.966"></a>
+<span class="sourceLineNo">967</span>   * all standard output and standard error content will be written, and it will<a name="line.967"></a>
+<span class="sourceLineNo">968</span>   * also offer a "--teeToStandardOut" argument that can only be used if the<a name="line.968"></a>
+<span class="sourceLineNo">969</span>   * "--outputFile" argument is present and will cause all output to be written<a name="line.969"></a>
+<span class="sourceLineNo">970</span>   * to both the specified output file and to standard output.<a name="line.970"></a>
+<span class="sourceLineNo">971</span>   *<a name="line.971"></a>
+<span class="sourceLineNo">972</span>   * @return  {@code true} if this tool should provide arguments for redirecting<a name="line.972"></a>
+<span class="sourceLineNo">973</span>   *          output to a file, or {@code false} if not.<a name="line.973"></a>
+<span class="sourceLineNo">974</span>   */<a name="line.974"></a>
+<span class="sourceLineNo">975</span>  protected boolean supportsOutputFile()<a name="line.975"></a>
+<span class="sourceLineNo">976</span>  {<a name="line.976"></a>
+<span class="sourceLineNo">977</span>    return false;<a name="line.977"></a>
+<span class="sourceLineNo">978</span>  }<a name="line.978"></a>
 <span class="sourceLineNo">979</span><a name="line.979"></a>
-<span class="sourceLineNo">980</span>  /**<a name="line.980"></a>
-<span class="sourceLineNo">981</span>   * Retrieves an optional message that may provide additional information about<a name="line.981"></a>
-<span class="sourceLineNo">982</span>   * the way that the tool completed its processing.  For example if the tool<a name="line.982"></a>
-<span class="sourceLineNo">983</span>   * exited with an error message, it may be useful for this method to return<a name="line.983"></a>
-<span class="sourceLineNo">984</span>   * that error message.<a name="line.984"></a>
-<span class="sourceLineNo">985</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.985"></a>
-<span class="sourceLineNo">986</span>   * The message returned by this method is intended for purposes and is not<a name="line.986"></a>
-<span class="sourceLineNo">987</span>   * meant to be parsed or programmatically interpreted.<a name="line.987"></a>
-<span class="sourceLineNo">988</span>   *<a name="line.988"></a>
-<span class="sourceLineNo">989</span>   * @return  An optional message that may provide additional information about<a name="line.989"></a>
-<span class="sourceLineNo">990</span>   *          the completion state for this tool, or {@code null} if no<a name="line.990"></a>
-<span class="sourceLineNo">991</span>   *          completion message is available.<a name="line.991"></a>
-<span class="sourceLineNo">992</span>   */<a name="line.992"></a>
-<span class="sourceLineNo">993</span>  protected String getToolCompletionMessage()<a name="line.993"></a>
-<span class="sourceLineNo">994</span>  {<a name="line.994"></a>
-<span class="sourceLineNo">995</span>    return null;<a name="line.995"></a>
-<span class="sourceLineNo">996</span>  }<a name="line.996"></a>
-<span class="sourceLineNo">997</span><a name="line.997"></a>
-<span class="sourceLineNo">998</span><a name="line.998"></a>
-<span class="sourceLineNo">999</span><a name="line.999"></a>
-<span class="sourceLineNo">1000</span>  /**<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>   * Creates a parser that can be used to to parse arguments accepted by<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>   * this tool.<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>   *<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>   * @return ArgumentParser that can be used to parse arguments for this<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>   *         tool.<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>   *<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>   * @throws ArgumentException  If there was a problem initializing the<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>   *                            parser for this tool.<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>   */<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>  public final ArgumentParser createArgumentParser()<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>         throws ArgumentException<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>  {<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>    final ArgumentParser parser = new ArgumentParser(getToolName(),<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>         getToolDescription(), getMinTrailingArguments(),<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>         getMaxTrailingArguments(), getTrailingArgumentsPlaceholder());<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span><a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>    addToolArguments(parser);<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span><a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>    if (supportsInteractiveMode())<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>    {<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>      interactiveArgument = new BooleanArgument(null, "interactive",<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>           INFO_CL_TOOL_DESCRIPTION_INTERACTIVE.get());<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>      interactiveArgument.setUsageArgument(true);<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>      parser.addArgument(interactiveArgument);<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>    }<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span><a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>    if (supportsOutputFile())<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>    {<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>      outputFileArgument = new FileArgument(null, "outputFile", false, 1, null,<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>           INFO_CL_TOOL_DESCRIPTION_OUTPUT_FILE.get(), false, true, true,<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>           false);<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>      outputFileArgument.addLongIdentifier("output-file", true);<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>      outputFileArgument.setUsageArgument(true);<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>      parser.addArgument(outputFileArgument);<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span><a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>      appendToOutputFileArgument = new BooleanArgument(null,<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>           "appendToOutputFile", 1,<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>           INFO_CL_TOOL_DESCRIPTION_APPEND_TO_OUTPUT_FILE.get(<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>                outputFileArgument.getIdentifierString()));<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>      appendToOutputFileArgument.addLongIdentifier("append-to-output-file",<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>           true);<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>      appendToOutputFileArgument.setUsageArgument(true);<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>      parser.addArgument(appendToOutputFileArgument);<a name="line.1043"></a>
+<span class="sourceLineNo">980</span><a name="line.980"></a>
+<span class="sourceLineNo">981</span><a name="line.981"></a>
+<span class="sourceLineNo">982</span>  /**<a name="line.982"></a>
+<span class="sourceLineNo">983</span>   * Indicates whether to log messages about the launch and completion of this<a name="line.983"></a>
+<span class="sourceLineNo">984</span>   * tool into the invocation log of Ping Identity server products that may<a name="line.984"></a>
+<span class="sourceLineNo">985</span>   * include it.  This method is not needed for tools that are not expected to<a name="line.985"></a>
+<span class="sourceLineNo">986</span>   * be part of the Ping Identity server products suite.  Further, this value<a name="line.986"></a>
+<span class="sourceLineNo">987</span>   * may be overridden by settings in the server's<a name="line.987"></a>
+<span class="sourceLineNo">988</span>   * tool-invocation-logging.properties file.<a name="line.988"></a>
+<span class="sourceLineNo">989</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.989"></a>
+<span class="sourceLineNo">990</span>   * This method should generally return {@code true} for tools that may alter<a name="line.990"></a>
+<span class="sourceLineNo">991</span>   * the server configuration, data, or other state information, and<a name="line.991"></a>
+<span class="sourceLineNo">992</span>   * {@code false} for tools that do not make any changes.<a name="line.992"></a>
+<span class="sourceLineNo">993</span>   *<a name="line.993"></a>
+<span class="sourceLineNo">994</span>   * @return  {@code true} if Ping Identity server products should include<a name="line.994"></a>
+<span class="sourceLineNo">995</span>   *          messages about the launch and completion of this tool in tool<a name="line.995"></a>
+<span class="sourceLineNo">996</span>   *          invocation log files by default, or {@code false} if not.<a name="line.996"></a>
+<span class="sourceLineNo">997</span>   */<a name="line.997"></a>
+<span class="sourceLineNo">998</span>  protected boolean logToolInvocationByDefault()<a name="line.998"></a>
+<span class="sourceLineNo">999</span>  {<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>    return false;<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>  }<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span><a name="line.1002"></a>
+<span class="sourceLineNo">1003</span><a name="line.1003"></a>
+<span class="sourceLineNo">1004</span><a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>  /**<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>   * Retrieves an optional message that may provide additional information about<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>   * the way that the tool completed its processing.  For example if the tool<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>   * exited with an error message, it may be useful for this method to return<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>   * that error message.<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>   * The message returned by this method is intended for purposes and is not<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>   * meant to be parsed or programmatically interpreted.<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>   *<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>   * @return  An optional message that may provide additional information about<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>   *          the completion state for this tool, or {@code null} if no<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>   *          completion message is available.<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>   */<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>  protected String getToolCompletionMessage()<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>  {<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>    return null;<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>  }<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span><a name="line.1022"></a>
+<span class="sourceLineNo">1023</span><a name="line.1023"></a>
+<span class="sourceLineNo">1024</span><a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>  /**<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>   * Creates a parser that can be used to to parse arguments accepted by<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>   * this tool.<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>   *<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>   * @return ArgumentParser that can be used to parse arguments for this<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>   *         tool.<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>   *<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>   * @throws ArgumentException  If there was a problem initializing the<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>   *                            parser for this tool.<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>   */<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>  public final ArgumentParser createArgumentParser()<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>         throws ArgumentException<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>  {<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>    final ArgumentParser parser = new ArgumentParser(getToolName(),<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>         getToolDescription(), getAdditionalDescriptionParagraphs(),<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>         getMinTrailingArguments(), getMaxTrailingArguments(),<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>         getTrailingArgumentsPlaceholder());<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span><a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>    addToolArguments(parser);<a name="line.1043"></a>
 <span class="sourceLineNo">1044</span><a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>      teeOutputArgument = new BooleanArgument(null, "teeOutput", 1,<a name="line.1045"></a>
-<span class="sourceLineNo">1046</span>           INFO_CL_TOOL_DESCRIPTION_TEE_OUTPUT.get(<a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>                outputFileArgument.getIdentifierString()));<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span>      teeOutputArgument.addLongIdentifier("tee-output", true);<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>      teeOutputArgument.setUsageArgument(true);<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>      parser.addArgument(teeOutputArgument);<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span><a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>      parser.addDependentArgumentSet(appendToOutputFileArgument,<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>           outputFileArgument);<a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>      parser.addDependentArgumentSet(teeOutputArgument,<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>           outputFileArgument);<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>    }<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span><a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>    helpArgument = new BooleanArgument('H', "help",<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>         INFO_CL_TOOL_DESCRIPTION_HELP.get());<a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>    helpArgument.addShortIdentifier('?', true);<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span>    helpArgument.setUsageArgument(true);<a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>    parser.addArgument(helpArgument);<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span><a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>    if (! parser.getSubCommands().isEmpty())<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>    {<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>      helpSubcommandsArgument = new BooleanArgument(null, "helpSubcommands", 1,<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>           INFO_CL_TOOL_DESCRIPTION_HELP_SUBCOMMANDS.get());<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>      helpSubcommandsArgument.addLongIdentifier("helpSubcommand", true);<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span>      helpSubcommandsArgument.addLongIdentifier("help-subcommands", true);<a name="line.1069"></a>
-<span class="sourceLineNo">1070</span>      helpSubcommandsArgument.addLongIdentifier("help-subcommand", true);<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>      helpSubcommandsArgument.setUsageArgument(true);<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>      parser.addArgument(helpSubcommandsArgument);<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>    }<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span><a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>    final String version = getToolVersion();<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>    if ((version != null) &amp;&amp; (! version.isEmpty()) &amp;&amp;<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>        (parser.getNamedArgument("version") == null))<a name="line.1077"></a>
-<span class="sourceLineNo">1078</span>    {<a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>      final Character shortIdentifier;<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>      if (parser.getNamedArgument('V') == null)<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span>      {<a name="line.1081"></a>
-<span class="sourceLineNo">1082</span>        shortIdentifier = 'V';<a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>      }<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>      else<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>      {<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>        shortIdentifier = null;<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>      }<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span><a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>      versionArgument = new BooleanArgument(shortIdentifier, "version",<a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>           INFO_CL_TOOL_DESCRIPTION_VERSION.get());<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>      versionArgument.setUsageArgument(true);<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>      parser.addArgument(versionArgument);<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>    }<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span><a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>    if (supportsPropertiesFile())<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span>    {<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>      parser.enablePropertiesFileSupport();<a name="line.1097"></a>
-<span class="sourceLineNo">1098</span>    }<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span><a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>    return parser;<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>  }<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span><a name="line.1102"></a>
-<span class="sourceLineNo">1103</span><a name="line.1103"></a>
-<span class="sourceLineNo">1104</span><a name="line.1104"></a>
-<span class="sourceLineNo">1105</span>  /**<a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>   * Specifies the argument that is used to retrieve usage information about<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>   * SASL authentication.<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>   *<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>   * @param  helpSASLArgument  The argument that is used to retrieve usage<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span>   *                           information about SASL authentication.<a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>   */<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span>  void setHelpSASLArgument(final BooleanArgument helpSASLArgument)<a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>  {<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span>    this.helpSASLArgument = helpSASLArgument;<a name="line.1114"></a>
-<span class="sourceLineNo">1115</span>  }<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span><a name="line.1116"></a>
-<span class="sourceLineNo">1117</span><a name="line.1117"></a>
-<span class="sourceLineNo">1118</span><a name="line.1118"></a>
-<span class="sourceLineNo">1119</span>  /**<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span>   * Retrieves a set containing the long identifiers used for usage arguments<a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>   * injected by this class.<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>   *<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span>   * @param  tool  The tool to use to help make the determination.<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>   *<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>   * @return  A set containing the long identifiers used for usage arguments<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>   *          injected by this class.<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>   */<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>  static Set&lt;String&gt; getUsageArgumentIdentifiers(final CommandLineTool tool)<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>  {<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>    final LinkedHashSet&lt;String&gt; ids = new LinkedHashSet&lt;&gt;(9);<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span><a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>    ids.add("help");<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>    ids.add("version");<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>    ids.add("helpSubcommands");<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span><a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>    if (tool.supportsInteractiveMode())<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>    {<a name="line.1137"></a>
-<span class="sourceLineNo">1138</span>      ids.add("interactive");<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>    }<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span><a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>    if (tool.supportsPropertiesFile())<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>    {<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>      ids.add("propertiesFilePath");<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>      ids.add("generatePropertiesFile");<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>      ids.add("noPropertiesFile");<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>      ids.add("suppressPropertiesFileComment");<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>    }<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span><a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>    if (tool.supportsOutputFile())<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>    {<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>      ids.add("outputFile");<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>      ids.add("appendToOutputFile");<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>      ids.add("teeOutput");<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>    }<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span><a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>    return Collections.unmodifiableSet(ids);<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>  }<a name="line.1157"></a>
+<span class="sourceLineNo">1045</span>    if (supportsInteractiveMode())<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>    {<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>      interactiveArgument = new BooleanArgument(null, "interactive",<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>           INFO_CL_TOOL_DESCRIPTION_INTERACTIVE.get());<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>      interactiveArgument.setUsageArgument(true);<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>      parser.addArgument(interactiveArgument);<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>    }<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span><a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>    if (supportsOutputFile())<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>    {<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>      outputFileArgument = new FileArgument(null, "outputFile", false, 1, null,<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>           INFO_CL_TOOL_DESCRIPTION_OUTPUT_FILE.get(), false, true, true,<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>           false);<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>      outputFileArgument.addLongIdentifier("output-file", true);<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>      outputFileArgument.setUsageArgument(true);<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>      parser.addArgument(outputFileArgument);<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span><a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>      appendToOutputFileArgument = new BooleanArgument(null,<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>           "appendToOutputFile", 1,<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>           INFO_CL_TOOL_DESCRIPTION_APPEND_TO_OUTPUT_FILE.get(<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>                outputFileArgument.getIdentifierString()));<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>      appendToOutputFileArgument.addLongIdentifier("append-to-output-file",<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>           true);<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>      appendToOutputFileArgument.setUsageArgument(true);<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>      parser.addArgument(appendToOutputFileArgument);<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span><a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>      teeOutputArgument = new BooleanArgument(null, "teeOutput", 1,<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>           INFO_CL_TOOL_DESCRIPTION_TEE_OUTPUT.get(<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>                outputFileArgument.getIdentifierString()));<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>      teeOutputArgument.addLongIdentifier("tee-output", true);<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>      teeOutputArgument.setUsageArgument(true);<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>      parser.addArgument(teeOutputArgument);<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span><a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>      parser.addDependentArgumentSet(appendToOutputFileArgument,<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>           outputFileArgument);<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>      parser.addDependentArgumentSet(teeOutputArgument,<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>           outputFileArgument);<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>    }<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span><a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>    helpArgument = new BooleanArgument('H', "help",<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>         INFO_CL_TOOL_DESCRIPTION_HELP.get());<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>    helpArgument.addShortIdentifier('?', true);<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>    helpArgument.setUsageArgument(true);<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>    parser.addArgument(helpArgument);<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span><a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>    if (! parser.getSubCommands().isEmpty())<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>    {<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>      helpSubcommandsArgument = new BooleanArgument(null, "helpSubcommands", 1,<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>           INFO_CL_TOOL_DESCRIPTION_HELP_SUBCOMMANDS.get());<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>      helpSubcommandsArgument.addLongIdentifier("helpSubcommand", true);<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>      helpSubcommandsArgument.addLongIdentifier("help-subcommands", true);<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>      helpSubcommandsArgument.addLongIdentifier("help-subcommand", true);<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span>      helpSubcommandsArgument.setUsageArgument(true);<a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>      parser.addArgument(helpSubcommandsArgument);<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>    }<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span><a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>    final String version = getToolVersion();<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>    if ((version != null) &amp;&amp; (! version.isEmpty()) &amp;&amp;<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>        (parser.getNamedArgument("version") == null))<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>    {<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>      final Character shortIdentifier;<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>      if (parser.getNamedArgument('V') == null)<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>      {<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>        shortIdentifier = 'V';<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>      }<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>      else<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>      {<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span>        shortIdentifier = null;<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>      }<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span><a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>      versionArgument = new BooleanArgument(shortIdentifier, "version",<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>           INFO_CL_TOOL_DESCRIPTION_VERSION.get());<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>      versionArgument.setUsageArgument(true);<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>      parser.addArgument(versionArgument);<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>    }<a name="line.1119"></a>
+<span class="sourceLineNo">1120</span><a name="line.1120"></a>
+<span class="sourceLineNo">1121</span>    if (supportsPropertiesFile())<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>    {<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>      parser.enablePropertiesFileSupport();<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span>    }<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span><a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>    return parser;<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>  }<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span><a name="line.1128"></a>
+<span class="sourceLineNo">1129</span><a name="line.1129"></a>
+<span class="sourceLineNo">1130</span><a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>  /**<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>   * Specifies the argument that is used to retrieve usage information about<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>   * SASL authentication.<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>   *<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>   * @param  helpSASLArgument  The argument that is used to retrieve usage<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>   *                           information about SASL authentication.<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>   */<a name="line.1137"></a>
+<span class="sourceLineNo">1138</span>  void setHelpSASLArgument(final BooleanArgument helpSASLArgument)<a name="line.1138"></a>
+<span class="sourceLineNo">1139</span>  {<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>    this.helpSASLArgument = helpSASLArgument;<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>  }<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span><a name="line.1142"></a>
+<span class="sourceLineNo">1143</span><a name="line.1143"></a>
+<span class="sourceLineNo">1144</span><a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>  /**<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>   * Retrieves a set containing the long identifiers used for usage arguments<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>   * injected by this class.<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>   *<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>   * @param  tool  The tool to use to help make the determination.<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>   *<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>   * @return  A set containing the long identifiers used for usage arguments<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>   *          injected by this class.<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>   */<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>  static Set&lt;String&gt; getUsageArgumentIdentifiers(final CommandLineTool tool)<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>  {<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span>    final LinkedHashSet&lt;String&gt; ids =<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>         new LinkedHashSet&lt;&gt;(StaticUtils.computeMapCapacity(9));<a name="line.1157"></a>
 <span class="sourceLineNo">1158</span><a name="line.1158"></a>
-<span class="sourceLineNo">1159</span><a name="line.1159"></a>
-<span class="sourceLineNo">1160</span><a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>  /**<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>   * Adds the command-line arguments supported for use with this tool to the<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>   * provided argument parser.  The tool may need to retain references to the<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>   * arguments (and/or the argument parser, if trailing arguments are allowed)<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>   * to it in order to obtain their values for use in later processing.<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>   *<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>   * @param  parser  The argument parser to which the arguments are to be added.<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>   *<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>   * @throws  ArgumentException  If a problem occurs while adding any of the<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>   *                             tool-specific arguments to the provided<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>   *                             argument parser.<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>   */<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>  public abstract void addToolArguments(ArgumentParser parser)<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>         throws ArgumentException;<a name="line.1174"></a>
+<span class="sourceLineNo">1159</span>    ids.add("help");<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>    ids.add("version");<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>    ids.add("helpSubcommands");<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span><a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>    if (tool.supportsInteractiveMode())<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>    {<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>      ids.add("interactive");<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>    }<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span><a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>    if (tool.supportsPropertiesFile())<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>    {<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>      ids.add("propertiesFilePath");<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>      ids.add("generatePropertiesFile");<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>      ids.add("noPropertiesFile");<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>      ids.add("suppressPropertiesFileComment");<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>    }<a name="line.1174"></a>
 <span class="sourceLineNo">1175</span><a name="line.1175"></a>
-<span class="sourceLineNo">1176</span><a name="line.1176"></a>
-<span class="sourceLineNo">1177</span><a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>  /**<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>   * Performs any necessary processing that should be done to ensure that the<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>   * provided set of command-line arguments were valid.  This method will be<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>   * called after the basic argument parsing has been performed and immediately<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>   * before the {@link CommandLineTool#doToolProcessing} method is invoked.<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>   * Note that if the tool supports interactive mode, then this method may be<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>   * invoked multiple times to allow the user to interactively fix validation<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>   * errors.<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>   *<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>   * @throws  ArgumentException  If there was a problem with the command-line<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>   *                             arguments provided to this program.<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>   */<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>  public void doExtendedArgumentValidation()<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>         throws ArgumentException<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>  {<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>    // No processing will be performed by default.<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>  }<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span><a name="line.1195"></a>
-<span class="sourceLineNo">1196</span><a name="line.1196"></a>
-<span class="sourceLineNo">1197</span><a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>  /**<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>   * Performs the core set of processing for this tool.<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>   *<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>   * @return  A result code that indicates whether the processing completed<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>   *          successfully.<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>   */<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>  public abstract ResultCode doToolProcessing();<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span><a name="line.1205"></a>
-<span class="sourceLineNo">1206</span><a name="line.1206"></a>
-<span class="sourceLineNo">1207</span><a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>  /**<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>   * Indicates whether this tool should register a shutdown hook with the JVM.<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>   * Shutdown hooks allow for a best-effort attempt to perform a specified set<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>   * of processing when the JVM is shutting down under various conditions,<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>   * including:<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>   * &lt;UL&gt;<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>   *   &lt;LI&gt;When all non-daemon threads have stopped running (i.e., the tool has<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>   *       completed processing).&lt;/LI&gt;<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>   *   &lt;LI&gt;When {@code System.exit()} or {@code Runtime.exit()} is called.&lt;/LI&gt;<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>   *   &lt;LI&gt;When the JVM receives an external kill signal (e.g., via the use of<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>   *       the kill tool or interrupting the JVM with Ctrl+C).&lt;/LI&gt;<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>   * &lt;/UL&gt;<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>   * Shutdown hooks may not be invoked if the process is forcefully killed<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>   * (e.g., using "kill -9", or the {@code System.halt()} or<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>   * {@code Runtime.halt()} methods).<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>   * If this method is overridden to return {@code true}, then the<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>   * {@link #doShutdownHookProcessing(ResultCode)} method should also be<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>   * overridden to contain the logic that will be invoked when the JVM is<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>   * shutting down in a manner that calls shutdown hooks.<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span>   *<a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>   * @return  {@code true} if this tool should register a shutdown hook, or<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>   *          {@code false} if not.<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span>   */<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>  protected boolean registerShutdownHook()<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>  {<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>    return false;<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>  }<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span><a name="line.1236"></a>
-<span class="sourceLineNo">1237</span><a name="line.1237"></a>
-<span class="sourceLineNo">1238</span><a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>  /**<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>   * Performs any processing that may be needed when the JVM is shutting down,<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>   * whether because tool processing has completed or because it has been<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>   * interrupted (e.g., by a kill or break signal).<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>   * Note that because shutdown hooks run at a delicate time in the life of the<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>   * JVM, they should complete quickly and minimize access to external<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span>   * resources.  See the documentation for the<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>   * {@code java.lang.Runtime.addShutdownHook} method for recommendations and<a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>   * restrictions about writing shutdown hooks.<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>   *<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>   * @param  resultCode  The result code returned by the tool.  It may be<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>   *                     {@code null} if the tool was interrupted before it<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>   *                     completed processing.<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>   */<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>  protected void doShutdownHookProcessing(final ResultCode resultCode)<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>  {<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>    throw new LDAPSDKUsageException(<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>         ERR_COMMAND_LINE_TOOL_SHUTDOWN_HOOK_NOT_IMPLEMENTED.get(<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>              getToolName()));<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>  }<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span><a name="line.1260"></a>
-<span class="sourceLineNo">1261</span><a name="line.1261"></a>
-<span class="sourceLineNo">1262</span><a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>  /**<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span>   * Retrieves a set of information that may be used to generate example usage<a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>   * information.  Each element in the returned map should consist of a map<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>   * between an example set of arguments and a string that describes the<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>   * behavior of the tool when invoked with that set of arguments.<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>   *<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>   * @return  A set of information that may be used to generate example usage<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>   *          information.  It may be {@code null} or empty if no example usage<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span>   *          information is available.<a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>   */<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1274"></a>
-<span class="sourceLineNo">1275</span>  {<a name="line.1275"></a>
-<span class="sourceLineNo">1276</span>    return null;<a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>  }<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span><a name="line.1278"></a>
-<span class="sourceLineNo">1279</span><a name="line.1279"></a>
-<span class="sourceLineNo">1280</span><a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>  /**<a name="line.1281"></a>
-<span class="sourceLineNo">1282</span>   * Retrieves the print stream that will be used for standard output.<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span>   *<a name="line.1283"></a>
-<span class="sourceLineNo">1284</span>   * @return  The print stream that will be used for standard output.<a name="line.1284"></a>
-<span class="sourceLineNo">1285</span>   */<a name="line.1285"></a>
-<span class="sourceLineNo">1286</span>  public final PrintStream getOut()<a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>  {<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>    return out;<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span>  }<a name="line.1289"></a>
-<span class="sourceLineNo">1290</span><a name="line.1290"></a>
-<span class="sourceLineNo">1291</span><a name="line.1291"></a>
-<span class="sourceLineNo">1292</span><a name="line.1292"></a>
-<span class="sourceLineNo">1293</span>  /**<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>   * Retrieves the print stream that may be used to write to the original<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span>   * standard output.  This may be different from the current standard output<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>   * stream if an output file has been configured.<a name="line.1296"></a>
-<span class="sourceLineNo">1297</span>   *<a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>   * @return  The print stream that may be used to write to the original<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>   *          standard output.<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>   */<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>  public final PrintStream getOriginalOut()<a name="line.1301"></a>
+<span class="sourceLineNo">1176</span>    if (tool.supportsOutputFile())<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>    {<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>      ids.add("outputFile");<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>      ids.add("appendToOutputFile");<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>      ids.add("teeOutput");<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>    }<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span><a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>    return Collections.unmodifiableSet(ids);<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>  }<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span><a name="line.1185"></a>
+<span class="sourceLineNo">1186</span><a name="line.1186"></a>
+<span class="sourceLineNo">1187</span><a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>  /**<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>   * Adds the command-line arguments supported for use with this tool to the<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>   * provided argument parser.  The tool may need to retain references to the<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>   * arguments (and/or the argument parser, if trailing arguments are allowed)<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>   * to it in order to obtain their values for use in later processing.<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>   *<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>   * @param  parser  The argument parser to which the arguments are to be added.<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>   *<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>   * @throws  ArgumentException  If a problem occurs while adding any of the<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>   *                             tool-specific arguments to the provided<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>   *                             argument parser.<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>   */<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>  public abstract void addToolArguments(ArgumentParser parser)<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>         throws ArgumentException;<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span><a name="line.1202"></a>
+<span class="sourceLineNo">1203</span><a name="line.1203"></a>
+<span class="sourceLineNo">1204</span><a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>  /**<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>   * Performs any necessary processing that should be done to ensure that the<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>   * provided set of command-line arguments were valid.  This method will be<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>   * called after the basic argument parsing has been performed and immediately<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>   * before the {@link CommandLineTool#doToolProcessing} method is invoked.<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>   * Note that if the tool supports interactive mode, then this method may be<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>   * invoked multiple times to allow the user to interactively fix validation<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>   * errors.<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>   *<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>   * @throws  ArgumentException  If there was a problem with the command-line<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>   *                             arguments provided to this program.<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>   */<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>  public void doExtendedArgumentValidation()<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>         throws ArgumentException<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>  {<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>    // No processing will be performed by default.<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>  }<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span><a name="line.1222"></a>
+<span class="sourceLineNo">1223</span><a name="line.1223"></a>
+<span class="sourceLineNo">1224</span><a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>  /**<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>   * Performs the core set of processing for this tool.<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>   *<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>   * @return  A result code that indicates whether the processing completed<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>   *          successfully.<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>   */<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>  public abstract ResultCode doToolProcessing();<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span><a name="line.1232"></a>
+<span class="sourceLineNo">1233</span><a name="line.1233"></a>
+<span class="sourceLineNo">1234</span><a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>  /**<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>   * Indicates whether this tool should register a shutdown hook with the JVM.<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>   * Shutdown hooks allow for a best-effort attempt to perform a specified set<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>   * of processing when the JVM is shutting down under various conditions,<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>   * including:<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>   * &lt;UL&gt;<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>   *   &lt;LI&gt;When all non-daemon threads have stopped running (i.e., the tool has<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>   *       completed processing).&lt;/LI&gt;<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>   *   &lt;LI&gt;When {@code System.exit()} or {@code Runtime.exit()} is called.&lt;/LI&gt;<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>   *   &lt;LI&gt;When the JVM receives an external kill signal (e.g., via the use of<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>   *       the kill tool or interrupting the JVM with Ctrl+C).&lt;/LI&gt;<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>   * &lt;/UL&gt;<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span>   * Shutdown hooks may not be invoked if the process is forcefully killed<a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>   * (e.g., using "kill -9", or the {@code System.halt()} or<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>   * {@code Runtime.halt()} methods).<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>   * If this method is overridden to return {@code true}, then the<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>   * {@link #doShutdownHookProcessing(ResultCode)} method should also be<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>   * overridden to contain the logic that will be invoked when the JVM is<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>   * shutting down in a manner that calls shutdown hooks.<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>   *<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>   * @return  {@code true} if this tool should register a shutdown hook, or<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>   *          {@code false} if not.<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>   */<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>  protected boolean registerShutdownHook()<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>  {<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>    return false;<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>  }<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span><a name="line.1263"></a>
+<span class="sourceLineNo">1264</span><a name="line.1264"></a>
+<span class="sourceLineNo">1265</span><a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>  /**<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>   * Performs any processing that may be needed when the JVM is shutting down,<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>   * whether because tool processing has completed or because it has been<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span>   * interrupted (e.g., by a kill or break signal).<a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>   * Note that because shutdown hooks run at a delicate time in the life of the<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>   * JVM, they should complete quickly and minimize access to external<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>   * resources.  See the documentation for the<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>   * {@code java.lang.Runtime.addShutdownHook} method for recommendations and<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>   * restrictions about writing shutdown hooks.<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>   *<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>   * @param  resultCode  The result code returned by the tool.  It may be<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>   *                     {@code null} if the tool was interrupted before it<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>   *                     completed processing.<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>   */<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>  protected void doShutdownHookProcessing(final ResultCode resultCode)<a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>  {<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>    throw new LDAPSDKUsageException(<a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>         ERR_COMMAND_LINE_TOOL_SHUTDOWN_HOOK_NOT_IMPLEMENTED.get(<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>              getToolName()));<a name="line.1285"></a>
+<span class="sourceLineNo">1286</span>  }<a name="line.1286"></a>
+<span class="sourceLineNo">1287</span><a name="line.1287"></a>
+<span class="sourceLineNo">1288</span><a name="line.1288"></a>
+<span class="sourceLineNo">1289</span><a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>  /**<a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>   * Retrieves a set of information that may be used to generate example usage<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>   * information.  Each element in the returned map should consist of a map<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>   * between an example set of arguments and a string that describes the<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span>   * behavior of the tool when invoked with that set of arguments.<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>   *<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>   * @return  A set of information that may be used to generate example usage<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>   *          information.  It may be {@code null} or empty if no example usage<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span>   *          information is available.<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>   */<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1301"></a>
 <span class="sourceLineNo">1302</span>  {<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>    return originalOut;<a name="line.1303"></a>
+<span class="sourceLineNo">1303</span>    return null;<a name="line.1303"></a>
 <span class="sourceLineNo">1304</span>  }<a name="line.1304"></a>
 <span class="sourceLineNo">1305</span><a name="line.1305"></a>
 <span class="sourceLineNo">1306</span><a name="line.1306"></a>
 <span class="sourceLineNo">1307</span><a name="line.1307"></a>
 <span class="sourceLineNo">1308</span>  /**<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>   * Writes the provided message to the standard output stream for this tool.<a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>   * number of threads.<a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>   *<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>   * @param  msg  The message components that will be written to the standard<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span>   *              output stream.  They will be concatenated together on the same<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>   *              line, and that line will be followed by an end-of-line<a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>   *              sequence.<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>   */<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span>  public final synchronized void out(final Object... msg)<a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>  {<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>    write(out, 0, 0, msg);<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span>  }<a name="line.1323"></a>
-<span class="sourceLineNo">1324</span><a name="line.1324"></a>
-<span class="sourceLineNo">1325</span><a name="line.1325"></a>
-<span class="sourceLineNo">1326</span><a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>  /**<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>   * Writes the provided message to the standard output stream for this tool,<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>   * optionally wrapping and/or indenting the text in the process.<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>   * number of threads.<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>   *<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span>   * @param  indent      The number of spaces each line should be indented.  A<a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>   *                     value less than or equal to zero indicates that no<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>   *                     indent should be used.<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>   * @param  wrapColumn  The column at which to wrap long lines.  A value less<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>   *                     than or equal to two indicates that no wrapping should<a name="line.1338"></a>
-<span class="sourceLineNo">1339</span>   *                     be performed.  If both an indent and a wrap column are<a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>   *                     to be used, then the wrap column must be greater than<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>   *                     the indent.<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span>   * @param  msg         The message components that will be written to the<a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>   *                     standard output stream.  They will be concatenated<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>   *                     together on the same line, and that line will be<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>   *                     followed by an end-of-line sequence.<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span>   */<a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>  public final synchronized void wrapOut(final int indent, final int wrapColumn,<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span>                                         final Object... msg)<a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>  {<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>    write(out, indent, wrapColumn, msg);<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>  }<a name="line.1352"></a>
+<span class="sourceLineNo">1309</span>   * Retrieves the print stream that will be used for standard output.<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>   *<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span>   * @return  The print stream that will be used for standard output.<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>   */<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>  public final PrintStream getOut()<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>  {<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>    return out;<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>  }<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span><a name="line.1317"></a>
+<span class="sourceLineNo">1318</span><a name="line.1318"></a>
+<span class="sourceLineNo">1319</span><a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>  /**<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>   * Retrieves the print stream that may be used to write to the original<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>   * standard output.  This may be different from the current standard output<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>   * stream if an output file has been configured.<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>   *<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>   * @return  The print stream that may be used to write to the original<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>   *          standard output.<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>   */<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span>  public final PrintStream getOriginalOut()<a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>  {<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>    return originalOut;<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span>  }<a name="line.1331"></a>
+<span class="sourceLineNo">1332</span><a name="line.1332"></a>
+<span class="sourceLineNo">1333</span><a name="line.1333"></a>
+<span class="sourceLineNo">1334</span><a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>  /**<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>   * Writes the provided message to the standard output stream for this tool.<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>   * number of threads.<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>   *<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>   * @param  msg  The message components that will be written to the standard<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>   *              output stream.  They will be concatenated together on the same<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>   *              line, and that line will be followed by an end-of-line<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>   *              sequence.<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>   */<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span>  public final synchronized void out(final Object... msg)<a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>  {<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>    write(out, 0, 0, msg);<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>  }<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span><a name="line.1351"></a>
+<span class="sourceLineNo">1352</span><a name="line.1352"></a>
 <span class="sourceLineNo">1353</span><a name="line.1353"></a>
-<span class="sourceLineNo">1354</span><a name="line.1354"></a>
-<span class="sourceLineNo">1355</span><a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>  /**<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span>   * Writes the provided message to the standard output stream for this tool,<a name="line.1357"></a>
-<span class="sourceLineNo">1358</span>   * optionally wrapping and/or indenting the text in the process.<a name="line.1358"></a>
-<span class="sourceLineNo">1359</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>   * number of threads.<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>   *<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>   * @param  firstLineIndent       The number of spaces the first line should be<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>   *                               indented.  A value less than or equal to zero<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>   *                               indicates that no indent should be used.<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>   * @param  subsequentLineIndent  The number of spaces each line except the<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>   *                               first should be indented.  A value less than<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>   *                               or equal to zero indicates that no indent<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span>   *                               should be used.<a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>   * @param  wrapColumn            The column at which to wrap long lines.  A<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>   *                               value less than or equal to two indicates<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span>   *                               that no wrapping should be performed.  If<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>   *                               both an indent and a wrap column are to be<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>   *                               used, then the wrap column must be greater<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>   *                               than the indent.<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>   * @param  endWithNewline        Indicates whether a newline sequence should<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>   *                               follow the last line that is printed.<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>   * @param  msg                   The message components that will be written<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>   *                               to the standard output stream.  They will be<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>   *                               concatenated together on the same line, and<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>   *                               that line will be followed by an end-of-line<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>   *                               sequence.<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>   */<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>  final synchronized void wrapStandardOut(final int firstLineIndent,<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>                                          final int subsequentLineIndent,<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>                                          final int wrapColumn,<a name="line.1386"></a>
-<span class="sourceLineNo">1387</span>                                          final boolean endWithNewline,<a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>                                          final Object... msg)<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>  {<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>    write(out, firstLineIndent, subsequentLineIndent, wrapColumn,<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>         endWithNewline, msg);<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>  }<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span><a name="line.1393"></a>
-<span class="sourceLineNo">1394</span><a name="line.1394"></a>
-<span class="sourceLineNo">1395</span><a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>  /**<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>   * Retrieves the print stream that will be used for standard error.<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>   *<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>   * @return  The print stream that will be used for standard error.<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>   */<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>  public final PrintStream getErr()<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>  {<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>    return err;<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>  }<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span><a name="line.1405"></a>
-<span class="sourceLineNo">1406</span><a name="line.1406"></a>
-<span class="sourceLineNo">1407</span><a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>  /**<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>   * Retrieves the print stream that may be used to write to the original<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>   * standard error.  This may be different from the current standard error<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>   * stream if an output file has been configured.<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>   *<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>   * @return  The print stream that may be used to write to the original<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>   *          standard error.<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>   */<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>  public final PrintStream getOriginalErr()<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>  {<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>    return originalErr;<a name="line.1418"></a>
+<span class="sourceLineNo">1354</span>  /**<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>   * Writes the provided message to the standard output stream for this tool,<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>   * optionally wrapping and/or indenting the text in the process.<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span>   * number of threads.<a name="line.1359"></a>
+<span class="sourceLineNo">1360</span>   *<a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>   * @param  indent      The number of spaces each line should be indented.  A<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>   *                     value less than or equal to zero indicates that no<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>   *                     indent should be used.<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>   * @param  wrapColumn  The column at which to wrap long lines.  A value less<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>   *                     than or equal to two indicates that no wrapping should<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>   *                     be performed.  If both an indent and a wrap column are<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>   *                     to be used, then the wrap column must be greater than<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>   *                     the indent.<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>   * @param  msg         The message components that will be written to the<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>   *                     standard output stream.  They will be concatenated<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>   *                     together on the same line, and that line will be<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>   *                     followed by an end-of-line sequence.<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>   */<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>  public final synchronized void wrapOut(final int indent, final int wrapColumn,<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>                                         final Object... msg)<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>  {<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>    write(out, indent, wrapColumn, msg);<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>  }<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span><a name="line.1380"></a>
+<span class="sourceLineNo">1381</span><a name="line.1381"></a>
+<span class="sourceLineNo">1382</span><a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>  /**<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>   * Writes the provided message to the standard output stream for this tool,<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>   * optionally wrapping and/or indenting the text in the process.<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>   * number of threads.<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>   *<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>   * @param  firstLineIndent       The number of spaces the first line should be<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>   *                               indented.  A value less than or equal to zero<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>   *                               indicates that no indent should be used.<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>   * @param  subsequentLineIndent  The number of spaces each line except the<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>   *                               first should be indented.  A value less than<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>   *                               or equal to zero indicates that no indent<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>   *                               should be used.<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>   * @param  wrapColumn            The column at which to wrap long lines.  A<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>   *                               value less than or equal to two indicates<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>   *                               that no wrapping should be performed.  If<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>   *                               both an indent and a wrap column are to be<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>   *                               used, then the wrap column must be greater<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>   *                               than the indent.<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>   * @param  endWithNewline        Indicates whether a newline sequence should<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>   *                               follow the last line that is printed.<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>   * @param  msg                   The message components that will be written<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>   *                               to the standard output stream.  They will be<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>   *                               concatenated together on the same line, and<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>   *                               that line will be followed by an end-of-line<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>   *                               sequence.<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>   */<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>  final synchronized void wrapStandardOut(final int firstLineIndent,<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>                                          final int subsequentLineIndent,<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>                                          final int wrapColumn,<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>                                          final boolean endWithNewline,<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>                                          final Object... msg)<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>  {<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>    write(out, firstLineIndent, subsequentLineIndent, wrapColumn,<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>         endWithNewline, msg);<a name="line.1418"></a>
 <span class="sourceLineNo">1419</span>  }<a name="line.1419"></a>
 <span class="sourceLineNo">1420</span><a name="line.1420"></a>
 <span class="sourceLineNo">1421</span><a name="line.1421"></a>
 <span class="sourceLineNo">1422</span><a name="line.1422"></a>
 <span class="sourceLineNo">1423</span>  /**<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>   * Writes the provided message to the standard error stream for this tool.<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>   * number of threads.<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>   *<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>   * @param  msg  The message components that will be written to the standard<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>   *              error stream.  They will be concatenated together on the same<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>   *              line, and that line will be followed by an end-of-line<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>   *              sequence.<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>   */<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>  public final synchronized void err(final Object... msg)<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span>  {<a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>    write(err, 0, 0, msg);<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>  }<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span><a name="line.1439"></a>
-<span class="sourceLineNo">1440</span><a name="line.1440"></a>
-<span class="sourceLineNo">1441</span><a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>  /**<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>   * Writes the provided message to the standard error stream for this tool,<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>   * optionally wrapping and/or indenting the text in the process.<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>   * number of threads.<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>   *<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>   * @param  indent      The number of spaces each line should be indented.  A<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>   *                     value less than or equal to zero indicates that no<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>   *                     indent should be used.<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>   * @param  wrapColumn  The column at which to wrap long lines.  A value less<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>   *                     than or equal to two indicates that no wrapping should<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>   *                     be performed.  If both an indent and a wrap column are<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>   *                     to be used, then the wrap column must be greater than<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>   *                     the indent.<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>   * @param  msg         The message components that will be written to the<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>   *                     standard output stream.  They will be concatenated<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>   *                     together on the same line, and that line will be<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>   *                     followed by an end-of-line sequence.<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>   */<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>  public final synchronized void wrapErr(final int indent, final int wrapColumn,<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>                                         final Object... msg)<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>  {<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>    write(err, indent, wrapColumn, msg);<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>  }<a name="line.1467"></a>
+<span class="sourceLineNo">1424</span>   * Retrieves the print stream that will be used for standard error.<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>   *<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>   * @return  The print stream that will be used for standard error.<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>   */<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>  public final PrintStream getErr()<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>  {<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>    return err;<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>  }<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span><a name="line.1432"></a>
+<span class="sourceLineNo">1433</span><a name="line.1433"></a>
+<span class="sourceLineNo">1434</span><a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>  /**<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>   * Retrieves the print stream that may be used to write to the original<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>   * standard error.  This may be different from the current standard error<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>   * stream if an output file has been configured.<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>   *<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>   * @return  The print stream that may be used to write to the original<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>   *          standard error.<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>   */<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>  public final PrintStream getOriginalErr()<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>  {<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>    return originalErr;<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>  }<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span><a name="line.1447"></a>
+<span class="sourceLineNo">1448</span><a name="line.1448"></a>
+<span class="sourceLineNo">1449</span><a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>  /**<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>   * Writes the provided message to the standard error stream for this tool.<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>   * number of threads.<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>   *<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>   * @param  msg  The message components that will be written to the standard<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>   *              error stream.  They will be concatenated together on the same<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>   *              line, and that line will be followed by an end-of-line<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>   *              sequence.<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>   */<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>  public final synchronized void err(final Object... msg)<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>  {<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>    write(err, 0, 0, msg);<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>  }<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span><a name="line.1466"></a>
+<span class="sourceLineNo">1467</span><a name="line.1467"></a>
 <span class="sourceLineNo">1468</span><a name="line.1468"></a>
-<span class="sourceLineNo">1469</span><a name="line.1469"></a>
-<span class="sourceLineNo">1470</span><a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>  /**<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>   * Writes the provided message to the given print stream, optionally wrapping<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>   * and/or indenting the text in the process.<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>   *<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>   * @param  stream      The stream to which the message should be written.<a name="line.1475"></a>
+<span class="sourceLineNo">1469</span>  /**<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>   * Writes the provided message to the standard error stream for this tool,<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>   * optionally wrapping and/or indenting the text in the process.<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>   * &lt;BR&gt;&lt;BR&gt;<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>   * This method is completely threadsafe and my be invoked concurrently by any<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>   * number of threads.<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>   *<a name="line.1475"></a>
 <span class="sourceLineNo">1476</span>   * @param  indent      The number of spaces each line should be indented.  A<a name="line.1476"></a>
 <span class="sourceLineNo">1477</span>   *                     value less than or equal to zero indicates that no<a name="line.1477"></a>
 <span class="sourceLineNo">1478</span>   *                     indent should be used.<a name="line.1478"></a>
@@ -1494,101 +1494,128 @@
 <span class="sourceLineNo">1486</span>   *                     together on the same line, and that line will be<a name="line.1486"></a>
 <span class="sourceLineNo">1487</span>   *                     followed by an end-of-line sequence.<a name="line.1487"></a>
 <span class="sourceLineNo">1488</span>   */<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>  private static void write(final PrintStream stream, final int indent,<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>                            final int wrapColumn, final Object... msg)<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>  {<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>    write(stream, indent, indent, wrapColumn, true, msg);<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>  }<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span><a name="line.1494"></a>
+<span class="sourceLineNo">1489</span>  @ThreadSafety(level=ThreadSafetyLevel.METHOD_THREADSAFE)<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>  public final synchronized void wrapErr(final int indent, final int wrapColumn,<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>                                         final Object... msg)<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>  {<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>    write(err, indent, wrapColumn, msg);<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>  }<a name="line.1494"></a>
 <span class="sourceLineNo">1495</span><a name="line.1495"></a>
 <span class="sourceLineNo">1496</span><a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>  /**<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>   * Writes the provided message to the given print stream, optionally wrapping<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>   * and/or indenting the text in the process.<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>   *<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>   * @param  stream                The stream to which the message should be<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>   *                               written.<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>   * @param  firstLineIndent       The number of spaces the first line should be<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>   *                               indented.  A value less than or equal to zero<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>   *                               indicates that no indent should be used.<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>   * @param  subsequentLineIndent  The number of spaces all lines after the<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>   *                               first should be indented.  A value less than<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>   *                               or equal to zero indicates that no indent<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>   *                               should be used.<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>   * @param  wrapColumn            The column at which to wrap long lines.  A<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>   *                               value less than or equal to two indicates<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>   *                               that no wrapping should be performed.  If<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>   *                               both an indent and a wrap column are to be<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>   *                               used, then the wrap column must be greater<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>   *                               than the indent.<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>   * @param  endWithNewline        Indicates whether a newline sequence should<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>   *                               follow the last line that is printed.<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>   * @param  msg                   The message components that will be written<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>   *                               to the standard output stream.  They will be<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>   *                               concatenated together on the same line, and<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>   *                               that line will be followed by an end-of-line<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>   *                               sequence.<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>   */<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>  private static void write(final PrintStream stream, final int firstLineIndent,<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>                            final int subsequentLineIndent,<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>                            final int wrapColumn,<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>                            final boolean endWithNewline, final Object... msg)<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>  {<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>    for (final Object o : msg)<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>    {<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>      buffer.append(o);<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>    }<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span><a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>    if (wrapColumn &gt; 2)<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>    {<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>      boolean firstLine = true;<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>      for (final String line :<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>           StaticUtils.wrapLine(buffer.toString(),<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>                (wrapColumn - firstLineIndent),<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>                (wrapColumn - subsequentLineIndent)))<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>      {<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>        final int indent;<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>        if (firstLine)<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>        {<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>          indent = firstLineIndent;<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>          firstLine = false;<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>        }<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>        else<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>        {<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>          stream.println();<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>          indent = subsequentLineIndent;<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>        }<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span><a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>        if (indent &gt; 0)<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>        {<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>          for (int i=0; i &lt; indent; i++)<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>          {<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>            stream.print(' ');<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>          }<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>        }<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>        stream.print(line);<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>      }<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>    }<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>    else<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>    {<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>      if (firstLineIndent &gt; 0)<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>      {<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>        for (int i=0; i &lt; firstLineIndent; i++)<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>        {<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>          stream.print(' ');<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>        }<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>      }<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>      stream.print(buffer.toString());<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span>    }<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span><a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>    if (endWithNewline)<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>    {<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>      stream.println();<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>    }<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>    stream.flush();<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>  }<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>}<a name="line.1583"></a>
+<span class="sourceLineNo">1497</span><a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>  /**<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>   * Writes the provided message to the given print stream, optionally wrapping<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>   * and/or indenting the text in the process.<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>   *<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>   * @param  stream      The stream to which the message should be written.<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>   * @param  indent      The number of spaces each line should be indented.  A<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>   *                     value less than or equal to zero indicates that no<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>   *                     indent should be used.<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>   * @param  wrapColumn  The column at which to wrap long lines.  A value less<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>   *                     than or equal to two indicates that no wrapping should<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>   *                     be performed.  If both an indent and a wrap column are<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>   *                     to be used, then the wrap column must be greater than<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>   *                     the indent.<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>   * @param  msg         The message components that will be written to the<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>   *                     standard output stream.  They will be concatenated<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>   *                     together on the same line, and that line will be<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>   *                     followed by an end-of-line sequence.<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>   */<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>  private static void write(final PrintStream stream, final int indent,<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>                            final int wrapColumn, final Object... msg)<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>  {<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>    write(stream, indent, indent, wrapColumn, true, msg);<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>  }<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span><a name="line.1521"></a>
+<span class="sourceLineNo">1522</span><a name="line.1522"></a>
+<span class="sourceLineNo">1523</span><a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>  /**<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>   * Writes the provided message to the given print stream, optionally wrapping<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>   * and/or indenting the text in the process.<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>   *<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>   * @param  stream                The stream to which the message should be<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>   *                               written.<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>   * @param  firstLineIndent       The number of spaces the first line should be<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>   *                               indented.  A value less than or equal to zero<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>   *                               indicates that no indent should be used.<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>   * @param  subsequentLineIndent  The number of spaces all lines after the<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>   *                               first should be indented.  A value less than<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>   *                               or equal to zero indicates that no indent<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>   *                               should be used.<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>   * @param  wrapColumn            The column at which to wrap long lines.  A<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>   *                               value less than or equal to two indicates<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>   *                               that no wrapping should be performed.  If<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>   *                               both an indent and a wrap column are to be<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>   *                               used, then the wrap column must be greater<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>   *                               than the indent.<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>   * @param  endWithNewline        Indicates whether a newline sequence should<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>   *                               follow the last line that is printed.<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>   * @param  msg                   The message components that will be written<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>   *                               to the standard output stream.  They will be<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>   *                               concatenated together on the same line, and<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>   *                               that line will be followed by an end-of-line<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>   *                               sequence.<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>   */<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>  private static void write(final PrintStream stream, final int firstLineIndent,<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>                            final int subsequentLineIndent,<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>                            final int wrapColumn,<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>                            final boolean endWithNewline, final Object... msg)<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>  {<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>    for (final Object o : msg)<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>    {<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>      buffer.append(o);<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>    }<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span><a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>    if (wrapColumn &gt; 2)<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>    {<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>      boolean firstLine = true;<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>      for (final String line :<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>           StaticUtils.wrapLine(buffer.toString(),<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>                (wrapColumn - firstLineIndent),<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>                (wrapColumn - subsequentLineIndent)))<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>      {<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>        final int indent;<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>        if (firstLine)<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>        {<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>          indent = firstLineIndent;<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>          firstLine = false;<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>        }<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>        else<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>        {<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>          stream.println();<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>          indent = subsequentLineIndent;<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>        }<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span><a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>        if (indent &gt; 0)<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>        {<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>          for (int i=0; i &lt; indent; i++)<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>          {<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>            stream.print(' ');<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>          }<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>        }<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>        stream.print(line);<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>      }<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>    }<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>    else<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>    {<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>      if (firstLineIndent &gt; 0)<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>      {<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>        for (int i=0; i &lt; firstLineIndent; i++)<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>        {<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span>          stream.print(' ');<a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>        }<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>      }<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>      stream.print(buffer.toString());<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>    }<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span><a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>    if (endWithNewline)<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>    {<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>      stream.println();<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span>    }<a name="line.1607"></a>
+<span class="sourceLineNo">1608</span>    stream.flush();<a name="line.1608"></a>
+<span class="sourceLineNo">1609</span>  }<a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>}<a name="line.1610"></a>
 
 
 

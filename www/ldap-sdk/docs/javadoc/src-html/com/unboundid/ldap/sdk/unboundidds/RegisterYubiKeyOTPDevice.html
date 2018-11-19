@@ -560,36 +560,37 @@
 <span class="sourceLineNo">552</span>  @Override()<a name="line.552"></a>
 <span class="sourceLineNo">553</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.553"></a>
 <span class="sourceLineNo">554</span>  {<a name="line.554"></a>
-<span class="sourceLineNo">555</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap = new LinkedHashMap&lt;&gt;(2);<a name="line.555"></a>
-<span class="sourceLineNo">556</span><a name="line.556"></a>
-<span class="sourceLineNo">557</span>    String[] args =<a name="line.557"></a>
-<span class="sourceLineNo">558</span>    {<a name="line.558"></a>
-<span class="sourceLineNo">559</span>      "--hostname", "server.example.com",<a name="line.559"></a>
-<span class="sourceLineNo">560</span>      "--port", "389",<a name="line.560"></a>
-<span class="sourceLineNo">561</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.561"></a>
-<span class="sourceLineNo">562</span>      "--bindPassword", "adminPassword",<a name="line.562"></a>
-<span class="sourceLineNo">563</span>      "--authenticationID", "u:test.user",<a name="line.563"></a>
-<span class="sourceLineNo">564</span>      "--userPassword", "testUserPassword",<a name="line.564"></a>
-<span class="sourceLineNo">565</span>      "--otp", "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqr"<a name="line.565"></a>
-<span class="sourceLineNo">566</span>    };<a name="line.566"></a>
-<span class="sourceLineNo">567</span>    exampleMap.put(args,<a name="line.567"></a>
-<span class="sourceLineNo">568</span>         INFO_REGISTER_YUBIKEY_OTP_DEVICE_EXAMPLE_REGISTER.get());<a name="line.568"></a>
-<span class="sourceLineNo">569</span><a name="line.569"></a>
-<span class="sourceLineNo">570</span>    args = new String[]<a name="line.570"></a>
-<span class="sourceLineNo">571</span>    {<a name="line.571"></a>
-<span class="sourceLineNo">572</span>      "--hostname", "server.example.com",<a name="line.572"></a>
-<span class="sourceLineNo">573</span>      "--port", "389",<a name="line.573"></a>
-<span class="sourceLineNo">574</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.574"></a>
-<span class="sourceLineNo">575</span>      "--bindPassword", "adminPassword",<a name="line.575"></a>
-<span class="sourceLineNo">576</span>      "--deregister",<a name="line.576"></a>
-<span class="sourceLineNo">577</span>      "--authenticationID", "dn:uid=test.user,ou=People,dc=example,dc=com"<a name="line.577"></a>
-<span class="sourceLineNo">578</span>    };<a name="line.578"></a>
-<span class="sourceLineNo">579</span>    exampleMap.put(args,<a name="line.579"></a>
-<span class="sourceLineNo">580</span>         INFO_REGISTER_YUBIKEY_OTP_DEVICE_EXAMPLE_DEREGISTER.get());<a name="line.580"></a>
-<span class="sourceLineNo">581</span><a name="line.581"></a>
-<span class="sourceLineNo">582</span>    return exampleMap;<a name="line.582"></a>
-<span class="sourceLineNo">583</span>  }<a name="line.583"></a>
-<span class="sourceLineNo">584</span>}<a name="line.584"></a>
+<span class="sourceLineNo">555</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap =<a name="line.555"></a>
+<span class="sourceLineNo">556</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(2));<a name="line.556"></a>
+<span class="sourceLineNo">557</span><a name="line.557"></a>
+<span class="sourceLineNo">558</span>    String[] args =<a name="line.558"></a>
+<span class="sourceLineNo">559</span>    {<a name="line.559"></a>
+<span class="sourceLineNo">560</span>      "--hostname", "server.example.com",<a name="line.560"></a>
+<span class="sourceLineNo">561</span>      "--port", "389",<a name="line.561"></a>
+<span class="sourceLineNo">562</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.562"></a>
+<span class="sourceLineNo">563</span>      "--bindPassword", "adminPassword",<a name="line.563"></a>
+<span class="sourceLineNo">564</span>      "--authenticationID", "u:test.user",<a name="line.564"></a>
+<span class="sourceLineNo">565</span>      "--userPassword", "testUserPassword",<a name="line.565"></a>
+<span class="sourceLineNo">566</span>      "--otp", "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqr"<a name="line.566"></a>
+<span class="sourceLineNo">567</span>    };<a name="line.567"></a>
+<span class="sourceLineNo">568</span>    exampleMap.put(args,<a name="line.568"></a>
+<span class="sourceLineNo">569</span>         INFO_REGISTER_YUBIKEY_OTP_DEVICE_EXAMPLE_REGISTER.get());<a name="line.569"></a>
+<span class="sourceLineNo">570</span><a name="line.570"></a>
+<span class="sourceLineNo">571</span>    args = new String[]<a name="line.571"></a>
+<span class="sourceLineNo">572</span>    {<a name="line.572"></a>
+<span class="sourceLineNo">573</span>      "--hostname", "server.example.com",<a name="line.573"></a>
+<span class="sourceLineNo">574</span>      "--port", "389",<a name="line.574"></a>
+<span class="sourceLineNo">575</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.575"></a>
+<span class="sourceLineNo">576</span>      "--bindPassword", "adminPassword",<a name="line.576"></a>
+<span class="sourceLineNo">577</span>      "--deregister",<a name="line.577"></a>
+<span class="sourceLineNo">578</span>      "--authenticationID", "dn:uid=test.user,ou=People,dc=example,dc=com"<a name="line.578"></a>
+<span class="sourceLineNo">579</span>    };<a name="line.579"></a>
+<span class="sourceLineNo">580</span>    exampleMap.put(args,<a name="line.580"></a>
+<span class="sourceLineNo">581</span>         INFO_REGISTER_YUBIKEY_OTP_DEVICE_EXAMPLE_DEREGISTER.get());<a name="line.581"></a>
+<span class="sourceLineNo">582</span><a name="line.582"></a>
+<span class="sourceLineNo">583</span>    return exampleMap;<a name="line.583"></a>
+<span class="sourceLineNo">584</span>  }<a name="line.584"></a>
+<span class="sourceLineNo">585</span>}<a name="line.585"></a>
 
 
 

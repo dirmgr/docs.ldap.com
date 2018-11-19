@@ -565,54 +565,55 @@
 <span class="sourceLineNo">557</span>  @Override()<a name="line.557"></a>
 <span class="sourceLineNo">558</span>  public JSONObject toJSONObject()<a name="line.558"></a>
 <span class="sourceLineNo">559</span>  {<a name="line.559"></a>
-<span class="sourceLineNo">560</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields = new LinkedHashMap&lt;&gt;(4);<a name="line.560"></a>
-<span class="sourceLineNo">561</span><a name="line.561"></a>
-<span class="sourceLineNo">562</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.562"></a>
-<span class="sourceLineNo">563</span><a name="line.563"></a>
-<span class="sourceLineNo">564</span>    if (field.size() == 1)<a name="line.564"></a>
-<span class="sourceLineNo">565</span>    {<a name="line.565"></a>
-<span class="sourceLineNo">566</span>      fields.put(FIELD_FIELD_PATH, new JSONString(field.get(0)));<a name="line.566"></a>
-<span class="sourceLineNo">567</span>    }<a name="line.567"></a>
-<span class="sourceLineNo">568</span>    else<a name="line.568"></a>
-<span class="sourceLineNo">569</span>    {<a name="line.569"></a>
-<span class="sourceLineNo">570</span>      final ArrayList&lt;JSONValue&gt; fieldNameValues =<a name="line.570"></a>
-<span class="sourceLineNo">571</span>           new ArrayList&lt;&gt;(field.size());<a name="line.571"></a>
-<span class="sourceLineNo">572</span>      for (final String s : field)<a name="line.572"></a>
-<span class="sourceLineNo">573</span>      {<a name="line.573"></a>
-<span class="sourceLineNo">574</span>        fieldNameValues.add(new JSONString(s));<a name="line.574"></a>
-<span class="sourceLineNo">575</span>      }<a name="line.575"></a>
-<span class="sourceLineNo">576</span>      fields.put(FIELD_FIELD_PATH, new JSONArray(fieldNameValues));<a name="line.576"></a>
-<span class="sourceLineNo">577</span>    }<a name="line.577"></a>
-<span class="sourceLineNo">578</span><a name="line.578"></a>
-<span class="sourceLineNo">579</span>    fields.put(FIELD_VALUE, value);<a name="line.579"></a>
-<span class="sourceLineNo">580</span><a name="line.580"></a>
-<span class="sourceLineNo">581</span>    if (caseSensitive)<a name="line.581"></a>
-<span class="sourceLineNo">582</span>    {<a name="line.582"></a>
-<span class="sourceLineNo">583</span>      fields.put(FIELD_CASE_SENSITIVE, JSONBoolean.TRUE);<a name="line.583"></a>
-<span class="sourceLineNo">584</span>    }<a name="line.584"></a>
-<span class="sourceLineNo">585</span><a name="line.585"></a>
-<span class="sourceLineNo">586</span>    return new JSONObject(fields);<a name="line.586"></a>
-<span class="sourceLineNo">587</span>  }<a name="line.587"></a>
-<span class="sourceLineNo">588</span><a name="line.588"></a>
+<span class="sourceLineNo">560</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.560"></a>
+<span class="sourceLineNo">561</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(4));<a name="line.561"></a>
+<span class="sourceLineNo">562</span><a name="line.562"></a>
+<span class="sourceLineNo">563</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.563"></a>
+<span class="sourceLineNo">564</span><a name="line.564"></a>
+<span class="sourceLineNo">565</span>    if (field.size() == 1)<a name="line.565"></a>
+<span class="sourceLineNo">566</span>    {<a name="line.566"></a>
+<span class="sourceLineNo">567</span>      fields.put(FIELD_FIELD_PATH, new JSONString(field.get(0)));<a name="line.567"></a>
+<span class="sourceLineNo">568</span>    }<a name="line.568"></a>
+<span class="sourceLineNo">569</span>    else<a name="line.569"></a>
+<span class="sourceLineNo">570</span>    {<a name="line.570"></a>
+<span class="sourceLineNo">571</span>      final ArrayList&lt;JSONValue&gt; fieldNameValues =<a name="line.571"></a>
+<span class="sourceLineNo">572</span>           new ArrayList&lt;&gt;(field.size());<a name="line.572"></a>
+<span class="sourceLineNo">573</span>      for (final String s : field)<a name="line.573"></a>
+<span class="sourceLineNo">574</span>      {<a name="line.574"></a>
+<span class="sourceLineNo">575</span>        fieldNameValues.add(new JSONString(s));<a name="line.575"></a>
+<span class="sourceLineNo">576</span>      }<a name="line.576"></a>
+<span class="sourceLineNo">577</span>      fields.put(FIELD_FIELD_PATH, new JSONArray(fieldNameValues));<a name="line.577"></a>
+<span class="sourceLineNo">578</span>    }<a name="line.578"></a>
+<span class="sourceLineNo">579</span><a name="line.579"></a>
+<span class="sourceLineNo">580</span>    fields.put(FIELD_VALUE, value);<a name="line.580"></a>
+<span class="sourceLineNo">581</span><a name="line.581"></a>
+<span class="sourceLineNo">582</span>    if (caseSensitive)<a name="line.582"></a>
+<span class="sourceLineNo">583</span>    {<a name="line.583"></a>
+<span class="sourceLineNo">584</span>      fields.put(FIELD_CASE_SENSITIVE, JSONBoolean.TRUE);<a name="line.584"></a>
+<span class="sourceLineNo">585</span>    }<a name="line.585"></a>
+<span class="sourceLineNo">586</span><a name="line.586"></a>
+<span class="sourceLineNo">587</span>    return new JSONObject(fields);<a name="line.587"></a>
+<span class="sourceLineNo">588</span>  }<a name="line.588"></a>
 <span class="sourceLineNo">589</span><a name="line.589"></a>
 <span class="sourceLineNo">590</span><a name="line.590"></a>
-<span class="sourceLineNo">591</span>  /**<a name="line.591"></a>
-<span class="sourceLineNo">592</span>   * {@inheritDoc}<a name="line.592"></a>
-<span class="sourceLineNo">593</span>   */<a name="line.593"></a>
-<span class="sourceLineNo">594</span>  @Override()<a name="line.594"></a>
-<span class="sourceLineNo">595</span>  protected EqualsJSONObjectFilter decodeFilter(final JSONObject filterObject)<a name="line.595"></a>
-<span class="sourceLineNo">596</span>            throws JSONException<a name="line.596"></a>
-<span class="sourceLineNo">597</span>  {<a name="line.597"></a>
-<span class="sourceLineNo">598</span>    final List&lt;String&gt; fieldPath =<a name="line.598"></a>
-<span class="sourceLineNo">599</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.599"></a>
-<span class="sourceLineNo">600</span><a name="line.600"></a>
-<span class="sourceLineNo">601</span>    final boolean isCaseSensitive = getBoolean(filterObject,<a name="line.601"></a>
-<span class="sourceLineNo">602</span>         FIELD_CASE_SENSITIVE, false);<a name="line.602"></a>
-<span class="sourceLineNo">603</span><a name="line.603"></a>
-<span class="sourceLineNo">604</span>    return new EqualsJSONObjectFilter(fieldPath,<a name="line.604"></a>
-<span class="sourceLineNo">605</span>         filterObject.getField(FIELD_VALUE), isCaseSensitive);<a name="line.605"></a>
-<span class="sourceLineNo">606</span>  }<a name="line.606"></a>
-<span class="sourceLineNo">607</span>}<a name="line.607"></a>
+<span class="sourceLineNo">591</span><a name="line.591"></a>
+<span class="sourceLineNo">592</span>  /**<a name="line.592"></a>
+<span class="sourceLineNo">593</span>   * {@inheritDoc}<a name="line.593"></a>
+<span class="sourceLineNo">594</span>   */<a name="line.594"></a>
+<span class="sourceLineNo">595</span>  @Override()<a name="line.595"></a>
+<span class="sourceLineNo">596</span>  protected EqualsJSONObjectFilter decodeFilter(final JSONObject filterObject)<a name="line.596"></a>
+<span class="sourceLineNo">597</span>            throws JSONException<a name="line.597"></a>
+<span class="sourceLineNo">598</span>  {<a name="line.598"></a>
+<span class="sourceLineNo">599</span>    final List&lt;String&gt; fieldPath =<a name="line.599"></a>
+<span class="sourceLineNo">600</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.600"></a>
+<span class="sourceLineNo">601</span><a name="line.601"></a>
+<span class="sourceLineNo">602</span>    final boolean isCaseSensitive = getBoolean(filterObject,<a name="line.602"></a>
+<span class="sourceLineNo">603</span>         FIELD_CASE_SENSITIVE, false);<a name="line.603"></a>
+<span class="sourceLineNo">604</span><a name="line.604"></a>
+<span class="sourceLineNo">605</span>    return new EqualsJSONObjectFilter(fieldPath,<a name="line.605"></a>
+<span class="sourceLineNo">606</span>         filterObject.getField(FIELD_VALUE), isCaseSensitive);<a name="line.606"></a>
+<span class="sourceLineNo">607</span>  }<a name="line.607"></a>
+<span class="sourceLineNo">608</span>}<a name="line.608"></a>
 
 
 

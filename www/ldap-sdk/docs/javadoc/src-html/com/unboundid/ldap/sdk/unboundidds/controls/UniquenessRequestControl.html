@@ -459,8 +459,8 @@
 <span class="sourceLineNo">451</span>            break;<a name="line.451"></a>
 <span class="sourceLineNo">452</span>          case TYPE_ATTRIBUTE_TYPES:<a name="line.452"></a>
 <span class="sourceLineNo">453</span>            final ASN1Element[] atElements = ASN1Set.decodeAsSet(e).elements();<a name="line.453"></a>
-<span class="sourceLineNo">454</span>            final LinkedHashSet&lt;String&gt; atNames =<a name="line.454"></a>
-<span class="sourceLineNo">455</span>                 new LinkedHashSet&lt;&gt;(atElements.length);<a name="line.455"></a>
+<span class="sourceLineNo">454</span>            final LinkedHashSet&lt;String&gt; atNames = new LinkedHashSet&lt;&gt;(<a name="line.454"></a>
+<span class="sourceLineNo">455</span>                 StaticUtils.computeMapCapacity(atElements.length));<a name="line.455"></a>
 <span class="sourceLineNo">456</span>            for (final ASN1Element atElement : atElements)<a name="line.456"></a>
 <span class="sourceLineNo">457</span>            {<a name="line.457"></a>
 <span class="sourceLineNo">458</span>              atNames.add(ASN1OctetString.decodeAsOctetString(<a name="line.458"></a>

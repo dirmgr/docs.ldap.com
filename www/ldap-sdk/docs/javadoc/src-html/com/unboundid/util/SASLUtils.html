@@ -1375,224 +1375,225 @@
 <span class="sourceLineNo">1367</span>      return new HashMap&lt;&gt;(0);<a name="line.1367"></a>
 <span class="sourceLineNo">1368</span>    }<a name="line.1368"></a>
 <span class="sourceLineNo">1369</span><a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>    final HashMap&lt;String,String&gt; m = new HashMap&lt;&gt;(options.size());<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>    for (final String s : options)<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span>    {<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>      final int equalPos = s.indexOf('=');<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>      if (equalPos &lt; 0)<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>      {<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>             ERR_SASL_OPTION_MISSING_EQUAL.get(s));<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>      }<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>      else if (equalPos == 0)<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>      {<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>             ERR_SASL_OPTION_STARTS_WITH_EQUAL.get(s));<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>      }<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span><a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>      final String name = s.substring(0, equalPos);<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>      final String value = s.substring(equalPos + 1);<a name="line.1386"></a>
-<span class="sourceLineNo">1387</span>      if (m.put(StaticUtils.toLowerCase(name), value) != null)<a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>      {<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>             ERR_SASL_OPTION_NOT_MULTI_VALUED.get(name));<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>      }<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>    }<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span><a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>    return m;<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>  }<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span><a name="line.1396"></a>
+<span class="sourceLineNo">1370</span>    final HashMap&lt;String,String&gt; m =<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>         new HashMap&lt;&gt;(StaticUtils.computeMapCapacity(options.size()));<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>    for (final String s : options)<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>    {<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span>      final int equalPos = s.indexOf('=');<a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>      if (equalPos &lt; 0)<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>      {<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>             ERR_SASL_OPTION_MISSING_EQUAL.get(s));<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>      }<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>      else if (equalPos == 0)<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>      {<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>             ERR_SASL_OPTION_STARTS_WITH_EQUAL.get(s));<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>      }<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span><a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>      final String name = s.substring(0, equalPos);<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>      final String value = s.substring(equalPos + 1);<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>      if (m.put(StaticUtils.toLowerCase(name), value) != null)<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>      {<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>             ERR_SASL_OPTION_NOT_MULTI_VALUED.get(name));<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>      }<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>    }<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span><a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>    return m;<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>  }<a name="line.1396"></a>
 <span class="sourceLineNo">1397</span><a name="line.1397"></a>
 <span class="sourceLineNo">1398</span><a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>  /**<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>   * Ensures that the provided map is empty, and will throw an exception if it<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>   * isn't.  This method is intended for internal use only.<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>   *<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>   * @param  options    The map of options to ensure is empty.<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>   * @param  mechanism  The associated SASL mechanism.<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>   *<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>   * @throws  LDAPException  If the map of SASL options is not empty.<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>   */<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>  @InternalUseOnly()<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>  public static void ensureNoUnsupportedOptions(<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>                          final Map&lt;String,String&gt; options,<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>                          final String mechanism)<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>          throws LDAPException<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>  {<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>    if (! options.isEmpty())<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>    {<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>      for (final String s : options.keySet())<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>      {<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>             ERR_SASL_OPTION_UNSUPPORTED_FOR_MECH.get(s,mechanism));<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>      }<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>    }<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>  }<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span><a name="line.1423"></a>
+<span class="sourceLineNo">1399</span><a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>  /**<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>   * Ensures that the provided map is empty, and will throw an exception if it<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>   * isn't.  This method is intended for internal use only.<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>   *<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>   * @param  options    The map of options to ensure is empty.<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>   * @param  mechanism  The associated SASL mechanism.<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>   *<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>   * @throws  LDAPException  If the map of SASL options is not empty.<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>   */<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>  @InternalUseOnly()<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>  public static void ensureNoUnsupportedOptions(<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>                          final Map&lt;String,String&gt; options,<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>                          final String mechanism)<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>          throws LDAPException<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>  {<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>    if (! options.isEmpty())<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>    {<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>      for (final String s : options.keySet())<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>      {<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>        throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>             ERR_SASL_OPTION_UNSUPPORTED_FOR_MECH.get(s,mechanism));<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>      }<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>    }<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>  }<a name="line.1423"></a>
 <span class="sourceLineNo">1424</span><a name="line.1424"></a>
 <span class="sourceLineNo">1425</span><a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>  /**<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>   * Retrieves the value of the specified option and parses it as a boolean.<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>   * Values of "true", "t", "yes", "y", "on", and "1" will be treated as<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>   * {@code true}.  Values of "false", "f", "no", "n", "off", and "0" will be<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>   * treated as {@code false}.<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>   *<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>   * @param  m  The map from which to retrieve the option.  It must not be<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>   *            {@code null}.<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>   * @param  o  The name of the option to examine.<a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>   * @param  d  The default value to use if the given option was not provided.<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span>   *<a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>   * @return  The parsed boolean value.<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>   *<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>   * @throws  LDAPException  If the option value cannot be parsed as a boolean.<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>   */<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>  static boolean getBooleanValue(final Map&lt;String,String&gt; m, final String o,<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>                                 final boolean d)<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>         throws LDAPException<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>  {<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>    final String s =<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>         StaticUtils.toLowerCase(m.remove(StaticUtils.toLowerCase(o)));<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>    if (s == null)<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>    {<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>      return d;<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>    }<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>    else if (s.equals("true") ||<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>             s.equals("t") ||<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>             s.equals("yes") ||<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>             s.equals("y") ||<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>             s.equals("on") ||<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>             s.equals("1"))<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>    {<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>      return true;<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>    }<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>    else if (s.equals("false") ||<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>             s.equals("f") ||<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>             s.equals("no") ||<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>             s.equals("n") ||<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>             s.equals("off") ||<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>             s.equals("0"))<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>    {<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>      return false;<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>    }<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>    else<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>    {<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>      throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>           ERR_SASL_OPTION_MALFORMED_BOOLEAN_VALUE.get(o));<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>    }<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>  }<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span><a name="line.1475"></a>
+<span class="sourceLineNo">1426</span><a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>  /**<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>   * Retrieves the value of the specified option and parses it as a boolean.<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>   * Values of "true", "t", "yes", "y", "on", and "1" will be treated as<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>   * {@code true}.  Values of "false", "f", "no", "n", "off", and "0" will be<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>   * treated as {@code false}.<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>   *<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span>   * @param  m  The map from which to retrieve the option.  It must not be<a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>   *            {@code null}.<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>   * @param  o  The name of the option to examine.<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>   * @param  d  The default value to use if the given option was not provided.<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>   *<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>   * @return  The parsed boolean value.<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>   *<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>   * @throws  LDAPException  If the option value cannot be parsed as a boolean.<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>   */<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>  static boolean getBooleanValue(final Map&lt;String,String&gt; m, final String o,<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>                                 final boolean d)<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>         throws LDAPException<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>  {<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>    final String s =<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>         StaticUtils.toLowerCase(m.remove(StaticUtils.toLowerCase(o)));<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>    if (s == null)<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>    {<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>      return d;<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>    }<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>    else if (s.equals("true") ||<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>             s.equals("t") ||<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>             s.equals("yes") ||<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>             s.equals("y") ||<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>             s.equals("on") ||<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>             s.equals("1"))<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>    {<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>      return true;<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>    }<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>    else if (s.equals("false") ||<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>             s.equals("f") ||<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>             s.equals("no") ||<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>             s.equals("n") ||<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>             s.equals("off") ||<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>             s.equals("0"))<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>    {<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>      return false;<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>    }<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>    else<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>    {<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>      throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>           ERR_SASL_OPTION_MALFORMED_BOOLEAN_VALUE.get(o));<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>    }<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>  }<a name="line.1475"></a>
 <span class="sourceLineNo">1476</span><a name="line.1476"></a>
 <span class="sourceLineNo">1477</span><a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>  /**<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>   * Retrieves a string representation of the SASL usage information.  This will<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>   * include the supported SASL mechanisms and the properties that may be used<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>   * with each.<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>   *<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>   * @param  maxWidth  The maximum line width to use for the output.  If this is<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>   *                   less than or equal to zero, then no wrapping will be<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>   *                   performed.<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>   *<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>   * @return  A string representation of the usage information<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>   */<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>  public static String getUsageString(final int maxWidth)<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>  {<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span><a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>    for (final String line : getUsage(maxWidth))<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>    {<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>      buffer.append(line);<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>      buffer.append(StaticUtils.EOL);<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>    }<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span><a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>    return buffer.toString();<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>  }<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span><a name="line.1501"></a>
+<span class="sourceLineNo">1478</span><a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>  /**<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>   * Retrieves a string representation of the SASL usage information.  This will<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>   * include the supported SASL mechanisms and the properties that may be used<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>   * with each.<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>   *<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>   * @param  maxWidth  The maximum line width to use for the output.  If this is<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>   *                   less than or equal to zero, then no wrapping will be<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>   *                   performed.<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>   *<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>   * @return  A string representation of the usage information<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>   */<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>  public static String getUsageString(final int maxWidth)<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>  {<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span><a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>    for (final String line : getUsage(maxWidth))<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>    {<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>      buffer.append(line);<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>      buffer.append(StaticUtils.EOL);<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>    }<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span><a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>    return buffer.toString();<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>  }<a name="line.1501"></a>
 <span class="sourceLineNo">1502</span><a name="line.1502"></a>
 <span class="sourceLineNo">1503</span><a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>  /**<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>   * Retrieves lines that make up the SASL usage information, optionally<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>   * wrapping long lines.<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>   *<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>   * @param  maxWidth  The maximum line width to use for the output.  If this is<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>   *                   less than or equal to zero, then no wrapping will be<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>   *                   performed.<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>   *<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>   * @return  The lines that make up the SASL usage information.<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>   */<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>  public static List&lt;String&gt; getUsage(final int maxWidth)<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>  {<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(100);<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span><a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>    boolean first = true;<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>    for (final SASLMechanismInfo i : getSupportedSASLMechanisms())<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>    {<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>      if (first)<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>      {<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>        first = false;<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>      }<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>      else<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>      {<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>        lines.add("");<a name="line.1527"></a>
+<span class="sourceLineNo">1504</span><a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>  /**<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>   * Retrieves lines that make up the SASL usage information, optionally<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>   * wrapping long lines.<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>   *<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>   * @param  maxWidth  The maximum line width to use for the output.  If this is<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>   *                   less than or equal to zero, then no wrapping will be<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>   *                   performed.<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>   *<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>   * @return  The lines that make up the SASL usage information.<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>   */<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>  public static List&lt;String&gt; getUsage(final int maxWidth)<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>  {<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(100);<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span><a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>    boolean first = true;<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>    for (final SASLMechanismInfo i : getSupportedSASLMechanisms())<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>    {<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>      if (first)<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>      {<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>        first = false;<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>      }<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>      else<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>      {<a name="line.1527"></a>
 <span class="sourceLineNo">1528</span>        lines.add("");<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>      }<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span><a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>      lines.addAll(<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>           StaticUtils.wrapLine(INFO_SASL_HELP_MECHANISM.get(i.getName()),<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>                maxWidth));<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>      lines.add("");<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span><a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>      for (final String line :<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>           StaticUtils.wrapLine(i.getDescription(), maxWidth - 4))<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>      {<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>        lines.add("  " + line);<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>      }<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>      lines.add("");<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span><a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>      for (final String line :<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>           StaticUtils.wrapLine(INFO_SASL_HELP_MECHANISM_OPTIONS.get(<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>                i.getName()), maxWidth - 4))<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>      {<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>        lines.add("  " + line);<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>      }<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span><a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>      if (i.acceptsPassword())<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>      {<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>        lines.add("");<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>        if (i.requiresPassword())<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>        {<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>          for (final String line :<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>               StaticUtils.wrapLine(INFO_SASL_HELP_PASSWORD_REQUIRED.get(<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>                    i.getName()), maxWidth - 4))<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>          {<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>            lines.add("  " + line);<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>          }<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>        }<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>        else<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>        {<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>          for (final String line :<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>               StaticUtils.wrapLine(INFO_SASL_HELP_PASSWORD_OPTIONAL.get(<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>                    i.getName()), maxWidth - 4))<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>          {<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>            lines.add("  " + line);<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>          }<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>        }<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>      }<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span><a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>      for (final SASLOption o : i.getOptions())<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>      {<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span>        lines.add("");<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>        lines.add("  * " + o.getName());<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>        for (final String line :<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>             StaticUtils.wrapLine(o.getDescription(), maxWidth - 14))<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>        {<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>          lines.add("       " + line);<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>        }<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>      }<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>    }<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span><a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>    return lines;<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>  }<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>}<a name="line.1587"></a>
+<span class="sourceLineNo">1529</span>        lines.add("");<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>      }<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span><a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>      lines.addAll(<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>           StaticUtils.wrapLine(INFO_SASL_HELP_MECHANISM.get(i.getName()),<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>                maxWidth));<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>      lines.add("");<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span><a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>      for (final String line :<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>           StaticUtils.wrapLine(i.getDescription(), maxWidth - 4))<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>      {<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>        lines.add("  " + line);<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>      }<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>      lines.add("");<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span><a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>      for (final String line :<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>           StaticUtils.wrapLine(INFO_SASL_HELP_MECHANISM_OPTIONS.get(<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>                i.getName()), maxWidth - 4))<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>      {<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>        lines.add("  " + line);<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>      }<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span><a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>      if (i.acceptsPassword())<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>      {<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>        lines.add("");<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>        if (i.requiresPassword())<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>        {<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>          for (final String line :<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>               StaticUtils.wrapLine(INFO_SASL_HELP_PASSWORD_REQUIRED.get(<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>                    i.getName()), maxWidth - 4))<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>          {<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>            lines.add("  " + line);<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>          }<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>        }<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>        else<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>        {<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>          for (final String line :<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>               StaticUtils.wrapLine(INFO_SASL_HELP_PASSWORD_OPTIONAL.get(<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>                    i.getName()), maxWidth - 4))<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>          {<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>            lines.add("  " + line);<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>          }<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>        }<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>      }<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span><a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>      for (final SASLOption o : i.getOptions())<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>      {<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>        lines.add("");<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>        lines.add("  * " + o.getName());<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>        for (final String line :<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>             StaticUtils.wrapLine(o.getDescription(), maxWidth - 14))<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>        {<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>          lines.add("       " + line);<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>        }<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>      }<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>    }<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span><a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>    return lines;<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>  }<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>}<a name="line.1588"></a>
 
 
 

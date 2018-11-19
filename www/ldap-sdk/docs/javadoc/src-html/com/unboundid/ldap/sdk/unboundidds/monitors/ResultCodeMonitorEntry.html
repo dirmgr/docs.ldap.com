@@ -278,7 +278,7 @@
 <span class="sourceLineNo">270</span>  public Map&lt;String,MonitorAttribute&gt; getMonitorAttributes()<a name="line.270"></a>
 <span class="sourceLineNo">271</span>  {<a name="line.271"></a>
 <span class="sourceLineNo">272</span>    final LinkedHashMap&lt;String,MonitorAttribute&gt; attrs =<a name="line.272"></a>
-<span class="sourceLineNo">273</span>         new LinkedHashMap&lt;&gt;(100);<a name="line.273"></a>
+<span class="sourceLineNo">273</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(100));<a name="line.273"></a>
 <span class="sourceLineNo">274</span><a name="line.274"></a>
 <span class="sourceLineNo">275</span>    addAttrs(attrs, allOperationsResultCodeInfo, "all-ops-");<a name="line.275"></a>
 <span class="sourceLineNo">276</span>    addAttrs(attrs, addOperationResultCodeInfo, "add-op-");<a name="line.276"></a>

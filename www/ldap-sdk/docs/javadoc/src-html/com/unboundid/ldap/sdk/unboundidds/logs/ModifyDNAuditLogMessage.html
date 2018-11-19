@@ -582,7 +582,7 @@
 <span class="sourceLineNo">574</span>    // attribute values.<a name="line.574"></a>
 <span class="sourceLineNo">575</span>    final int numNewRDNs = newRDN.getAttributeNames().length;<a name="line.575"></a>
 <span class="sourceLineNo">576</span>    final Set&lt;ObjectPair&lt;String,byte[]&gt;&gt; addedNewRDNValues =<a name="line.576"></a>
-<span class="sourceLineNo">577</span>         new HashSet&lt;&gt;(numNewRDNs);<a name="line.577"></a>
+<span class="sourceLineNo">577</span>         new HashSet&lt;&gt;(StaticUtils.computeMapCapacity(numNewRDNs));<a name="line.577"></a>
 <span class="sourceLineNo">578</span>    final RDN originalRDN = originalDN.getRDN();<a name="line.578"></a>
 <span class="sourceLineNo">579</span>    final List&lt;Modification&gt; additionalModifications =<a name="line.579"></a>
 <span class="sourceLineNo">580</span>         new ArrayList&lt;&gt;(attributeModifications.size());<a name="line.580"></a>

@@ -359,7 +359,7 @@
 <span class="sourceLineNo">351</span>   * objects to filters of that type.<a name="line.351"></a>
 <span class="sourceLineNo">352</span>   */<a name="line.352"></a>
 <span class="sourceLineNo">353</span>  private static final ConcurrentHashMap&lt;String,JSONObjectFilter&gt; FILTER_TYPES =<a name="line.353"></a>
-<span class="sourceLineNo">354</span>       new ConcurrentHashMap&lt;&gt;(10);<a name="line.354"></a>
+<span class="sourceLineNo">354</span>       new ConcurrentHashMap&lt;&gt;(StaticUtils.computeMapCapacity(10));<a name="line.354"></a>
 <span class="sourceLineNo">355</span>  static<a name="line.355"></a>
 <span class="sourceLineNo">356</span>  {<a name="line.356"></a>
 <span class="sourceLineNo">357</span>    registerFilterType(<a name="line.357"></a>

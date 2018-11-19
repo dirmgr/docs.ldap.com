@@ -230,7 +230,7 @@
 <span class="sourceLineNo">222</span>                                    connection.getConnectionOptions(), null,<a name="line.222"></a>
 <span class="sourceLineNo">223</span>                                    postConnectProcessor);<a name="line.223"></a>
 <span class="sourceLineNo">224</span><a name="line.224"></a>
-<span class="sourceLineNo">225</span>    connections = new ConcurrentHashMap&lt;&gt;(20);<a name="line.225"></a>
+<span class="sourceLineNo">225</span>    connections = new ConcurrentHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.225"></a>
 <span class="sourceLineNo">226</span>    connections.put(Thread.currentThread(), connection);<a name="line.226"></a>
 <span class="sourceLineNo">227</span><a name="line.227"></a>
 <span class="sourceLineNo">228</span>    lastExpiredDisconnectTime = 0L;<a name="line.228"></a>
@@ -361,7 +361,7 @@
 <span class="sourceLineNo">353</span>    retryOperationTypes       = new AtomicReference&lt;&gt;(<a name="line.353"></a>
 <span class="sourceLineNo">354</span>         Collections.unmodifiableSet(EnumSet.noneOf(OperationType.class)));<a name="line.354"></a>
 <span class="sourceLineNo">355</span><a name="line.355"></a>
-<span class="sourceLineNo">356</span>    connections = new ConcurrentHashMap&lt;&gt;(20);<a name="line.356"></a>
+<span class="sourceLineNo">356</span>    connections = new ConcurrentHashMap&lt;&gt;(StaticUtils.computeMapCapacity(20));<a name="line.356"></a>
 <span class="sourceLineNo">357</span><a name="line.357"></a>
 <span class="sourceLineNo">358</span>    lastExpiredDisconnectTime = 0L;<a name="line.358"></a>
 <span class="sourceLineNo">359</span>    maxConnectionAge          = 0L;<a name="line.359"></a>

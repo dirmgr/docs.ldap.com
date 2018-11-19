@@ -406,7 +406,7 @@
 <span class="sourceLineNo">398</span>    splitUsingHashOnRDNParser.addArgument(splitUsingHashOnRDNNumSets);<a name="line.398"></a>
 <span class="sourceLineNo">399</span><a name="line.399"></a>
 <span class="sourceLineNo">400</span>    final LinkedHashMap&lt;String[],String&gt; splitUsingHashOnRDNExamples =<a name="line.400"></a>
-<span class="sourceLineNo">401</span>         new LinkedHashMap&lt;&gt;(1);<a name="line.401"></a>
+<span class="sourceLineNo">401</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.401"></a>
 <span class="sourceLineNo">402</span>    splitUsingHashOnRDNExamples.put(<a name="line.402"></a>
 <span class="sourceLineNo">403</span>         new String[]<a name="line.403"></a>
 <span class="sourceLineNo">404</span>         {<a name="line.404"></a>
@@ -466,7 +466,7 @@
 <span class="sourceLineNo">458</span>         splitUsingHashOnAttributeAssumeFlatDIT);<a name="line.458"></a>
 <span class="sourceLineNo">459</span><a name="line.459"></a>
 <span class="sourceLineNo">460</span>    final LinkedHashMap&lt;String[],String&gt; splitUsingHashOnAttributeExamples =<a name="line.460"></a>
-<span class="sourceLineNo">461</span>         new LinkedHashMap&lt;&gt;(1);<a name="line.461"></a>
+<span class="sourceLineNo">461</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.461"></a>
 <span class="sourceLineNo">462</span>    splitUsingHashOnAttributeExamples.put(<a name="line.462"></a>
 <span class="sourceLineNo">463</span>         new String[]<a name="line.463"></a>
 <span class="sourceLineNo">464</span>         {<a name="line.464"></a>
@@ -511,7 +511,7 @@
 <span class="sourceLineNo">503</span>         splitUsingFewestEntriesAssumeFlatDIT);<a name="line.503"></a>
 <span class="sourceLineNo">504</span><a name="line.504"></a>
 <span class="sourceLineNo">505</span>    final LinkedHashMap&lt;String[],String&gt; splitUsingFewestEntriesExamples =<a name="line.505"></a>
-<span class="sourceLineNo">506</span>         new LinkedHashMap&lt;&gt;(1);<a name="line.506"></a>
+<span class="sourceLineNo">506</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.506"></a>
 <span class="sourceLineNo">507</span>    splitUsingFewestEntriesExamples.put(<a name="line.507"></a>
 <span class="sourceLineNo">508</span>         new String[]<a name="line.508"></a>
 <span class="sourceLineNo">509</span>         {<a name="line.509"></a>
@@ -548,7 +548,7 @@
 <span class="sourceLineNo">540</span>    splitUsingFilterParser.addArgument(splitUsingFilterAssumeFlatDIT);<a name="line.540"></a>
 <span class="sourceLineNo">541</span><a name="line.541"></a>
 <span class="sourceLineNo">542</span>    final LinkedHashMap&lt;String[],String&gt; splitUsingFilterExamples =<a name="line.542"></a>
-<span class="sourceLineNo">543</span>         new LinkedHashMap&lt;&gt;(1);<a name="line.543"></a>
+<span class="sourceLineNo">543</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.543"></a>
 <span class="sourceLineNo">544</span>    splitUsingFilterExamples.put(<a name="line.544"></a>
 <span class="sourceLineNo">545</span>         new String[]<a name="line.545"></a>
 <span class="sourceLineNo">546</span>         {<a name="line.546"></a>
@@ -602,8 +602,8 @@
 <span class="sourceLineNo">594</span>    if (splitUsingFilter.isPresent())<a name="line.594"></a>
 <span class="sourceLineNo">595</span>    {<a name="line.595"></a>
 <span class="sourceLineNo">596</span>      final List&lt;Filter&gt; filterList = splitUsingFilterFilter.getValues();<a name="line.596"></a>
-<span class="sourceLineNo">597</span>      final Set&lt;Filter&gt; filterSet =<a name="line.597"></a>
-<span class="sourceLineNo">598</span>           new LinkedHashSet&lt;&gt;(filterList.size());<a name="line.598"></a>
+<span class="sourceLineNo">597</span>      final Set&lt;Filter&gt; filterSet = new LinkedHashSet&lt;&gt;(<a name="line.597"></a>
+<span class="sourceLineNo">598</span>           StaticUtils.computeMapCapacity(filterList.size()));<a name="line.598"></a>
 <span class="sourceLineNo">599</span>      for (final Filter f : filterList)<a name="line.599"></a>
 <span class="sourceLineNo">600</span>      {<a name="line.600"></a>
 <span class="sourceLineNo">601</span>        if (filterSet.contains(f))<a name="line.601"></a>
@@ -697,8 +697,8 @@
 <span class="sourceLineNo">689</span>    else if (splitUsingFilter.isPresent())<a name="line.689"></a>
 <span class="sourceLineNo">690</span>    {<a name="line.690"></a>
 <span class="sourceLineNo">691</span>      final List&lt;Filter&gt; filterList = splitUsingFilterFilter.getValues();<a name="line.691"></a>
-<span class="sourceLineNo">692</span>      final LinkedHashSet&lt;Filter&gt; filterSet =<a name="line.692"></a>
-<span class="sourceLineNo">693</span>           new LinkedHashSet&lt;&gt;(filterList.size());<a name="line.693"></a>
+<span class="sourceLineNo">692</span>      final LinkedHashSet&lt;Filter&gt; filterSet = new LinkedHashSet&lt;&gt;(<a name="line.692"></a>
+<span class="sourceLineNo">693</span>           StaticUtils.computeMapCapacity(filterList.size()));<a name="line.693"></a>
 <span class="sourceLineNo">694</span>      for (final Filter f : filterList)<a name="line.694"></a>
 <span class="sourceLineNo">695</span>      {<a name="line.695"></a>
 <span class="sourceLineNo">696</span>        filterSet.add(f);<a name="line.696"></a>
@@ -763,7 +763,7 @@
 <span class="sourceLineNo">755</span>    // Iterate through and process all of the entries.<a name="line.755"></a>
 <span class="sourceLineNo">756</span>    ResultCode resultCode = ResultCode.SUCCESS;<a name="line.756"></a>
 <span class="sourceLineNo">757</span>    final LinkedHashMap&lt;String,OutputStream&gt; outputStreams =<a name="line.757"></a>
-<span class="sourceLineNo">758</span>         new LinkedHashMap&lt;&gt;(10);<a name="line.758"></a>
+<span class="sourceLineNo">758</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(10));<a name="line.758"></a>
 <span class="sourceLineNo">759</span>    try<a name="line.759"></a>
 <span class="sourceLineNo">760</span>    {<a name="line.760"></a>
 <span class="sourceLineNo">761</span>      final AtomicLong entriesRead = new AtomicLong(0L);<a name="line.761"></a>
@@ -1235,7 +1235,7 @@
 <span class="sourceLineNo">1227</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1227"></a>
 <span class="sourceLineNo">1228</span>  {<a name="line.1228"></a>
 <span class="sourceLineNo">1229</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap =<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>         new LinkedHashMap&lt;&gt;(4);<a name="line.1230"></a>
+<span class="sourceLineNo">1230</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(4));<a name="line.1230"></a>
 <span class="sourceLineNo">1231</span><a name="line.1231"></a>
 <span class="sourceLineNo">1232</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1232"></a>
 <span class="sourceLineNo">1233</span>         splitUsingHashOnRDN.getExampleUsages().entrySet())<a name="line.1233"></a>

@@ -1490,89 +1490,90 @@
 <span class="sourceLineNo">1482</span>    // key2 = value2<a name="line.1482"></a>
 <span class="sourceLineNo">1483</span>    // END HEADER<a name="line.1483"></a>
 <span class="sourceLineNo">1484</span>    boolean endHeaderFound = false;<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>    final Map&lt;String,String&gt; headerMap = new LinkedHashMap&lt;&gt;(3);<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>    final Iterator&lt;String&gt; lineIter = lines.iterator();<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>    while (lineIter.hasNext())<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>    {<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>      final String line = lineIter.next().trim();<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>      lineIter.remove();<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span><a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>      if (line.isEmpty() || line.startsWith(String.valueOf(COMMENT_START)))<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>      {<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>        continue;<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>      }<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span><a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>      if (line.equalsIgnoreCase(END_HEADER_TEXT))<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>      {<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>        endHeaderFound = true;<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>        break;<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>      }<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span><a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>      final int equalPos = line.indexOf('=');<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>      if (equalPos &lt; 0)<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>      {<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>        throw new IllegalArgumentException(<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>             ERR_RATE_ADJUSTOR_HEADER_NO_EQUAL.get(line));<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>      }<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span><a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>      final String key = line.substring(0, equalPos).trim();<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>      if (key.isEmpty())<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>      {<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>        throw new IllegalArgumentException(<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>             ERR_RATE_ADJUSTOR_HEADER_EMPTY_KEY.get(line));<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>      }<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span><a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>      final String newValue = line.substring(equalPos+1).trim();<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>      final String existingValue = headerMap.get(key);<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>      if (existingValue != null)<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>      {<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>        throw new IllegalArgumentException(<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>             ERR_RATE_ADJUSTOR_DUPLICATE_HEADER_KEY.get(key, existingValue,<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>                  newValue));<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>      }<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span><a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>      headerMap.put(key, newValue);<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>    }<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span><a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>    if (! endHeaderFound)<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>    {<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>      // This means we iterated across all lines without finding the end header<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>      // marker.<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>      throw new IllegalArgumentException(<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>           ERR_RATE_ADJUSTOR_NO_END_HEADER_FOUND.get(END_HEADER_TEXT));<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>    }<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span><a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>    return headerMap;<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>  }<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span><a name="line.1539"></a>
+<span class="sourceLineNo">1485</span>    final Map&lt;String,String&gt; headerMap = new<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>         LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(3));<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>    final Iterator&lt;String&gt; lineIter = lines.iterator();<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>    while (lineIter.hasNext())<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>    {<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>      final String line = lineIter.next().trim();<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>      lineIter.remove();<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span><a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>      if (line.isEmpty() || line.startsWith(String.valueOf(COMMENT_START)))<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>      {<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>        continue;<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>      }<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span><a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>      if (line.equalsIgnoreCase(END_HEADER_TEXT))<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>      {<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>        endHeaderFound = true;<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>        break;<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>      }<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span><a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>      final int equalPos = line.indexOf('=');<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>      if (equalPos &lt; 0)<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>      {<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>        throw new IllegalArgumentException(<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>             ERR_RATE_ADJUSTOR_HEADER_NO_EQUAL.get(line));<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>      }<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span><a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>      final String key = line.substring(0, equalPos).trim();<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>      if (key.isEmpty())<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>      {<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>        throw new IllegalArgumentException(<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>             ERR_RATE_ADJUSTOR_HEADER_EMPTY_KEY.get(line));<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>      }<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span><a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>      final String newValue = line.substring(equalPos+1).trim();<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>      final String existingValue = headerMap.get(key);<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>      if (existingValue != null)<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>      {<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>        throw new IllegalArgumentException(<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>             ERR_RATE_ADJUSTOR_DUPLICATE_HEADER_KEY.get(key, existingValue,<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>                  newValue));<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>      }<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span><a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>      headerMap.put(key, newValue);<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>    }<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span><a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>    if (! endHeaderFound)<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>    {<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>      // This means we iterated across all lines without finding the end header<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>      // marker.<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>      throw new IllegalArgumentException(<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>           ERR_RATE_ADJUSTOR_NO_END_HEADER_FOUND.get(END_HEADER_TEXT));<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>    }<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span><a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>    return headerMap;<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>  }<a name="line.1539"></a>
 <span class="sourceLineNo">1540</span><a name="line.1540"></a>
 <span class="sourceLineNo">1541</span><a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>  /**<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>   * Returns a list of the lines read from the specified Reader.<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>   *<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>   * @param  reader  The Reader to read from.<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>   *<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>   * @return  A list of the lines read from the specified Reader.<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>   *<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>   * @throws  IOException  If there is a problem reading from the Reader.<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>   */<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>  private static List&lt;String&gt; readLines(final Reader reader) throws IOException<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>  {<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>    final BufferedReader bufferedReader = new BufferedReader(reader);<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span><a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>    // We remove items from the front of the list, so a linked list works best.<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>    final List&lt;String&gt; lines = new LinkedList&lt;&gt;();<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span><a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>    String line;<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>    while ((line = bufferedReader.readLine()) != null)<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>    {<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>      lines.add(line);<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>    }<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span><a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>    return lines;<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>  }<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>}<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span><a name="line.1567"></a>
+<span class="sourceLineNo">1542</span><a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>  /**<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>   * Returns a list of the lines read from the specified Reader.<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>   *<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>   * @param  reader  The Reader to read from.<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>   *<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>   * @return  A list of the lines read from the specified Reader.<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>   *<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>   * @throws  IOException  If there is a problem reading from the Reader.<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>   */<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>  private static List&lt;String&gt; readLines(final Reader reader) throws IOException<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>  {<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>    final BufferedReader bufferedReader = new BufferedReader(reader);<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span><a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>    // We remove items from the front of the list, so a linked list works best.<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>    final List&lt;String&gt; lines = new LinkedList&lt;&gt;();<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span><a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>    String line;<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>    while ((line = bufferedReader.readLine()) != null)<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>    {<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>      lines.add(line);<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>    }<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span><a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>    return lines;<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>  }<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>}<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span><a name="line.1568"></a>
 
 
 

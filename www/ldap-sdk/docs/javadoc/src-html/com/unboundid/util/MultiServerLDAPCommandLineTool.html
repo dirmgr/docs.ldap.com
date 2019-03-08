@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2012-2018 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2012-2019 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright (C) 2012-2018 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright (C) 2012-2019 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * This program is free software; you can redistribute it and/or modify<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.9"></a>
@@ -764,8 +764,8 @@
 <span class="sourceLineNo">756</span>        {<a name="line.756"></a>
 <span class="sourceLineNo">757</span>          try<a name="line.757"></a>
 <span class="sourceLineNo">758</span>          {<a name="line.758"></a>
-<span class="sourceLineNo">759</span>            pw = keyStorePasswordFile[serverIndex].getNonBlankFileLines().<a name="line.759"></a>
-<span class="sourceLineNo">760</span>                 get(0).toCharArray();<a name="line.760"></a>
+<span class="sourceLineNo">759</span>            pw = getPasswordFileReader().readPassword(<a name="line.759"></a>
+<span class="sourceLineNo">760</span>                 keyStorePasswordFile[serverIndex].getValue());<a name="line.760"></a>
 <span class="sourceLineNo">761</span>          }<a name="line.761"></a>
 <span class="sourceLineNo">762</span>          catch (final Exception e)<a name="line.762"></a>
 <span class="sourceLineNo">763</span>          {<a name="line.763"></a>
@@ -808,8 +808,8 @@
 <span class="sourceLineNo">800</span>        {<a name="line.800"></a>
 <span class="sourceLineNo">801</span>          try<a name="line.801"></a>
 <span class="sourceLineNo">802</span>          {<a name="line.802"></a>
-<span class="sourceLineNo">803</span>            pw = trustStorePasswordFile[serverIndex].getNonBlankFileLines().<a name="line.803"></a>
-<span class="sourceLineNo">804</span>                 get(0).toCharArray();<a name="line.804"></a>
+<span class="sourceLineNo">803</span>            pw = getPasswordFileReader().readPassword(<a name="line.803"></a>
+<span class="sourceLineNo">804</span>                 trustStorePasswordFile[serverIndex].getValue());<a name="line.804"></a>
 <span class="sourceLineNo">805</span>          }<a name="line.805"></a>
 <span class="sourceLineNo">806</span>          catch (final Exception e)<a name="line.806"></a>
 <span class="sourceLineNo">807</span>          {<a name="line.807"></a>
@@ -877,46 +877,47 @@
 <span class="sourceLineNo">869</span>    {<a name="line.869"></a>
 <span class="sourceLineNo">870</span>      try<a name="line.870"></a>
 <span class="sourceLineNo">871</span>      {<a name="line.871"></a>
-<span class="sourceLineNo">872</span>        pw = bindPasswordFile[serverIndex].getNonBlankFileLines().get(0);<a name="line.872"></a>
-<span class="sourceLineNo">873</span>      }<a name="line.873"></a>
-<span class="sourceLineNo">874</span>      catch (final Exception e)<a name="line.874"></a>
-<span class="sourceLineNo">875</span>      {<a name="line.875"></a>
-<span class="sourceLineNo">876</span>        Debug.debugException(e);<a name="line.876"></a>
-<span class="sourceLineNo">877</span>        throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.877"></a>
-<span class="sourceLineNo">878</span>             ERR_LDAP_TOOL_CANNOT_READ_BIND_PASSWORD.get(<a name="line.878"></a>
-<span class="sourceLineNo">879</span>                  StaticUtils.getExceptionMessage(e)), e);<a name="line.879"></a>
-<span class="sourceLineNo">880</span>      }<a name="line.880"></a>
-<span class="sourceLineNo">881</span>    }<a name="line.881"></a>
-<span class="sourceLineNo">882</span>    else<a name="line.882"></a>
-<span class="sourceLineNo">883</span>    {<a name="line.883"></a>
-<span class="sourceLineNo">884</span>      pw = null;<a name="line.884"></a>
-<span class="sourceLineNo">885</span>    }<a name="line.885"></a>
-<span class="sourceLineNo">886</span><a name="line.886"></a>
-<span class="sourceLineNo">887</span>    if (saslOption[serverIndex].isPresent())<a name="line.887"></a>
-<span class="sourceLineNo">888</span>    {<a name="line.888"></a>
-<span class="sourceLineNo">889</span>      final String dnStr;<a name="line.889"></a>
-<span class="sourceLineNo">890</span>      if (bindDN[serverIndex].isPresent())<a name="line.890"></a>
-<span class="sourceLineNo">891</span>      {<a name="line.891"></a>
-<span class="sourceLineNo">892</span>        dnStr = bindDN[serverIndex].getValue().toString();<a name="line.892"></a>
-<span class="sourceLineNo">893</span>      }<a name="line.893"></a>
-<span class="sourceLineNo">894</span>      else<a name="line.894"></a>
-<span class="sourceLineNo">895</span>      {<a name="line.895"></a>
-<span class="sourceLineNo">896</span>        dnStr = null;<a name="line.896"></a>
-<span class="sourceLineNo">897</span>      }<a name="line.897"></a>
-<span class="sourceLineNo">898</span><a name="line.898"></a>
-<span class="sourceLineNo">899</span>      return SASLUtils.createBindRequest(dnStr, pw, null,<a name="line.899"></a>
-<span class="sourceLineNo">900</span>           saslOption[serverIndex].getValues());<a name="line.900"></a>
-<span class="sourceLineNo">901</span>    }<a name="line.901"></a>
-<span class="sourceLineNo">902</span>    else if (bindDN[serverIndex].isPresent())<a name="line.902"></a>
-<span class="sourceLineNo">903</span>    {<a name="line.903"></a>
-<span class="sourceLineNo">904</span>      return new SimpleBindRequest(bindDN[serverIndex].getValue(), pw);<a name="line.904"></a>
-<span class="sourceLineNo">905</span>    }<a name="line.905"></a>
-<span class="sourceLineNo">906</span>    else<a name="line.906"></a>
-<span class="sourceLineNo">907</span>    {<a name="line.907"></a>
-<span class="sourceLineNo">908</span>      return null;<a name="line.908"></a>
-<span class="sourceLineNo">909</span>    }<a name="line.909"></a>
-<span class="sourceLineNo">910</span>  }<a name="line.910"></a>
-<span class="sourceLineNo">911</span>}<a name="line.911"></a>
+<span class="sourceLineNo">872</span>        pw = new String(getPasswordFileReader().readPassword(<a name="line.872"></a>
+<span class="sourceLineNo">873</span>             bindPasswordFile[serverIndex].getValue()));<a name="line.873"></a>
+<span class="sourceLineNo">874</span>      }<a name="line.874"></a>
+<span class="sourceLineNo">875</span>      catch (final Exception e)<a name="line.875"></a>
+<span class="sourceLineNo">876</span>      {<a name="line.876"></a>
+<span class="sourceLineNo">877</span>        Debug.debugException(e);<a name="line.877"></a>
+<span class="sourceLineNo">878</span>        throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.878"></a>
+<span class="sourceLineNo">879</span>             ERR_LDAP_TOOL_CANNOT_READ_BIND_PASSWORD.get(<a name="line.879"></a>
+<span class="sourceLineNo">880</span>                  StaticUtils.getExceptionMessage(e)), e);<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      }<a name="line.881"></a>
+<span class="sourceLineNo">882</span>    }<a name="line.882"></a>
+<span class="sourceLineNo">883</span>    else<a name="line.883"></a>
+<span class="sourceLineNo">884</span>    {<a name="line.884"></a>
+<span class="sourceLineNo">885</span>      pw = null;<a name="line.885"></a>
+<span class="sourceLineNo">886</span>    }<a name="line.886"></a>
+<span class="sourceLineNo">887</span><a name="line.887"></a>
+<span class="sourceLineNo">888</span>    if (saslOption[serverIndex].isPresent())<a name="line.888"></a>
+<span class="sourceLineNo">889</span>    {<a name="line.889"></a>
+<span class="sourceLineNo">890</span>      final String dnStr;<a name="line.890"></a>
+<span class="sourceLineNo">891</span>      if (bindDN[serverIndex].isPresent())<a name="line.891"></a>
+<span class="sourceLineNo">892</span>      {<a name="line.892"></a>
+<span class="sourceLineNo">893</span>        dnStr = bindDN[serverIndex].getValue().toString();<a name="line.893"></a>
+<span class="sourceLineNo">894</span>      }<a name="line.894"></a>
+<span class="sourceLineNo">895</span>      else<a name="line.895"></a>
+<span class="sourceLineNo">896</span>      {<a name="line.896"></a>
+<span class="sourceLineNo">897</span>        dnStr = null;<a name="line.897"></a>
+<span class="sourceLineNo">898</span>      }<a name="line.898"></a>
+<span class="sourceLineNo">899</span><a name="line.899"></a>
+<span class="sourceLineNo">900</span>      return SASLUtils.createBindRequest(dnStr, pw, null,<a name="line.900"></a>
+<span class="sourceLineNo">901</span>           saslOption[serverIndex].getValues());<a name="line.901"></a>
+<span class="sourceLineNo">902</span>    }<a name="line.902"></a>
+<span class="sourceLineNo">903</span>    else if (bindDN[serverIndex].isPresent())<a name="line.903"></a>
+<span class="sourceLineNo">904</span>    {<a name="line.904"></a>
+<span class="sourceLineNo">905</span>      return new SimpleBindRequest(bindDN[serverIndex].getValue(), pw);<a name="line.905"></a>
+<span class="sourceLineNo">906</span>    }<a name="line.906"></a>
+<span class="sourceLineNo">907</span>    else<a name="line.907"></a>
+<span class="sourceLineNo">908</span>    {<a name="line.908"></a>
+<span class="sourceLineNo">909</span>      return null;<a name="line.909"></a>
+<span class="sourceLineNo">910</span>    }<a name="line.910"></a>
+<span class="sourceLineNo">911</span>  }<a name="line.911"></a>
+<span class="sourceLineNo">912</span>}<a name="line.912"></a>
 
 
 

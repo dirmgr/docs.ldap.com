@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2008-2018 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2008-2019 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright (C) 2008-2018 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright (C) 2008-2019 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * This program is free software; you can redistribute it and/or modify<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.9"></a>
@@ -1231,8 +1231,8 @@
 <span class="sourceLineNo">1223</span>        {<a name="line.1223"></a>
 <span class="sourceLineNo">1224</span>          try<a name="line.1224"></a>
 <span class="sourceLineNo">1225</span>          {<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>            pw = keyStorePasswordFile.getNonBlankFileLines().get(0).<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>                      toCharArray();<a name="line.1227"></a>
+<span class="sourceLineNo">1226</span>            pw = getPasswordFileReader().readPassword(<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>                 keyStorePasswordFile.getValue());<a name="line.1227"></a>
 <span class="sourceLineNo">1228</span>          }<a name="line.1228"></a>
 <span class="sourceLineNo">1229</span>          catch (final Exception e)<a name="line.1229"></a>
 <span class="sourceLineNo">1230</span>          {<a name="line.1230"></a>
@@ -1282,8 +1282,8 @@
 <span class="sourceLineNo">1274</span>        {<a name="line.1274"></a>
 <span class="sourceLineNo">1275</span>          try<a name="line.1275"></a>
 <span class="sourceLineNo">1276</span>          {<a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>            pw = trustStorePasswordFile.getNonBlankFileLines().get(0).<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>                      toCharArray();<a name="line.1278"></a>
+<span class="sourceLineNo">1277</span>            pw = getPasswordFileReader().readPassword(<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>                 trustStorePasswordFile.getValue());<a name="line.1278"></a>
 <span class="sourceLineNo">1279</span>          }<a name="line.1279"></a>
 <span class="sourceLineNo">1280</span>          catch (final Exception e)<a name="line.1280"></a>
 <span class="sourceLineNo">1281</span>          {<a name="line.1281"></a>
@@ -1378,111 +1378,112 @@
 <span class="sourceLineNo">1370</span>    {<a name="line.1370"></a>
 <span class="sourceLineNo">1371</span>      try<a name="line.1371"></a>
 <span class="sourceLineNo">1372</span>      {<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>        pw = StaticUtils.getBytes(<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>             bindPasswordFile.getNonBlankFileLines().get(0));<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span>      }<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>      catch (final Exception e)<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>      {<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>        Debug.debugException(e);<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>        throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>             ERR_LDAP_TOOL_CANNOT_READ_BIND_PASSWORD.get(<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>                  StaticUtils.getExceptionMessage(e)), e);<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>      }<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>    }<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>    else if (promptForBindPassword.isPresent())<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>    {<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>      getOriginalOut().print(INFO_LDAP_TOOL_ENTER_BIND_PASSWORD.get());<a name="line.1386"></a>
-<span class="sourceLineNo">1387</span>      pw = PasswordReader.readPassword();<a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>      getOriginalOut().println();<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>    }<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>    else<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>    {<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>      pw = null;<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>    }<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span><a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>    if (saslOption.isPresent())<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>    {<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>      final String dnStr;<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>      if (bindDN.isPresent())<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>      {<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>        dnStr = bindDN.getValue().toString();<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>      }<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>      else<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>      {<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>        dnStr = null;<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>      }<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span><a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>      return SASLUtils.createBindRequest(dnStr, pw,<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>           defaultToPromptForBindPassword(), this, null,<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>           saslOption.getValues(), bindControls);<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>    }<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>    else if (useSASLExternal.isPresent())<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>    {<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>      return new EXTERNALBindRequest(bindControls);<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>    }<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>    else if (bindDN.isPresent())<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>    {<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>      if ((pw == null) &amp;&amp; (! bindDN.getValue().isNullDN()) &amp;&amp;<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>          defaultToPromptForBindPassword())<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>      {<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>        getOriginalOut().print(INFO_LDAP_TOOL_ENTER_BIND_PASSWORD.get());<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>        pw = PasswordReader.readPassword();<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>        getOriginalOut().println();<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>      }<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span><a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>      return new SimpleBindRequest(bindDN.getValue(), pw, bindControls);<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>    }<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>    else<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>    {<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>      return null;<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>    }<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>  }<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span><a name="line.1432"></a>
+<span class="sourceLineNo">1373</span>        final char[] pwChars = getPasswordFileReader().readPassword(<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span>             bindPasswordFile.getValue());<a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>        pw = StaticUtils.getBytes(new String(pwChars));<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>      }<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>      catch (final Exception e)<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>      {<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>        Debug.debugException(e);<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>        throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>             ERR_LDAP_TOOL_CANNOT_READ_BIND_PASSWORD.get(<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>                  StaticUtils.getExceptionMessage(e)), e);<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>      }<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>    }<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>    else if (promptForBindPassword.isPresent())<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>    {<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>      getOriginalOut().print(INFO_LDAP_TOOL_ENTER_BIND_PASSWORD.get());<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>      pw = PasswordReader.readPassword();<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>      getOriginalOut().println();<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>    }<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>    else<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>    {<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>      pw = null;<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>    }<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span><a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>    if (saslOption.isPresent())<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>    {<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>      final String dnStr;<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>      if (bindDN.isPresent())<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>      {<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>        dnStr = bindDN.getValue().toString();<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>      }<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>      else<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>      {<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>        dnStr = null;<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>      }<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span><a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>      return SASLUtils.createBindRequest(dnStr, pw,<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>           defaultToPromptForBindPassword(), this, null,<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>           saslOption.getValues(), bindControls);<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>    }<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>    else if (useSASLExternal.isPresent())<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>    {<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>      return new EXTERNALBindRequest(bindControls);<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>    }<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>    else if (bindDN.isPresent())<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>    {<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>      if ((pw == null) &amp;&amp; (! bindDN.getValue().isNullDN()) &amp;&amp;<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>          defaultToPromptForBindPassword())<a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>      {<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>        getOriginalOut().print(INFO_LDAP_TOOL_ENTER_BIND_PASSWORD.get());<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>        pw = PasswordReader.readPassword();<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>        getOriginalOut().println();<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>      }<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span><a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>      return new SimpleBindRequest(bindDN.getValue(), pw, bindControls);<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>    }<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>    else<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>    {<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>      return null;<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>    }<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>  }<a name="line.1432"></a>
 <span class="sourceLineNo">1433</span><a name="line.1433"></a>
 <span class="sourceLineNo">1434</span><a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>  /**<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span>   * Indicates whether any of the LDAP-related arguments maintained by the<a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>   * {@code LDAPCommandLineTool} class were provided on the command line.<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>   *<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>   * @return  {@code true} if any of the LDAP-related arguments maintained by<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>   *          the {@code LDAPCommandLineTool} were provided on the command line,<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>   *          or {@code false} if not.<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>   */<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>  public final boolean anyLDAPArgumentsProvided()<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>  {<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>    return isAnyPresent(host, port, bindDN, bindPassword, bindPasswordFile,<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>         promptForBindPassword, useSSL, useStartTLS, trustAll, keyStorePath,<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>         keyStorePassword, keyStorePasswordFile, promptForKeyStorePassword,<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>         keyStoreFormat, trustStorePath, trustStorePassword,<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>         trustStorePasswordFile, trustStoreFormat, certificateNickname,<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>         saslOption, useSASLExternal);<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>  }<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span><a name="line.1452"></a>
+<span class="sourceLineNo">1435</span><a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>  /**<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>   * Indicates whether any of the LDAP-related arguments maintained by the<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>   * {@code LDAPCommandLineTool} class were provided on the command line.<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>   *<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>   * @return  {@code true} if any of the LDAP-related arguments maintained by<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>   *          the {@code LDAPCommandLineTool} were provided on the command line,<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>   *          or {@code false} if not.<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>   */<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>  public final boolean anyLDAPArgumentsProvided()<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>  {<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>    return isAnyPresent(host, port, bindDN, bindPassword, bindPasswordFile,<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>         promptForBindPassword, useSSL, useStartTLS, trustAll, keyStorePath,<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>         keyStorePassword, keyStorePasswordFile, promptForKeyStorePassword,<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>         keyStoreFormat, trustStorePath, trustStorePassword,<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>         trustStorePasswordFile, trustStoreFormat, certificateNickname,<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>         saslOption, useSASLExternal);<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>  }<a name="line.1452"></a>
 <span class="sourceLineNo">1453</span><a name="line.1453"></a>
 <span class="sourceLineNo">1454</span><a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>  /**<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>   * Indicates whether at least one of the provided arguments was provided on<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>   * the command line.<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>   *<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>   * @param  args  The set of command-line arguments for which to make the<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>   *               determination.<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>   *<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>   * @return  {@code true} if at least one of the provided arguments was<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>   *          provided on the command line, or {@code false} if not.<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>   */<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>  private static boolean isAnyPresent(final Argument... args)<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>  {<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>    for (final Argument a : args)<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>    {<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>      if ((a != null) &amp;&amp; (a.getNumOccurrences() &gt; 0))<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>      {<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>        return true;<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>      }<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>    }<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span><a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>    return false;<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>  }<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>}<a name="line.1477"></a>
+<span class="sourceLineNo">1455</span><a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>  /**<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>   * Indicates whether at least one of the provided arguments was provided on<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>   * the command line.<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>   *<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>   * @param  args  The set of command-line arguments for which to make the<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>   *               determination.<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>   *<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>   * @return  {@code true} if at least one of the provided arguments was<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>   *          provided on the command line, or {@code false} if not.<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>   */<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>  private static boolean isAnyPresent(final Argument... args)<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>  {<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>    for (final Argument a : args)<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>    {<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>      if ((a != null) &amp;&amp; (a.getNumOccurrences() &gt; 0))<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>      {<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>        return true;<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>      }<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>    }<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span><a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>    return false;<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>  }<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>}<a name="line.1478"></a>
 
 
 

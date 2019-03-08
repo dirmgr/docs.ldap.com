@@ -27,6 +27,191 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 4.0.10</h3>
+
+              <p>
+                The following changes were made between the 4.0.9 and 4.0.10 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed a bug in generating the normalized representation of an RDN with multiple
+                  values that have the same attribute type (for example, "cn=foo+cn=bar").  In
+                  such cases, the normalized representation of that RDN would have incorrectly had
+                  only one value with that attribute type, and any other values with that same
+                  attribute type would have been omitted.  Further, because the normalized string
+                  representation of an RDN is used for other purposes (like determining equality
+                  and comparator ordering), this may fix other related issues as well.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added additional methods for improved DN and RDN validation that make it
+                  possible to require attribute names to strictly comply with the specification.
+                  Previously, the methods for creating and validating DNs and RDNs from strings
+                  were always lenient with what they would allow in attribute names because some
+                  servers are lenient.  That leniency is still the default for the sake of
+                  backward compatibility, but there is now an option to require strict compliance
+                  with the specification.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved support for TLSv1.3 in JVMs that support it (Java 11 and later).  The
+                  LDAP SDK will now automatically enable support for TLSv1.3 if it is available,
+                  and will prefer that protocol if the server also supports it, but can still
+                  transparently fall back to an earlier protocol version (TLSv1.2, TLSv1.1, or
+                  TLSv1, whichever is the highest version that the server supports) if the server
+                  does not support it.  As before, the default and enabled set of TLS protocols
+                  can be overridden programmatically by calling methods in the
+                  <tt>com.unboundid.util.ssl.SSLUtil</tt> class, or by setting the
+                  <tt>com.unboundid.util.SSLUtil.defaultSSLProtocol</tt> and
+                  <tt>com.unboundid.util.SSLUtil.enabledSSLProtocols</tt> system properties when
+                  launching the JVM.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the process for establishing a secure connection to immediately start
+                  the TLS handshake on the socket, rather than waiting for it to happen on the
+                  first attempt to communicate over the connection.  This can help ensure that the
+                  connection is ready to use more quickly, and can help avoid timing issues in
+                  certain cases where the prompt trust manager is used in other interactive
+                  applications that prompt for user input.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the in-memory directory server to reject search requests that include
+                  filters with approximate-match or extensible-match components.  The LDAP SDK
+                  does not support client-side evaluation for these filter types, but the
+                  in-memory directory server would previously just not return any matching entries
+                  in response to a search request using either of these filter types.  The new
+                  behavior is more correct and makes it easier to troubleshoot unexpected behavior
+                  for searches involving these filter types.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the <tt>in-memory-directory-server</tt> command-line tool to add
+                  support for a number of new arguments, including
+                  <tt>--generateSelfSignedCertificate</tt>, <tt>--maxConcurrentConnections</tt>,
+                  <tt>--sizeLimit</tt>, <tt>--passwordAttribute</tt>,
+                  <tt>--defaultPasswordEncoding</tt>, <tt>--allowedOperationType</tt>, and
+                  <tt>--authenticationRequiredOperationType</tt>.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the <tt>ldap-debugger</tt> tool to add a
+                  <tt>--generateSelfSignedCertificate</tt> argument.  If the tool is configured
+                  to listen using SSL, then this argument can be given as an alternative to the
+                  <tt>--keyStorePath</tt> argument to indicate that the <tt>ldap-debugger</tt>
+                  should generate its own self-signed certificate instead of using one provided
+                  by the user.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the <tt>ResultCode.isConnectionUsable</tt> methods so that
+                  <tt>UNWILLING_TO_PERFORM</tt> is no longer included in the set of result codes
+                  that will cause the LDAP SDK to suspect that the connection may no longer be
+                  usable.  Although it's possible that the connection may have become invalid,
+                  there are plenty of reasons that an LDAP server may return an
+                  <tt>UNWILLING_TO_PERFORM</tt> response for a connection that remains completely
+                  usable.  Since <tt>isConnectionUsable</tt> is often used to decide whether to
+                  keep the existing connection or to throw it away and replace it with a new one,
+                  being too prone to indicate that a connection is no longer usable can adversely
+                  impact application performance and increase load on the directory server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new API that can be used to change the way that the LDAP SDK resolves
+                  names to IP addresses, and IP addresses to names.  The default implementation
+                  simply uses the JVM's standard name resolution methods, but a caching name
+                  resolver is also provided that can offer better performance and better
+                  resilience against name service outages.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new <tt>PasswordFileReader</tt> class that makes it easier to read a
+                  password from a file.  The password files may optionally be gzip-compressed
+                  and/or passphrase-encrypted, and the reader validates that the file contains
+                  exactly one line and that the line is now non-empty.  All command-line tools
+                  now have access to a password file reader, and LDAP SDK tools that can read
+                  passwords from files have been updated to take advantage of this new reader.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the command-line tool framework so that tools that support reading
+                  argument values from properties files now handle files that are optionally
+                  gzip-compressed and/or passphrase-encrypted.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed a potential null pointer exception in <tt>ArgumentParser.toString</tt>
+                  that could arise if the parser was created through serialization and there were
+                  not any additional description paragraphs.  Also, eliminated an unnecessary
+                  quotation mark in the generated string representation.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapsearch and ldapmodify tools to add support for the get backend
+                  set ID and get server ID request controls (which can be used to obtain
+                  information from a Ping Identity Directory Server or Directory Proxy Server
+                  about which entry-balancing backend sets or which server instances were used in
+                  processing the request), and for the route to backend set and route to server
+                  request controls (which can be used to request that the Ping Identity Directory
+                  Proxy Server route the request to a specific group of entry-balancing backend
+                  sets or to a specific backend server).
+                  <br><br>
+
+                <li>
+                  Updated LDAP command line tools to support authentication with the
+                  UNBOUNDID-CERTIFICATE-PLUS-PASSWORD SASL mechanism.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added <tt>StaticUtils</tt> convenience methods for creating maps and sets.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF writer to make its user-friendly display of base64-encoded
+                  values more filter-friendly.  The LDIF writer has a feature that allows it to
+                  automatically include a comment below a base64-encoded value that tries to
+                  display a more human-readable version of that value.  In most cases, the value
+                  in that comment could simply be copied and pasted into a search filter intended
+                  to target that value, but some of the escaping wasn't very filter-friendly.  For
+                  example, if the base64-encoded value included an ASCII tab, carriage return or
+                  line feed character, it was previously escaped as "\t", "\r", or "\n",
+                  respectively, but those escapes aren't valid in the string representation of an
+                  LDAP filter.  Also, some characters that must be escaped in the string
+                  representation of filters (like the open parenthesis, close parenthesis, and
+                  asterisk) weren't being escaped.  The escaping has now been updated so that it
+                  should be more suitable for copying into a search filter.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the <tt>UniquenessResponseControl</tt> class to add convenience methods
+                  to help make it easier to interpret the response, and updated the
+                  <tt>UniquenessRequestControl</tt> class to add an example to the class-level
+                  Javadoc.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 4.0.9</h3>
 
               <p>
@@ -42,7 +227,7 @@
 
                 <li>
                   Updated the support for passphrase-based encryption to work around and apparent
-                  but in the JVM support for some implementations of MAC algorithms.  It seems
+                  bug in the JVM support for some implementations of MAC algorithms.  It seems
                   that under certain rare circumstances, some versions of the JVM can compute an
                   incorrect MAC, which could lead to a failure in the passphrase-based encryption
                   code.  To account for this, the LDAP SDK now generates the MAC multiple times
@@ -6218,6 +6403,6 @@
               </p>
 
 
-    <div class="copyright-footer">Copyright &copy; 2010-2018&ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2019 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

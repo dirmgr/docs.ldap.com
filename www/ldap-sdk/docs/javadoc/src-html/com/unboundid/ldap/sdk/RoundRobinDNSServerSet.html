@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2014-2018 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2014-2019 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright (C) 2014-2018 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright (C) 2014-2019 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * This program is free software; you can redistribute it and/or modify<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.9"></a>
@@ -768,7 +768,7 @@
 <span class="sourceLineNo">760</span>    {<a name="line.760"></a>
 <span class="sourceLineNo">761</span>      if (jndiProperties == null)<a name="line.761"></a>
 <span class="sourceLineNo">762</span>      {<a name="line.762"></a>
-<span class="sourceLineNo">763</span>        addresses = InetAddress.getAllByName(hostname);<a name="line.763"></a>
+<span class="sourceLineNo">763</span>        addresses = connectionOptions.getNameResolver().getAllByName(hostname);<a name="line.763"></a>
 <span class="sourceLineNo">764</span>      }<a name="line.764"></a>
 <span class="sourceLineNo">765</span>      else<a name="line.765"></a>
 <span class="sourceLineNo">766</span>      {<a name="line.766"></a>
@@ -948,41 +948,42 @@
 <span class="sourceLineNo">940</span>    // InetAddress.getByAddress.  But that requires the IP address to be<a name="line.940"></a>
 <span class="sourceLineNo">941</span>    // specified as a byte array, and the easiest way to convert an IP address<a name="line.941"></a>
 <span class="sourceLineNo">942</span>    // string to a byte array is to use InetAddress.getByName.<a name="line.942"></a>
-<span class="sourceLineNo">943</span>    final InetAddress byName = InetAddress.getByName(String.valueOf(ipAddress));<a name="line.943"></a>
-<span class="sourceLineNo">944</span>    return InetAddress.getByAddress(hostname, byName.getAddress());<a name="line.944"></a>
-<span class="sourceLineNo">945</span>  }<a name="line.945"></a>
-<span class="sourceLineNo">946</span><a name="line.946"></a>
+<span class="sourceLineNo">943</span>    final InetAddress byName = connectionOptions.getNameResolver().<a name="line.943"></a>
+<span class="sourceLineNo">944</span>         getByName(String.valueOf(ipAddress));<a name="line.944"></a>
+<span class="sourceLineNo">945</span>    return InetAddress.getByAddress(hostname, byName.getAddress());<a name="line.945"></a>
+<span class="sourceLineNo">946</span>  }<a name="line.946"></a>
 <span class="sourceLineNo">947</span><a name="line.947"></a>
 <span class="sourceLineNo">948</span><a name="line.948"></a>
-<span class="sourceLineNo">949</span>  /**<a name="line.949"></a>
-<span class="sourceLineNo">950</span>   * {@inheritDoc}<a name="line.950"></a>
-<span class="sourceLineNo">951</span>   */<a name="line.951"></a>
-<span class="sourceLineNo">952</span>  @Override()<a name="line.952"></a>
-<span class="sourceLineNo">953</span>  public void toString(final StringBuilder buffer)<a name="line.953"></a>
-<span class="sourceLineNo">954</span>  {<a name="line.954"></a>
-<span class="sourceLineNo">955</span>    buffer.append("RoundRobinDNSServerSet(hostname='");<a name="line.955"></a>
-<span class="sourceLineNo">956</span>    buffer.append(hostname);<a name="line.956"></a>
-<span class="sourceLineNo">957</span>    buffer.append("', port=");<a name="line.957"></a>
-<span class="sourceLineNo">958</span>    buffer.append(port);<a name="line.958"></a>
-<span class="sourceLineNo">959</span>    buffer.append(", addressSelectionMode=");<a name="line.959"></a>
-<span class="sourceLineNo">960</span>    buffer.append(selectionMode.name());<a name="line.960"></a>
-<span class="sourceLineNo">961</span>    buffer.append(", cacheTimeoutMillis=");<a name="line.961"></a>
-<span class="sourceLineNo">962</span>    buffer.append(cacheTimeoutMillis);<a name="line.962"></a>
-<span class="sourceLineNo">963</span><a name="line.963"></a>
-<span class="sourceLineNo">964</span>    if (providerURL != null)<a name="line.964"></a>
-<span class="sourceLineNo">965</span>    {<a name="line.965"></a>
-<span class="sourceLineNo">966</span>      buffer.append(", providerURL='");<a name="line.966"></a>
-<span class="sourceLineNo">967</span>      buffer.append(providerURL);<a name="line.967"></a>
-<span class="sourceLineNo">968</span>      buffer.append('\'');<a name="line.968"></a>
-<span class="sourceLineNo">969</span>    }<a name="line.969"></a>
-<span class="sourceLineNo">970</span><a name="line.970"></a>
-<span class="sourceLineNo">971</span>    buffer.append(", includesAuthentication=");<a name="line.971"></a>
-<span class="sourceLineNo">972</span>    buffer.append(bindRequest != null);<a name="line.972"></a>
-<span class="sourceLineNo">973</span>    buffer.append(", includesPostConnectProcessing=");<a name="line.973"></a>
-<span class="sourceLineNo">974</span>    buffer.append(postConnectProcessor != null);<a name="line.974"></a>
-<span class="sourceLineNo">975</span>    buffer.append(')');<a name="line.975"></a>
-<span class="sourceLineNo">976</span>  }<a name="line.976"></a>
-<span class="sourceLineNo">977</span>}<a name="line.977"></a>
+<span class="sourceLineNo">949</span><a name="line.949"></a>
+<span class="sourceLineNo">950</span>  /**<a name="line.950"></a>
+<span class="sourceLineNo">951</span>   * {@inheritDoc}<a name="line.951"></a>
+<span class="sourceLineNo">952</span>   */<a name="line.952"></a>
+<span class="sourceLineNo">953</span>  @Override()<a name="line.953"></a>
+<span class="sourceLineNo">954</span>  public void toString(final StringBuilder buffer)<a name="line.954"></a>
+<span class="sourceLineNo">955</span>  {<a name="line.955"></a>
+<span class="sourceLineNo">956</span>    buffer.append("RoundRobinDNSServerSet(hostname='");<a name="line.956"></a>
+<span class="sourceLineNo">957</span>    buffer.append(hostname);<a name="line.957"></a>
+<span class="sourceLineNo">958</span>    buffer.append("', port=");<a name="line.958"></a>
+<span class="sourceLineNo">959</span>    buffer.append(port);<a name="line.959"></a>
+<span class="sourceLineNo">960</span>    buffer.append(", addressSelectionMode=");<a name="line.960"></a>
+<span class="sourceLineNo">961</span>    buffer.append(selectionMode.name());<a name="line.961"></a>
+<span class="sourceLineNo">962</span>    buffer.append(", cacheTimeoutMillis=");<a name="line.962"></a>
+<span class="sourceLineNo">963</span>    buffer.append(cacheTimeoutMillis);<a name="line.963"></a>
+<span class="sourceLineNo">964</span><a name="line.964"></a>
+<span class="sourceLineNo">965</span>    if (providerURL != null)<a name="line.965"></a>
+<span class="sourceLineNo">966</span>    {<a name="line.966"></a>
+<span class="sourceLineNo">967</span>      buffer.append(", providerURL='");<a name="line.967"></a>
+<span class="sourceLineNo">968</span>      buffer.append(providerURL);<a name="line.968"></a>
+<span class="sourceLineNo">969</span>      buffer.append('\'');<a name="line.969"></a>
+<span class="sourceLineNo">970</span>    }<a name="line.970"></a>
+<span class="sourceLineNo">971</span><a name="line.971"></a>
+<span class="sourceLineNo">972</span>    buffer.append(", includesAuthentication=");<a name="line.972"></a>
+<span class="sourceLineNo">973</span>    buffer.append(bindRequest != null);<a name="line.973"></a>
+<span class="sourceLineNo">974</span>    buffer.append(", includesPostConnectProcessing=");<a name="line.974"></a>
+<span class="sourceLineNo">975</span>    buffer.append(postConnectProcessor != null);<a name="line.975"></a>
+<span class="sourceLineNo">976</span>    buffer.append(')');<a name="line.976"></a>
+<span class="sourceLineNo">977</span>  }<a name="line.977"></a>
+<span class="sourceLineNo">978</span>}<a name="line.978"></a>
 
 
 

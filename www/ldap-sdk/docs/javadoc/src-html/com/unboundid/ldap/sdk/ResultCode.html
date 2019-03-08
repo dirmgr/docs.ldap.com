@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2007-2018 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2007-2019 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright (C) 2008-2018 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright (C) 2008-2019 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * This program is free software; you can redistribute it and/or modify<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.9"></a>
@@ -2151,78 +2151,77 @@
 <span class="sourceLineNo">2143</span>      case PROTOCOL_ERROR_INT_VALUE:<a name="line.2143"></a>
 <span class="sourceLineNo">2144</span>      case BUSY_INT_VALUE:<a name="line.2144"></a>
 <span class="sourceLineNo">2145</span>      case UNAVAILABLE_INT_VALUE:<a name="line.2145"></a>
-<span class="sourceLineNo">2146</span>      case UNWILLING_TO_PERFORM_INT_VALUE:<a name="line.2146"></a>
-<span class="sourceLineNo">2147</span>      case OTHER_INT_VALUE:<a name="line.2147"></a>
-<span class="sourceLineNo">2148</span>      case SERVER_DOWN_INT_VALUE:<a name="line.2148"></a>
-<span class="sourceLineNo">2149</span>      case LOCAL_ERROR_INT_VALUE:<a name="line.2149"></a>
-<span class="sourceLineNo">2150</span>      case ENCODING_ERROR_INT_VALUE:<a name="line.2150"></a>
-<span class="sourceLineNo">2151</span>      case DECODING_ERROR_INT_VALUE:<a name="line.2151"></a>
-<span class="sourceLineNo">2152</span>      case TIMEOUT_INT_VALUE:<a name="line.2152"></a>
-<span class="sourceLineNo">2153</span>      case NO_MEMORY_INT_VALUE:<a name="line.2153"></a>
-<span class="sourceLineNo">2154</span>      case CONNECT_ERROR_INT_VALUE:<a name="line.2154"></a>
-<span class="sourceLineNo">2155</span>        return false;<a name="line.2155"></a>
-<span class="sourceLineNo">2156</span>      default:<a name="line.2156"></a>
-<span class="sourceLineNo">2157</span>        return true;<a name="line.2157"></a>
-<span class="sourceLineNo">2158</span>    }<a name="line.2158"></a>
-<span class="sourceLineNo">2159</span>  }<a name="line.2159"></a>
+<span class="sourceLineNo">2146</span>      case OTHER_INT_VALUE:<a name="line.2146"></a>
+<span class="sourceLineNo">2147</span>      case SERVER_DOWN_INT_VALUE:<a name="line.2147"></a>
+<span class="sourceLineNo">2148</span>      case LOCAL_ERROR_INT_VALUE:<a name="line.2148"></a>
+<span class="sourceLineNo">2149</span>      case ENCODING_ERROR_INT_VALUE:<a name="line.2149"></a>
+<span class="sourceLineNo">2150</span>      case DECODING_ERROR_INT_VALUE:<a name="line.2150"></a>
+<span class="sourceLineNo">2151</span>      case TIMEOUT_INT_VALUE:<a name="line.2151"></a>
+<span class="sourceLineNo">2152</span>      case NO_MEMORY_INT_VALUE:<a name="line.2152"></a>
+<span class="sourceLineNo">2153</span>      case CONNECT_ERROR_INT_VALUE:<a name="line.2153"></a>
+<span class="sourceLineNo">2154</span>        return false;<a name="line.2154"></a>
+<span class="sourceLineNo">2155</span>      default:<a name="line.2155"></a>
+<span class="sourceLineNo">2156</span>        return true;<a name="line.2156"></a>
+<span class="sourceLineNo">2157</span>    }<a name="line.2157"></a>
+<span class="sourceLineNo">2158</span>  }<a name="line.2158"></a>
+<span class="sourceLineNo">2159</span><a name="line.2159"></a>
 <span class="sourceLineNo">2160</span><a name="line.2160"></a>
 <span class="sourceLineNo">2161</span><a name="line.2161"></a>
-<span class="sourceLineNo">2162</span><a name="line.2162"></a>
-<span class="sourceLineNo">2163</span>  /**<a name="line.2163"></a>
-<span class="sourceLineNo">2164</span>   * The hash code for this result code.<a name="line.2164"></a>
-<span class="sourceLineNo">2165</span>   *<a name="line.2165"></a>
-<span class="sourceLineNo">2166</span>   * @return  The hash code for this result code.<a name="line.2166"></a>
-<span class="sourceLineNo">2167</span>   */<a name="line.2167"></a>
-<span class="sourceLineNo">2168</span>  @Override()<a name="line.2168"></a>
-<span class="sourceLineNo">2169</span>  public int hashCode()<a name="line.2169"></a>
-<span class="sourceLineNo">2170</span>  {<a name="line.2170"></a>
-<span class="sourceLineNo">2171</span>    return intValue;<a name="line.2171"></a>
-<span class="sourceLineNo">2172</span>  }<a name="line.2172"></a>
+<span class="sourceLineNo">2162</span>  /**<a name="line.2162"></a>
+<span class="sourceLineNo">2163</span>   * The hash code for this result code.<a name="line.2163"></a>
+<span class="sourceLineNo">2164</span>   *<a name="line.2164"></a>
+<span class="sourceLineNo">2165</span>   * @return  The hash code for this result code.<a name="line.2165"></a>
+<span class="sourceLineNo">2166</span>   */<a name="line.2166"></a>
+<span class="sourceLineNo">2167</span>  @Override()<a name="line.2167"></a>
+<span class="sourceLineNo">2168</span>  public int hashCode()<a name="line.2168"></a>
+<span class="sourceLineNo">2169</span>  {<a name="line.2169"></a>
+<span class="sourceLineNo">2170</span>    return intValue;<a name="line.2170"></a>
+<span class="sourceLineNo">2171</span>  }<a name="line.2171"></a>
+<span class="sourceLineNo">2172</span><a name="line.2172"></a>
 <span class="sourceLineNo">2173</span><a name="line.2173"></a>
 <span class="sourceLineNo">2174</span><a name="line.2174"></a>
-<span class="sourceLineNo">2175</span><a name="line.2175"></a>
-<span class="sourceLineNo">2176</span>  /**<a name="line.2176"></a>
-<span class="sourceLineNo">2177</span>   * Indicates whether the provided object is equal to this result code.<a name="line.2177"></a>
-<span class="sourceLineNo">2178</span>   *<a name="line.2178"></a>
-<span class="sourceLineNo">2179</span>   * @param  o  The object for which to make the determination.<a name="line.2179"></a>
-<span class="sourceLineNo">2180</span>   *<a name="line.2180"></a>
-<span class="sourceLineNo">2181</span>   * @return  {@code true} if the provided object is a result code that is equal<a name="line.2181"></a>
-<span class="sourceLineNo">2182</span>   *          to this result code, or {@code false} if not.<a name="line.2182"></a>
-<span class="sourceLineNo">2183</span>   */<a name="line.2183"></a>
-<span class="sourceLineNo">2184</span>  @Override()<a name="line.2184"></a>
-<span class="sourceLineNo">2185</span>  public boolean equals(final Object o)<a name="line.2185"></a>
-<span class="sourceLineNo">2186</span>  {<a name="line.2186"></a>
-<span class="sourceLineNo">2187</span>    if (o == null)<a name="line.2187"></a>
-<span class="sourceLineNo">2188</span>    {<a name="line.2188"></a>
-<span class="sourceLineNo">2189</span>      return false;<a name="line.2189"></a>
-<span class="sourceLineNo">2190</span>    }<a name="line.2190"></a>
-<span class="sourceLineNo">2191</span>    else if (o == this)<a name="line.2191"></a>
-<span class="sourceLineNo">2192</span>    {<a name="line.2192"></a>
-<span class="sourceLineNo">2193</span>      return true;<a name="line.2193"></a>
-<span class="sourceLineNo">2194</span>    }<a name="line.2194"></a>
-<span class="sourceLineNo">2195</span>    else if (o instanceof ResultCode)<a name="line.2195"></a>
-<span class="sourceLineNo">2196</span>    {<a name="line.2196"></a>
-<span class="sourceLineNo">2197</span>      return (intValue == ((ResultCode) o).intValue);<a name="line.2197"></a>
-<span class="sourceLineNo">2198</span>    }<a name="line.2198"></a>
-<span class="sourceLineNo">2199</span>    else<a name="line.2199"></a>
-<span class="sourceLineNo">2200</span>    {<a name="line.2200"></a>
-<span class="sourceLineNo">2201</span>      return false;<a name="line.2201"></a>
-<span class="sourceLineNo">2202</span>    }<a name="line.2202"></a>
-<span class="sourceLineNo">2203</span>  }<a name="line.2203"></a>
+<span class="sourceLineNo">2175</span>  /**<a name="line.2175"></a>
+<span class="sourceLineNo">2176</span>   * Indicates whether the provided object is equal to this result code.<a name="line.2176"></a>
+<span class="sourceLineNo">2177</span>   *<a name="line.2177"></a>
+<span class="sourceLineNo">2178</span>   * @param  o  The object for which to make the determination.<a name="line.2178"></a>
+<span class="sourceLineNo">2179</span>   *<a name="line.2179"></a>
+<span class="sourceLineNo">2180</span>   * @return  {@code true} if the provided object is a result code that is equal<a name="line.2180"></a>
+<span class="sourceLineNo">2181</span>   *          to this result code, or {@code false} if not.<a name="line.2181"></a>
+<span class="sourceLineNo">2182</span>   */<a name="line.2182"></a>
+<span class="sourceLineNo">2183</span>  @Override()<a name="line.2183"></a>
+<span class="sourceLineNo">2184</span>  public boolean equals(final Object o)<a name="line.2184"></a>
+<span class="sourceLineNo">2185</span>  {<a name="line.2185"></a>
+<span class="sourceLineNo">2186</span>    if (o == null)<a name="line.2186"></a>
+<span class="sourceLineNo">2187</span>    {<a name="line.2187"></a>
+<span class="sourceLineNo">2188</span>      return false;<a name="line.2188"></a>
+<span class="sourceLineNo">2189</span>    }<a name="line.2189"></a>
+<span class="sourceLineNo">2190</span>    else if (o == this)<a name="line.2190"></a>
+<span class="sourceLineNo">2191</span>    {<a name="line.2191"></a>
+<span class="sourceLineNo">2192</span>      return true;<a name="line.2192"></a>
+<span class="sourceLineNo">2193</span>    }<a name="line.2193"></a>
+<span class="sourceLineNo">2194</span>    else if (o instanceof ResultCode)<a name="line.2194"></a>
+<span class="sourceLineNo">2195</span>    {<a name="line.2195"></a>
+<span class="sourceLineNo">2196</span>      return (intValue == ((ResultCode) o).intValue);<a name="line.2196"></a>
+<span class="sourceLineNo">2197</span>    }<a name="line.2197"></a>
+<span class="sourceLineNo">2198</span>    else<a name="line.2198"></a>
+<span class="sourceLineNo">2199</span>    {<a name="line.2199"></a>
+<span class="sourceLineNo">2200</span>      return false;<a name="line.2200"></a>
+<span class="sourceLineNo">2201</span>    }<a name="line.2201"></a>
+<span class="sourceLineNo">2202</span>  }<a name="line.2202"></a>
+<span class="sourceLineNo">2203</span><a name="line.2203"></a>
 <span class="sourceLineNo">2204</span><a name="line.2204"></a>
 <span class="sourceLineNo">2205</span><a name="line.2205"></a>
-<span class="sourceLineNo">2206</span><a name="line.2206"></a>
-<span class="sourceLineNo">2207</span>  /**<a name="line.2207"></a>
-<span class="sourceLineNo">2208</span>   * Retrieves a string representation of this result code.<a name="line.2208"></a>
-<span class="sourceLineNo">2209</span>   *<a name="line.2209"></a>
-<span class="sourceLineNo">2210</span>   * @return  A string representation of this result code.<a name="line.2210"></a>
-<span class="sourceLineNo">2211</span>   */<a name="line.2211"></a>
-<span class="sourceLineNo">2212</span>  @Override()<a name="line.2212"></a>
-<span class="sourceLineNo">2213</span>  public String toString()<a name="line.2213"></a>
-<span class="sourceLineNo">2214</span>  {<a name="line.2214"></a>
-<span class="sourceLineNo">2215</span>    return stringRepresentation;<a name="line.2215"></a>
-<span class="sourceLineNo">2216</span>  }<a name="line.2216"></a>
-<span class="sourceLineNo">2217</span>}<a name="line.2217"></a>
+<span class="sourceLineNo">2206</span>  /**<a name="line.2206"></a>
+<span class="sourceLineNo">2207</span>   * Retrieves a string representation of this result code.<a name="line.2207"></a>
+<span class="sourceLineNo">2208</span>   *<a name="line.2208"></a>
+<span class="sourceLineNo">2209</span>   * @return  A string representation of this result code.<a name="line.2209"></a>
+<span class="sourceLineNo">2210</span>   */<a name="line.2210"></a>
+<span class="sourceLineNo">2211</span>  @Override()<a name="line.2211"></a>
+<span class="sourceLineNo">2212</span>  public String toString()<a name="line.2212"></a>
+<span class="sourceLineNo">2213</span>  {<a name="line.2213"></a>
+<span class="sourceLineNo">2214</span>    return stringRepresentation;<a name="line.2214"></a>
+<span class="sourceLineNo">2215</span>  }<a name="line.2215"></a>
+<span class="sourceLineNo">2216</span>}<a name="line.2216"></a>
 
 
 

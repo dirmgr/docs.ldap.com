@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2016-2018 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2016-2019 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright (C) 2016-2018 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright (C) 2016-2019 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * This program is free software; you can redistribute it and/or modify<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.9"></a>
@@ -31,8 +31,8 @@
 <span class="sourceLineNo">023</span><a name="line.23"></a>
 <span class="sourceLineNo">024</span><a name="line.24"></a>
 <span class="sourceLineNo">025</span>import java.io.Serializable;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import java.net.InetAddress;<a name="line.26"></a>
-<span class="sourceLineNo">027</span><a name="line.27"></a>
+<span class="sourceLineNo">026</span><a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.unboundid.ldap.sdk.LDAPConnectionOptions;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import com.unboundid.util.Debug;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import com.unboundid.util.NotMutable;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import com.unboundid.util.ThreadSafety;<a name="line.30"></a>
@@ -193,7 +193,7 @@
 <span class="sourceLineNo">185</span>    // validation.<a name="line.185"></a>
 <span class="sourceLineNo">186</span>    try<a name="line.186"></a>
 <span class="sourceLineNo">187</span>    {<a name="line.187"></a>
-<span class="sourceLineNo">188</span>      InetAddress.getByName(valueString);<a name="line.188"></a>
+<span class="sourceLineNo">188</span>      LDAPConnectionOptions.DEFAULT_NAME_RESOLVER.getByName(valueString);<a name="line.188"></a>
 <span class="sourceLineNo">189</span>    }<a name="line.189"></a>
 <span class="sourceLineNo">190</span>    catch (final Exception e)<a name="line.190"></a>
 <span class="sourceLineNo">191</span>    {<a name="line.191"></a>
@@ -268,7 +268,7 @@
 <span class="sourceLineNo">260</span><a name="line.260"></a>
 <span class="sourceLineNo">261</span>    try<a name="line.261"></a>
 <span class="sourceLineNo">262</span>    {<a name="line.262"></a>
-<span class="sourceLineNo">263</span>      InetAddress.getByName(s);<a name="line.263"></a>
+<span class="sourceLineNo">263</span>      LDAPConnectionOptions.DEFAULT_NAME_RESOLVER.getByName(s);<a name="line.263"></a>
 <span class="sourceLineNo">264</span>      return true;<a name="line.264"></a>
 <span class="sourceLineNo">265</span>    }<a name="line.265"></a>
 <span class="sourceLineNo">266</span>    catch (final Exception e)<a name="line.266"></a>
@@ -319,7 +319,7 @@
 <span class="sourceLineNo">311</span>    {<a name="line.311"></a>
 <span class="sourceLineNo">312</span>      try<a name="line.312"></a>
 <span class="sourceLineNo">313</span>      {<a name="line.313"></a>
-<span class="sourceLineNo">314</span>        InetAddress.getByName(s);<a name="line.314"></a>
+<span class="sourceLineNo">314</span>        LDAPConnectionOptions.DEFAULT_NAME_RESOLVER.getByName(s);<a name="line.314"></a>
 <span class="sourceLineNo">315</span>        return true;<a name="line.315"></a>
 <span class="sourceLineNo">316</span>      }<a name="line.316"></a>
 <span class="sourceLineNo">317</span>      catch (final Exception e)<a name="line.317"></a>

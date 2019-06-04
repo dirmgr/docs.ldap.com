@@ -200,7 +200,7 @@
 <span class="sourceLineNo">192</span>  static<a name="line.192"></a>
 <span class="sourceLineNo">193</span>  {<a name="line.193"></a>
 <span class="sourceLineNo">194</span>    final File currentDir;<a name="line.194"></a>
-<span class="sourceLineNo">195</span>    final String currentDirString = System.getProperty("user.dir");<a name="line.195"></a>
+<span class="sourceLineNo">195</span>    final String currentDirString = StaticUtils.getSystemProperty("user.dir");<a name="line.195"></a>
 <span class="sourceLineNo">196</span>    if (currentDirString == null)<a name="line.196"></a>
 <span class="sourceLineNo">197</span>    {<a name="line.197"></a>
 <span class="sourceLineNo">198</span>      currentDir = new File(".");<a name="line.198"></a>
@@ -2344,7 +2344,7 @@
 <span class="sourceLineNo">2336</span>      try<a name="line.2336"></a>
 <span class="sourceLineNo">2337</span>      {<a name="line.2337"></a>
 <span class="sourceLineNo">2338</span>        final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.2338"></a>
-<span class="sourceLineNo">2339</span>        dn = new String(dnBytes, StandardCharsets.UTF_8);<a name="line.2339"></a>
+<span class="sourceLineNo">2339</span>        dn = StaticUtils.toUTF8String(dnBytes);<a name="line.2339"></a>
 <span class="sourceLineNo">2340</span>      }<a name="line.2340"></a>
 <span class="sourceLineNo">2341</span>      catch (final ParseException pe)<a name="line.2341"></a>
 <span class="sourceLineNo">2342</span>      {<a name="line.2342"></a>
@@ -2477,7 +2477,7 @@
 <span class="sourceLineNo">2469</span>      try<a name="line.2469"></a>
 <span class="sourceLineNo">2470</span>      {<a name="line.2470"></a>
 <span class="sourceLineNo">2471</span>        final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.2471"></a>
-<span class="sourceLineNo">2472</span>        dn = new String(dnBytes, StandardCharsets.UTF_8);<a name="line.2472"></a>
+<span class="sourceLineNo">2472</span>        dn = StaticUtils.toUTF8String(dnBytes);<a name="line.2472"></a>
 <span class="sourceLineNo">2473</span>      }<a name="line.2473"></a>
 <span class="sourceLineNo">2474</span>      catch (final ParseException pe)<a name="line.2474"></a>
 <span class="sourceLineNo">2475</span>      {<a name="line.2475"></a>
@@ -2715,7 +2715,7 @@
 <span class="sourceLineNo">2707</span>      try<a name="line.2707"></a>
 <span class="sourceLineNo">2708</span>      {<a name="line.2708"></a>
 <span class="sourceLineNo">2709</span>        final byte[] controlBytes = Base64.decode(line.substring(pos));<a name="line.2709"></a>
-<span class="sourceLineNo">2710</span>        controlString =  new String(controlBytes, StandardCharsets.UTF_8);<a name="line.2710"></a>
+<span class="sourceLineNo">2710</span>        controlString =  StaticUtils.toUTF8String(controlBytes);<a name="line.2710"></a>
 <span class="sourceLineNo">2711</span>      }<a name="line.2711"></a>
 <span class="sourceLineNo">2712</span>      catch (final ParseException pe)<a name="line.2712"></a>
 <span class="sourceLineNo">2713</span>      {<a name="line.2713"></a>
@@ -2981,7 +2981,7 @@
 <span class="sourceLineNo">2973</span>      try<a name="line.2973"></a>
 <span class="sourceLineNo">2974</span>      {<a name="line.2974"></a>
 <span class="sourceLineNo">2975</span>        final byte[] changeTypeBytes = Base64.decode(line.substring(pos));<a name="line.2975"></a>
-<span class="sourceLineNo">2976</span>        return new String(changeTypeBytes, StandardCharsets.UTF_8);<a name="line.2976"></a>
+<span class="sourceLineNo">2976</span>        return StaticUtils.toUTF8String(changeTypeBytes);<a name="line.2976"></a>
 <span class="sourceLineNo">2977</span>      }<a name="line.2977"></a>
 <span class="sourceLineNo">2978</span>      catch (final ParseException pe)<a name="line.2978"></a>
 <span class="sourceLineNo">2979</span>      {<a name="line.2979"></a>
@@ -3513,7 +3513,7 @@
 <span class="sourceLineNo">3505</span>        try<a name="line.3505"></a>
 <span class="sourceLineNo">3506</span>        {<a name="line.3506"></a>
 <span class="sourceLineNo">3507</span>          final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.3507"></a>
-<span class="sourceLineNo">3508</span>          attributeName = new String(dnBytes, StandardCharsets.UTF_8);<a name="line.3508"></a>
+<span class="sourceLineNo">3508</span>          attributeName = StaticUtils.toUTF8String(dnBytes);<a name="line.3508"></a>
 <span class="sourceLineNo">3509</span>        }<a name="line.3509"></a>
 <span class="sourceLineNo">3510</span>        catch (final ParseException pe)<a name="line.3510"></a>
 <span class="sourceLineNo">3511</span>        {<a name="line.3511"></a>
@@ -3816,7 +3816,7 @@
 <span class="sourceLineNo">3808</span>      try<a name="line.3808"></a>
 <span class="sourceLineNo">3809</span>      {<a name="line.3809"></a>
 <span class="sourceLineNo">3810</span>        final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.3810"></a>
-<span class="sourceLineNo">3811</span>        newRDN = new String(dnBytes, StandardCharsets.UTF_8);<a name="line.3811"></a>
+<span class="sourceLineNo">3811</span>        newRDN = StaticUtils.toUTF8String(dnBytes);<a name="line.3811"></a>
 <span class="sourceLineNo">3812</span>      }<a name="line.3812"></a>
 <span class="sourceLineNo">3813</span>      catch (final ParseException pe)<a name="line.3813"></a>
 <span class="sourceLineNo">3814</span>      {<a name="line.3814"></a>
@@ -3899,7 +3899,7 @@
 <span class="sourceLineNo">3891</span>      try<a name="line.3891"></a>
 <span class="sourceLineNo">3892</span>      {<a name="line.3892"></a>
 <span class="sourceLineNo">3893</span>        final byte[] changeTypeBytes = Base64.decode(line.substring(pos));<a name="line.3893"></a>
-<span class="sourceLineNo">3894</span>        deleteOldRDNStr = new String(changeTypeBytes, StandardCharsets.UTF_8);<a name="line.3894"></a>
+<span class="sourceLineNo">3894</span>        deleteOldRDNStr = StaticUtils.toUTF8String(changeTypeBytes);<a name="line.3894"></a>
 <span class="sourceLineNo">3895</span>      }<a name="line.3895"></a>
 <span class="sourceLineNo">3896</span>      catch (final ParseException pe)<a name="line.3896"></a>
 <span class="sourceLineNo">3897</span>      {<a name="line.3897"></a>
@@ -3995,7 +3995,7 @@
 <span class="sourceLineNo">3987</span>        try<a name="line.3987"></a>
 <span class="sourceLineNo">3988</span>        {<a name="line.3988"></a>
 <span class="sourceLineNo">3989</span>          final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.3989"></a>
-<span class="sourceLineNo">3990</span>          newSuperiorDN = new String(dnBytes, StandardCharsets.UTF_8);<a name="line.3990"></a>
+<span class="sourceLineNo">3990</span>          newSuperiorDN = StaticUtils.toUTF8String(dnBytes);<a name="line.3990"></a>
 <span class="sourceLineNo">3991</span>        }<a name="line.3991"></a>
 <span class="sourceLineNo">3992</span>        catch (final ParseException pe)<a name="line.3992"></a>
 <span class="sourceLineNo">3993</span>        {<a name="line.3993"></a>

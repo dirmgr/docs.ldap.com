@@ -902,7 +902,7 @@
 <span class="sourceLineNo">894</span>    // See if there is a system property that specifies what the default SSL<a name="line.894"></a>
 <span class="sourceLineNo">895</span>    // protocol should be.  If not, then try to dynamically determine it.<a name="line.895"></a>
 <span class="sourceLineNo">896</span>    final String defaultPropValue =<a name="line.896"></a>
-<span class="sourceLineNo">897</span>         System.getProperty(PROPERTY_DEFAULT_SSL_PROTOCOL);<a name="line.897"></a>
+<span class="sourceLineNo">897</span>         StaticUtils.getSystemProperty(PROPERTY_DEFAULT_SSL_PROTOCOL);<a name="line.897"></a>
 <span class="sourceLineNo">898</span>    if ((defaultPropValue != null) &amp;&amp; (! defaultPropValue.isEmpty()))<a name="line.898"></a>
 <span class="sourceLineNo">899</span>    {<a name="line.899"></a>
 <span class="sourceLineNo">900</span>      DEFAULT_SSL_PROTOCOL.set(defaultPropValue);<a name="line.900"></a>
@@ -972,7 +972,7 @@
 <span class="sourceLineNo">964</span>    // If there is a system property that specifies which enabled SSL protocols<a name="line.964"></a>
 <span class="sourceLineNo">965</span>    // to use, then it will override the defaults.<a name="line.965"></a>
 <span class="sourceLineNo">966</span>    final String enabledPropValue =<a name="line.966"></a>
-<span class="sourceLineNo">967</span>         System.getProperty(PROPERTY_ENABLED_SSL_PROTOCOLS);<a name="line.967"></a>
+<span class="sourceLineNo">967</span>         StaticUtils.getSystemProperty(PROPERTY_ENABLED_SSL_PROTOCOLS);<a name="line.967"></a>
 <span class="sourceLineNo">968</span>    if ((enabledPropValue != null) &amp;&amp; (! enabledPropValue.isEmpty()))<a name="line.968"></a>
 <span class="sourceLineNo">969</span>    {<a name="line.969"></a>
 <span class="sourceLineNo">970</span>      enabledProtocols.clear();<a name="line.970"></a>

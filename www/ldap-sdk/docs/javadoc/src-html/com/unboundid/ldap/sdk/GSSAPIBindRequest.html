@@ -181,7 +181,7 @@
 <span class="sourceLineNo">173</span>   * an automatically-generated config file.<a name="line.173"></a>
 <span class="sourceLineNo">174</span>   */<a name="line.174"></a>
 <span class="sourceLineNo">175</span>  private static final String DEFAULT_CONFIG_FILE =<a name="line.175"></a>
-<span class="sourceLineNo">176</span>       System.getProperty(PROPERTY_CONFIG_FILE);<a name="line.176"></a>
+<span class="sourceLineNo">176</span>       StaticUtils.getSystemProperty(PROPERTY_CONFIG_FILE);<a name="line.176"></a>
 <span class="sourceLineNo">177</span><a name="line.177"></a>
 <span class="sourceLineNo">178</span><a name="line.178"></a>
 <span class="sourceLineNo">179</span><a name="line.179"></a>
@@ -189,7 +189,7 @@
 <span class="sourceLineNo">181</span>   * The default KDC address that will be used if none is explicitly configured.<a name="line.181"></a>
 <span class="sourceLineNo">182</span>   */<a name="line.182"></a>
 <span class="sourceLineNo">183</span>  private static final String DEFAULT_KDC_ADDRESS =<a name="line.183"></a>
-<span class="sourceLineNo">184</span>       System.getProperty(PROPERTY_KDC_ADDRESS);<a name="line.184"></a>
+<span class="sourceLineNo">184</span>       StaticUtils.getSystemProperty(PROPERTY_KDC_ADDRESS);<a name="line.184"></a>
 <span class="sourceLineNo">185</span><a name="line.185"></a>
 <span class="sourceLineNo">186</span><a name="line.186"></a>
 <span class="sourceLineNo">187</span><a name="line.187"></a>
@@ -197,7 +197,7 @@
 <span class="sourceLineNo">189</span>   * The default realm that will be used if none is explicitly configured.<a name="line.189"></a>
 <span class="sourceLineNo">190</span>   */<a name="line.190"></a>
 <span class="sourceLineNo">191</span>  private static final String DEFAULT_REALM =<a name="line.191"></a>
-<span class="sourceLineNo">192</span>       System.getProperty(PROPERTY_REALM);<a name="line.192"></a>
+<span class="sourceLineNo">192</span>       StaticUtils.getSystemProperty(PROPERTY_REALM);<a name="line.192"></a>
 <span class="sourceLineNo">193</span><a name="line.193"></a>
 <span class="sourceLineNo">194</span><a name="line.194"></a>
 <span class="sourceLineNo">195</span><a name="line.195"></a>
@@ -1540,7 +1540,7 @@
 <span class="sourceLineNo">1532</span>  {<a name="line.1532"></a>
 <span class="sourceLineNo">1533</span>    if (! suppressedSystemProperties.contains(name))<a name="line.1533"></a>
 <span class="sourceLineNo">1534</span>    {<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>      System.clearProperty(name);<a name="line.1535"></a>
+<span class="sourceLineNo">1535</span>      StaticUtils.clearSystemProperty(name);<a name="line.1535"></a>
 <span class="sourceLineNo">1536</span>    }<a name="line.1536"></a>
 <span class="sourceLineNo">1537</span>  }<a name="line.1537"></a>
 <span class="sourceLineNo">1538</span><a name="line.1538"></a>
@@ -1557,7 +1557,7 @@
 <span class="sourceLineNo">1549</span>  {<a name="line.1549"></a>
 <span class="sourceLineNo">1550</span>    if (! suppressedSystemProperties.contains(name))<a name="line.1550"></a>
 <span class="sourceLineNo">1551</span>    {<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>      System.setProperty(name, value);<a name="line.1552"></a>
+<span class="sourceLineNo">1552</span>      StaticUtils.setSystemProperty(name, value);<a name="line.1552"></a>
 <span class="sourceLineNo">1553</span>    }<a name="line.1553"></a>
 <span class="sourceLineNo">1554</span>  }<a name="line.1554"></a>
 <span class="sourceLineNo">1555</span><a name="line.1555"></a>

@@ -1162,108 +1162,109 @@
 <span class="sourceLineNo">1154</span>      // schema files in it, then read the schema from that directory.<a name="line.1154"></a>
 <span class="sourceLineNo">1155</span>      try<a name="line.1155"></a>
 <span class="sourceLineNo">1156</span>      {<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>        final String instanceRootStr = System.getenv("INSTANCE_ROOT");<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>        if (instanceRootStr != null)<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>        {<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>          final File instanceRoot = new File(instanceRootStr);<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>          final File configDir = new File(instanceRoot, "config");<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>          final File schemaDir = new File(configDir, "schema");<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>          if (schemaDir.exists())<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>          {<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>            final TreeMap&lt;String,File&gt; fileMap = new TreeMap&lt;&gt;();<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>            for (final File schemaDirFile : schemaDir.listFiles())<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>            {<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>              final String name = schemaDirFile.getName();<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>              if (schemaDirFile.isFile() &amp;&amp;<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>                  name.toLowerCase().endsWith(".ldif"))<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>              {<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>                fileMap.put(name, schemaDirFile);<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>              }<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>            }<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span><a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>            if (! fileMap.isEmpty())<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>            {<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>              return Schema.getSchema(new ArrayList&lt;&gt;(fileMap.values()));<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>            }<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>          }<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>        }<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>      }<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>      catch (final Exception e)<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>      {<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>        Debug.debugException(e);<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>      }<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>    }<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span><a name="line.1188"></a>
+<span class="sourceLineNo">1157</span>        final String instanceRootStr =<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>             StaticUtils.getEnvironmentVariable("INSTANCE_ROOT");<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>        if (instanceRootStr != null)<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>        {<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>          final File instanceRoot = new File(instanceRootStr);<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>          final File configDir = new File(instanceRoot, "config");<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>          final File schemaDir = new File(configDir, "schema");<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>          if (schemaDir.exists())<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>          {<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>            final TreeMap&lt;String,File&gt; fileMap = new TreeMap&lt;&gt;();<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>            for (final File schemaDirFile : schemaDir.listFiles())<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>            {<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>              final String name = schemaDirFile.getName();<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>              if (schemaDirFile.isFile() &amp;&amp;<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>                  name.toLowerCase().endsWith(".ldif"))<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>              {<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>                fileMap.put(name, schemaDirFile);<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>              }<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>            }<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span><a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>            if (! fileMap.isEmpty())<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>            {<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>              return Schema.getSchema(new ArrayList&lt;&gt;(fileMap.values()));<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>            }<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>          }<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>        }<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>      }<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>      catch (final Exception e)<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>      {<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>        Debug.debugException(e);<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>      }<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>    }<a name="line.1188"></a>
 <span class="sourceLineNo">1189</span><a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>    // If we've gotten here, then just return null and the tool will try to use<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>    // the default standard schema.<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>    return null;<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>  }<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span><a name="line.1194"></a>
+<span class="sourceLineNo">1190</span><a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>    // If we've gotten here, then just return null and the tool will try to use<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>    // the default standard schema.<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>    return null;<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>  }<a name="line.1194"></a>
 <span class="sourceLineNo">1195</span><a name="line.1195"></a>
 <span class="sourceLineNo">1196</span><a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>  /**<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>   * Retrieves a file object that refers to an output file with the provided<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>   * extension.<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>   *<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>   * @param  extension  The extension to use for the file.<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>   *<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>   * @return  A file object that refers to an output file with the provided<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>   *          extension.<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>   */<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>  private File getOutputFile(final String extension)<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>  {<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>    final File baseFile;<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>    if (targetLDIFBasePath.isPresent())<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>    {<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>      baseFile = targetLDIFBasePath.getValue();<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>    }<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>    else<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>    {<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>      baseFile = sourceLDIF.getValue();<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>    }<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span><a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>    return new File(baseFile.getAbsolutePath() + extension);<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>  }<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span><a name="line.1220"></a>
+<span class="sourceLineNo">1197</span><a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>  /**<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>   * Retrieves a file object that refers to an output file with the provided<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>   * extension.<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>   *<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>   * @param  extension  The extension to use for the file.<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>   *<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>   * @return  A file object that refers to an output file with the provided<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>   *          extension.<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>   */<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>  private File getOutputFile(final String extension)<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>  {<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>    final File baseFile;<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>    if (targetLDIFBasePath.isPresent())<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>    {<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>      baseFile = targetLDIFBasePath.getValue();<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>    }<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>    else<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>    {<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>      baseFile = sourceLDIF.getValue();<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>    }<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span><a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>    return new File(baseFile.getAbsolutePath() + extension);<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>  }<a name="line.1220"></a>
 <span class="sourceLineNo">1221</span><a name="line.1221"></a>
 <span class="sourceLineNo">1222</span><a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>  /**<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>   * {@inheritDoc}<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>   */<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>  @Override()<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span>  {<a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap =<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(4));<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span><a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>         splitUsingHashOnRDN.getExampleUsages().entrySet())<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>    {<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>    }<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span><a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>         splitUsingHashOnAttribute.getExampleUsages().entrySet())<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>    {<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>    }<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span><a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>         splitUsingFewestEntries.getExampleUsages().entrySet())<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span>    {<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>    }<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span><a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>         splitUsingFilter.getExampleUsages().entrySet())<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>    {<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>    }<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span><a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>    return exampleMap;<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>  }<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>}<a name="line.1258"></a>
+<span class="sourceLineNo">1223</span><a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>  /**<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>   * {@inheritDoc}<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>   */<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>  @Override()<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>  {<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap =<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(4));<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span><a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>         splitUsingHashOnRDN.getExampleUsages().entrySet())<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>    {<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>    }<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span><a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>         splitUsingHashOnAttribute.getExampleUsages().entrySet())<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>    {<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>    }<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span><a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>         splitUsingFewestEntries.getExampleUsages().entrySet())<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span>    {<a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>    }<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span><a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>    for (final Map.Entry&lt;String[],String&gt; e :<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>         splitUsingFilter.getExampleUsages().entrySet())<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>    {<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>      exampleMap.put(e.getKey(), e.getValue());<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>    }<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span><a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>    return exampleMap;<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>  }<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>}<a name="line.1259"></a>
 
 
 

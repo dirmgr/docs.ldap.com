@@ -540,58 +540,59 @@
 <span class="sourceLineNo">532</span>             connectionOptions, r.getAddress(), r.getPort());<a name="line.532"></a>
 <span class="sourceLineNo">533</span>        doBindPostConnectAndHealthCheckProcessing(connection, bindRequest,<a name="line.533"></a>
 <span class="sourceLineNo">534</span>             postConnectProcessor, healthCheck);<a name="line.534"></a>
-<span class="sourceLineNo">535</span>        return connection;<a name="line.535"></a>
-<span class="sourceLineNo">536</span>      }<a name="line.536"></a>
-<span class="sourceLineNo">537</span>      catch (final LDAPException le)<a name="line.537"></a>
-<span class="sourceLineNo">538</span>      {<a name="line.538"></a>
-<span class="sourceLineNo">539</span>        Debug.debugException(le);<a name="line.539"></a>
-<span class="sourceLineNo">540</span>        if (firstException == null)<a name="line.540"></a>
-<span class="sourceLineNo">541</span>        {<a name="line.541"></a>
-<span class="sourceLineNo">542</span>          firstException = le;<a name="line.542"></a>
-<span class="sourceLineNo">543</span>        }<a name="line.543"></a>
-<span class="sourceLineNo">544</span>      }<a name="line.544"></a>
-<span class="sourceLineNo">545</span>    }<a name="line.545"></a>
-<span class="sourceLineNo">546</span><a name="line.546"></a>
-<span class="sourceLineNo">547</span>    // If we've gotten here, then we couldn't connect to any of the servers.<a name="line.547"></a>
-<span class="sourceLineNo">548</span>    // Throw the first exception that we encountered.<a name="line.548"></a>
-<span class="sourceLineNo">549</span>    throw firstException;<a name="line.549"></a>
-<span class="sourceLineNo">550</span>  }<a name="line.550"></a>
-<span class="sourceLineNo">551</span><a name="line.551"></a>
+<span class="sourceLineNo">535</span>        associateConnectionWithThisServerSet(connection);<a name="line.535"></a>
+<span class="sourceLineNo">536</span>        return connection;<a name="line.536"></a>
+<span class="sourceLineNo">537</span>      }<a name="line.537"></a>
+<span class="sourceLineNo">538</span>      catch (final LDAPException le)<a name="line.538"></a>
+<span class="sourceLineNo">539</span>      {<a name="line.539"></a>
+<span class="sourceLineNo">540</span>        Debug.debugException(le);<a name="line.540"></a>
+<span class="sourceLineNo">541</span>        if (firstException == null)<a name="line.541"></a>
+<span class="sourceLineNo">542</span>        {<a name="line.542"></a>
+<span class="sourceLineNo">543</span>          firstException = le;<a name="line.543"></a>
+<span class="sourceLineNo">544</span>        }<a name="line.544"></a>
+<span class="sourceLineNo">545</span>      }<a name="line.545"></a>
+<span class="sourceLineNo">546</span>    }<a name="line.546"></a>
+<span class="sourceLineNo">547</span><a name="line.547"></a>
+<span class="sourceLineNo">548</span>    // If we've gotten here, then we couldn't connect to any of the servers.<a name="line.548"></a>
+<span class="sourceLineNo">549</span>    // Throw the first exception that we encountered.<a name="line.549"></a>
+<span class="sourceLineNo">550</span>    throw firstException;<a name="line.550"></a>
+<span class="sourceLineNo">551</span>  }<a name="line.551"></a>
 <span class="sourceLineNo">552</span><a name="line.552"></a>
 <span class="sourceLineNo">553</span><a name="line.553"></a>
-<span class="sourceLineNo">554</span>  /**<a name="line.554"></a>
-<span class="sourceLineNo">555</span>   * {@inheritDoc}<a name="line.555"></a>
-<span class="sourceLineNo">556</span>   */<a name="line.556"></a>
-<span class="sourceLineNo">557</span>  @Override()<a name="line.557"></a>
-<span class="sourceLineNo">558</span>  public void toString(final StringBuilder buffer)<a name="line.558"></a>
-<span class="sourceLineNo">559</span>  {<a name="line.559"></a>
-<span class="sourceLineNo">560</span>    buffer.append("DNSSRVRecordServerSet(recordName='");<a name="line.560"></a>
-<span class="sourceLineNo">561</span>    buffer.append(recordName);<a name="line.561"></a>
-<span class="sourceLineNo">562</span>    buffer.append("', providerURL='");<a name="line.562"></a>
-<span class="sourceLineNo">563</span>    buffer.append(providerURL);<a name="line.563"></a>
-<span class="sourceLineNo">564</span>    buffer.append("', ttlMillis=");<a name="line.564"></a>
-<span class="sourceLineNo">565</span>    buffer.append(ttlMillis);<a name="line.565"></a>
-<span class="sourceLineNo">566</span><a name="line.566"></a>
-<span class="sourceLineNo">567</span>    if (socketFactory != null)<a name="line.567"></a>
-<span class="sourceLineNo">568</span>    {<a name="line.568"></a>
-<span class="sourceLineNo">569</span>      buffer.append(", socketFactoryClass='");<a name="line.569"></a>
-<span class="sourceLineNo">570</span>      buffer.append(socketFactory.getClass().getName());<a name="line.570"></a>
-<span class="sourceLineNo">571</span>      buffer.append('\'');<a name="line.571"></a>
-<span class="sourceLineNo">572</span>    }<a name="line.572"></a>
-<span class="sourceLineNo">573</span><a name="line.573"></a>
-<span class="sourceLineNo">574</span>    if (connectionOptions != null)<a name="line.574"></a>
-<span class="sourceLineNo">575</span>    {<a name="line.575"></a>
-<span class="sourceLineNo">576</span>      buffer.append(", connectionOptions");<a name="line.576"></a>
-<span class="sourceLineNo">577</span>      connectionOptions.toString(buffer);<a name="line.577"></a>
-<span class="sourceLineNo">578</span>    }<a name="line.578"></a>
-<span class="sourceLineNo">579</span><a name="line.579"></a>
-<span class="sourceLineNo">580</span>    buffer.append(", includesAuthentication=");<a name="line.580"></a>
-<span class="sourceLineNo">581</span>    buffer.append(bindRequest != null);<a name="line.581"></a>
-<span class="sourceLineNo">582</span>    buffer.append(", includesPostConnectProcessing=");<a name="line.582"></a>
-<span class="sourceLineNo">583</span>    buffer.append(postConnectProcessor != null);<a name="line.583"></a>
-<span class="sourceLineNo">584</span>    buffer.append(')');<a name="line.584"></a>
-<span class="sourceLineNo">585</span>  }<a name="line.585"></a>
-<span class="sourceLineNo">586</span>}<a name="line.586"></a>
+<span class="sourceLineNo">554</span><a name="line.554"></a>
+<span class="sourceLineNo">555</span>  /**<a name="line.555"></a>
+<span class="sourceLineNo">556</span>   * {@inheritDoc}<a name="line.556"></a>
+<span class="sourceLineNo">557</span>   */<a name="line.557"></a>
+<span class="sourceLineNo">558</span>  @Override()<a name="line.558"></a>
+<span class="sourceLineNo">559</span>  public void toString(final StringBuilder buffer)<a name="line.559"></a>
+<span class="sourceLineNo">560</span>  {<a name="line.560"></a>
+<span class="sourceLineNo">561</span>    buffer.append("DNSSRVRecordServerSet(recordName='");<a name="line.561"></a>
+<span class="sourceLineNo">562</span>    buffer.append(recordName);<a name="line.562"></a>
+<span class="sourceLineNo">563</span>    buffer.append("', providerURL='");<a name="line.563"></a>
+<span class="sourceLineNo">564</span>    buffer.append(providerURL);<a name="line.564"></a>
+<span class="sourceLineNo">565</span>    buffer.append("', ttlMillis=");<a name="line.565"></a>
+<span class="sourceLineNo">566</span>    buffer.append(ttlMillis);<a name="line.566"></a>
+<span class="sourceLineNo">567</span><a name="line.567"></a>
+<span class="sourceLineNo">568</span>    if (socketFactory != null)<a name="line.568"></a>
+<span class="sourceLineNo">569</span>    {<a name="line.569"></a>
+<span class="sourceLineNo">570</span>      buffer.append(", socketFactoryClass='");<a name="line.570"></a>
+<span class="sourceLineNo">571</span>      buffer.append(socketFactory.getClass().getName());<a name="line.571"></a>
+<span class="sourceLineNo">572</span>      buffer.append('\'');<a name="line.572"></a>
+<span class="sourceLineNo">573</span>    }<a name="line.573"></a>
+<span class="sourceLineNo">574</span><a name="line.574"></a>
+<span class="sourceLineNo">575</span>    if (connectionOptions != null)<a name="line.575"></a>
+<span class="sourceLineNo">576</span>    {<a name="line.576"></a>
+<span class="sourceLineNo">577</span>      buffer.append(", connectionOptions");<a name="line.577"></a>
+<span class="sourceLineNo">578</span>      connectionOptions.toString(buffer);<a name="line.578"></a>
+<span class="sourceLineNo">579</span>    }<a name="line.579"></a>
+<span class="sourceLineNo">580</span><a name="line.580"></a>
+<span class="sourceLineNo">581</span>    buffer.append(", includesAuthentication=");<a name="line.581"></a>
+<span class="sourceLineNo">582</span>    buffer.append(bindRequest != null);<a name="line.582"></a>
+<span class="sourceLineNo">583</span>    buffer.append(", includesPostConnectProcessing=");<a name="line.583"></a>
+<span class="sourceLineNo">584</span>    buffer.append(postConnectProcessor != null);<a name="line.584"></a>
+<span class="sourceLineNo">585</span>    buffer.append(')');<a name="line.585"></a>
+<span class="sourceLineNo">586</span>  }<a name="line.586"></a>
+<span class="sourceLineNo">587</span>}<a name="line.587"></a>
 
 
 

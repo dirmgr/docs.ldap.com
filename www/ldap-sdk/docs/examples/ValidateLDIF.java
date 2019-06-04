@@ -151,7 +151,8 @@ public final class ValidateLDIF
   /**
    * The end-of-line character for this platform.
    */
-  private static final String EOL = System.getProperty("line.separator", "\n");
+  private static final String EOL =
+       StaticUtils.getSystemProperty("line.separator", "\n");
 
 
 
@@ -393,6 +394,24 @@ public final class ValidateLDIF
    */
   @Override()
   protected boolean includeAlternateLongIdentifiers()
+  {
+    return true;
+  }
+
+
+
+  /**
+   * Indicates whether this tool should provide a command-line argument that
+   * allows for low-level SSL debugging.  If this returns {@code true}, then an
+   * "--enableSSLDebugging}" argument will be added that sets the
+   * "javax.net.debug" system property to "all" before attempting any
+   * communication.
+   *
+   * @return  {@code true} if this tool should offer an "--enableSSLDebugging"
+   *          argument, or {@code false} if not.
+   */
+  @Override()
+  protected boolean supportsSSLDebugging()
   {
     return true;
   }

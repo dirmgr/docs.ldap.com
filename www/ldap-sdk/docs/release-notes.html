@@ -27,6 +27,264 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 4.0.11</h3>
+
+              <p>
+                The following changes were made between the 4.0.10 and 4.0.11 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Improved the LDAP SDK's protection against socket write attempts that block for
+                  an indefinite length of time.  This is only likely to occur when sending a large
+                  number of asynchronous requests over a connection, and only in the case that the
+                  server stops reading requests from the client, or if a networking problem
+                  prevents the request from reaching the server and prevents the client from
+                  receiving any information about that failure.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added <tt>InMemoryDirectoryServer.applyChangesFromLDIF</tt> methods that can be
+                  used to read LDIF change records and apply them to data in the server.  The
+                  changes will be applied atomically, and if any of the changes cannot be applied
+                  successfully, then the server data will remain unchanged.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new <tt>SubtreeDeleter</tt> utility class that can make it easier to
+                  delete a specified subtree, optionally including or excluding the base entry for
+                  that subtree.  It provides a good client-side alternative to the subtree delete
+                  request control, which isn't supported by all servers, and can sometimes be
+                  problematic in servers that do support it.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the in-memory directory server to improve the diagnostic message that is
+                  returned when it rejects an add attempt because the provided entry is not within
+                  any of the configured base DNs.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved the exception message that is generated if a failure occurs while
+                  trying to create a TLS-based connection.  If the JVM supports creating an
+                  unconnected SSLSocket and then connecting it after the fact (which makes it
+                  possible to specify a connect timeout), and that connection attempt failed (for
+                  example, because the client did not trust the certificate presented by the
+                  server), the LDAP SDK could think that the connection was still established.
+                  Subsequent attempts to use the connection would fail, but the failure message
+                  would not accurately reflect the true cause of the problem.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapsearch and ldapmodify command-line tools to use an unlimited
+                  response timeout, which will prevent the tool from giving up on an operation if
+                  it takes the server a long time to return any kind of response.  Previously,
+                  the tools used the LDAP SDK's default timeout of 5 minutes for searches and 30
+                  seconds for add, delete, modify, and modify DN operations.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapmodify command-line tool to add a
+                  <tt>--clientSideSubtreeDelete</tt> argument that can be used to cause each
+                  delete operation to be converted to a client-side subtree delete operation, in
+                  which the tool will search for entries to delete and then delete them
+                  individually.  This makes it easier to delete entries with subordinates on
+                  servers that either do not support the subtree delete request control, or in
+                  which the client may not have permission to use that control.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the searchrate utility to allow specifying the base DN, scope, filter,
+                  and requested attributes using LDAP URLs rather than individual attribute values
+                  (note that any addresses and ports in the URLs will be ignored; the --hostname
+                  and --port arguments will still be used to identify which servers to use).  The
+                  LDAP URL can be a fixed URL or it can be a value pattern (including the ability
+                  to include variable content in the URLs, or to load URLs from a file).  Using
+                  LDAP URLs allows for more precise control over the combination of base DN,
+                  scope, filter, and requested attributes on a per-request basis.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the round-robin and fewest connections server sets to improve
+                  concurrency.  In previous implementations, these sets could only create one
+                  connection at a time, which could limit the rate at which connection pools
+                  using them could establish new connections.  This is no longer the case, and
+                  any number of threads will be able to create connections in parallel using the
+                  server sets.  This change also updated the ServerSet API to make it possible
+                  for a server set to be notified whenever a connection created with that set has
+                  been closed.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the round-robin and fewest connections server sets so that they can
+                  temporarily blacklist a server that was found to be offline.  If an attempt to
+                  create a connection to a server fails, or if that connection is found to be
+                  unacceptable for some reason (e.g., it does not pass the associated health
+                  check), subsequent connection attempts will avoid that server until a background
+                  thread determines that it is available again.  Blacklisted servers will still be
+                  tried as a last resort if it is not possible to get an acceptable connection to
+                  a non-blacklisted server.  These server sets now use the blacklist by default,
+                  but that can be disabled programmatically through the constructor or by setting
+                  a system property before creating the server set.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new indent-ldap-filter command-line tool that can help make it easier to
+                  visualize complex filters with a lot of components, and especially a lot of
+                  nesting.  If possible, it can also try to simplify the filter (for example, to
+                  remove unnecessary levels of nesting, like an AND inside an AND).
+                  <br><br>
+                </li>
+
+                <li>
+                  Added an ldapdelete command-line tool that can be used to delete entries from an
+                  LDAP directory server.  The DNs of the entries to delete can be provided on the
+                  command line, read from a file, or read from standard input.  Alternately, the
+                  server can search for and delete all entries matching one or more filters.  It
+                  offers a number of options, including support for client-side and server-side
+                  subtree deletes, rate limiting, and a variety of standard and proprietary
+                  controls.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the <tt>LDAPCommandLineTool</tt> API to add an option to expose an
+                  <tt>--enableSSLDebugging</tt> argument.  If this argument is available, and if
+                  it is provided in the set of command-line arguments when the tool is run, then
+                  the JVM's SSL/TLS debugging support will be enabled by setting the
+                  "<tt>javax.net.debug</tt>" property to "<tt>all</tt>", and the JVM will write a
+                  large amount of TLS-related debugging information to standard error.  This can
+                  help troubleshoot problems with or provide detailed information about any TLS
+                  communication that the tool attempts.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in generating the normalized representation of a multivalued RDN
+                  when one or more of those components referenced an attribute type by its OID or
+                  a name other than the first of its names.  The normalized string representation
+                  would have simply used an all-lowercase representation of the provided attribute
+                  name rather than an all-lowercase representation of the primary name.  Also
+                  updated the logic used to determine whether an RDN has a specified name or
+                  name-value pair to handle the use of alternate names, and exposed the
+                  <tt>RDN.getNameValuePairs</tt> method to make it easier to work with an RDN's
+                  name-value pairs.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed a bug in the <tt>ByteStringBuffer.append(CharSequence,int,int)</tt> method
+                  in which the final integer argument could be interpreted as the number of
+                  characters to append rather than the end position at which to stop appending,
+                  which could yield incorrect results when the method was called with a nonzero
+                  start position.  Also, updated the ByteStringBuffer.append methods that take
+                  CharSequence arguments to eliminate the creation of an intermediate character
+                  array, thereby improving performance and reducing garbage creation.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK to add protection against JVM security managers that may
+                  prevent calls to certain methods, like attempts to interact with system
+                  properties, environment variables, or logger levels.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the password reader so that it will generate a more user-friendly error
+                  message if it is run in a context when no console is available.  A tool could
+                  encounter this error if its output has been redirected, or if it's not running
+                  in an interactive shell (for example, in a cron job or system startup script).
+                  <br><br>
+                </li>
+
+                <li>
+                  Dramatically improved the performance of the streamfile value pattern, which
+                  operates like the sequentialfile value pattern in that it can iterate through
+                  values in a file in sequential order, except that streamfile doesn't need to
+                  hold the whole file in memory whereas sequentialfile does.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the <tt>Filter.simplifyFilter</tt> method to simplify an AND filter
+                  containing an LDAP false filter (an OR filter with zero components, which will
+                  never match anything) to just that LDAP false filter, and to simplify an OR
+                  filter containing an LDAP true filter (an AND filter with zero components, which
+                  will match any entry) to just that LDAP true filter.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a <tt>PasswordValidationDetailsResponseControl.get(LDAPException)</tt>
+                  method that makes it more convenient to get the response control from an
+                  unsuccessful operation.
+                  <br><br>
+                </li>
+
+                <li>
+                  Enabled concurrent socket factory use for all versions of Java.  In the past,
+                  we have observed that at least some IBM JVMs had a thread safety issue with
+                  SSL socket factory implementations, so we only allowed a socket factory to be
+                  used concurrently by multiple threads on a whitelisted set of JVMs.  We no
+                  longer believe that the IBM JDK socket factory thread safety is an issue, and
+                  there are now many more JVM vendors (e.g., Apple, Azul, Amazon Coretto,
+                  AdoptOpenJDK, and potentially Red Hat), so concurrent socket factory use will
+                  be enabled by default.  If an issue is found ona particular JVM, then concurrent
+                  access can be disabled programmatically or with a system property.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK's command-line tool framework to fix an issue with the
+                  tool's validation for required, exclusive, and dependent argument sets.  If an
+                  argument was configured with a default value, then that value could have been
+                  mistakenly treated as if it had been explicitly provided by the user.  This
+                  could cause problems for arguments that are part of an exclusive argument set
+                  (in which only one of the arguments in that set may be provided) or a dependent
+                  argument set (in which an argument can only be used if at least one of a
+                  specified set of additional arguments is present).  In such cases, the tool
+                  could not have been used in interactive mode.  The <tt>modrate</tt> tool was
+                  affected by this issue.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the argument parser to fix a problem with the way that it handles
+                  backslash characters in argument properties files.  It previously only correctly
+                  handled backslashes if they were at the end of a line to indicate that the
+                  content continued on to the next line, or if they were followed by the letter
+                  'u' and the hexadecimal representation of the desired Unicode character.  It did
+                  not handle a backslash in front of other characters used to force that character
+                  to be treated as a literal (for example, a backslash followed by an equal sign
+                  should be treated as just the equal sign, but was instead being treated as a
+                  backslash followed by an equal sign).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK build process to automatically generate documentation for
+                  all of the command-line tools included with the SDK.  Usages are provided in
+                  both plain text and HTML, and the HTML documentation is linked from the main
+                  documentation index page.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 4.0.10</h3>
 
               <p>

@@ -726,689 +726,691 @@
 <span class="sourceLineNo">718</span>        Debug.debugException(e);<a name="line.718"></a>
 <span class="sourceLineNo">719</span>      }<a name="line.719"></a>
 <span class="sourceLineNo">720</span><a name="line.720"></a>
-<span class="sourceLineNo">721</span>      final MessageDigest sha256 = MessageDigest.getInstance("SHA-256");<a name="line.721"></a>
-<span class="sourceLineNo">722</span>      subjectKeyIdentifier = sha256.digest(encodedPublicKey.getBytes());<a name="line.722"></a>
-<span class="sourceLineNo">723</span>    }<a name="line.723"></a>
-<span class="sourceLineNo">724</span>    catch (final Exception e)<a name="line.724"></a>
-<span class="sourceLineNo">725</span>    {<a name="line.725"></a>
-<span class="sourceLineNo">726</span>      Debug.debugException(e);<a name="line.726"></a>
-<span class="sourceLineNo">727</span>      throw new CertException(<a name="line.727"></a>
-<span class="sourceLineNo">728</span>           ERR_CSR_GEN_CANNOT_PARSE_KEY_PAIR.get(<a name="line.728"></a>
-<span class="sourceLineNo">729</span>                StaticUtils.getExceptionMessage(e)),<a name="line.729"></a>
-<span class="sourceLineNo">730</span>           e);<a name="line.730"></a>
-<span class="sourceLineNo">731</span>    }<a name="line.731"></a>
-<span class="sourceLineNo">732</span><a name="line.732"></a>
-<span class="sourceLineNo">733</span><a name="line.733"></a>
-<span class="sourceLineNo">734</span>    // Construct the set of all extensions for the certificate.<a name="line.734"></a>
-<span class="sourceLineNo">735</span>    final ArrayList&lt;X509CertificateExtension&gt; extensionList =<a name="line.735"></a>
-<span class="sourceLineNo">736</span>         new ArrayList&lt;&gt;(10);<a name="line.736"></a>
-<span class="sourceLineNo">737</span>    extensionList.add(new SubjectKeyIdentifierExtension(false,<a name="line.737"></a>
-<span class="sourceLineNo">738</span>         new ASN1OctetString(subjectKeyIdentifier)));<a name="line.738"></a>
-<span class="sourceLineNo">739</span>    if (extensions != null)<a name="line.739"></a>
-<span class="sourceLineNo">740</span>    {<a name="line.740"></a>
-<span class="sourceLineNo">741</span>      for (final X509CertificateExtension e : extensions)<a name="line.741"></a>
-<span class="sourceLineNo">742</span>      {<a name="line.742"></a>
-<span class="sourceLineNo">743</span>        if (! e.getOID().equals(SubjectKeyIdentifierExtension.<a name="line.743"></a>
-<span class="sourceLineNo">744</span>             SUBJECT_KEY_IDENTIFIER_OID))<a name="line.744"></a>
-<span class="sourceLineNo">745</span>        {<a name="line.745"></a>
-<span class="sourceLineNo">746</span>          extensionList.add(e);<a name="line.746"></a>
-<span class="sourceLineNo">747</span>        }<a name="line.747"></a>
-<span class="sourceLineNo">748</span>      }<a name="line.748"></a>
-<span class="sourceLineNo">749</span>    }<a name="line.749"></a>
-<span class="sourceLineNo">750</span><a name="line.750"></a>
-<span class="sourceLineNo">751</span>    final X509CertificateExtension[] allExtensions =<a name="line.751"></a>
-<span class="sourceLineNo">752</span>         new X509CertificateExtension[extensionList.size()];<a name="line.752"></a>
-<span class="sourceLineNo">753</span>    extensionList.toArray(allExtensions);<a name="line.753"></a>
-<span class="sourceLineNo">754</span><a name="line.754"></a>
-<span class="sourceLineNo">755</span><a name="line.755"></a>
-<span class="sourceLineNo">756</span>    final ASN1BitString encodedSignature = generateSignature(signatureAlgorithm,<a name="line.756"></a>
-<span class="sourceLineNo">757</span>         keyPair.getPrivate(), subjectDN, publicKeyAlgorithmOID,<a name="line.757"></a>
-<span class="sourceLineNo">758</span>         publicKeyAlgorithmParameters, encodedPublicKey, allExtensions);<a name="line.758"></a>
-<span class="sourceLineNo">759</span><a name="line.759"></a>
-<span class="sourceLineNo">760</span>    return new PKCS10CertificateSigningRequest(<a name="line.760"></a>
-<span class="sourceLineNo">761</span>         PKCS10CertificateSigningRequestVersion.V1, signatureAlgorithm.getOID(),<a name="line.761"></a>
-<span class="sourceLineNo">762</span>         null, encodedSignature, subjectDN, publicKeyAlgorithmOID,<a name="line.762"></a>
-<span class="sourceLineNo">763</span>         publicKeyAlgorithmParameters, encodedPublicKey, decodedPublicKey,<a name="line.763"></a>
-<span class="sourceLineNo">764</span>         null, allExtensions);<a name="line.764"></a>
-<span class="sourceLineNo">765</span>  }<a name="line.765"></a>
-<span class="sourceLineNo">766</span><a name="line.766"></a>
-<span class="sourceLineNo">767</span><a name="line.767"></a>
+<span class="sourceLineNo">721</span>      final MessageDigest sha256 = MessageDigest.getInstance(<a name="line.721"></a>
+<span class="sourceLineNo">722</span>           SubjectKeyIdentifierExtension.<a name="line.722"></a>
+<span class="sourceLineNo">723</span>                SUBJECT_KEY_IDENTIFIER_DIGEST_ALGORITHM);<a name="line.723"></a>
+<span class="sourceLineNo">724</span>      subjectKeyIdentifier = sha256.digest(encodedPublicKey.getBytes());<a name="line.724"></a>
+<span class="sourceLineNo">725</span>    }<a name="line.725"></a>
+<span class="sourceLineNo">726</span>    catch (final Exception e)<a name="line.726"></a>
+<span class="sourceLineNo">727</span>    {<a name="line.727"></a>
+<span class="sourceLineNo">728</span>      Debug.debugException(e);<a name="line.728"></a>
+<span class="sourceLineNo">729</span>      throw new CertException(<a name="line.729"></a>
+<span class="sourceLineNo">730</span>           ERR_CSR_GEN_CANNOT_PARSE_KEY_PAIR.get(<a name="line.730"></a>
+<span class="sourceLineNo">731</span>                StaticUtils.getExceptionMessage(e)),<a name="line.731"></a>
+<span class="sourceLineNo">732</span>           e);<a name="line.732"></a>
+<span class="sourceLineNo">733</span>    }<a name="line.733"></a>
+<span class="sourceLineNo">734</span><a name="line.734"></a>
+<span class="sourceLineNo">735</span><a name="line.735"></a>
+<span class="sourceLineNo">736</span>    // Construct the set of all extensions for the certificate.<a name="line.736"></a>
+<span class="sourceLineNo">737</span>    final ArrayList&lt;X509CertificateExtension&gt; extensionList =<a name="line.737"></a>
+<span class="sourceLineNo">738</span>         new ArrayList&lt;&gt;(10);<a name="line.738"></a>
+<span class="sourceLineNo">739</span>    extensionList.add(new SubjectKeyIdentifierExtension(false,<a name="line.739"></a>
+<span class="sourceLineNo">740</span>         new ASN1OctetString(subjectKeyIdentifier)));<a name="line.740"></a>
+<span class="sourceLineNo">741</span>    if (extensions != null)<a name="line.741"></a>
+<span class="sourceLineNo">742</span>    {<a name="line.742"></a>
+<span class="sourceLineNo">743</span>      for (final X509CertificateExtension e : extensions)<a name="line.743"></a>
+<span class="sourceLineNo">744</span>      {<a name="line.744"></a>
+<span class="sourceLineNo">745</span>        if (! e.getOID().equals(SubjectKeyIdentifierExtension.<a name="line.745"></a>
+<span class="sourceLineNo">746</span>             SUBJECT_KEY_IDENTIFIER_OID))<a name="line.746"></a>
+<span class="sourceLineNo">747</span>        {<a name="line.747"></a>
+<span class="sourceLineNo">748</span>          extensionList.add(e);<a name="line.748"></a>
+<span class="sourceLineNo">749</span>        }<a name="line.749"></a>
+<span class="sourceLineNo">750</span>      }<a name="line.750"></a>
+<span class="sourceLineNo">751</span>    }<a name="line.751"></a>
+<span class="sourceLineNo">752</span><a name="line.752"></a>
+<span class="sourceLineNo">753</span>    final X509CertificateExtension[] allExtensions =<a name="line.753"></a>
+<span class="sourceLineNo">754</span>         new X509CertificateExtension[extensionList.size()];<a name="line.754"></a>
+<span class="sourceLineNo">755</span>    extensionList.toArray(allExtensions);<a name="line.755"></a>
+<span class="sourceLineNo">756</span><a name="line.756"></a>
+<span class="sourceLineNo">757</span><a name="line.757"></a>
+<span class="sourceLineNo">758</span>    final ASN1BitString encodedSignature = generateSignature(signatureAlgorithm,<a name="line.758"></a>
+<span class="sourceLineNo">759</span>         keyPair.getPrivate(), subjectDN, publicKeyAlgorithmOID,<a name="line.759"></a>
+<span class="sourceLineNo">760</span>         publicKeyAlgorithmParameters, encodedPublicKey, allExtensions);<a name="line.760"></a>
+<span class="sourceLineNo">761</span><a name="line.761"></a>
+<span class="sourceLineNo">762</span>    return new PKCS10CertificateSigningRequest(<a name="line.762"></a>
+<span class="sourceLineNo">763</span>         PKCS10CertificateSigningRequestVersion.V1, signatureAlgorithm.getOID(),<a name="line.763"></a>
+<span class="sourceLineNo">764</span>         null, encodedSignature, subjectDN, publicKeyAlgorithmOID,<a name="line.764"></a>
+<span class="sourceLineNo">765</span>         publicKeyAlgorithmParameters, encodedPublicKey, decodedPublicKey,<a name="line.765"></a>
+<span class="sourceLineNo">766</span>         null, allExtensions);<a name="line.766"></a>
+<span class="sourceLineNo">767</span>  }<a name="line.767"></a>
 <span class="sourceLineNo">768</span><a name="line.768"></a>
-<span class="sourceLineNo">769</span>  /**<a name="line.769"></a>
-<span class="sourceLineNo">770</span>   * Generates a signature for the certificate signing request with the provided<a name="line.770"></a>
-<span class="sourceLineNo">771</span>   * information.<a name="line.771"></a>
-<span class="sourceLineNo">772</span>   *<a name="line.772"></a>
-<span class="sourceLineNo">773</span>   * @param  signatureAlgorithm            The signature algorithm to use to<a name="line.773"></a>
-<span class="sourceLineNo">774</span>   *                                       generate the signature.  This must<a name="line.774"></a>
-<span class="sourceLineNo">775</span>   *                                       not be {@code null}.<a name="line.775"></a>
-<span class="sourceLineNo">776</span>   * @param  privateKey                    The private key to use to sign the<a name="line.776"></a>
-<span class="sourceLineNo">777</span>   *                                       certificate signing request.  This<a name="line.777"></a>
-<span class="sourceLineNo">778</span>   *                                       must not be {@code null}.<a name="line.778"></a>
-<span class="sourceLineNo">779</span>   * @param  subjectDN                     The subject DN for the certificate<a name="line.779"></a>
-<span class="sourceLineNo">780</span>   *                                       signing request.  This must not be<a name="line.780"></a>
-<span class="sourceLineNo">781</span>   *                                       {@code null}.<a name="line.781"></a>
-<span class="sourceLineNo">782</span>   * @param  publicKeyAlgorithmOID         The OID for the public key algorithm.<a name="line.782"></a>
-<span class="sourceLineNo">783</span>   *                                       This must not be {@code null}.<a name="line.783"></a>
-<span class="sourceLineNo">784</span>   * @param  publicKeyAlgorithmParameters  The encoded public key algorithm<a name="line.784"></a>
-<span class="sourceLineNo">785</span>   *                                       parameters.  This may be<a name="line.785"></a>
-<span class="sourceLineNo">786</span>   *                                       {@code null} if no parameters are<a name="line.786"></a>
-<span class="sourceLineNo">787</span>   *                                       needed.<a name="line.787"></a>
-<span class="sourceLineNo">788</span>   * @param  encodedPublicKey              The encoded representation of the<a name="line.788"></a>
-<span class="sourceLineNo">789</span>   *                                       public key.  This must not be<a name="line.789"></a>
-<span class="sourceLineNo">790</span>   *                                       {@code null}.<a name="line.790"></a>
-<span class="sourceLineNo">791</span>   * @param  extensions                    The set of extensions to include in<a name="line.791"></a>
-<span class="sourceLineNo">792</span>   *                                       the certificate signing request.<a name="line.792"></a>
-<span class="sourceLineNo">793</span>   *                                       This must not be {@code null} but<a name="line.793"></a>
-<span class="sourceLineNo">794</span>   *                                       may be empty.<a name="line.794"></a>
-<span class="sourceLineNo">795</span>   *<a name="line.795"></a>
-<span class="sourceLineNo">796</span>   * @return  An encoded representation of the generated signature.<a name="line.796"></a>
+<span class="sourceLineNo">769</span><a name="line.769"></a>
+<span class="sourceLineNo">770</span><a name="line.770"></a>
+<span class="sourceLineNo">771</span>  /**<a name="line.771"></a>
+<span class="sourceLineNo">772</span>   * Generates a signature for the certificate signing request with the provided<a name="line.772"></a>
+<span class="sourceLineNo">773</span>   * information.<a name="line.773"></a>
+<span class="sourceLineNo">774</span>   *<a name="line.774"></a>
+<span class="sourceLineNo">775</span>   * @param  signatureAlgorithm            The signature algorithm to use to<a name="line.775"></a>
+<span class="sourceLineNo">776</span>   *                                       generate the signature.  This must<a name="line.776"></a>
+<span class="sourceLineNo">777</span>   *                                       not be {@code null}.<a name="line.777"></a>
+<span class="sourceLineNo">778</span>   * @param  privateKey                    The private key to use to sign the<a name="line.778"></a>
+<span class="sourceLineNo">779</span>   *                                       certificate signing request.  This<a name="line.779"></a>
+<span class="sourceLineNo">780</span>   *                                       must not be {@code null}.<a name="line.780"></a>
+<span class="sourceLineNo">781</span>   * @param  subjectDN                     The subject DN for the certificate<a name="line.781"></a>
+<span class="sourceLineNo">782</span>   *                                       signing request.  This must not be<a name="line.782"></a>
+<span class="sourceLineNo">783</span>   *                                       {@code null}.<a name="line.783"></a>
+<span class="sourceLineNo">784</span>   * @param  publicKeyAlgorithmOID         The OID for the public key algorithm.<a name="line.784"></a>
+<span class="sourceLineNo">785</span>   *                                       This must not be {@code null}.<a name="line.785"></a>
+<span class="sourceLineNo">786</span>   * @param  publicKeyAlgorithmParameters  The encoded public key algorithm<a name="line.786"></a>
+<span class="sourceLineNo">787</span>   *                                       parameters.  This may be<a name="line.787"></a>
+<span class="sourceLineNo">788</span>   *                                       {@code null} if no parameters are<a name="line.788"></a>
+<span class="sourceLineNo">789</span>   *                                       needed.<a name="line.789"></a>
+<span class="sourceLineNo">790</span>   * @param  encodedPublicKey              The encoded representation of the<a name="line.790"></a>
+<span class="sourceLineNo">791</span>   *                                       public key.  This must not be<a name="line.791"></a>
+<span class="sourceLineNo">792</span>   *                                       {@code null}.<a name="line.792"></a>
+<span class="sourceLineNo">793</span>   * @param  extensions                    The set of extensions to include in<a name="line.793"></a>
+<span class="sourceLineNo">794</span>   *                                       the certificate signing request.<a name="line.794"></a>
+<span class="sourceLineNo">795</span>   *                                       This must not be {@code null} but<a name="line.795"></a>
+<span class="sourceLineNo">796</span>   *                                       may be empty.<a name="line.796"></a>
 <span class="sourceLineNo">797</span>   *<a name="line.797"></a>
-<span class="sourceLineNo">798</span>   * @throws  CertException  If a problem is encountered while generating the<a name="line.798"></a>
-<span class="sourceLineNo">799</span>   *                         certificate.<a name="line.799"></a>
-<span class="sourceLineNo">800</span>   */<a name="line.800"></a>
-<span class="sourceLineNo">801</span>  private static ASN1BitString generateSignature(<a name="line.801"></a>
-<span class="sourceLineNo">802</span>                      final SignatureAlgorithmIdentifier signatureAlgorithm,<a name="line.802"></a>
-<span class="sourceLineNo">803</span>                      final PrivateKey privateKey, final DN subjectDN,<a name="line.803"></a>
-<span class="sourceLineNo">804</span>                      final OID publicKeyAlgorithmOID,<a name="line.804"></a>
-<span class="sourceLineNo">805</span>                      final ASN1Element publicKeyAlgorithmParameters,<a name="line.805"></a>
-<span class="sourceLineNo">806</span>                      final ASN1BitString encodedPublicKey,<a name="line.806"></a>
-<span class="sourceLineNo">807</span>                      final X509CertificateExtension... extensions)<a name="line.807"></a>
-<span class="sourceLineNo">808</span>          throws CertException<a name="line.808"></a>
-<span class="sourceLineNo">809</span>  {<a name="line.809"></a>
-<span class="sourceLineNo">810</span>    // Get and initialize the signature generator.<a name="line.810"></a>
-<span class="sourceLineNo">811</span>    final Signature signature;<a name="line.811"></a>
-<span class="sourceLineNo">812</span>    try<a name="line.812"></a>
-<span class="sourceLineNo">813</span>    {<a name="line.813"></a>
-<span class="sourceLineNo">814</span>      signature = Signature.getInstance(signatureAlgorithm.getJavaName());<a name="line.814"></a>
-<span class="sourceLineNo">815</span>    }<a name="line.815"></a>
-<span class="sourceLineNo">816</span>    catch (final Exception e)<a name="line.816"></a>
-<span class="sourceLineNo">817</span>    {<a name="line.817"></a>
-<span class="sourceLineNo">818</span>      Debug.debugException(e);<a name="line.818"></a>
-<span class="sourceLineNo">819</span>      throw new CertException(<a name="line.819"></a>
-<span class="sourceLineNo">820</span>           ERR_CSR_GEN_SIGNATURE_CANNOT_GET_SIGNATURE_GENERATOR.get(<a name="line.820"></a>
-<span class="sourceLineNo">821</span>                signatureAlgorithm.getJavaName(),<a name="line.821"></a>
-<span class="sourceLineNo">822</span>                StaticUtils.getExceptionMessage(e)),<a name="line.822"></a>
-<span class="sourceLineNo">823</span>           e);<a name="line.823"></a>
-<span class="sourceLineNo">824</span>    }<a name="line.824"></a>
-<span class="sourceLineNo">825</span><a name="line.825"></a>
-<span class="sourceLineNo">826</span>    try<a name="line.826"></a>
-<span class="sourceLineNo">827</span>    {<a name="line.827"></a>
-<span class="sourceLineNo">828</span>      signature.initSign(privateKey);<a name="line.828"></a>
-<span class="sourceLineNo">829</span>    }<a name="line.829"></a>
-<span class="sourceLineNo">830</span>    catch (final Exception e)<a name="line.830"></a>
-<span class="sourceLineNo">831</span>    {<a name="line.831"></a>
-<span class="sourceLineNo">832</span>      Debug.debugException(e);<a name="line.832"></a>
-<span class="sourceLineNo">833</span>      throw new CertException(<a name="line.833"></a>
-<span class="sourceLineNo">834</span>           ERR_CSR_GEN_SIGNATURE_CANNOT_INIT_SIGNATURE_GENERATOR.get(<a name="line.834"></a>
-<span class="sourceLineNo">835</span>                signatureAlgorithm.getJavaName(),<a name="line.835"></a>
-<span class="sourceLineNo">836</span>                StaticUtils.getExceptionMessage(e)),<a name="line.836"></a>
-<span class="sourceLineNo">837</span>           e);<a name="line.837"></a>
-<span class="sourceLineNo">838</span>    }<a name="line.838"></a>
-<span class="sourceLineNo">839</span><a name="line.839"></a>
-<span class="sourceLineNo">840</span><a name="line.840"></a>
-<span class="sourceLineNo">841</span>    // Construct the requestInfo element of the certificate signing request and<a name="line.841"></a>
-<span class="sourceLineNo">842</span>    // compute its signature.<a name="line.842"></a>
-<span class="sourceLineNo">843</span>    try<a name="line.843"></a>
-<span class="sourceLineNo">844</span>    {<a name="line.844"></a>
-<span class="sourceLineNo">845</span>      final ArrayList&lt;ASN1Element&gt; requestInfoElements = new ArrayList&lt;&gt;(4);<a name="line.845"></a>
-<span class="sourceLineNo">846</span>      requestInfoElements.add(new ASN1Integer(<a name="line.846"></a>
-<span class="sourceLineNo">847</span>           PKCS10CertificateSigningRequestVersion.V1.getIntValue()));<a name="line.847"></a>
-<span class="sourceLineNo">848</span>      requestInfoElements.add(X509Certificate.encodeName(subjectDN));<a name="line.848"></a>
-<span class="sourceLineNo">849</span><a name="line.849"></a>
-<span class="sourceLineNo">850</span>      if (publicKeyAlgorithmParameters == null)<a name="line.850"></a>
-<span class="sourceLineNo">851</span>      {<a name="line.851"></a>
-<span class="sourceLineNo">852</span>        requestInfoElements.add(new ASN1Sequence(<a name="line.852"></a>
-<span class="sourceLineNo">853</span>             new ASN1Sequence(<a name="line.853"></a>
-<span class="sourceLineNo">854</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID)),<a name="line.854"></a>
-<span class="sourceLineNo">855</span>             encodedPublicKey));<a name="line.855"></a>
-<span class="sourceLineNo">856</span>      }<a name="line.856"></a>
-<span class="sourceLineNo">857</span>      else<a name="line.857"></a>
-<span class="sourceLineNo">858</span>      {<a name="line.858"></a>
-<span class="sourceLineNo">859</span>        requestInfoElements.add(new ASN1Sequence(<a name="line.859"></a>
-<span class="sourceLineNo">860</span>             new ASN1Sequence(<a name="line.860"></a>
-<span class="sourceLineNo">861</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID),<a name="line.861"></a>
-<span class="sourceLineNo">862</span>                  publicKeyAlgorithmParameters),<a name="line.862"></a>
-<span class="sourceLineNo">863</span>             encodedPublicKey));<a name="line.863"></a>
-<span class="sourceLineNo">864</span>      }<a name="line.864"></a>
-<span class="sourceLineNo">865</span><a name="line.865"></a>
-<span class="sourceLineNo">866</span>      final ArrayList&lt;ASN1Element&gt; attrElements = new ArrayList&lt;&gt;(1);<a name="line.866"></a>
-<span class="sourceLineNo">867</span>      if ((extensions != null) &amp;&amp; (extensions.length &gt; 0))<a name="line.867"></a>
-<span class="sourceLineNo">868</span>      {<a name="line.868"></a>
-<span class="sourceLineNo">869</span>        final ArrayList&lt;ASN1Element&gt; extensionElements =<a name="line.869"></a>
-<span class="sourceLineNo">870</span>             new ArrayList&lt;&gt;(extensions.length);<a name="line.870"></a>
-<span class="sourceLineNo">871</span>        for (final X509CertificateExtension e : extensions)<a name="line.871"></a>
-<span class="sourceLineNo">872</span>        {<a name="line.872"></a>
-<span class="sourceLineNo">873</span>          extensionElements.add(e.encode());<a name="line.873"></a>
-<span class="sourceLineNo">874</span>        }<a name="line.874"></a>
-<span class="sourceLineNo">875</span><a name="line.875"></a>
-<span class="sourceLineNo">876</span>        attrElements.add(new ASN1Sequence(<a name="line.876"></a>
-<span class="sourceLineNo">877</span>             new ASN1ObjectIdentifier(ATTRIBUTE_OID_EXTENSIONS),<a name="line.877"></a>
-<span class="sourceLineNo">878</span>             new ASN1Set(new ASN1Sequence(extensionElements))));<a name="line.878"></a>
-<span class="sourceLineNo">879</span>      }<a name="line.879"></a>
-<span class="sourceLineNo">880</span>      requestInfoElements.add(new ASN1Set(TYPE_ATTRIBUTES, attrElements));<a name="line.880"></a>
-<span class="sourceLineNo">881</span><a name="line.881"></a>
-<span class="sourceLineNo">882</span>      final byte[] certificationRequestInfoBytes =<a name="line.882"></a>
-<span class="sourceLineNo">883</span>           new ASN1Sequence(requestInfoElements).encode();<a name="line.883"></a>
-<span class="sourceLineNo">884</span>      signature.update(certificationRequestInfoBytes);<a name="line.884"></a>
-<span class="sourceLineNo">885</span>      final byte[] signatureBytes = signature.sign();<a name="line.885"></a>
-<span class="sourceLineNo">886</span><a name="line.886"></a>
-<span class="sourceLineNo">887</span>      return new ASN1BitString(ASN1BitString.getBitsForBytes(signatureBytes));<a name="line.887"></a>
-<span class="sourceLineNo">888</span>    }<a name="line.888"></a>
-<span class="sourceLineNo">889</span>    catch (final Exception e)<a name="line.889"></a>
-<span class="sourceLineNo">890</span>    {<a name="line.890"></a>
-<span class="sourceLineNo">891</span>      Debug.debugException(e);<a name="line.891"></a>
-<span class="sourceLineNo">892</span>      throw new CertException(<a name="line.892"></a>
-<span class="sourceLineNo">893</span>           ERR_CSR_GEN_SIGNATURE_CANNOT_COMPUTE.get(<a name="line.893"></a>
-<span class="sourceLineNo">894</span>                signatureAlgorithm.getJavaName(),<a name="line.894"></a>
-<span class="sourceLineNo">895</span>                StaticUtils.getExceptionMessage(e)),<a name="line.895"></a>
-<span class="sourceLineNo">896</span>           e);<a name="line.896"></a>
-<span class="sourceLineNo">897</span>    }<a name="line.897"></a>
-<span class="sourceLineNo">898</span>  }<a name="line.898"></a>
-<span class="sourceLineNo">899</span><a name="line.899"></a>
-<span class="sourceLineNo">900</span><a name="line.900"></a>
+<span class="sourceLineNo">798</span>   * @return  An encoded representation of the generated signature.<a name="line.798"></a>
+<span class="sourceLineNo">799</span>   *<a name="line.799"></a>
+<span class="sourceLineNo">800</span>   * @throws  CertException  If a problem is encountered while generating the<a name="line.800"></a>
+<span class="sourceLineNo">801</span>   *                         certificate.<a name="line.801"></a>
+<span class="sourceLineNo">802</span>   */<a name="line.802"></a>
+<span class="sourceLineNo">803</span>  private static ASN1BitString generateSignature(<a name="line.803"></a>
+<span class="sourceLineNo">804</span>                      final SignatureAlgorithmIdentifier signatureAlgorithm,<a name="line.804"></a>
+<span class="sourceLineNo">805</span>                      final PrivateKey privateKey, final DN subjectDN,<a name="line.805"></a>
+<span class="sourceLineNo">806</span>                      final OID publicKeyAlgorithmOID,<a name="line.806"></a>
+<span class="sourceLineNo">807</span>                      final ASN1Element publicKeyAlgorithmParameters,<a name="line.807"></a>
+<span class="sourceLineNo">808</span>                      final ASN1BitString encodedPublicKey,<a name="line.808"></a>
+<span class="sourceLineNo">809</span>                      final X509CertificateExtension... extensions)<a name="line.809"></a>
+<span class="sourceLineNo">810</span>          throws CertException<a name="line.810"></a>
+<span class="sourceLineNo">811</span>  {<a name="line.811"></a>
+<span class="sourceLineNo">812</span>    // Get and initialize the signature generator.<a name="line.812"></a>
+<span class="sourceLineNo">813</span>    final Signature signature;<a name="line.813"></a>
+<span class="sourceLineNo">814</span>    try<a name="line.814"></a>
+<span class="sourceLineNo">815</span>    {<a name="line.815"></a>
+<span class="sourceLineNo">816</span>      signature = Signature.getInstance(signatureAlgorithm.getJavaName());<a name="line.816"></a>
+<span class="sourceLineNo">817</span>    }<a name="line.817"></a>
+<span class="sourceLineNo">818</span>    catch (final Exception e)<a name="line.818"></a>
+<span class="sourceLineNo">819</span>    {<a name="line.819"></a>
+<span class="sourceLineNo">820</span>      Debug.debugException(e);<a name="line.820"></a>
+<span class="sourceLineNo">821</span>      throw new CertException(<a name="line.821"></a>
+<span class="sourceLineNo">822</span>           ERR_CSR_GEN_SIGNATURE_CANNOT_GET_SIGNATURE_GENERATOR.get(<a name="line.822"></a>
+<span class="sourceLineNo">823</span>                signatureAlgorithm.getJavaName(),<a name="line.823"></a>
+<span class="sourceLineNo">824</span>                StaticUtils.getExceptionMessage(e)),<a name="line.824"></a>
+<span class="sourceLineNo">825</span>           e);<a name="line.825"></a>
+<span class="sourceLineNo">826</span>    }<a name="line.826"></a>
+<span class="sourceLineNo">827</span><a name="line.827"></a>
+<span class="sourceLineNo">828</span>    try<a name="line.828"></a>
+<span class="sourceLineNo">829</span>    {<a name="line.829"></a>
+<span class="sourceLineNo">830</span>      signature.initSign(privateKey);<a name="line.830"></a>
+<span class="sourceLineNo">831</span>    }<a name="line.831"></a>
+<span class="sourceLineNo">832</span>    catch (final Exception e)<a name="line.832"></a>
+<span class="sourceLineNo">833</span>    {<a name="line.833"></a>
+<span class="sourceLineNo">834</span>      Debug.debugException(e);<a name="line.834"></a>
+<span class="sourceLineNo">835</span>      throw new CertException(<a name="line.835"></a>
+<span class="sourceLineNo">836</span>           ERR_CSR_GEN_SIGNATURE_CANNOT_INIT_SIGNATURE_GENERATOR.get(<a name="line.836"></a>
+<span class="sourceLineNo">837</span>                signatureAlgorithm.getJavaName(),<a name="line.837"></a>
+<span class="sourceLineNo">838</span>                StaticUtils.getExceptionMessage(e)),<a name="line.838"></a>
+<span class="sourceLineNo">839</span>           e);<a name="line.839"></a>
+<span class="sourceLineNo">840</span>    }<a name="line.840"></a>
+<span class="sourceLineNo">841</span><a name="line.841"></a>
+<span class="sourceLineNo">842</span><a name="line.842"></a>
+<span class="sourceLineNo">843</span>    // Construct the requestInfo element of the certificate signing request and<a name="line.843"></a>
+<span class="sourceLineNo">844</span>    // compute its signature.<a name="line.844"></a>
+<span class="sourceLineNo">845</span>    try<a name="line.845"></a>
+<span class="sourceLineNo">846</span>    {<a name="line.846"></a>
+<span class="sourceLineNo">847</span>      final ArrayList&lt;ASN1Element&gt; requestInfoElements = new ArrayList&lt;&gt;(4);<a name="line.847"></a>
+<span class="sourceLineNo">848</span>      requestInfoElements.add(new ASN1Integer(<a name="line.848"></a>
+<span class="sourceLineNo">849</span>           PKCS10CertificateSigningRequestVersion.V1.getIntValue()));<a name="line.849"></a>
+<span class="sourceLineNo">850</span>      requestInfoElements.add(X509Certificate.encodeName(subjectDN));<a name="line.850"></a>
+<span class="sourceLineNo">851</span><a name="line.851"></a>
+<span class="sourceLineNo">852</span>      if (publicKeyAlgorithmParameters == null)<a name="line.852"></a>
+<span class="sourceLineNo">853</span>      {<a name="line.853"></a>
+<span class="sourceLineNo">854</span>        requestInfoElements.add(new ASN1Sequence(<a name="line.854"></a>
+<span class="sourceLineNo">855</span>             new ASN1Sequence(<a name="line.855"></a>
+<span class="sourceLineNo">856</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID)),<a name="line.856"></a>
+<span class="sourceLineNo">857</span>             encodedPublicKey));<a name="line.857"></a>
+<span class="sourceLineNo">858</span>      }<a name="line.858"></a>
+<span class="sourceLineNo">859</span>      else<a name="line.859"></a>
+<span class="sourceLineNo">860</span>      {<a name="line.860"></a>
+<span class="sourceLineNo">861</span>        requestInfoElements.add(new ASN1Sequence(<a name="line.861"></a>
+<span class="sourceLineNo">862</span>             new ASN1Sequence(<a name="line.862"></a>
+<span class="sourceLineNo">863</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID),<a name="line.863"></a>
+<span class="sourceLineNo">864</span>                  publicKeyAlgorithmParameters),<a name="line.864"></a>
+<span class="sourceLineNo">865</span>             encodedPublicKey));<a name="line.865"></a>
+<span class="sourceLineNo">866</span>      }<a name="line.866"></a>
+<span class="sourceLineNo">867</span><a name="line.867"></a>
+<span class="sourceLineNo">868</span>      final ArrayList&lt;ASN1Element&gt; attrElements = new ArrayList&lt;&gt;(1);<a name="line.868"></a>
+<span class="sourceLineNo">869</span>      if ((extensions != null) &amp;&amp; (extensions.length &gt; 0))<a name="line.869"></a>
+<span class="sourceLineNo">870</span>      {<a name="line.870"></a>
+<span class="sourceLineNo">871</span>        final ArrayList&lt;ASN1Element&gt; extensionElements =<a name="line.871"></a>
+<span class="sourceLineNo">872</span>             new ArrayList&lt;&gt;(extensions.length);<a name="line.872"></a>
+<span class="sourceLineNo">873</span>        for (final X509CertificateExtension e : extensions)<a name="line.873"></a>
+<span class="sourceLineNo">874</span>        {<a name="line.874"></a>
+<span class="sourceLineNo">875</span>          extensionElements.add(e.encode());<a name="line.875"></a>
+<span class="sourceLineNo">876</span>        }<a name="line.876"></a>
+<span class="sourceLineNo">877</span><a name="line.877"></a>
+<span class="sourceLineNo">878</span>        attrElements.add(new ASN1Sequence(<a name="line.878"></a>
+<span class="sourceLineNo">879</span>             new ASN1ObjectIdentifier(ATTRIBUTE_OID_EXTENSIONS),<a name="line.879"></a>
+<span class="sourceLineNo">880</span>             new ASN1Set(new ASN1Sequence(extensionElements))));<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      }<a name="line.881"></a>
+<span class="sourceLineNo">882</span>      requestInfoElements.add(new ASN1Set(TYPE_ATTRIBUTES, attrElements));<a name="line.882"></a>
+<span class="sourceLineNo">883</span><a name="line.883"></a>
+<span class="sourceLineNo">884</span>      final byte[] certificationRequestInfoBytes =<a name="line.884"></a>
+<span class="sourceLineNo">885</span>           new ASN1Sequence(requestInfoElements).encode();<a name="line.885"></a>
+<span class="sourceLineNo">886</span>      signature.update(certificationRequestInfoBytes);<a name="line.886"></a>
+<span class="sourceLineNo">887</span>      final byte[] signatureBytes = signature.sign();<a name="line.887"></a>
+<span class="sourceLineNo">888</span><a name="line.888"></a>
+<span class="sourceLineNo">889</span>      return new ASN1BitString(ASN1BitString.getBitsForBytes(signatureBytes));<a name="line.889"></a>
+<span class="sourceLineNo">890</span>    }<a name="line.890"></a>
+<span class="sourceLineNo">891</span>    catch (final Exception e)<a name="line.891"></a>
+<span class="sourceLineNo">892</span>    {<a name="line.892"></a>
+<span class="sourceLineNo">893</span>      Debug.debugException(e);<a name="line.893"></a>
+<span class="sourceLineNo">894</span>      throw new CertException(<a name="line.894"></a>
+<span class="sourceLineNo">895</span>           ERR_CSR_GEN_SIGNATURE_CANNOT_COMPUTE.get(<a name="line.895"></a>
+<span class="sourceLineNo">896</span>                signatureAlgorithm.getJavaName(),<a name="line.896"></a>
+<span class="sourceLineNo">897</span>                StaticUtils.getExceptionMessage(e)),<a name="line.897"></a>
+<span class="sourceLineNo">898</span>           e);<a name="line.898"></a>
+<span class="sourceLineNo">899</span>    }<a name="line.899"></a>
+<span class="sourceLineNo">900</span>  }<a name="line.900"></a>
 <span class="sourceLineNo">901</span><a name="line.901"></a>
-<span class="sourceLineNo">902</span>  /**<a name="line.902"></a>
-<span class="sourceLineNo">903</span>   * Retrieves the bytes that comprise the encoded representation of this<a name="line.903"></a>
-<span class="sourceLineNo">904</span>   * PKCS #10 certificate signing request.<a name="line.904"></a>
-<span class="sourceLineNo">905</span>   *<a name="line.905"></a>
-<span class="sourceLineNo">906</span>   * @return  The bytes that comprise the encoded representation of this<a name="line.906"></a>
-<span class="sourceLineNo">907</span>   *          PKCS #10 certificate signing request.<a name="line.907"></a>
-<span class="sourceLineNo">908</span>   */<a name="line.908"></a>
-<span class="sourceLineNo">909</span>  public byte[] getPKCS10CertificateSigningRequestBytes()<a name="line.909"></a>
-<span class="sourceLineNo">910</span>  {<a name="line.910"></a>
-<span class="sourceLineNo">911</span>    return pkcs10CertificateSigningRequestBytes;<a name="line.911"></a>
-<span class="sourceLineNo">912</span>  }<a name="line.912"></a>
-<span class="sourceLineNo">913</span><a name="line.913"></a>
-<span class="sourceLineNo">914</span><a name="line.914"></a>
+<span class="sourceLineNo">902</span><a name="line.902"></a>
+<span class="sourceLineNo">903</span><a name="line.903"></a>
+<span class="sourceLineNo">904</span>  /**<a name="line.904"></a>
+<span class="sourceLineNo">905</span>   * Retrieves the bytes that comprise the encoded representation of this<a name="line.905"></a>
+<span class="sourceLineNo">906</span>   * PKCS #10 certificate signing request.<a name="line.906"></a>
+<span class="sourceLineNo">907</span>   *<a name="line.907"></a>
+<span class="sourceLineNo">908</span>   * @return  The bytes that comprise the encoded representation of this<a name="line.908"></a>
+<span class="sourceLineNo">909</span>   *          PKCS #10 certificate signing request.<a name="line.909"></a>
+<span class="sourceLineNo">910</span>   */<a name="line.910"></a>
+<span class="sourceLineNo">911</span>  public byte[] getPKCS10CertificateSigningRequestBytes()<a name="line.911"></a>
+<span class="sourceLineNo">912</span>  {<a name="line.912"></a>
+<span class="sourceLineNo">913</span>    return pkcs10CertificateSigningRequestBytes;<a name="line.913"></a>
+<span class="sourceLineNo">914</span>  }<a name="line.914"></a>
 <span class="sourceLineNo">915</span><a name="line.915"></a>
-<span class="sourceLineNo">916</span>  /**<a name="line.916"></a>
-<span class="sourceLineNo">917</span>   * Retrieves the certificate signing request version.<a name="line.917"></a>
-<span class="sourceLineNo">918</span>   *<a name="line.918"></a>
-<span class="sourceLineNo">919</span>   * @return  The certificate signing request version.<a name="line.919"></a>
-<span class="sourceLineNo">920</span>   */<a name="line.920"></a>
-<span class="sourceLineNo">921</span>  public PKCS10CertificateSigningRequestVersion getVersion()<a name="line.921"></a>
-<span class="sourceLineNo">922</span>  {<a name="line.922"></a>
-<span class="sourceLineNo">923</span>    return version;<a name="line.923"></a>
-<span class="sourceLineNo">924</span>  }<a name="line.924"></a>
-<span class="sourceLineNo">925</span><a name="line.925"></a>
-<span class="sourceLineNo">926</span><a name="line.926"></a>
+<span class="sourceLineNo">916</span><a name="line.916"></a>
+<span class="sourceLineNo">917</span><a name="line.917"></a>
+<span class="sourceLineNo">918</span>  /**<a name="line.918"></a>
+<span class="sourceLineNo">919</span>   * Retrieves the certificate signing request version.<a name="line.919"></a>
+<span class="sourceLineNo">920</span>   *<a name="line.920"></a>
+<span class="sourceLineNo">921</span>   * @return  The certificate signing request version.<a name="line.921"></a>
+<span class="sourceLineNo">922</span>   */<a name="line.922"></a>
+<span class="sourceLineNo">923</span>  public PKCS10CertificateSigningRequestVersion getVersion()<a name="line.923"></a>
+<span class="sourceLineNo">924</span>  {<a name="line.924"></a>
+<span class="sourceLineNo">925</span>    return version;<a name="line.925"></a>
+<span class="sourceLineNo">926</span>  }<a name="line.926"></a>
 <span class="sourceLineNo">927</span><a name="line.927"></a>
-<span class="sourceLineNo">928</span>  /**<a name="line.928"></a>
-<span class="sourceLineNo">929</span>   * Retrieves the certificate signing request signature algorithm OID.<a name="line.929"></a>
-<span class="sourceLineNo">930</span>   *<a name="line.930"></a>
-<span class="sourceLineNo">931</span>   * @return  The certificate signing request signature algorithm OID.<a name="line.931"></a>
-<span class="sourceLineNo">932</span>   */<a name="line.932"></a>
-<span class="sourceLineNo">933</span>  public OID getSignatureAlgorithmOID()<a name="line.933"></a>
-<span class="sourceLineNo">934</span>  {<a name="line.934"></a>
-<span class="sourceLineNo">935</span>    return signatureAlgorithmOID;<a name="line.935"></a>
-<span class="sourceLineNo">936</span>  }<a name="line.936"></a>
-<span class="sourceLineNo">937</span><a name="line.937"></a>
-<span class="sourceLineNo">938</span><a name="line.938"></a>
+<span class="sourceLineNo">928</span><a name="line.928"></a>
+<span class="sourceLineNo">929</span><a name="line.929"></a>
+<span class="sourceLineNo">930</span>  /**<a name="line.930"></a>
+<span class="sourceLineNo">931</span>   * Retrieves the certificate signing request signature algorithm OID.<a name="line.931"></a>
+<span class="sourceLineNo">932</span>   *<a name="line.932"></a>
+<span class="sourceLineNo">933</span>   * @return  The certificate signing request signature algorithm OID.<a name="line.933"></a>
+<span class="sourceLineNo">934</span>   */<a name="line.934"></a>
+<span class="sourceLineNo">935</span>  public OID getSignatureAlgorithmOID()<a name="line.935"></a>
+<span class="sourceLineNo">936</span>  {<a name="line.936"></a>
+<span class="sourceLineNo">937</span>    return signatureAlgorithmOID;<a name="line.937"></a>
+<span class="sourceLineNo">938</span>  }<a name="line.938"></a>
 <span class="sourceLineNo">939</span><a name="line.939"></a>
-<span class="sourceLineNo">940</span>  /**<a name="line.940"></a>
-<span class="sourceLineNo">941</span>   * Retrieves the certificate signing request signature algorithm name, if<a name="line.941"></a>
-<span class="sourceLineNo">942</span>   * available.<a name="line.942"></a>
-<span class="sourceLineNo">943</span>   *<a name="line.943"></a>
-<span class="sourceLineNo">944</span>   * @return  The certificate signing request signature algorithm name, or<a name="line.944"></a>
-<span class="sourceLineNo">945</span>   *          {@code null} if the signature algorithm OID does not correspond to<a name="line.945"></a>
-<span class="sourceLineNo">946</span>   *          any known algorithm name.<a name="line.946"></a>
-<span class="sourceLineNo">947</span>   */<a name="line.947"></a>
-<span class="sourceLineNo">948</span>  public String getSignatureAlgorithmName()<a name="line.948"></a>
-<span class="sourceLineNo">949</span>  {<a name="line.949"></a>
-<span class="sourceLineNo">950</span>    return signatureAlgorithmName;<a name="line.950"></a>
-<span class="sourceLineNo">951</span>  }<a name="line.951"></a>
-<span class="sourceLineNo">952</span><a name="line.952"></a>
-<span class="sourceLineNo">953</span><a name="line.953"></a>
+<span class="sourceLineNo">940</span><a name="line.940"></a>
+<span class="sourceLineNo">941</span><a name="line.941"></a>
+<span class="sourceLineNo">942</span>  /**<a name="line.942"></a>
+<span class="sourceLineNo">943</span>   * Retrieves the certificate signing request signature algorithm name, if<a name="line.943"></a>
+<span class="sourceLineNo">944</span>   * available.<a name="line.944"></a>
+<span class="sourceLineNo">945</span>   *<a name="line.945"></a>
+<span class="sourceLineNo">946</span>   * @return  The certificate signing request signature algorithm name, or<a name="line.946"></a>
+<span class="sourceLineNo">947</span>   *          {@code null} if the signature algorithm OID does not correspond to<a name="line.947"></a>
+<span class="sourceLineNo">948</span>   *          any known algorithm name.<a name="line.948"></a>
+<span class="sourceLineNo">949</span>   */<a name="line.949"></a>
+<span class="sourceLineNo">950</span>  public String getSignatureAlgorithmName()<a name="line.950"></a>
+<span class="sourceLineNo">951</span>  {<a name="line.951"></a>
+<span class="sourceLineNo">952</span>    return signatureAlgorithmName;<a name="line.952"></a>
+<span class="sourceLineNo">953</span>  }<a name="line.953"></a>
 <span class="sourceLineNo">954</span><a name="line.954"></a>
-<span class="sourceLineNo">955</span>  /**<a name="line.955"></a>
-<span class="sourceLineNo">956</span>   * Retrieves the signature algorithm name if it is available, or the string<a name="line.956"></a>
-<span class="sourceLineNo">957</span>   * representation of the signature algorithm OID if not.<a name="line.957"></a>
-<span class="sourceLineNo">958</span>   *<a name="line.958"></a>
-<span class="sourceLineNo">959</span>   * @return  The signature algorithm name or OID.<a name="line.959"></a>
-<span class="sourceLineNo">960</span>   */<a name="line.960"></a>
-<span class="sourceLineNo">961</span>  public String getSignatureAlgorithmNameOrOID()<a name="line.961"></a>
-<span class="sourceLineNo">962</span>  {<a name="line.962"></a>
-<span class="sourceLineNo">963</span>    if (signatureAlgorithmName != null)<a name="line.963"></a>
-<span class="sourceLineNo">964</span>    {<a name="line.964"></a>
-<span class="sourceLineNo">965</span>      return signatureAlgorithmName;<a name="line.965"></a>
-<span class="sourceLineNo">966</span>    }<a name="line.966"></a>
-<span class="sourceLineNo">967</span>    else<a name="line.967"></a>
-<span class="sourceLineNo">968</span>    {<a name="line.968"></a>
-<span class="sourceLineNo">969</span>      return signatureAlgorithmOID.toString();<a name="line.969"></a>
-<span class="sourceLineNo">970</span>    }<a name="line.970"></a>
-<span class="sourceLineNo">971</span>  }<a name="line.971"></a>
-<span class="sourceLineNo">972</span><a name="line.972"></a>
-<span class="sourceLineNo">973</span><a name="line.973"></a>
+<span class="sourceLineNo">955</span><a name="line.955"></a>
+<span class="sourceLineNo">956</span><a name="line.956"></a>
+<span class="sourceLineNo">957</span>  /**<a name="line.957"></a>
+<span class="sourceLineNo">958</span>   * Retrieves the signature algorithm name if it is available, or the string<a name="line.958"></a>
+<span class="sourceLineNo">959</span>   * representation of the signature algorithm OID if not.<a name="line.959"></a>
+<span class="sourceLineNo">960</span>   *<a name="line.960"></a>
+<span class="sourceLineNo">961</span>   * @return  The signature algorithm name or OID.<a name="line.961"></a>
+<span class="sourceLineNo">962</span>   */<a name="line.962"></a>
+<span class="sourceLineNo">963</span>  public String getSignatureAlgorithmNameOrOID()<a name="line.963"></a>
+<span class="sourceLineNo">964</span>  {<a name="line.964"></a>
+<span class="sourceLineNo">965</span>    if (signatureAlgorithmName != null)<a name="line.965"></a>
+<span class="sourceLineNo">966</span>    {<a name="line.966"></a>
+<span class="sourceLineNo">967</span>      return signatureAlgorithmName;<a name="line.967"></a>
+<span class="sourceLineNo">968</span>    }<a name="line.968"></a>
+<span class="sourceLineNo">969</span>    else<a name="line.969"></a>
+<span class="sourceLineNo">970</span>    {<a name="line.970"></a>
+<span class="sourceLineNo">971</span>      return signatureAlgorithmOID.toString();<a name="line.971"></a>
+<span class="sourceLineNo">972</span>    }<a name="line.972"></a>
+<span class="sourceLineNo">973</span>  }<a name="line.973"></a>
 <span class="sourceLineNo">974</span><a name="line.974"></a>
-<span class="sourceLineNo">975</span>  /**<a name="line.975"></a>
-<span class="sourceLineNo">976</span>   * Retrieves the encoded signature algorithm parameters, if present.<a name="line.976"></a>
-<span class="sourceLineNo">977</span>   *<a name="line.977"></a>
-<span class="sourceLineNo">978</span>   * @return  The encoded signature algorithm parameters, or {@code null} if<a name="line.978"></a>
-<span class="sourceLineNo">979</span>   *          there are no signature algorithm parameters.<a name="line.979"></a>
-<span class="sourceLineNo">980</span>   */<a name="line.980"></a>
-<span class="sourceLineNo">981</span>  public ASN1Element getSignatureAlgorithmParameters()<a name="line.981"></a>
-<span class="sourceLineNo">982</span>  {<a name="line.982"></a>
-<span class="sourceLineNo">983</span>    return signatureAlgorithmParameters;<a name="line.983"></a>
-<span class="sourceLineNo">984</span>  }<a name="line.984"></a>
-<span class="sourceLineNo">985</span><a name="line.985"></a>
-<span class="sourceLineNo">986</span><a name="line.986"></a>
+<span class="sourceLineNo">975</span><a name="line.975"></a>
+<span class="sourceLineNo">976</span><a name="line.976"></a>
+<span class="sourceLineNo">977</span>  /**<a name="line.977"></a>
+<span class="sourceLineNo">978</span>   * Retrieves the encoded signature algorithm parameters, if present.<a name="line.978"></a>
+<span class="sourceLineNo">979</span>   *<a name="line.979"></a>
+<span class="sourceLineNo">980</span>   * @return  The encoded signature algorithm parameters, or {@code null} if<a name="line.980"></a>
+<span class="sourceLineNo">981</span>   *          there are no signature algorithm parameters.<a name="line.981"></a>
+<span class="sourceLineNo">982</span>   */<a name="line.982"></a>
+<span class="sourceLineNo">983</span>  public ASN1Element getSignatureAlgorithmParameters()<a name="line.983"></a>
+<span class="sourceLineNo">984</span>  {<a name="line.984"></a>
+<span class="sourceLineNo">985</span>    return signatureAlgorithmParameters;<a name="line.985"></a>
+<span class="sourceLineNo">986</span>  }<a name="line.986"></a>
 <span class="sourceLineNo">987</span><a name="line.987"></a>
-<span class="sourceLineNo">988</span>  /**<a name="line.988"></a>
-<span class="sourceLineNo">989</span>   * Retrieves the certificate signing request subject DN.<a name="line.989"></a>
-<span class="sourceLineNo">990</span>   *<a name="line.990"></a>
-<span class="sourceLineNo">991</span>   * @return  The certificate signing request subject DN.<a name="line.991"></a>
-<span class="sourceLineNo">992</span>   */<a name="line.992"></a>
-<span class="sourceLineNo">993</span>  public DN getSubjectDN()<a name="line.993"></a>
-<span class="sourceLineNo">994</span>  {<a name="line.994"></a>
-<span class="sourceLineNo">995</span>    return subjectDN;<a name="line.995"></a>
-<span class="sourceLineNo">996</span>  }<a name="line.996"></a>
-<span class="sourceLineNo">997</span><a name="line.997"></a>
-<span class="sourceLineNo">998</span><a name="line.998"></a>
+<span class="sourceLineNo">988</span><a name="line.988"></a>
+<span class="sourceLineNo">989</span><a name="line.989"></a>
+<span class="sourceLineNo">990</span>  /**<a name="line.990"></a>
+<span class="sourceLineNo">991</span>   * Retrieves the certificate signing request subject DN.<a name="line.991"></a>
+<span class="sourceLineNo">992</span>   *<a name="line.992"></a>
+<span class="sourceLineNo">993</span>   * @return  The certificate signing request subject DN.<a name="line.993"></a>
+<span class="sourceLineNo">994</span>   */<a name="line.994"></a>
+<span class="sourceLineNo">995</span>  public DN getSubjectDN()<a name="line.995"></a>
+<span class="sourceLineNo">996</span>  {<a name="line.996"></a>
+<span class="sourceLineNo">997</span>    return subjectDN;<a name="line.997"></a>
+<span class="sourceLineNo">998</span>  }<a name="line.998"></a>
 <span class="sourceLineNo">999</span><a name="line.999"></a>
-<span class="sourceLineNo">1000</span>  /**<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>   * Retrieves the certificate signing request public key algorithm OID.<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>   *<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>   * @return  The certificate signing request public key algorithm OID.<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>   */<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>  public OID getPublicKeyAlgorithmOID()<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>  {<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>    return publicKeyAlgorithmOID;<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>  }<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span><a name="line.1009"></a>
-<span class="sourceLineNo">1010</span><a name="line.1010"></a>
+<span class="sourceLineNo">1000</span><a name="line.1000"></a>
+<span class="sourceLineNo">1001</span><a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>  /**<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>   * Retrieves the certificate signing request public key algorithm OID.<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>   *<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>   * @return  The certificate signing request public key algorithm OID.<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>   */<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>  public OID getPublicKeyAlgorithmOID()<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>  {<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>    return publicKeyAlgorithmOID;<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>  }<a name="line.1010"></a>
 <span class="sourceLineNo">1011</span><a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>  /**<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>   * Retrieves the certificate signing request public key algorithm name, if<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>   * available.<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>   *<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>   * @return  The certificate signing request public key algorithm name, or<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>   *          {@code null} if the public key algorithm OID does not correspond<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>   *          to any known algorithm name.<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>   */<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>  public String getPublicKeyAlgorithmName()<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>  {<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>    return publicKeyAlgorithmName;<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>  }<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span><a name="line.1024"></a>
-<span class="sourceLineNo">1025</span><a name="line.1025"></a>
+<span class="sourceLineNo">1012</span><a name="line.1012"></a>
+<span class="sourceLineNo">1013</span><a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>  /**<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>   * Retrieves the certificate signing request public key algorithm name, if<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>   * available.<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>   *<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>   * @return  The certificate signing request public key algorithm name, or<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>   *          {@code null} if the public key algorithm OID does not correspond<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>   *          to any known algorithm name.<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>   */<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>  public String getPublicKeyAlgorithmName()<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>  {<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>    return publicKeyAlgorithmName;<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>  }<a name="line.1025"></a>
 <span class="sourceLineNo">1026</span><a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>  /**<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>   * Retrieves the public key algorithm name if it is available, or the string<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>   * representation of the public key algorithm OID if not.<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>   *<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>   * @return  The signature algorithm name or OID.<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>   */<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>  public String getPublicKeyAlgorithmNameOrOID()<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>  {<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>    if (publicKeyAlgorithmName != null)<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>    {<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>      return publicKeyAlgorithmName;<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>    }<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>    else<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>    {<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>      return publicKeyAlgorithmOID.toString();<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>    }<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>  }<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span><a name="line.1044"></a>
-<span class="sourceLineNo">1045</span><a name="line.1045"></a>
+<span class="sourceLineNo">1027</span><a name="line.1027"></a>
+<span class="sourceLineNo">1028</span><a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>  /**<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>   * Retrieves the public key algorithm name if it is available, or the string<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>   * representation of the public key algorithm OID if not.<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>   *<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>   * @return  The signature algorithm name or OID.<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>   */<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>  public String getPublicKeyAlgorithmNameOrOID()<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>  {<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>    if (publicKeyAlgorithmName != null)<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>    {<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>      return publicKeyAlgorithmName;<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>    }<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>    else<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>    {<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>      return publicKeyAlgorithmOID.toString();<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>    }<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>  }<a name="line.1045"></a>
 <span class="sourceLineNo">1046</span><a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>  /**<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span>   * Retrieves the encoded public key algorithm parameters, if present.<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>   *<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>   * @return  The encoded public key algorithm parameters, or {@code null} if<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>   *          there are no public key algorithm parameters.<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>   */<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>  public ASN1Element getPublicKeyAlgorithmParameters()<a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>  {<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>    return publicKeyAlgorithmParameters;<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>  }<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span><a name="line.1057"></a>
-<span class="sourceLineNo">1058</span><a name="line.1058"></a>
+<span class="sourceLineNo">1047</span><a name="line.1047"></a>
+<span class="sourceLineNo">1048</span><a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>  /**<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>   * Retrieves the encoded public key algorithm parameters, if present.<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>   *<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>   * @return  The encoded public key algorithm parameters, or {@code null} if<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>   *          there are no public key algorithm parameters.<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>   */<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>  public ASN1Element getPublicKeyAlgorithmParameters()<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>  {<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>    return publicKeyAlgorithmParameters;<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>  }<a name="line.1058"></a>
 <span class="sourceLineNo">1059</span><a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>  /**<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span>   * Retrieves the encoded public key as a bit string.<a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>   *<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>   * @return  The encoded public key as a bit string.<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>   */<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>  public ASN1BitString getEncodedPublicKey()<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>  {<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>    return encodedPublicKey;<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>  }<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span><a name="line.1069"></a>
-<span class="sourceLineNo">1070</span><a name="line.1070"></a>
+<span class="sourceLineNo">1060</span><a name="line.1060"></a>
+<span class="sourceLineNo">1061</span><a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>  /**<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>   * Retrieves the encoded public key as a bit string.<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>   *<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>   * @return  The encoded public key as a bit string.<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>   */<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>  public ASN1BitString getEncodedPublicKey()<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>  {<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>    return encodedPublicKey;<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>  }<a name="line.1070"></a>
 <span class="sourceLineNo">1071</span><a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>  /**<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>   * Retrieves a decoded representation of the public key, if available.<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>   *<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>   * @return  A decoded representation of the public key, or {@code null} if the<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>   *          public key could not be decoded.<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>   */<a name="line.1077"></a>
-<span class="sourceLineNo">1078</span>  public DecodedPublicKey getDecodedPublicKey()<a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>  {<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>    return decodedPublicKey;<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span>  }<a name="line.1081"></a>
-<span class="sourceLineNo">1082</span><a name="line.1082"></a>
-<span class="sourceLineNo">1083</span><a name="line.1083"></a>
+<span class="sourceLineNo">1072</span><a name="line.1072"></a>
+<span class="sourceLineNo">1073</span><a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>  /**<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>   * Retrieves a decoded representation of the public key, if available.<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>   *<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>   * @return  A decoded representation of the public key, or {@code null} if the<a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>   *          public key could not be decoded.<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>   */<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>  public DecodedPublicKey getDecodedPublicKey()<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>  {<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>    return decodedPublicKey;<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>  }<a name="line.1083"></a>
 <span class="sourceLineNo">1084</span><a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>  /**<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>   * Retrieves the encoded request attributes included in the certificate<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>   * signing request.<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>   *<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>   * @return  The encoded request attributes included in the certificate signing<a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>   *          request.<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>   */<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>  public List&lt;ObjectPair&lt;OID,ASN1Set&gt;&gt; getRequestAttributes()<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>  {<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span>    return requestAttributes;<a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>  }<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span><a name="line.1096"></a>
-<span class="sourceLineNo">1097</span><a name="line.1097"></a>
+<span class="sourceLineNo">1085</span><a name="line.1085"></a>
+<span class="sourceLineNo">1086</span><a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>  /**<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>   * Retrieves the encoded request attributes included in the certificate<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>   * signing request.<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>   *<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>   * @return  The encoded request attributes included in the certificate signing<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>   *          request.<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>   */<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>  public List&lt;ObjectPair&lt;OID,ASN1Set&gt;&gt; getRequestAttributes()<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>  {<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>    return requestAttributes;<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span>  }<a name="line.1097"></a>
 <span class="sourceLineNo">1098</span><a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>  /**<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>   * Retrieves the list of certificate extensions included in the certificate<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>   * signing request.<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>   *<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>   * @return  The list of certificate extensions included in the certificate<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span>   *          signing request.<a name="line.1104"></a>
-<span class="sourceLineNo">1105</span>   */<a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>  public List&lt;X509CertificateExtension&gt; getExtensions()<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>  {<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>    return extensions;<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>  }<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span><a name="line.1110"></a>
-<span class="sourceLineNo">1111</span><a name="line.1111"></a>
+<span class="sourceLineNo">1099</span><a name="line.1099"></a>
+<span class="sourceLineNo">1100</span><a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>  /**<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>   * Retrieves the list of certificate extensions included in the certificate<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>   * signing request.<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>   *<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>   * @return  The list of certificate extensions included in the certificate<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>   *          signing request.<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>   */<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>  public List&lt;X509CertificateExtension&gt; getExtensions()<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>  {<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>    return extensions;<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>  }<a name="line.1111"></a>
 <span class="sourceLineNo">1112</span><a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>  /**<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span>   * Retrieves the signature value for the certificate signing request.<a name="line.1114"></a>
-<span class="sourceLineNo">1115</span>   *<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>   * @return  The signature value for the certificate signing request.<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>   */<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>  public ASN1BitString getSignatureValue()<a name="line.1118"></a>
-<span class="sourceLineNo">1119</span>  {<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span>    return signatureValue;<a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>  }<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span><a name="line.1122"></a>
-<span class="sourceLineNo">1123</span><a name="line.1123"></a>
+<span class="sourceLineNo">1113</span><a name="line.1113"></a>
+<span class="sourceLineNo">1114</span><a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>  /**<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>   * Retrieves the signature value for the certificate signing request.<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>   *<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>   * @return  The signature value for the certificate signing request.<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>   */<a name="line.1119"></a>
+<span class="sourceLineNo">1120</span>  public ASN1BitString getSignatureValue()<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span>  {<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>    return signatureValue;<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>  }<a name="line.1123"></a>
 <span class="sourceLineNo">1124</span><a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>  /**<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>   * Verifies the signature for this certificate signing request.<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>   *<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>   * @throws  CertException  If the certificate signing request's signature<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>   *                         could not be verified.<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>   */<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span>  public void verifySignature()<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>         throws CertException<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>  {<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>    // Generate the public key for this certificate signing request.<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>    final PublicKey publicKey;<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>    try<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>    {<a name="line.1137"></a>
-<span class="sourceLineNo">1138</span>      final byte[] encodedPublicKeyBytes;<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>      if (publicKeyAlgorithmParameters == null)<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>      {<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>        encodedPublicKeyBytes = new ASN1Sequence(<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>             new ASN1Sequence(<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID)),<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>             encodedPublicKey).encode();<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>      }<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>      else<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>      {<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>        encodedPublicKeyBytes = new ASN1Sequence(<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>             new ASN1Sequence(<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID),<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>                  publicKeyAlgorithmParameters),<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>             encodedPublicKey).encode();<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>      }<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span><a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>      final KeyFactory keyFactory =<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>           KeyFactory.getInstance(getPublicKeyAlgorithmNameOrOID());<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>      publicKey = keyFactory.generatePublic(<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>           new X509EncodedKeySpec(encodedPublicKeyBytes));<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>    }<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>    catch (final Exception e)<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>    {<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>      Debug.debugException(e);<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>      throw new CertException(<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>           ERR_CSR_VERIFY_SIGNATURE_CANNOT_GET_PUBLIC_KEY.get(<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>           e);<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>    }<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span><a name="line.1168"></a>
-<span class="sourceLineNo">1169</span><a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>    // Get and initialize the signature generator.<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>    final Signature signature;<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>    final SignatureAlgorithmIdentifier signatureAlgorithm;<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>    try<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>    {<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>      signatureAlgorithm =<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>           SignatureAlgorithmIdentifier.forOID(signatureAlgorithmOID);<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>      signature = Signature.getInstance(signatureAlgorithm.getJavaName());<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>    }<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>    catch (final Exception e)<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>    {<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>      Debug.debugException(e);<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>      throw new CertException(<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>           ERR_CSR_VERIFY_SIGNATURE_CANNOT_GET_SIGNATURE_VERIFIER.get(<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>                getSignatureAlgorithmNameOrOID(),<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>           e);<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>    }<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span><a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>    try<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>    {<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>      signature.initVerify(publicKey);<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>    }<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>    catch (final Exception e)<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>    {<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>      Debug.debugException(e);<a name="line.1195"></a>
-<span class="sourceLineNo">1196</span>      throw new CertException(<a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>           ERR_CSR_VERIFY_SIGNATURE_CANNOT_INIT_SIGNATURE_VERIFIER.get(<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>                signatureAlgorithm.getJavaName(),<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>           e);<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>    }<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span><a name="line.1202"></a>
-<span class="sourceLineNo">1203</span><a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>    // Construct the requestInfo element of the certificate signing request and<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>    // compute its signature.<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>    final boolean signatureIsValid;<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>    try<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>    {<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>      final ASN1Element[] requestInfoElements =<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>           ASN1Sequence.decodeAsSequence(<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>                pkcs10CertificateSigningRequestBytes).elements();<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>      final byte[] requestInfoBytes = requestInfoElements[0].encode();<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>      signature.update(requestInfoBytes);<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>      signatureIsValid = signature.verify(signatureValue.getBytes());<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>    }<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>    catch (final Exception e)<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>    {<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>      Debug.debugException(e);<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>      throw new CertException(<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>           ERR_CSR_VERIFY_SIGNATURE_ERROR.get(subjectDN,<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>           e);<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>    }<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span><a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>    if (! signatureIsValid)<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>    {<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>      throw new CertException(<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span>           ERR_CSR_VERIFY_SIGNATURE_NOT_VALID.get(subjectDN));<a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>    }<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>  }<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span><a name="line.1231"></a>
-<span class="sourceLineNo">1232</span><a name="line.1232"></a>
+<span class="sourceLineNo">1125</span><a name="line.1125"></a>
+<span class="sourceLineNo">1126</span><a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>  /**<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>   * Verifies the signature for this certificate signing request.<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>   *<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>   * @throws  CertException  If the certificate signing request's signature<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>   *                         could not be verified.<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>   */<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>  public void verifySignature()<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>         throws CertException<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>  {<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>    // Generate the public key for this certificate signing request.<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>    final PublicKey publicKey;<a name="line.1137"></a>
+<span class="sourceLineNo">1138</span>    try<a name="line.1138"></a>
+<span class="sourceLineNo">1139</span>    {<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>      final byte[] encodedPublicKeyBytes;<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>      if (publicKeyAlgorithmParameters == null)<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>      {<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>        encodedPublicKeyBytes = new ASN1Sequence(<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>             new ASN1Sequence(<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID)),<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>             encodedPublicKey).encode();<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>      }<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>      else<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>      {<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>        encodedPublicKeyBytes = new ASN1Sequence(<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>             new ASN1Sequence(<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>                  new ASN1ObjectIdentifier(publicKeyAlgorithmOID),<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>                  publicKeyAlgorithmParameters),<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>             encodedPublicKey).encode();<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>      }<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span><a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>      final KeyFactory keyFactory =<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>           KeyFactory.getInstance(getPublicKeyAlgorithmNameOrOID());<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>      publicKey = keyFactory.generatePublic(<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>           new X509EncodedKeySpec(encodedPublicKeyBytes));<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>    }<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>    catch (final Exception e)<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>    {<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>      Debug.debugException(e);<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>      throw new CertException(<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>           ERR_CSR_VERIFY_SIGNATURE_CANNOT_GET_PUBLIC_KEY.get(<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>           e);<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>    }<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span><a name="line.1170"></a>
+<span class="sourceLineNo">1171</span><a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>    // Get and initialize the signature generator.<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>    final Signature signature;<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>    final SignatureAlgorithmIdentifier signatureAlgorithm;<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>    try<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>    {<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>      signatureAlgorithm =<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>           SignatureAlgorithmIdentifier.forOID(signatureAlgorithmOID);<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>      signature = Signature.getInstance(signatureAlgorithm.getJavaName());<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>    }<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>    catch (final Exception e)<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>    {<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>      Debug.debugException(e);<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>      throw new CertException(<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>           ERR_CSR_VERIFY_SIGNATURE_CANNOT_GET_SIGNATURE_VERIFIER.get(<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>                getSignatureAlgorithmNameOrOID(),<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>           e);<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>    }<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span><a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>    try<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>    {<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>      signature.initVerify(publicKey);<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>    }<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>    catch (final Exception e)<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>    {<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>      Debug.debugException(e);<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>      throw new CertException(<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>           ERR_CSR_VERIFY_SIGNATURE_CANNOT_INIT_SIGNATURE_VERIFIER.get(<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>                signatureAlgorithm.getJavaName(),<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>           e);<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>    }<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span><a name="line.1204"></a>
+<span class="sourceLineNo">1205</span><a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>    // Construct the requestInfo element of the certificate signing request and<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>    // compute its signature.<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>    final boolean signatureIsValid;<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>    try<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>    {<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>      final ASN1Element[] requestInfoElements =<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>           ASN1Sequence.decodeAsSequence(<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>                pkcs10CertificateSigningRequestBytes).elements();<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>      final byte[] requestInfoBytes = requestInfoElements[0].encode();<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>      signature.update(requestInfoBytes);<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>      signatureIsValid = signature.verify(signatureValue.getBytes());<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>    }<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>    catch (final Exception e)<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>    {<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>      Debug.debugException(e);<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>      throw new CertException(<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>           ERR_CSR_VERIFY_SIGNATURE_ERROR.get(subjectDN,<a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>                StaticUtils.getExceptionMessage(e)),<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>           e);<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>    }<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span><a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>    if (! signatureIsValid)<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>    {<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>      throw new CertException(<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>           ERR_CSR_VERIFY_SIGNATURE_NOT_VALID.get(subjectDN));<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>    }<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>  }<a name="line.1232"></a>
 <span class="sourceLineNo">1233</span><a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>  /**<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>   * Retrieves a string representation of the decoded X.509 certificate.<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>   *<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>   * @return  A string representation of the decoded X.509 certificate.<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>   */<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>  @Override()<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>  public String toString()<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>  {<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>    toString(buffer);<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>    return buffer.toString();<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>  }<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span><a name="line.1246"></a>
-<span class="sourceLineNo">1247</span><a name="line.1247"></a>
+<span class="sourceLineNo">1234</span><a name="line.1234"></a>
+<span class="sourceLineNo">1235</span><a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>  /**<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>   * Retrieves a string representation of the decoded X.509 certificate.<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>   *<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>   * @return  A string representation of the decoded X.509 certificate.<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>   */<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>  @Override()<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>  public String toString()<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>  {<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>    toString(buffer);<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>    return buffer.toString();<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span>  }<a name="line.1247"></a>
 <span class="sourceLineNo">1248</span><a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>  /**<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>   * Appends a string representation of the decoded X.509 certificate to the<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>   * provided buffer.<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>   *<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>   */<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>  public void toString(final StringBuilder buffer)<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>  {<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>    buffer.append("PKCS10CertificateSigningRequest(version='");<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>    buffer.append(version.getName());<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>    buffer.append("', subjectDN='");<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span>    buffer.append(subjectDN);<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>    buffer.append("', publicKeyAlgorithmOID='");<a name="line.1261"></a>
-<span class="sourceLineNo">1262</span>    buffer.append(publicKeyAlgorithmOID.toString());<a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>    buffer.append('\'');<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span><a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>    if (publicKeyAlgorithmName != null)<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>    {<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>      buffer.append(", publicKeyAlgorithmName='");<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>      buffer.append(publicKeyAlgorithmName);<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>      buffer.append('\'');<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>    }<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span><a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>    buffer.append(", subjectPublicKey=");<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>    if (decodedPublicKey == null)<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>    {<a name="line.1274"></a>
-<span class="sourceLineNo">1275</span>      buffer.append('\'');<a name="line.1275"></a>
-<span class="sourceLineNo">1276</span><a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>      try<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>      {<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>        StaticUtils.toHex(encodedPublicKey.getBytes(), ":", buffer);<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span>      }<a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>      catch (final Exception e)<a name="line.1281"></a>
-<span class="sourceLineNo">1282</span>      {<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span>        Debug.debugException(e);<a name="line.1283"></a>
-<span class="sourceLineNo">1284</span>        encodedPublicKey.toString(buffer);<a name="line.1284"></a>
-<span class="sourceLineNo">1285</span>      }<a name="line.1285"></a>
-<span class="sourceLineNo">1286</span><a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>      buffer.append('\'');<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>    }<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span>    else<a name="line.1289"></a>
-<span class="sourceLineNo">1290</span>    {<a name="line.1290"></a>
-<span class="sourceLineNo">1291</span>      decodedPublicKey.toString(buffer);<a name="line.1291"></a>
-<span class="sourceLineNo">1292</span><a name="line.1292"></a>
-<span class="sourceLineNo">1293</span>      if (decodedPublicKey instanceof EllipticCurvePublicKey)<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>      {<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span>        try<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>        {<a name="line.1296"></a>
-<span class="sourceLineNo">1297</span>          final OID namedCurveOID =<a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>               publicKeyAlgorithmParameters.decodeAsObjectIdentifier().getOID();<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>          buffer.append(", ellipticCurvePublicKeyParameters=namedCurve='");<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>          buffer.append(NamedCurve.getNameOrOID(namedCurveOID));<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>          buffer.append('\'');<a name="line.1301"></a>
-<span class="sourceLineNo">1302</span>        }<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>        catch (final Exception e)<a name="line.1303"></a>
-<span class="sourceLineNo">1304</span>        {<a name="line.1304"></a>
-<span class="sourceLineNo">1305</span>          Debug.debugException(e);<a name="line.1305"></a>
-<span class="sourceLineNo">1306</span>        }<a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>      }<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span>    }<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span><a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>    buffer.append(", signatureAlgorithmOID='");<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>    buffer.append(signatureAlgorithmOID.toString());<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>    buffer.append('\'');<a name="line.1312"></a>
-<span class="sourceLineNo">1313</span><a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>    if (signatureAlgorithmName != null)<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span>    {<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>      buffer.append(", signatureAlgorithmName='");<a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>      buffer.append(signatureAlgorithmName);<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>      buffer.append('\'');<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>    }<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span><a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>    if (! extensions.isEmpty())<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>    {<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span>      buffer.append(", extensions={");<a name="line.1323"></a>
-<span class="sourceLineNo">1324</span><a name="line.1324"></a>
-<span class="sourceLineNo">1325</span>      final Iterator&lt;X509CertificateExtension&gt; iterator = extensions.iterator();<a name="line.1325"></a>
-<span class="sourceLineNo">1326</span>      while (iterator.hasNext())<a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>      {<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>        iterator.next().toString(buffer);<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>        if (iterator.hasNext())<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>        {<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>          buffer.append(", ");<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>        }<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>      }<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span><a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>      buffer.append('}');<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>    }<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span><a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>    buffer.append(", signatureValue='");<a name="line.1338"></a>
+<span class="sourceLineNo">1249</span><a name="line.1249"></a>
+<span class="sourceLineNo">1250</span><a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>  /**<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>   * Appends a string representation of the decoded X.509 certificate to the<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>   * provided buffer.<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>   *<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>   */<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>  public void toString(final StringBuilder buffer)<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>  {<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>    buffer.append("PKCS10CertificateSigningRequest(version='");<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>    buffer.append(version.getName());<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>    buffer.append("', subjectDN='");<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>    buffer.append(subjectDN);<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span>    buffer.append("', publicKeyAlgorithmOID='");<a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>    buffer.append(publicKeyAlgorithmOID.toString());<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>    buffer.append('\'');<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span><a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>    if (publicKeyAlgorithmName != null)<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>    {<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span>      buffer.append(", publicKeyAlgorithmName='");<a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>      buffer.append(publicKeyAlgorithmName);<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>      buffer.append('\'');<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>    }<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span><a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>    buffer.append(", subjectPublicKey=");<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>    if (decodedPublicKey == null)<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>    {<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>      buffer.append('\'');<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span><a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>      try<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>      {<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>        StaticUtils.toHex(encodedPublicKey.getBytes(), ":", buffer);<a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>      }<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>      catch (final Exception e)<a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>      {<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>        Debug.debugException(e);<a name="line.1285"></a>
+<span class="sourceLineNo">1286</span>        encodedPublicKey.toString(buffer);<a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>      }<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span><a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>      buffer.append('\'');<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>    }<a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>    else<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>    {<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>      decodedPublicKey.toString(buffer);<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span><a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>      if (decodedPublicKey instanceof EllipticCurvePublicKey)<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>      {<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>        try<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span>        {<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>          final OID namedCurveOID =<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span>               publicKeyAlgorithmParameters.decodeAsObjectIdentifier().getOID();<a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>          buffer.append(", ellipticCurvePublicKeyParameters=namedCurve='");<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>          buffer.append(NamedCurve.getNameOrOID(namedCurveOID));<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>          buffer.append('\'');<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>        }<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>        catch (final Exception e)<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span>        {<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>          Debug.debugException(e);<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>        }<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span>      }<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>    }<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span><a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>    buffer.append(", signatureAlgorithmOID='");<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>    buffer.append(signatureAlgorithmOID.toString());<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>    buffer.append('\'');<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span><a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>    if (signatureAlgorithmName != null)<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span>    {<a name="line.1317"></a>
+<span class="sourceLineNo">1318</span>      buffer.append(", signatureAlgorithmName='");<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>      buffer.append(signatureAlgorithmName);<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>      buffer.append('\'');<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>    }<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span><a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>    if (! extensions.isEmpty())<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>    {<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>      buffer.append(", extensions={");<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span><a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>      final Iterator&lt;X509CertificateExtension&gt; iterator = extensions.iterator();<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span>      while (iterator.hasNext())<a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>      {<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>        iterator.next().toString(buffer);<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span>        if (iterator.hasNext())<a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>        {<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>          buffer.append(", ");<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>        }<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>      }<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span><a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>      buffer.append('}');<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>    }<a name="line.1338"></a>
 <span class="sourceLineNo">1339</span><a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>    try<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>    {<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span>      StaticUtils.toHex(signatureValue.getBytes(), ":", buffer);<a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>    }<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>    catch (final Exception e)<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>    {<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span>      Debug.debugException(e);<a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>      buffer.append(signatureValue.toString());<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>    }<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span><a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>    buffer.append("')");<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>  }<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span><a name="line.1352"></a>
-<span class="sourceLineNo">1353</span><a name="line.1353"></a>
+<span class="sourceLineNo">1340</span>    buffer.append(", signatureValue='");<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span><a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>    try<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>    {<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>      StaticUtils.toHex(signatureValue.getBytes(), ":", buffer);<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>    }<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>    catch (final Exception e)<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span>    {<a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>      Debug.debugException(e);<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>      buffer.append(signatureValue.toString());<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>    }<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span><a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>    buffer.append("')");<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>  }<a name="line.1353"></a>
 <span class="sourceLineNo">1354</span><a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>  /**<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>   * Retrieves a list of the lines that comprise a PEM representation of this<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span>   * PKCS #10 certificate signing request.<a name="line.1357"></a>
-<span class="sourceLineNo">1358</span>   *<a name="line.1358"></a>
-<span class="sourceLineNo">1359</span>   * @return  A list of the lines that comprise a PEM representation of this<a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>   *          PKCS #10 certificate signing request.<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>   */<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>  public List&lt;String&gt; toPEM()<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>  {<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(10);<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>    lines.add("-----BEGIN CERTIFICATE REQUEST-----");<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span><a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>    final String csrBase64 =<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>         Base64.encode(pkcs10CertificateSigningRequestBytes);<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span>    lines.addAll(StaticUtils.wrapLine(csrBase64, 64));<a name="line.1369"></a>
-<span class="sourceLineNo">1370</span><a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>    lines.add("-----END CERTIFICATE REQUEST-----");<a name="line.1371"></a>
+<span class="sourceLineNo">1355</span><a name="line.1355"></a>
+<span class="sourceLineNo">1356</span><a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>  /**<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>   * Retrieves a list of the lines that comprise a PEM representation of this<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span>   * PKCS #10 certificate signing request.<a name="line.1359"></a>
+<span class="sourceLineNo">1360</span>   *<a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>   * @return  A list of the lines that comprise a PEM representation of this<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>   *          PKCS #10 certificate signing request.<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>   */<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>  public List&lt;String&gt; toPEM()<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>  {<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(10);<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>    lines.add("-----BEGIN CERTIFICATE REQUEST-----");<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span><a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>    final String csrBase64 =<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>         Base64.encode(pkcs10CertificateSigningRequestBytes);<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>    lines.addAll(StaticUtils.wrapLine(csrBase64, 64));<a name="line.1371"></a>
 <span class="sourceLineNo">1372</span><a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>    return Collections.unmodifiableList(lines);<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>  }<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span><a name="line.1375"></a>
-<span class="sourceLineNo">1376</span><a name="line.1376"></a>
+<span class="sourceLineNo">1373</span>    lines.add("-----END CERTIFICATE REQUEST-----");<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span><a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>    return Collections.unmodifiableList(lines);<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>  }<a name="line.1376"></a>
 <span class="sourceLineNo">1377</span><a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>  /**<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>   * Retrieves a multi-line string containing a PEM representation of this<a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>   * PKCS #10 certificate signing request.<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>   *<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span>   * @return  A multi-line string containing a PEM representation of this<a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>   *          PKCS #10 certificate signing request.<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>   */<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>  public String toPEMString()<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>  {<a name="line.1386"></a>
-<span class="sourceLineNo">1387</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>    buffer.append("-----BEGIN CERTIFICATE REQUEST-----");<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>    buffer.append(StaticUtils.EOL);<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span><a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>    final String csrBase64 =<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>         Base64.encode(pkcs10CertificateSigningRequestBytes);<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>    for (final String line : StaticUtils.wrapLine(csrBase64, 64))<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>    {<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>      buffer.append(line);<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>      buffer.append(StaticUtils.EOL);<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>    }<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>    buffer.append("-----END CERTIFICATE REQUEST-----");<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>    buffer.append(StaticUtils.EOL);<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span><a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>    return buffer.toString();<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>  }<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>}<a name="line.1403"></a>
+<span class="sourceLineNo">1378</span><a name="line.1378"></a>
+<span class="sourceLineNo">1379</span><a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>  /**<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>   * Retrieves a multi-line string containing a PEM representation of this<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>   * PKCS #10 certificate signing request.<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>   *<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>   * @return  A multi-line string containing a PEM representation of this<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>   *          PKCS #10 certificate signing request.<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>   */<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>  public String toPEMString()<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>  {<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>    buffer.append("-----BEGIN CERTIFICATE REQUEST-----");<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>    buffer.append(StaticUtils.EOL);<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span><a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>    final String csrBase64 =<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>         Base64.encode(pkcs10CertificateSigningRequestBytes);<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>    for (final String line : StaticUtils.wrapLine(csrBase64, 64))<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>    {<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>      buffer.append(line);<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>      buffer.append(StaticUtils.EOL);<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>    }<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>    buffer.append("-----END CERTIFICATE REQUEST-----");<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>    buffer.append(StaticUtils.EOL);<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span><a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>    return buffer.toString();<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>  }<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>}<a name="line.1405"></a>
 
 
 

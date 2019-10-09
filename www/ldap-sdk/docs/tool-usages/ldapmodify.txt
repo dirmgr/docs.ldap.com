@@ -225,6 +225,11 @@ Available options include:
         identity' request control as defined in RFC 3829.  With this control, a
         successful bind result should include the authorization identity
         assigned to the connection.
+    --generatePassword
+        Indicates that all add requests should include the 'generate password'
+        request control to request that the server generate a password for the
+        new account.  The generated password will be returned in a
+        corresponding response control.
     --getAuthorizationEntryAttribute {attr}
         Indicates that all bind requests should include the
         UnboundID-proprietary 'get authorization entry' request control to

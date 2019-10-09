@@ -290,7 +290,7 @@ Available options include:
         same number of values, with each replacement containing a counter
         (e.g., '***REDACTED1***', '***REDACTED2***', etc.).
 
-  Arguments for Excluding Attributes and Entries
+  Arguments for Excluding Attributes, Entries, and Changes
 
     --excludeAttribute {attributeName}
         The name or OID of an attribute to exclude from the output.  This
@@ -324,6 +324,19 @@ Available options include:
         the criteria will be preserved.  If this argument is not provided, then
         entries that do  match the criteria will be excluded and entries that
         do not match the criteria will be preserved.
+    --excludeChangeType {add|delete|modify|moddn}
+        Indicates that LDIF change records with the specified change type
+        should be excluded from the output.  Allowed values include 'add',
+        'delete', 'modify', and 'moddn'.  This argument may be provided
+        multiple times to exclude multiple types of changes.  Note that this
+        argument will not exclude LDIF records that do not include a change
+        type (which will be interpreted as entries rather than change records),
+        but the --excludeRecordsWithoutChangeType argument may be used for that
+        purpose.
+    --excludeRecordsWithoutChangeType
+        Indicates that LDIF records without a change type (which will be
+        interpreted as entries rather than change records) should be excluded
+        from the output.
 
   Other Arguments
 

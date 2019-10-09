@@ -240,7 +240,7 @@
         <br><br>
       </li>
     </ul>
-    <h3>Arguments for Excluding Attributes and Entries</h3>
+    <h3>Arguments for Excluding Attributes, Entries, and Changes</h3>
     <ul>
       <li>
         <tt>--excludeAttribute <i>{attributeName}</i></tt> &mdash; The name or OID of an attribute to exclude from the output.  This argument may be provided multiple times to specify multiple attributes to be excluded.
@@ -266,6 +266,18 @@
       </li>
       <li>
         <tt>--excludeNonMatchingEntries</tt> &mdash; Indicates that entries that do not match the criteria specified using the --excludeEntryBaseDN, --excludeEntryScope, and --excludeEntryFilter arguments should be excluded from the output, and entries that do match the criteria will be preserved.  If this argument is not provided, then entries that do  match the criteria will be excluded and entries that do not match the criteria will be preserved.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--excludeChangeType <i>{add|delete|modify|moddn}</i></tt> &mdash; Indicates that LDIF change records with the specified change type should be excluded from the output.  Allowed values include 'add', 'delete', 'modify', and 'moddn'.  This argument may be provided multiple times to exclude multiple types of changes.  Note that this argument will not exclude LDIF records that do not include a change type (which will be interpreted as entries rather than change records), but the --excludeRecordsWithoutChangeType argument may be used for that purpose.
+        <br>
+        A provided value should be one of the following:  'delete', 'modify', 'add', 'moddn'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--excludeRecordsWithoutChangeType</tt> &mdash; Indicates that LDIF records without a change type (which will be interpreted as entries rather than change records) should be excluded from the output.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -340,7 +352,7 @@
         At least one of the following arguments must be provided:  <tt>--sourceLDIF</tt>, <tt>--sourceFromStandardInput</tt>
       </li>
       <li>
-        At least one of the following arguments must be provided:  <tt>--scrambleAttribute</tt>, <tt>--sequentialAttribute</tt>, <tt>--replaceValuesAttribute</tt>, <tt>--addAttributeName</tt>, <tt>--renameAttributeFrom</tt>, <tt>--flattenBaseDN</tt>, <tt>--moveSubtreeFrom</tt>, <tt>--redactAttribute</tt>, <tt>--excludeAttribute</tt>, <tt>--excludeEntryBaseDN</tt>, <tt>--excludeEntryScope</tt>, <tt>--excludeEntryFilter</tt>
+        At least one of the following arguments must be provided:  <tt>--scrambleAttribute</tt>, <tt>--sequentialAttribute</tt>, <tt>--replaceValuesAttribute</tt>, <tt>--addAttributeName</tt>, <tt>--renameAttributeFrom</tt>, <tt>--flattenBaseDN</tt>, <tt>--moveSubtreeFrom</tt>, <tt>--redactAttribute</tt>, <tt>--excludeAttribute</tt>, <tt>--excludeEntryBaseDN</tt>, <tt>--excludeEntryScope</tt>, <tt>--excludeEntryFilter</tt>, <tt>--excludeChangeType</tt>, <tt>--excludeRecordsWithoutChangeType</tt>
       </li>
     </ul>
     <h3>Dependent Argument Sets</h3>

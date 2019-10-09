@@ -307,6 +307,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--generatePassword</tt> &mdash; Indicates that all add requests should include the 'generate password' request control to request that the server generate a password for the new account.  The generated password will be returned in a corresponding response control.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>--getAuthorizationEntryAttribute <i>{attr}</i></tt> &mdash; Indicates that all bind requests should include the UnboundID-proprietary 'get authorization entry' request control to request that the server return the specified attribute (or collection of attributes, in the case of a special identifier like '*' to indicate all user attributes or '+' to indicate all operational attributes) from the authenticated user's entry.  This argument may be provided multiple times to specify multiple attributes to request.
         <br><br>
       </li>

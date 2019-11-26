@@ -27,6 +27,103 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 4.0.13</h3>
+
+              <p>
+                The following changes were made between the 4.0.12 and 4.0.13 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added connection pool debugging support.  The debugging covers checking out,
+                  releasing, establishing, and closing connections for use in the pool, as well as
+                  closing the pool itself.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the passphrase-encrypted output stream to provide an option to override
+                  the default key factory iteration count (16,384 rounds when using the baseline
+                  encryption strength and 131,027 rounds when using the strong encryption option).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the exec task to make it possible to specify the path to the
+                  working directory to use when executing the command.  Previously, the server
+                  would always use the instance root directory as the working directory, and that
+                  will still be the default if no working directory is specified.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in the prompt trust manager that could cause it to display an
+                  incorrect warning for some certificates with a basic constraints extension with
+                  a path length constraint.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in the encoding and decoding of X.509 certificates that
+                  included an authority key extension that included the optional
+                  authorityCertIssuer element.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in manage-certificates when displaying verbose information about
+                  a certificate that included the key usage extension.  It failed to properly
+                  indicate when the key agreement flag was set in the extension.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates check-certificate-usability command to add an
+                  additional check to see whether the certificate at the root of the chain is
+                  found in the JVM's set of trusted issuer certificates.  If the CA certificate
+                  is not found in the JVM's default trust store, a notice will be displayed, but
+                  the tool will still complete with a success result.
+                  <br><br>
+                </li>
+
+                <li>
+                  Made the <tt>ManageCertificates.readCertificatesFromFile</tt> method public so
+                  that it can be used outside of the LDAP SDK.  This method can be used to read a
+                  set of PEM-encoded or DER-encoded X.509 certificates from a specified file.
+                  <br><br>
+                </li>
+
+                <li>
+                  Made the <tt>ManageCertificates.readCertificateSigningRequestFromFile</tt>
+                  method public so that it can be used outside of the LDAP SDK.  This method can
+                  be used to read a PEM-encoded or DER-encoded PKCS #10 certificate signing
+                  request from a file.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added an additional <tt>StaticUtils.getEnvironmentVariable</tt> method that
+                  allows you to provide a default value that should be used if the requested
+                  environment variable is not set.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated <tt>StaticUtils</tt> to add a <tt>getStackTrace</tt> method variant that
+                  allows you to limit the number of stack trace frames to include from code before
+                  the call into the LDAP SDK.  Also updated the
+                  <tt>StaticUtils.getExceptionMessage</tt> behavior for a
+                  <tt>NullPointerException</tt> so that it now shows all frames from the LDAP SDK
+                  (and anything that the LDAP SDK calls), and up to three frames from code before
+                  the call into the LDAP SDK.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 4.0.12</h3>
 
               <p>

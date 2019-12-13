@@ -151,7 +151,7 @@ Available options include:
     --followReferrals
         Attempt to follow any referrals and search result references
         encountered during search processing.  If this is not provided, then
-        referrals and search references will be displayed in the output.10
+        referrals and search references will be displayed in the output.
     --retryFailedOperations
         Indicates that, if a search fails in a way that indicates the
         connection to the server may no longer be valid, the tool should

@@ -27,6 +27,72 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 4.0.14</h3>
+
+              <p>
+                The following changes were made between the 4.0.13 and 4.0.14 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue in which LDAP URLs with consecutive percent-encoded bytes were
+                  not decoded correctly.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that could cause the LDAP SDK to incorrectly handle data read
+                  from a server when the communication is protected with SASL integrity or
+                  confidentiality.Thanks to Boris Danilovich for reporting this problem and
+                  identifying the cause.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that prevented the searchrate tool from running if neither a base
+                  DN pattern nor an LDAP URL pattern was provided.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved the logic that the LDAP SDK uses when choosing the cipher suites to
+                  offer when establishing a TLS-secured connection.  Weaker suites are disabled,
+                  and the enabled suites are prioritized so that those offering forward secrecy
+                  and the strongest encryption are preferred.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new <tt>FullLDAPInterface</tt> interface that extends
+                  <tt>LDAPInterface</tt> and adds support for <tt>close</tt>, <tt>bind</tt>, and
+                  <tt>processExtendedOperation</tt> methods.  The existing
+                  <tt>LDAPConnection</tt>, <tt>AbstractConnectionPool</tt>, and
+                  <tt>InMemoryDirectoryServer</tt> classes have been updated to implement this
+                  interface rather than its <tt>LDAPInterface</tt> superclass.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new non-final <tt>MockableLDAPConnection</tt> class that makes it easier
+                  to mock an <tt>LDAPConnection</tt> instance.  It implements
+                  <tt>FullLDAPInterface</tt> and wraps a provided <tt>LDAPConnection</tt> instance.
+                  If you create a <tt>MockableLDAPConnection</tt> subclass, then you may override
+                  any of the <tt>FullLDAPInterface</tt> methods to implement your own behavior.
+                  Any non-overridden methods will simply invoke the corresponding method on the
+                  provided <tt>LDAPConnection</tt> instance.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed a minor typo in the <tt>ldapsearch</tt> usage information.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 4.0.13</h3>
 
               <p>

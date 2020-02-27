@@ -68,7 +68,9 @@
                   convenient class for performing base64 encoding and decoding.  The Netscape
                   Directory SDK for Java provides a mechanism for performing base64 encoding and
                   decoding, but it is much less convenient to use.  JNDI does not provide a
-                  supported mechanism for performing base64 encoding or decoding.
+                  supported mechanism for performing base64 encoding or decoding.  The LDAP SDK
+                  also provides support for the base64url format, as well as for base32 encoding
+                  and decoding.
                   <br><br>
                 </li>
 
@@ -99,7 +101,8 @@
                   facility that might help the developer interpret the information it contains.
                   The UnboundID LDAP SDK for Java provides enhanced support for accessing the
                   information contained in the server root DSE so that it can be used in meaningful
-                  ways by client applications.
+                  ways by client applications.  It also offers support for additinoal attributes
+                  that may be present in the root DSE of the Ping Identity Directory Server.
                   <br><br>
                 </li>
 
@@ -127,7 +130,9 @@
                   <b>Changelog entry parsing.</b>  The UnboundID LDAP SDK for Java provides the
                   ability to parse changelog entries which are used by directory servers to publish
                   information about changes processed in the server, in the format described in
-                  <TT>draft-good-ldap-changelog</TT>.
+                  <TT>draft-good-ldap-changelog</TT>.  It also offers enhanced support for
+                  additional attributes that may be present in changelog entries in the Ping
+                  Identity Directory Server.
                   <br><br>
                 </li>
 
@@ -138,7 +143,7 @@
                   certificate, interactively prompting users about whether a certificate should be
                   trusted, or using a key store to determine whether a server certificate should be
                   trusted.  It also simplifies the process of obtaining client certificates from a
-                  key store file or a PKCS#11 token.
+                  key store file or a PKCS #11 token.
                   <br><br>
                 </li>
 
@@ -175,6 +180,6 @@
                 </li>
               </ul>
 
-    <div class="copyright-footer">Copyright &copy; 2010-2019 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2020 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

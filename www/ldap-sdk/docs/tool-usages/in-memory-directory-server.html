@@ -180,6 +180,18 @@
         <br><br>
       </li>
       <li>
+        <tt>--jsonAccessLogToStandardOut</tt> &mdash; Indicates that JSON-formatted access log information should be written to standard output.  This cannot be used in conjunction with the ''--jsonAccessLogFile'' argument.  If neither argument is provided, then no access logging will be performed.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--jsonAccessLogFile <i>{path}</i></tt> &mdash; The path to a file to which JSON-formatted access log information should be written about operations processed by the server.  This cannot be used in conjunction with the ''--jsonAccessLogToStandardOut'' argument.  If neither argument is provided, then no JSON-formatted access logging will be performed.
+        <br>
+        The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
+        <br><br>
+      </li>
+      <li>
         <tt>--ldapDebugLogToStandardOut</tt> &mdash; Indicates that LDAP debug log information should be written to standard output.  This cannot be used in conjunction with the ''--ldapDebugLogFile'' argument.  If neither argument is provided, then no LDAP debug logging will be performed.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -295,6 +307,9 @@
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--accessLogToStandardOut</tt>, <tt>--accessLogFile</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--jsonAccessLogToStandardOut</tt>, <tt>--jsonAccessLogFile</tt>
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--ldapDebugLogToStandardOut</tt>, <tt>--ldapDebugLogFile</tt>

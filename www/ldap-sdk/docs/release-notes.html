@@ -27,6 +27,152 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 5.0.0</h3>
+
+              <p>
+                The following changes were made between the 4.0.14 and 5.0.0 releases:
+              </p>
+
+              <ul>
+                <li>
+                  As of the 5.0.0 release, the UnboundID LDAP SDK for Java is available under the
+                  terms of the Apache License, Version 2.0.  This is a very permissive
+                  OSI-approved open source license that should be suitable for just about any use
+                  case.  We recommend choosing this license for all new users of the LDAP SDK, but
+                  it remains available under the terms of the former GPLv2, LGPLv2.1, and
+                  UnboundID LDAP SDK Free Use License options.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that could interfere with GSSAPI authentication in cases where
+                  a JAAS login module configuration was loaded and cached by the JVM before all
+                  the appropriate system properties had been set for the login attempt.  The
+                  configuration is now refreshed before attempting to create the login context
+                  so that the system property changes will be applied.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK's support for defining the properties needed to create LDAP
+                  connections or connection pools in a JSON file to add an option to use the
+                  JVM-default trust store.  It may be used either on its own or in conjunction
+                  with a trust store file.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the key store key manager to provide support for validating that the
+                  provided key store can actually be used.  If enabled and no alias is provided,
+                  this validation will ensure that the key store contains at least one private key
+                  entry in which all certificates in the chain are currently within their validity
+                  window.  If an alias is provided, then that alias must reference a private key
+                  entry in which all certificates in the chain are within their validity window.
+                  The LDAP command-line tool framework has been updated so that validation will be
+                  performed if the keyStorePath argument is provided.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the trust store trust manager to remove unnecessary synchronization and
+                  improve concurrency.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that could cause the LDAP debugger request handler (used used by
+                  the ldap-debugger tool and by the in-memory directory server's LDAP debug
+                  logging) to hold messages in an internal buffer rather than make them
+                  immediately available.  In some cases, this could significantly delay the
+                  appearance of the messages or prevent them from appearing at all (if there
+                  weren't enough messages generated to fill the buffer).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK's support for parsing information in the Ping Identity
+                  Directory Server's general monitor entry to include support for the clusterName,
+                  locationName, locationDN, and serverUUID attributes.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that prevented the LDAP SDK from properly decoding 384-bit
+                  elliptic curve public keys in X.509 certificates.  This did not affect the
+                  LDAP SDK's ability to use such certificates for TLS communication, but it
+                  did prevent the manage-certificates tool from displaying detailed information
+                  about the key when listing a certificate.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that could prevent the LDAP SDK from properly decoding an X.509
+                  certificate extension that made use of a general names element with a
+                  directoryName component.  This did not affect the LDAP SDK's ability to use
+                  certificates containing such extensions for TLS communication, but it did
+                  prevent the manage-certificates tool from displaying detailed information
+                  about the extension when listing a certificate.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a JSON access log request handler that can be used with the LDAP listener
+                  framework to record JSON-formatted information about the operations that have
+                  been processed.  The in-memory directory server has been updated to make it
+                  easy to use this request handler.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the debugging framework to format debug messages as JSON objects.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for an extended operation that may be used to invoke
+                  the collect-support-data utility in the Ping Identity Directory Server and
+                  stream the resulting output and support data archive back to the client through
+                  intermediate response messages.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for an administrative task that may be used to invoke
+                  the collect-support-data utility in the Ping Identity Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new collect-support-data command-line tool that can be used to obtain a
+                  range of useful information about an instance of the Ping Identity Directory
+                  Server (or related product, like the Directory Proxy Server, Synchronization
+                  Server, or Data Governance Server) that can help support personnel troubleshoot
+                  problems or better understand the server configuration and the environment in
+                  which it is running.  All of the data collection logic is actually provided by
+                  server-side code, but the tool is included in the LDAP SDK so that it can be
+                  invoked from a client system that does not have a full server installation.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the Version class to add methods that can be used to obtain LDAP SDK
+                  version information.  The version information could previously only be obtained
+                  by directly referencing the public static final constant values that the Version
+                  class exposes, but referencing those constant values from an external class
+                  could cause the Java compiler to compile those hard-coded values directly into
+                  that external class.  If the LDAP SDK library was replaced with a new version
+                  without recompiling the source code, the compiled-in constant values could no
+                  longer accurately reflect the version of the LDAP SDK being used.  Obtaining
+                  LDAP SDK version information using the new method calls rather than the
+                  constants can help avoid this problem.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 4.0.14</h3>
 
               <p>
@@ -7010,6 +7156,6 @@
               </p>
 
 
-    <div class="copyright-footer">Copyright &copy; 2010-2019 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2020 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

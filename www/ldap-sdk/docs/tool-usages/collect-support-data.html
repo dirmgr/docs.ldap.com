@@ -11,7 +11,7 @@
     <h1>The collect-support-data Command-Line Tool</h1>
 
     <p>
-      Collect and package system information useful in troubleshooting problems.  The information is packaged in a zip archive that can be sent to a technical support representative.
+      Collect and package system information useful in troubleshooting problems.  The information is packaged as a zip archive that can be sent to a technical support representative.
     </p>
     <p>
       Information collected may include configuration files, server monitor entries, portions of log files, JVM thread stack dumps, system metrics, and other data that may be helpful in diagnosing problems, understanding server performance, or otherwise assisting with support requests.  Although the tool will do its best to obscure or omit sensitive data, and the entire archive may be encrypted if you desire, you may wish to review the resulting support data archive to ensure verify its contents.  Further, the archive will include a summary of any potential problems or concerns that are identified in the course of collecting the support data.
@@ -217,7 +217,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--jstackCount <i>{count}</i></tt> &mdash; The number of times the jstack tool should be invoked to obtain stack traces of all threads running in the JVM.  A value of zero indicates that the jstack tool should not be invoked.  If this argument is not provided, the tool will be invoked ten times by default. 
+        <tt>--jstackCount <i>{count}</i></tt> &mdash; The number of times the jstack tool should be invoked to obtain stack traces of all threads running in the JVM.  A value of zero indicates that the jstack tool should not be invoked.  If this argument is not provided, the tool will be invoked ten times by default.
         <br>
         The specified value must not be less than 0 or greater than 2,147,483,647.
         <br><br>
@@ -493,7 +493,7 @@
       <li>Decrypts an encrypted support data archive using a passphrase read from the specified file.</li>
     </ul>
     <blockquote><pre>    collect-support-data \
-         --decrypt support-data-ds-inst1-20200227060009.735Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20200316145841.816Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt</pre></blockquote>
   </body>
 </html>

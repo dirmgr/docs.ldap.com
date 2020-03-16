@@ -1,6 +1,6 @@
 Usage for ldapsearch:
 
-Issues one or more searches to an LDAP directory server.
+Process one or more searches in an LDAP directory server.
 
 The criteria for the search request can be specified in a number of different
 ways, including providing all of the details directly via command-line
@@ -631,7 +631,7 @@ Examples
     ldapsearch --hostname directory.example.com --port 389 \
          --bindDN uid=jdoe,ou=People,dc=example,dc=com \
          --bindPassword password --baseDN ou=People,dc=example,dc=com \
-         --searchScope sub "(uid=jqpublic)" givenName sn mail
+         --scope sub "(uid=jqpublic)" givenName sn mail
 
   Establishes an SSL-encrypted LDAP connection to directory.example.com:636,
   interactively prompting the user about whether to trust the certificate
@@ -643,7 +643,7 @@ Examples
     ldapsearch --hostname directory.example.com --port 636 --useSSL \
          --saslOption mech=PLAIN --saslOption authID=u:jdoe \
          --bindPasswordFile /path/to/password/file \
-         --baseDN ou=People,dc=example,dc=com --searchScope sub \
+         --baseDN ou=People,dc=example,dc=com --scope sub \
          --filterFile /path/to/filter/file \
          --outputFile /path/to/base/output/file \
          --separateOutputFilePerSearch --requestedAttribute '*' \
@@ -658,8 +658,8 @@ Examples
   standard output.
 
     ldapsearch --hostname directory.example.com --port 389 --useStartTLS \
-         --trustStorePath /path/to/truststore/file --baseDN "" \
-         --searchScope base --outputFile /path/to/output/file \
+         --trustStorePath /path/to/truststore/file --baseDN "" --scope base \
+         --outputFile /path/to/output/file \
          --teeResultsToStandardOut '(objectClass=*)' '*' "+"
 
   Issues a search request to retrieve all entries at or below
@@ -670,8 +670,8 @@ Examples
 
     ldapsearch --hostname directory.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --baseDN dc=example,dc=com \
-         --searchScope sub --outputFile /path/to/output/file \
-         --simplePageSize 100 '(objectClass=*)' '*' "+"
+         --scope sub --outputFile /path/to/output/file --simplePageSize 100 \
+         '(objectClass=*)' '*' "+"
 
   Issues a search request to retrieve a special entry that provides details
   about the server's use of indexes to determine the candidate set of potential
@@ -682,4 +682,4 @@ Examples
 
     ldapsearch --hostname directory.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --baseDN dc=example,dc=com \
-         --searchScope sub "(&(givenName=John)(sn=Doe))" debugsearchindex
+         --scope sub "(&(givenName=John)(sn=Doe))" debugsearchindex

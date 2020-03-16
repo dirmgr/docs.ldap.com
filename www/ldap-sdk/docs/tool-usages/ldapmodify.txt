@@ -1,9 +1,9 @@
 Usage for ldapmodify:
 
-Applies a set of add, delete, modify, and/or modify DN operations to a
-directory server.  The changes to apply should be supplied in LDIF format,
-either via standard input or from a file specified with the 'ldifFile'
-argument.  Change records must be separated by at least one blank line.
+Apply a set of add, delete, modify, and/or modify DN operations to a directory
+server.  Supply the changes to apply in LDIF format, either from standard input
+or from a file specified with the 'ldifFile' argument.  Change records must be
+separated by at least one blank line.
 
 Usage:  ldapmodify {options}
 

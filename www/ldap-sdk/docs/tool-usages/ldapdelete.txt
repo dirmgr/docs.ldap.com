@@ -1,9 +1,9 @@
 Usage for ldapdelete:
 
-Deletes one or more entries from an LDAP directory server.  The DNs of the
-entries to delete can be provided using named arguments, as trailing arguments,
-read from a file, or read from standard input.  Alternately, entries to delete
-can be identified using a search base DN and filter.
+Delete one or more entries from an LDAP directory server.  You can provide the
+DNs of the entries to delete using named arguments, as trailing arguments, from
+a file, or from standard input.  Alternatively, you can identify entries to
+delete using a search base DN and filter.
 
 Usage:  ldapdelete {options} [{dn1} [{dn2} [{dn3} ...] ] ]
 
@@ -171,7 +171,7 @@ Available options include:
         arguments that would cause it to attempt to delete multiple entries.
     --followReferrals, --follow-referrals
         Indicates that the tool should attempt to follow any referrals that it
-        encounters.  By default, amy referrals that are returned will be
+        encounters.  By default, any referrals that are returned will be
         treated as failures.
     --useAdministrativeSession
         Indicates that the tool should attempt to use the Ping

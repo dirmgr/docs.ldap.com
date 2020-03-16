@@ -11,7 +11,7 @@ Available options include:
 
   Connectivity Arguments
 
-    -p, --port {port} 
+    -p, --port {port}
         The port on which the server should listen for client requests.  If a
         value is specified, then it must be an integer between 1 and 65535.  If
         no port is specified, then the server will automatically select a free
@@ -38,10 +38,10 @@ Available options include:
         may only be provided if either the "--useSSL" or "--useStartTLS"
         argument is also given.
     --keyStoreType {type}
-        The keystore type.
+        The key store type.
     --generateSelfSignedCertificate
         Generate a self-signed certificate instead of using a certificate from
-        a keystore.  This may only be provided if either the "--useSSL" or
+        a key store.  This may only be provided if either the "--useSSL" or
         "--useStartTLS" argument is also given, and cannot be provided if the
         "--keyStorePath" argument is given.
     -P, --trustStorePath {path}

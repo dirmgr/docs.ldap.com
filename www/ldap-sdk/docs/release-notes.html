@@ -27,6 +27,48 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 5.0.1</h3>
+
+              <p>
+                The following changes were made between the 5.0.0 and 5.0.1 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added an LDAP connection logger API that can be used to keep a record of
+                  processing performed by the LDAP SDK, including successful and failed connection
+                  attempts, operation requests and responses (including search result entries,
+                  search result references, and intermediate responses), and disconnects.  The
+                  LDAP SDK includes a logger capable of formatting these messages as JSON objects,
+                  but the API is extensible, so custom implementations may be created to use
+                  alternate formats if desired.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that prevented the collect-support-data tool from running
+                  properly in local mode when using a secure connection.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated LDAP command-line tools to allow "--host" or "--address" as an
+                  alternative to "--hostname" as the name of the argument used to specify the
+                  address of the target server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Applied minor updates to the usage output for several command-line tools to
+                  improve wording and fix typos.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 5.0.0</h3>
 
               <p>

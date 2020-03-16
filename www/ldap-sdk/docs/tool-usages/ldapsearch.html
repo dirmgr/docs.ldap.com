@@ -11,7 +11,7 @@
     <h1>The ldapsearch Command-Line Tool</h1>
 
     <p>
-      Issues one or more searches to an LDAP directory server.
+      Process one or more searches in an LDAP directory server.
     </p>
     <p>
       The criteria for the search request can be specified in a number of different ways, including providing all of the details directly via command-line arguments, providing all of the arguments except the filter via command-line arguments and specifying a file that holds the filters to use, or specifying a file that includes a set of LDAP URLs with the base DN, scope, filter, and attributes to return.
@@ -843,14 +843,14 @@
     <blockquote><pre>    ldapsearch --hostname directory.example.com --port 389 \
          --bindDN uid=jdoe,ou=People,dc=example,dc=com \
          --bindPassword password --baseDN ou=People,dc=example,dc=com \
-         --searchScope sub "(uid=jqpublic)" givenName sn mail</pre></blockquote>
+         --scope sub "(uid=jqpublic)" givenName sn mail</pre></blockquote>
     <ul>
       <li>Establishes an SSL-encrypted LDAP connection to directory.example.com:636, interactively prompting the user about whether to trust the certificate presented by the directory server.  The tool will then bind with the SASL PLAIN mechanism using an authentication ID of "u:jdoe" and a password read from a file.  It will then issue a search request for each filter in a given file, writing the results for each search into a separate output file.</li>
     </ul>
     <blockquote><pre>    ldapsearch --hostname directory.example.com --port 636 --useSSL \
          --saslOption mech=PLAIN --saslOption authID=u:jdoe \
          --bindPasswordFile /path/to/password/file \
-         --baseDN ou=People,dc=example,dc=com --searchScope sub \
+         --baseDN ou=People,dc=example,dc=com --scope sub \
          --filterFile /path/to/filter/file \
          --outputFile /path/to/base/output/file \
          --separateOutputFilePerSearch --requestedAttribute '*' \
@@ -859,21 +859,21 @@
       <li>Establishes an LDAP connection to directory.example.com:389 that is secured with the StartTLS extended operation, using the information in the provided trust store file to determine whether to trust the certificate presented by the directory server.  It will then issue an unauthenticated search to retrieve all user and operational attributes from the server's root DSE.  The output will be written to a specified output file as well as displayed on standard output.</li>
     </ul>
     <blockquote><pre>    ldapsearch --hostname directory.example.com --port 389 --useStartTLS \
-         --trustStorePath /path/to/truststore/file --baseDN "" \
-         --searchScope base --outputFile /path/to/output/file \
+         --trustStorePath /path/to/truststore/file --baseDN "" --scope base \
+         --outputFile /path/to/output/file \
          --teeResultsToStandardOut '(objectClass=*)' '*' "+"</pre></blockquote>
     <ul>
       <li>Issues a search request to retrieve all entries at or below 'dc=example,dc=com', using the simple paged results control to retrieve up to 100 entries at a time.  The search will use an unencrypted LDAP connection, and the tool will interactively prompt the user for the password to use when performing simple authentication.</li>
     </ul>
     <blockquote><pre>    ldapsearch --hostname directory.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --baseDN dc=example,dc=com \
-         --searchScope sub --outputFile /path/to/output/file \
-         --simplePageSize 100 '(objectClass=*)' '*' "+"</pre></blockquote>
+         --scope sub --outputFile /path/to/output/file --simplePageSize 100 \
+         '(objectClass=*)' '*' "+"</pre></blockquote>
     <ul>
       <li>Issues a search request to retrieve a special entry that provides details about the server's use of indexes to determine the candidate set of potential matching entries.  This feature is only supported in the UnboundID/Ping Identity Directory Server, and the user must have access control rights to retrieve the 'cn=debugsearch' entry and the 'debugsearchindex' operational attribute.</li>
     </ul>
     <blockquote><pre>    ldapsearch --hostname directory.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --baseDN dc=example,dc=com \
-         --searchScope sub "(&(givenName=John)(sn=Doe))" debugsearchindex</pre></blockquote>
+         --scope sub "(&(givenName=John)(sn=Doe))" debugsearchindex</pre></blockquote>
   </body>
 </html>

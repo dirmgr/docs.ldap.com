@@ -1,7 +1,7 @@
 Usage for collect-support-data:
 
 Collect and package system information useful in troubleshooting problems.  The
-information is packaged in a zip archive that can be sent to a technical
+information is packaged as a zip archive that can be sent to a technical
 support representative.
 
 Information collected may include configuration files, server monitor entries,
@@ -172,7 +172,7 @@ Available options include:
         The number of times the jstack tool should be invoked to obtain stack
         traces of all threads running in the JVM.  A value of zero indicates
         that the jstack tool should not be invoked.  If this argument is not
-        provided, the tool will be invoked ten times by default. 
+        provided, the tool will be invoked ten times by default.
     --reportCount {count}
         The number of intervals of data to collect from tools that use
         interval-based sampling (e.g., vmstat, iostat, mpstat, etc.).  A value
@@ -299,5 +299,5 @@ Examples
   specified file.
 
     collect-support-data \
-         --decrypt support-data-ds-inst1-20200227060009.731Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20200316145841.812Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt

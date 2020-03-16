@@ -1,6 +1,6 @@
 Usage for ldapcompare:
 
-Process compare operations in LDAP directory server.
+Perform LDAP compare operations in an LDAP directory server.
 
 Usage:  ldapcompare {options} attr:value dn1 [dn2 [dn3 [...]]]
 

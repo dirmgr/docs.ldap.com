@@ -11,7 +11,7 @@
     <h1>The ldapdelete Command-Line Tool</h1>
 
     <p>
-      Deletes one or more entries from an LDAP directory server.  The DNs of the entries to delete can be provided using named arguments, as trailing arguments, read from a file, or read from standard input.  Alternately, entries to delete can be identified using a search base DN and filter.
+      Delete one or more entries from an LDAP directory server.  You can provide the DNs of the entries to delete using named arguments, as trailing arguments, from a file, or from standard input.  Alternatively, you can identify entries to delete using a search base DN and filter.
     </p>
     <h3>Usage</h3>
     <blockquote><pre>ldapdelete <i>{arguments}</i> <i>[{dn1} [{dn2} [{dn3} ...] ] ]</i></pre></blockquote>
@@ -230,7 +230,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--followReferrals</tt> / <tt>--follow-referrals</tt> &mdash; Indicates that the tool should attempt to follow any referrals that it encounters.  By default, amy referrals that are returned will be treated as failures.
+        <tt>--followReferrals</tt> / <tt>--follow-referrals</tt> &mdash; Indicates that the tool should attempt to follow any referrals that it encounters.  By default, any referrals that are returned will be treated as failures.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>

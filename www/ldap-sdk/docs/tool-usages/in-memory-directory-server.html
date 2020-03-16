@@ -18,7 +18,7 @@
     <h3>Connectivity Arguments</h3>
     <ul>
       <li>
-        <tt>-p <i>{port} </i></tt> / <tt>--port <i>{port} </i></tt> &mdash; The port on which the server should listen for client requests.  If a value is specified, then it must be an integer between 1 and 65535.  If no port is specified, then the server will automatically select a free port to use.
+        <tt>-p <i>{port}</i></tt> / <tt>--port <i>{port}</i></tt> &mdash; The port on which the server should listen for client requests.  If a value is specified, then it must be an integer between 1 and 65535.  If no port is specified, then the server will automatically select a free port to use.
         <br>
         The specified value must not be less than 0 or greater than 65,535.
         <br><br>
@@ -46,11 +46,11 @@
         <br><br>
       </li>
       <li>
-        <tt>--keyStoreType <i>{type}</i></tt> &mdash; The keystore type.
+        <tt>--keyStoreType <i>{type}</i></tt> &mdash; The key store type.
         <br><br>
       </li>
       <li>
-        <tt>--generateSelfSignedCertificate</tt> &mdash; Generate a self-signed certificate instead of using a certificate from a keystore.  This may only be provided if either the "--useSSL" or "--useStartTLS" argument is also given, and cannot be provided if the "--keyStorePath" argument is given.
+        <tt>--generateSelfSignedCertificate</tt> &mdash; Generate a self-signed certificate instead of using a certificate from a key store.  This may only be provided if either the "--useSSL" or "--useStartTLS" argument is also given, and cannot be provided if the "--keyStorePath" argument is given.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>

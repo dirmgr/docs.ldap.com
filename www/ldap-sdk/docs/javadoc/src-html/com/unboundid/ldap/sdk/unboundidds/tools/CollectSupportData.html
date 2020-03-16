@@ -1461,117 +1461,120 @@
 <span class="sourceLineNo">1453</span>        for (final String value : arg.getValueStringRepresentations(false))<a name="line.1453"></a>
 <span class="sourceLineNo">1454</span>        {<a name="line.1454"></a>
 <span class="sourceLineNo">1455</span>          argList.add("--" + argumentIdentifier);<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>          argList.add(value);<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>        }<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>      }<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>    }<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span><a name="line.1460"></a>
-<span class="sourceLineNo">1461</span><a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>    // If the --dryRun argument was provided, then return without actually<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>    // invoking the tool.<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>    if (dryRunArg.isPresent())<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>    {<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>      final String message = INFO_CSD_LOCAL_MODE_DRY_RUN.get();<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>      wrapOut(0, WRAP_COLUMN, message);<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>      toolCompletionMessage.set(message);<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>      return ResultCode.NO_OPERATION;<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>    }<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span><a name="line.1471"></a>
-<span class="sourceLineNo">1472</span><a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>    // Make sure that we have access to the method in the server codebase that<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>    // we need to invoke local collect-support-data processing.<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>    final Method doMainMethod;<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>    try<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>    {<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>      final Class&lt;?&gt; csdToolClass = Class.forName(SERVER_CSD_TOOL_CLASS);<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>      doMainMethod = csdToolClass.getMethod("doMain", Boolean.TYPE,<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>           OutputStream.class, OutputStream.class, String[].class);<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>    }<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>    catch (final Throwable t)<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>    {<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>      Debug.debugException(t);<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>      final String message = ERR_CSD_SERVER_CODE_NOT_AVAILABLE.get();<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>      wrapErr(0, WRAP_COLUMN, message);<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>      toolCompletionMessage.set(message);<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>      return ResultCode.NOT_SUPPORTED;<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>    }<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span><a name="line.1490"></a>
-<span class="sourceLineNo">1491</span><a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>    // Invoke the doMain method via reflection<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>    final String[] argArray = new String[argList.size()];<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>    argList.toArray(argArray);<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span><a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>    try<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>    {<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>      final Object doMainMethodReturnValue = doMainMethod.invoke(null,<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>           true, getOut(), getErr(), argArray);<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>      final int exitCode = ((Integer) doMainMethodReturnValue).intValue();<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>      return ResultCode.valueOf(exitCode);<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>    }<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>    catch (final Throwable t)<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>    {<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>      Debug.debugException(t);<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>      final String message =<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>           ERR_CSD_INVOKE_ERROR.get(StaticUtils.getExceptionMessage(t));<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>      wrapErr(0, WRAP_COLUMN, message);<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>      toolCompletionMessage.set(message);<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>      return ResultCode.LOCAL_ERROR;<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>    }<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>  }<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span><a name="line.1513"></a>
-<span class="sourceLineNo">1514</span><a name="line.1514"></a>
-<span class="sourceLineNo">1515</span><a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>  /**<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>   * {@inheritDoc}<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>   */<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>  @Override()<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>  {<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(3));<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span><a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>    examples.put(<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>         new String[]<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>         {<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>           "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>           "--bindPasswordFile", "admin-pw.txt"<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>         },<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>         INFO_CSD_EXAMPLE_1.get());<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span><a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>    examples.put(<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>         new String[]<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>         {<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>           "--useRemoteServer",<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>           "--hostname", "ds.example.com",<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>           "--port", "636",<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>           "--useSSL",<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>           "--trustStorePath", "config/truststore",<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>           "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>           "--bindPasswordFile", "admin-pw.txt",<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>           "--collectExpensiveData",<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>           "--collectReplicationStateDump",<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>           "--securityLevel", "maximum",<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>           "--logDuration", "10 minutes",<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>           "--encrypt",<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>           "--passphraseFile", "encryption-passphrase.txt",<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>           "--generatePassphrase",<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>           "--outputPath", "csd.zip"<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>         },<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>         INFO_CSD_EXAMPLE_2.get());<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span><a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>    examples.put(<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>         new String[]<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>         {<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>           "--decrypt", "support-data-ds-inst1-" +<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>                StaticUtils.encodeGeneralizedTime(new Date()) +<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>              "-zip-encrypted",<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>           "--passphraseFile", "encryption-passphrase.txt"<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>         },<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>         INFO_CSD_EXAMPLE_3.get());<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span><a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>    return examples;<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>  }<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>}<a name="line.1566"></a>
+<span class="sourceLineNo">1456</span>          if (arg.takesValue())<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>          {<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>            argList.add(value);<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>          }<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>        }<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>      }<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>    }<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span><a name="line.1463"></a>
+<span class="sourceLineNo">1464</span><a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>    // If the --dryRun argument was provided, then return without actually<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>    // invoking the tool.<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>    if (dryRunArg.isPresent())<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>    {<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>      final String message = INFO_CSD_LOCAL_MODE_DRY_RUN.get();<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>      wrapOut(0, WRAP_COLUMN, message);<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>      toolCompletionMessage.set(message);<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>      return ResultCode.NO_OPERATION;<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>    }<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span><a name="line.1474"></a>
+<span class="sourceLineNo">1475</span><a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>    // Make sure that we have access to the method in the server codebase that<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>    // we need to invoke local collect-support-data processing.<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>    final Method doMainMethod;<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>    try<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>    {<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>      final Class&lt;?&gt; csdToolClass = Class.forName(SERVER_CSD_TOOL_CLASS);<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>      doMainMethod = csdToolClass.getMethod("doMain", Boolean.TYPE,<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>           OutputStream.class, OutputStream.class, String[].class);<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>    }<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>    catch (final Throwable t)<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>    {<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>      Debug.debugException(t);<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>      final String message = ERR_CSD_SERVER_CODE_NOT_AVAILABLE.get();<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>      wrapErr(0, WRAP_COLUMN, message);<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>      toolCompletionMessage.set(message);<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>      return ResultCode.NOT_SUPPORTED;<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>    }<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span><a name="line.1493"></a>
+<span class="sourceLineNo">1494</span><a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>    // Invoke the doMain method via reflection<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>    final String[] argArray = new String[argList.size()];<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>    argList.toArray(argArray);<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span><a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>    try<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>    {<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>      final Object doMainMethodReturnValue = doMainMethod.invoke(null,<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>           true, getOut(), getErr(), argArray);<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>      final int exitCode = ((Integer) doMainMethodReturnValue).intValue();<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>      return ResultCode.valueOf(exitCode);<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>    }<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>    catch (final Throwable t)<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>    {<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>      Debug.debugException(t);<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>      final String message =<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>           ERR_CSD_INVOKE_ERROR.get(StaticUtils.getExceptionMessage(t));<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>      wrapErr(0, WRAP_COLUMN, message);<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>      toolCompletionMessage.set(message);<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>      return ResultCode.LOCAL_ERROR;<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>    }<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>  }<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span><a name="line.1516"></a>
+<span class="sourceLineNo">1517</span><a name="line.1517"></a>
+<span class="sourceLineNo">1518</span><a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>  /**<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>   * {@inheritDoc}<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>   */<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>  @Override()<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>  {<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(3));<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span><a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>    examples.put(<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>         new String[]<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>         {<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>           "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>           "--bindPasswordFile", "admin-pw.txt"<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>         },<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>         INFO_CSD_EXAMPLE_1.get());<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span><a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>    examples.put(<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>         new String[]<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>         {<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>           "--useRemoteServer",<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>           "--hostname", "ds.example.com",<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>           "--port", "636",<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>           "--useSSL",<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>           "--trustStorePath", "config/truststore",<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>           "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>           "--bindPasswordFile", "admin-pw.txt",<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>           "--collectExpensiveData",<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>           "--collectReplicationStateDump",<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>           "--securityLevel", "maximum",<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>           "--logDuration", "10 minutes",<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>           "--encrypt",<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>           "--passphraseFile", "encryption-passphrase.txt",<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>           "--generatePassphrase",<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>           "--outputPath", "csd.zip"<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>         },<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>         INFO_CSD_EXAMPLE_2.get());<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span><a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>    examples.put(<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>         new String[]<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>         {<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>           "--decrypt", "support-data-ds-inst1-" +<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>                StaticUtils.encodeGeneralizedTime(new Date()) +<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>              "-zip-encrypted",<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>           "--passphraseFile", "encryption-passphrase.txt"<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>         },<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>         INFO_CSD_EXAMPLE_3.get());<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span><a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>    return examples;<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>  }<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>}<a name="line.1569"></a>
 
 
 

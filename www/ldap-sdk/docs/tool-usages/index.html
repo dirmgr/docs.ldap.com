@@ -15,10 +15,10 @@
     <p>Perform repeated authentications against an LDAP directory server, where each authentication consists of a search to find a user followed by a bind to verify the credentials for that user.</p>
 
     <h3><a href="base64.html">base64</a></h3>
-    <p>Base64 encode raw data, or base64-decode encoded data.  The data to encode or decode may be provided via an argument value, in a file, or read from standard input.  The output may be written to a file or standard output.</p>
+    <p>Encode raw data using the base64 algorithm or decode base64-encoded data back to its raw representation.</p>
 
     <h3><a href="collect-support-data.html">collect-support-data</a></h3>
-    <p>Collect and package system information useful in troubleshooting problems.  The information is packaged in a zip archive that can be sent to a technical support representative.</p>
+    <p>Collect and package system information useful in troubleshooting problems.  The information is packaged as a zip archive that can be sent to a technical support representative.</p>
 
     <h3><a href="deliver-one-time-password.html">deliver-one-time-password</a></h3>
     <p>Generate and deliver a one-time password to a user through some out-of-band mechanism.  That password can then be used to authenticate via the UNBOUNDID-DELIVERED-OTP SASL mechanism.</p>
@@ -54,22 +54,22 @@
     <p>Intercept and decode LDAP communication.</p>
 
     <h3><a href="ldapcompare.html">ldapcompare</a></h3>
-    <p>Process compare operations in LDAP directory server.</p>
+    <p>Perform LDAP compare operations in an LDAP directory server.</p>
 
     <h3><a href="ldapdelete.html">ldapdelete</a></h3>
-    <p>Deletes one or more entries from an LDAP directory server.  The DNs of the entries to delete can be provided using named arguments, as trailing arguments, read from a file, or read from standard input.  Alternately, entries to delete can be identified using a search base DN and filter.</p>
+    <p>Delete one or more entries from an LDAP directory server.  You can provide the DNs of the entries to delete using named arguments, as trailing arguments, from a file, or from standard input.  Alternatively, you can identify entries to delete using a search base DN and filter.</p>
 
     <h3><a href="ldapmodify.html">ldapmodify</a></h3>
-    <p>Applies a set of add, delete, modify, and/or modify DN operations to a directory server.  The changes to apply should be supplied in LDIF format, either via standard input or from a file specified with the 'ldifFile' argument.  Change records must be separated by at least one blank line.</p>
+    <p>Apply a set of add, delete, modify, and/or modify DN operations to a directory server.  Supply the changes to apply in LDIF format, either from standard input or from a file specified with the 'ldifFile' argument.  Change records must be separated by at least one blank line.</p>
 
     <h3><a href="ldapsearch.html">ldapsearch</a></h3>
-    <p>Issues one or more searches to an LDAP directory server.</p>
+    <p>Process one or more searches in an LDAP directory server.</p>
 
     <h3><a href="manage-account.html">manage-account</a></h3>
     <p>Retrieve or update information about the current state of a user account.  Processing will be performed using the password policy state extended operation, and you must have the password-reset privilege to use this extended operation.</p>
 
     <h3><a href="manage-certificates.html">manage-certificates</a></h3>
-    <p>Provides a number of subcommands that can be used to manage a set of certificates and private keys in a JKS or PKCS #12 keystore.</p>
+    <p>Manage certificates and private keys in a JKS or PKCS #12 key store.</p>
 
     <h3><a href="modrate.html">modrate</a></h3>
     <p>Perform repeated modifications against an LDAP directory server.</p>

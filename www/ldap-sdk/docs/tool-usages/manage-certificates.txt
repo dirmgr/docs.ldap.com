@@ -2,8 +2,7 @@ The manage-certificates Command-Line Tool
 
 Global Usage:
 
-Provides a number of subcommands that can be used to manage a set of
-certificates and private keys in a JKS or PKCS #12 keystore.
+Manage certificates and private keys in a JKS or PKCS #12 key store.
 
 Usage:  manage-certificates {subcommand} {options}
 
@@ -29,7 +28,7 @@ Available options include:
 
 Examples
 
-  List verbose information about each of the certificates in keystore file
+  List verbose information about each of the certificates in key store file
   'config/keystore'.  Also, display a command that can be used to obtain a
   similar result with the Java keytool utility.
 
@@ -38,7 +37,7 @@ Examples
          --display-keytool-command
 
   Exports a PEM-formatted representation of the certificate contained in the
-  server-cert alias in the 'config/keystore' keystore and writes it to the
+  server-cert alias in the 'config/keystore' key store and writes it to the
   'server-cert.crt' output file.  Also, display a command that can be used to
   obtain a similar result with the Java keytool utility.
 
@@ -48,7 +47,7 @@ Examples
          --display-keytool-command
 
   Exports a PEM-formatted representation of the private key contained in the
-  server-cert alias in the 'config/keystore' keystore and writes it to the
+  server-cert alias in the 'config/keystore' key store and writes it to the
   'server-cert.private-key' output file.
 
     manage-certificates export-private-key --keystore config/keystore \
@@ -59,8 +58,9 @@ Examples
 
   Imports a certificate chain read from file 'server-cert.crt' and the
   corresponding private key read from file 'server-cert.private-key' into the
-  'server-cert' alias in the 'config/keystore' keystore.  If the keystore does
-  not already exist, then it will be created using the JKS keystore format.
+  'server-cert' alias in the 'config/keystore' key store.  If the key store
+  does not already exist, then it will be created using the JKS key store
+  format.
 
     manage-certificates import-certificate --keystore config/keystore \
          --keystore-type JKS --keystore-password-file config/keystore.pin \
@@ -69,14 +69,14 @@ Examples
          --display-keytool-command
 
   Deletes the certificate stored in the server-cert alias in the
-  'config/keystore' keystore.
+  'config/keystore' key store.
 
     manage-certificates delete-certificate --keystore config/keystore \
          --keystore-password-file config/keystore.pin --alias server-cert
 
   Generates a self-signed certificate with alias ca-cert in the
-  'config/keystore' keystore.  If the keystore does not already exist, then it
-  will be created using the standard PKCS #12 format.  The certificate will
+  'config/keystore' key store.  If the key store does not already exist, then
+  it will be created using the standard PKCS #12 format.  The certificate will
   have a subject DN of CN=Example Authority,O=Example Corporation,C=US, a
   4096-bit RSA key, and a signature generated using the SHA256withRSA
   algorithm.  The certificate will be valid for 7300 days starting at midnight
@@ -98,7 +98,7 @@ Examples
 
   Generates a certificate signing request for a new certificate with subject
   CN=ldap.example.com,O=Example Corporation,C=US that will be stored in the
-  server-cert alias in the 'config/keystore' keystore.  A new 256-bit elliptic
+  server-cert alias in the 'config/keystore' key store.  A new 256-bit elliptic
   curve key pair will be created, the request will be signed with the
   SHA256withECDSA signature algorithm, and the request will include a subject
   alternative name extension with alternate DNS names of ldap1.example.com and
@@ -120,7 +120,7 @@ Examples
          --display-keytool-command
 
   Generates a certificate signing request intended to renew the existing
-  certificate stored in alias server-cert in the 'config/keystore' keystore.
+  certificate stored in alias server-cert in the 'config/keystore' key store.
   The request will use the same subject DN and set of extensions as the
   certificate currently stored in that alias, and it will be written to
   standard output in PEM format.
@@ -131,7 +131,7 @@ Examples
          --use-existing-key-pair --inherit-extensions \
          --display-keytool-command
 
-  Uses the ca-cert certificate in keystore 'config/keystore' to sign the
+  Uses the ca-cert certificate in key store 'config/keystore' to sign the
   certificate signing request (CSR) contained in file 'server-cert.csr' and
   writes the signed certificate to PEM-formatted output file 'server-cert.crt'.
   The signed certificate will use the subject DN and set of extensions included
@@ -147,16 +147,16 @@ Examples
          --days-valid 730 --include-requested-extensions \
          --display-keytool-command
 
-  Updates the 'config/keystore' keystore to change the alias of the server-cert
-  certificate to be server-certificate.  Also, display a command that can be
-  used to obtain a similar result with the Java keytool utility.
+  Updates the 'config/keystore' key store to change the alias of the
+  server-cert certificate to be server-certificate.  Also, display a command
+  that can be used to obtain a similar result with the Java keytool utility.
 
     manage-certificates change-certificate-alias --keystore config/keystore \
          --keystore-password-file config/keystore.pin \
          --current-alias server-cert --new-alias server-certificate \
          --display-keytool-command
 
-  Changes the password for the 'config/keystore' keystore from the current
+  Changes the password for the 'config/keystore' key store from the current
   password contained in file 'config/current.pin' to the new password contained
   in file 'config/new.pin'.
 
@@ -167,7 +167,7 @@ Examples
 
   Connects to the ldap.example.com server on port 636 to retrieve the
   certificate chain that the server presents during TLS negotiation.  That
-  certificate chain will be added to the 'config/truststore' keystore with a
+  certificate chain will be added to the 'config/truststore' key store with a
   base alias of ldap.example.com:636 after interactively confirming that the
   certificate chain should be trusted.
 
@@ -176,7 +176,7 @@ Examples
          --keystore-password-file config/truststore.pin \
          --alias ldap.example.com:636
 
-  Examines the server-cert certificate in the 'config/keystore' keystore to
+  Examines the server-cert certificate in the 'config/keystore' key store to
   determine whether that certificate is suitable for use as a TLS server
   certificate.
 
@@ -263,27 +263,27 @@ Available Subcommands:
 
 Usage for subcommand list-certificates:
 
-Displays a list of some or all of the certificates in a keystore.
+Displays a list of some or all of the certificates in a key store.
 
 Usage:  list-certificates {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file containing the certificates to list.  This is
-    required, and the keystore file must exist.
+    The path to the key store file containing the certificates to list.  This
+    is required, and the key store file must exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  A keystore password is optional for some
-    keystore types, but may be required for others.
+    contents of the key store.  A key store password is optional for some key
+    store types, but may be required for others.
 --keystore-password-file {path}
     The path to a file containing the password needed to access the contents of
-    the keystore.  A keystore password is optional for some keystore types, but
-    may be required for others.  If a keystore password file is supplied, then
-    the file must exist, must contain only one line, and that line must consist
-    only of the clear-text keystore password.
+    the key store.  A key store password is optional for some key store types,
+    but may be required for others.  If a key store password file is supplied,
+    then the file must exist, must contain only one line, and that line must
+    consist only of the clear-text key store password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
-    optional for some keystore types, but may be required for others.
+    Interactively prompt for the key store password.  A key store password is
+    optional for some key store types, but may be required for others.
 --alias {alias}
     The alias (also called a nickname) of a certificate to include in the
     output.  This argument may be provided multiple times to identify multiple
@@ -311,13 +311,13 @@ Available options include:
 Examples
 
   Display basic information about all of the certificates in the
-  'config/keystore' keystore file.
+  'config/keystore' key store file.
 
     manage-certificates list-certificates list-certificates \
          --keystore config/keystore
 
   Display verbose information about the server-cert certificate in the
-  'config/keystore.p12' keystore file, whose contents are protected by a
+  'config/keystore.p12' key store file, whose contents are protected by a
   password contained in the 'config/keystore.pin' file.  It will also display a
   command that can be used to accomplish a similar result using the Java
   keytool utility, along with a PEM-encoded representation of the certificate.
@@ -337,27 +337,27 @@ Examples
 
 Usage for subcommand export-certificate:
 
-Exports a certificate or certificate chain from a keystore.
+Exports a certificate or certificate chain from a key store.
 
 Usage:  export-certificate {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file containing the certificates to export.  This
-    is required, and the keystore file must exist.
+    The path to the key store file containing the certificates to export.  This
+    is required, and the key store file must exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  A keystore password is optional for some
-    keystore types, but may be required for others.
+    contents of the key store.  A key store password is optional for some key
+    store types, but may be required for others.
 --keystore-password-file {path}
     The path to a file containing the password needed to access the contents of
-    the keystore.  A keystore password is optional for some keystore types, but
-    may be required for others.  If a keystore password file is supplied, then
-    the file must exist, must contain only one line, and that line must consist
-    only of the clear-text keystore password.
+    the key store.  A key store password is optional for some key store types,
+    but may be required for others.  If a key store password file is supplied,
+    then the file must exist, must contain only one line, and that line must
+    consist only of the clear-text key store password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
-    optional for some keystore types, but may be required for others.
+    Interactively prompt for the key store password.  A key store password is
+    optional for some key store types, but may be required for others.
 * --alias {alias}
     The alias (also called a nickname) of the certificate to export.  This is
     required, and it may only be provided once.
@@ -410,47 +410,47 @@ Examples
 
 Usage for subcommand export-private-key:
 
-Exports a private key from a keystore.
+Exports a private key from a key store.
 
 Usage:  export-private-key {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file containing the private key to export.  This
-    is required, and the keystore file must exist.
+    The path to the key store file containing the private key to export.  This
+    is required, and the key store file must exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  A keystore password is required when exporting a
-    private key, so one of the --keystore-password, --keystore-password-file,
+    contents of the key store.  A key store password is required when exporting
+    a private key, so one of the --keystore-password, --keystore-password-file,
     or --prompt-for-keystore-password arguments must be provided.
 --keystore-password-file {path}
     The path to a file containing the password needed to access the contents of
-    the keystore.  A keystore password is required when exporting a private
+    the key store.  A key store password is required when exporting a private
     key, so one of the --keystore-password, --keystore-password-file, or
-    --prompt-for-keystore-password arguments must be provided.  If a keystore
+    --prompt-for-keystore-password arguments must be provided.  If a key store
     password file is supplied, then the file must exist, must contain only one
-    line, and that line must consist only of the clear-text keystore password.
+    line, and that line must consist only of the clear-text key store password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
+    Interactively prompt for the key store password.  A key store password is
     required when exporting a private key, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.
 --private-key-password {password}
     The password (also called a passphrase or PIN) used to protect the private
     key.  In many cases, the private key password will be the same as the
-    password used to protect the keystore itself, and in such instances, the
-    private key password can be omitted and the keystore password will be used.
-    However, if a private key is protected with a different password than the
-    keystore itself, then one of the --private-key-password,
+    password used to protect the key store itself, and in such instances, the
+    private key password can be omitted and the key store password will be
+    used.  However, if a private key is protected with a different password
+    than the key store itself, then one of the --private-key-password,
     --private-key-password-file, or --prompt-for-private-key-password arguments
     must be provided.
 --private-key-password-file {path}
     The path to a file containing the password used to protect the private key.
     In many cases, the private key password will be the same as the password
-    used to protect the keystore itself, and in such instances, the private key
-    password can be omitted and the keystore password will be used.  However,
-    if a private key is protected with a different password than the keystore
-    itself, then one of the --private-key-password,
+    used to protect the key store itself, and in such instances, the private
+    key password can be omitted and the key store password will be used.
+    However, if a private key is protected with a different password than the
+    key store itself, then one of the --private-key-password,
     --private-key-password-file, or --prompt-for-private-key-password arguments
     must be provided.  If a private key password file is supplied, then the
     file must exist, must contain only one line, and that line must consist
@@ -458,9 +458,9 @@ Available options include:
 --prompt-for-private-key-password
     Interactively prompt for the private key password.  In many cases, the
     private key password will be the same as the password used to protect the
-    keystore itself, and in such instances, the private key password can be
-    omitted and the keystore password will be used.  However, if a private key
-    is protected with a different password than the keystore itself, then one
+    key store itself, and in such instances, the private key password can be
+    omitted and the key store password will be used.  However, if a private key
+    is protected with a different password than the key store itself, then one
     of the --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments must be provided.
 * --alias {alias}
@@ -503,61 +503,62 @@ Examples
 Usage for subcommand import-certificate:
 
 Imports a certificate or certificate chain, and optionally a private key, into
-a keystore.
+a key store.
 
 Usage:  import-certificate {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file into which the certificates and key should be
-    imported.  This is required, but if the file does not exist, then it will
-    be created.
+    The path to the key store file into which the certificates and key should
+    be imported.  This is required, but if the file does not exist, then it
+    will be created.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when importing
-    certificates, so one of the --keystore-password, --keystore-password-file,
-    or --prompt-for-keystore-password arguments must be provided.  The password
-    must contain at least six characters.
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
+    importing certificates, so one of the --keystore-password,
+    --keystore-password-file, or --prompt-for-keystore-password arguments must
+    be provided.  The password must contain at least six characters.
 --keystore-password-file {path}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when importing
-    certificates, so one of the --keystore-password, --keystore-password-file,
-    or --prompt-for-keystore-password arguments must be provided.  If a
-    keystore password file is supplied, then the file must exist, must contain
-    only one line, and that line must consist only of the clear-text keystore
-    password.  The password must contain at least six characters.
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
+    importing certificates, so one of the --keystore-password,
+    --keystore-password-file, or --prompt-for-keystore-password arguments must
+    be provided.  If a key store password file is supplied, then the file must
+    exist, must contain only one line, and that line must consist only of the
+    clear-text key store password.  The password must contain at least six
+    characters.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  If the keystore does not
-    exist, then it will be created with this password.  A keystore password is
+    Interactively prompt for the key store password.  If the key store does not
+    exist, then it will be created with this password.  A key store password is
     required when importing certificates, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.  The password must contain at least six characters.
 --keystore-type {type}
-    The keystore type for the keystore to create.  This argument should only be
-    provided when creating a new keystore, and it will be ignored if the
-    keystore already exists.  The value must be either 'JKS' for the
-    non-standard Java KeyStore format, or 'PKCS12' for the standard PKCS #12
-    format.  If this is not provided, then a default keystore type of 'JKS'
-    will be used for newly-created keystores.
+    The key store type for the key store to create.  This argument should only
+    be provided when creating a new key store, and it will be ignored if the
+    key store already exists.  The value must be either 'JKS' for the
+    non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12
+    format.  If this is not provided, then a default key store type of 'JKS'
+    will be used for newly-created key stores.
 * --alias {alias}
     The alias (also called a nickname) to use for the imported certificate.  If
     multiple certificates are to be imported, then the behavior depends on
     whether a private key will also be imported.  When importing a certificate
     chain along with a private key, then the alias must not already exist in
-    the keystore, and the private key and the entire certificate chain will be
+    the key store, and the private key and the entire certificate chain will be
     stored under this alias.  When importing a certificate for which the
-    corresponding private key already exists in the keystore (for example, if
+    corresponding private key already exists in the key store (for example, if
     you used the generate-certificate-request subcommand to create a
     certificate signing request and are now importing the signed certificate),
     then you should use the same alias that is used for the existing private
     key, and you should provide the complete certificate chain.  When importing
     a certificate for which the corresponding private key does not already
-    exist in the keystore and for which the private key is not being provided
+    exist in the key store and for which the private key is not being provided
     by the --private-key-file argument, then the alias must not already exist
-    in the keystore, and any provided issuer certificates (which you should
-    provide if they do not already exist in the keystore and are not in the
+    in the key store, and any provided issuer certificates (which you should
+    provide if they do not already exist in the key store and are not in the
     JVM's default set of trusted issuer certificates) will be imported with
     aliases that are generated from the provided alias.  If there is only one
     issuer certificate to be imported, then it will be stored with an alias
@@ -576,7 +577,7 @@ Available options include:
     certificate chain in which each subsequent certificate is the issuer
     certificate for the previous certificate.  When importing a non-self-signed
     certificate, you should ensure that its issuer certificate is also being
-    imported, is already in the keystore under a different alias, or is in the
+    imported, is already in the key store under a different alias, or is in the
     JVM's default set of trusted certificates.  At least one certificate file
     is required.
 --private-key-file {path}
@@ -590,26 +591,26 @@ Available options include:
     private key.  This is only needed when importing a private key along with a
     certificate chain, or when importing a certificate chain into an alias with
     an existing private key.  In many cases, the private key password will be
-    the same as the keystore password and in such instances, the private key
-    password can be omitted and the the keystore password will be used as the
+    the same as the key store password and in such instances, the private key
+    password can be omitted and the the key store password will be used as the
     private key password.  However, if you are importing a private key and wish
-    to protect it with a password that does not match the keystore password, or
-    if you are importing a new certificate chain for an existing private key
-    that uses a password that does not match the keystore password, then one of
-    the --private-key-password, --private-key-password-file, or
+    to protect it with a password that does not match the key store password,
+    or if you are importing a new certificate chain for an existing private key
+    that uses a password that does not match the key store password, then one
+    of the --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments should be provided.
 --private-key-password-file {path}
     The path to a file containing the password to use to protect the private
     key.  This is only needed when importing a private key along with a
     certificate chain, or when importing a certificate chain into an alias with
     an existing private key.  In many cases, the private key password will be
-    the same as the keystore password and in such instances, the private key
-    password can be omitted and the the keystore password will be used as the
+    the same as the key store password and in such instances, the private key
+    password can be omitted and the the key store password will be used as the
     private key password.  However, if you are importing a private key and wish
-    to protect it with a password that does not match the keystore password, or
-    if you are importing a new certificate chain for an existing private key
-    that uses a password that does not match the keystore password, then one of
-    the --private-key-password, --private-key-password-file, or
+    to protect it with a password that does not match the key store password,
+    or if you are importing a new certificate chain for an existing private key
+    that uses a password that does not match the key store password, then one
+    of the --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments should be provided.  If a
     private key password file is supplied, then the file must exist, must
     contain only one line, and that line must consist only of the clear-text
@@ -619,12 +620,12 @@ Available options include:
     This is only needed when importing a private key along with a certificate
     chain, or when importing a certificate chain into an alias with an existing
     private key.  In many cases, the private key password will be the same as
-    the keystore password and in such instances, the private key password can
-    be omitted and the the keystore password will be used as the private key
+    the key store password and in such instances, the private key password can
+    be omitted and the the key store password will be used as the private key
     password.  However, if you are importing a private key and wish to protect
-    it with a password that does not match the keystore password, or if you are
-    importing a new certificate chain for an existing private key that uses a
-    password that does not match the keystore password, then one of the
+    it with a password that does not match the key store password, or if you
+    are importing a new certificate chain for an existing private key that uses
+    a password that does not match the key store password, then one of the
     --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments should be provided.
 --no-prompt
@@ -641,8 +642,8 @@ Available options include:
 
 Examples
 
-  Import the certificates in the 'server-cert.crt' file into the specified
-  keystore using an alias of server-cert.
+  Import the certificates in the 'server-cert.crt' file into the specified key
+  store using an alias of server-cert.
 
     manage-certificates import-certificate import-certificate \
          --keystore config/keystore \
@@ -650,7 +651,7 @@ Examples
          --certificate-file server-cert.crt
 
   Import a certificate chain, including a private key, from the set of provided
-  files into the specified keystore using an alias of 'server-cert'.
+  files into the specified key store using an alias of 'server-cert'.
 
     manage-certificates import-certificate import-certificate \
          --keystore config/keystore \
@@ -663,28 +664,29 @@ Examples
 
 Usage for subcommand delete-certificate:
 
-Removes a certificate from a keystore.
+Removes a certificate from a key store.
 
 Usage:  delete-certificate {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file containing the certificate to remove.  This
-    is required, and the keystore file must exist.
+    The path to the key store file containing the certificate to remove.  This
+    is required, and the key store file must exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  A keystore password is required when importing
+    contents of the key store.  A key store password is required when importing
     certificates, so one of the --keystore-password, --keystore-password-file,
     or --prompt-for-keystore-password arguments must be provided.
 --keystore-password-file {path}
     The path to a file containing the password needed to access the contents of
-    the keystore.  A keystore password is required when importing certificates,
-    so one of the --keystore-password, --keystore-password-file, or
-    --prompt-for-keystore-password arguments must be provided.  If a keystore
-    password file is supplied, then the file must exist, must contain only one
-    line, and that line must consist only of the clear-text keystore password.
+    the key store.  A key store password is required when importing
+    certificates, so one of the --keystore-password, --keystore-password-file,
+    or --prompt-for-keystore-password arguments must be provided.  If a key
+    store password file is supplied, then the file must exist, must contain
+    only one line, and that line must consist only of the clear-text key store
+    password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
+    Interactively prompt for the key store password.  A key store password is
     required when importing certificates, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.
@@ -705,7 +707,7 @@ Available options include:
 
 Examples
 
-  Remove the server-cert certificate from the 'config/keystore' keystore.
+  Remove the server-cert certificate from the 'config/keystore' key store.
 
     manage-certificates delete-certificate delete-certificate \
          --keystore config/keystore --alias server-cert
@@ -714,84 +716,85 @@ Examples
 
 Usage for subcommand generate-self-signed-certificate:
 
-Generates a self-signed certificate in a keystore.
+Generates a self-signed certificate in a key store.
 
 Usage:  generate-self-signed-certificate {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file in which the self-signed certificate will be
+    The path to the key store file in which the self-signed certificate will be
     created.  This is required, but if the file does not exist, then it will be
     created.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
     generating certificates, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.  The password must contain at least six characters.
 --keystore-password-file {path}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
     generating certificates, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
-    be provided.  If a keystore password file is supplied, then the file must
+    be provided.  If a key store password file is supplied, then the file must
     exist, must contain only one line, and that line must consist only of the
-    clear-text keystore password.  The password must contain at least six
+    clear-text key store password.  The password must contain at least six
     characters.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  If the keystore does not
-    exist, then it will be created with this password.  A keystore password is
+    Interactively prompt for the key store password.  If the key store does not
+    exist, then it will be created with this password.  A key store password is
     required when generating certificates, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.  The password must contain at least six characters.
 --private-key-password {password}
     The password (also called a passphrase or PIN) to use to protect the
     private key.  Although in many cases, private keys will be protected with
-    the same password as the keystore itself, it is possible to use a different
-    password for the private key.  If an alternate private key password is
-    needed, then one of the --private-key-password,
+    the same password as the key store itself, it is possible to use a
+    different password for the private key.  If an alternate private key
+    password is needed, then one of the --private-key-password,
     --private-key-password-file, or --prompt-for-private-key-password arguments
     should be used to provide that private key password.  If none of these
-    arguments is given, then the keystore password will be used as the private
+    arguments is given, then the key store password will be used as the private
     key password.  The password must contain at least six characters.
 --private-key-password-file {path}
     The path to a file containing the password to use to protect the private
     key.  Although in many cases, private keys will be protected with the same
-    password as the keystore itself, it is possible to use a different password
-    for the private key.  If an alternate private key password is needed, then
-    one of the --private-key-password, --private-key-password-file, or
-    --prompt-for-private-key-password arguments should be used to provide that
-    private key password.  If none of these arguments is given, then the
-    keystore password will be used as the private key password.  If a private
-    key password file is supplied, then the file must exist, must contain only
-    one line, and that line must consist only of the clear-text private key
-    password.  The password must contain at least six characters.
+    password as the key store itself, it is possible to use a different
+    password for the private key.  If an alternate private key password is
+    needed, then one of the --private-key-password,
+    --private-key-password-file, or --prompt-for-private-key-password arguments
+    should be used to provide that private key password.  If none of these
+    arguments is given, then the key store password will be used as the private
+    key password.  If a private key password file is supplied, then the file
+    must exist, must contain only one line, and that line must consist only of
+    the clear-text private key password.  The password must contain at least
+    six characters.
 --prompt-for-private-key-password
     Interactively prompt for the password to use to protect the private key.
     Although in many cases, private keys will be protected with the same
-    password as the keystore itself, it is possible to use a different password
-    for the private key.  If an alternate private key password is needed, then
-    one of the --private-key-password, --private-key-password-file, or
-    --prompt-for-private-key-password arguments should be used to provide that
-    private key password.  If none of these arguments is given, then the
-    keystore password will be used as the private key password.  The password
-    must contain at least six characters.
+    password as the key store itself, it is possible to use a different
+    password for the private key.  If an alternate private key password is
+    needed, then one of the --private-key-password,
+    --private-key-password-file, or --prompt-for-private-key-password arguments
+    should be used to provide that private key password.  If none of these
+    arguments is given, then the key store password will be used as the private
+    key password.  The password must contain at least six characters.
 --keystore-type {type}
-    The keystore type for the keystore to create.  This argument should only be
-    provided when creating a new keystore, and it will be ignored if the
-    keystore already exists.  The value must be either 'JKS' for the
-    non-standard Java KeyStore format, or 'PKCS12' for the standard PKCS #12
-    format.  If this is not provided, then a default keystore type of 'JKS'
-    will be used for newly-created keystores.
+    The key store type for the key store to create.  This argument should only
+    be provided when creating a new key store, and it will be ignored if the
+    key store already exists.  The value must be either 'JKS' for the
+    non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12
+    format.  If this is not provided, then a default key store type of 'JKS'
+    will be used for newly-created key stores.
 * --alias {alias}
     The alias (also called a nickname) to use for the newly-generated
     certificate.  If the --replace-existing-certificate argument is provided,
     then this must be the alias of the private key for which to replace the
     certificate chain with the self-signed certificate.  If the
     --replace-existing-certificate argument is not provided, then the alias
-    must not already exist in the keystore.
+    must not already exist in the key store.
 --replace-existing-certificate
     Indicates that the new self-signed certificate should replace the
     certificate chain associated with an existing private key that is
@@ -998,7 +1001,7 @@ Examples
 
 Usage for subcommand generate-certificate-signing-request:
 
-Generates a certificate signing request (CSR) for a private key in a keystore,
+Generates a certificate signing request (CSR) for a private key in a key store,
 optionally generating the private key in the process.  The certificate signing
 request may be either written to standard output or to a specified output file.
 
@@ -1015,29 +1018,29 @@ Available options include:
     be written.  If this is not provided, then the certificate signing request
     will be written to standard output.
 * --keystore {path}
-    The path to the keystore file that contains the key (or in which the key
+    The path to the key store file that contains the key (or in which the key
     will be generated) to use for the certificate signing request.  This is
     required, but if the file does not exist, then it will be created.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
     generating certificate signing requests, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.  The password must contain at least six characters.
 --keystore-password-file {path}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
     generating certificate signing requests, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
-    be provided.  If a keystore password file is supplied, then the file must
+    be provided.  If a key store password file is supplied, then the file must
     exist, must contain only one line, and that line must consist only of the
-    clear-text keystore password.  The password must contain at least six
+    clear-text key store password.  The password must contain at least six
     characters.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  If the keystore does not
-    exist, then it will be created with this password.  A keystore password is
+    Interactively prompt for the key store password.  If the key store does not
+    exist, then it will be created with this password.  A key store password is
     required when generating certificate signing requests, so one of the
     --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.  The password
@@ -1045,54 +1048,55 @@ Available options include:
 --private-key-password {password}
     The password (also called a passphrase or PIN) to use to protect the
     private key.  Although in many cases, private keys will be protected with
-    the same password as the keystore itself, it is possible to use a different
-    password for the private key.  If an alternate private key password is
-    needed, then one of the --private-key-password,
+    the same password as the key store itself, it is possible to use a
+    different password for the private key.  If an alternate private key
+    password is needed, then one of the --private-key-password,
     --private-key-password-file, or --prompt-for-private-key-password arguments
     should be used to provide that private key password.  If none of these
-    arguments is given, then the keystore password will be used as the private
+    arguments is given, then the key store password will be used as the private
     key password.  The password must contain at least six characters.
 --private-key-password-file {path}
     The path to a file containing the password to use to protect the private
     key.  Although in many cases, private keys will be protected with the same
-    password as the keystore itself, it is possible to use a different password
-    for the private key.  If an alternate private key password is needed, then
-    one of the --private-key-password, --private-key-password-file, or
-    --prompt-for-private-key-password arguments should be used to provide that
-    private key password.  If none of these arguments is given, then the
-    keystore password will be used as the private key password.  If a private
-    key password file is supplied, then the file must exist, must contain only
-    one line, and that line must consist only of the clear-text private key
-    password.  The password must contain at least six characters.
+    password as the key store itself, it is possible to use a different
+    password for the private key.  If an alternate private key password is
+    needed, then one of the --private-key-password,
+    --private-key-password-file, or --prompt-for-private-key-password arguments
+    should be used to provide that private key password.  If none of these
+    arguments is given, then the key store password will be used as the private
+    key password.  If a private key password file is supplied, then the file
+    must exist, must contain only one line, and that line must consist only of
+    the clear-text private key password.  The password must contain at least
+    six characters.
 --prompt-for-private-key-password
     Interactively prompt for the password to use to protect the private key.
     Although in many cases, private keys will be protected with the same
-    password as the keystore itself, it is possible to use a different password
-    for the private key.  If an alternate private key password is needed, then
-    one of the --private-key-password, --private-key-password-file, or
-    --prompt-for-private-key-password arguments should be used to provide that
-    private key password.  If none of these arguments is given, then the
-    keystore password will be used as the private key password.  The password
-    must contain at least six characters.
+    password as the key store itself, it is possible to use a different
+    password for the private key.  If an alternate private key password is
+    needed, then one of the --private-key-password,
+    --private-key-password-file, or --prompt-for-private-key-password arguments
+    should be used to provide that private key password.  If none of these
+    arguments is given, then the key store password will be used as the private
+    key password.  The password must contain at least six characters.
 --keystore-type {type}
-    The keystore type for the keystore to create.  This argument should only be
-    provided when creating a new keystore, and it will be ignored if the
-    keystore already exists.  The value must be either 'JKS' for the
-    non-standard Java KeyStore format, or 'PKCS12' for the standard PKCS #12
-    format.  If this is not provided, then a default keystore type of 'JKS'
-    will be used for newly-created keystores.
+    The key store type for the key store to create.  This argument should only
+    be provided when creating a new key store, and it will be ignored if the
+    key store already exists.  The value must be either 'JKS' for the
+    non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12
+    format.  If this is not provided, then a default key store type of 'JKS'
+    will be used for newly-created key stores.
 * --alias {alias}
     The alias (also called a nickname) of the private key to use to generate
     the certificate signing request.  If the --replace-existing-certificate
     argument is provided, then this must be the alias of an existing private
     key.  If the --replace-existing-certificate argument is not provided, then
-    the alias must not already exist in the keystore, and a corresponding key
+    the alias must not already exist in the key store, and a corresponding key
     pair will be created in that alias.
 --use-existing-key-pair
     Indicates that the certificate signing request should use an existing key
-    pair in the keystore, identified by the specified alias.  If this argument
+    pair in the key store, identified by the specified alias.  If this argument
     is not provided, then a new key pair will be generated for the certificate
-    signing request and stored in the keystore.
+    signing request and stored in the key store.
 --subject-dn {dn}
     The subject DN for the certificate signing request.  This must be provided
     unless then --replace-existing-certificate argument is given.  If the
@@ -1271,7 +1275,7 @@ Examples
 Usage for subcommand sign-certificate-signing-request:
 
 Signs a certificate signing request (CSR) provided in a specified input file
-using a certificate contained in a specified keystore.  The signed certificate
+using a certificate contained in a specified key store.  The signed certificate
 may be written to either standard output or to a specified file.
 
 Usage:  sign-certificate-signing-request {options}
@@ -1292,62 +1296,63 @@ Available options include:
     'DER' is specified, then the --certificate-output-file argument must also
     be provided.
 * --keystore {path}
-    The path to the keystore file that contains the certificate that will be
+    The path to the key store file that contains the certificate that will be
     used to sign the requested certificate.  This must be provided, and the
     specified file must exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore containing the signing certificate.  A keystore
+    contents of the key store containing the signing certificate.  A key store
     password is required when signing certificate requests, so one of the
     --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 --keystore-password-file {path}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore containing the signing certificate.  A keystore
+    contents of the key store containing the signing certificate.  A key store
     password is required when signing certificate requests, so one of the
     --keystore-password, --keystore-password-file, or
-    --prompt-for-keystore-password arguments must be provided.  If a keystore
+    --prompt-for-keystore-password arguments must be provided.  If a key store
     password file is supplied, then the file must exist, must contain only one
-    line, and that line must consist only of the clear-text keystore password.
+    line, and that line must consist only of the clear-text key store password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
+    Interactively prompt for the key store password.  A key store password is
     required when signing certificate requests, so one of the
     --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 --private-key-password {password}
     The password (also called a passphrase or PIN) to use to protect the
     private key.  Although in many cases, private keys will be protected with
-    the same password as the keystore itself, it is possible to use a different
-    password for the private key.  If an alternate private key password is
-    needed, then one of the --private-key-password,
+    the same password as the key store itself, it is possible to use a
+    different password for the private key.  If an alternate private key
+    password is needed, then one of the --private-key-password,
     --private-key-password-file, or --prompt-for-private-key-password arguments
     should be used to provide that private key password.  If none of these
-    arguments is given, then the keystore password will be used as the private
+    arguments is given, then the key store password will be used as the private
     key password.
 --private-key-password-file {path}
     The path to a file containing the password to use to protect the private
     key.  Although in many cases, private keys will be protected with the same
-    password as the keystore itself, it is possible to use a different password
-    for the private key.  If an alternate private key password is needed, then
-    one of the --private-key-password, --private-key-password-file, or
-    --prompt-for-private-key-password arguments should be used to provide that
-    private key password.  If none of these arguments is given, then the
-    keystore password will be used as the private key password.  If a private
-    key password file is supplied, then the file must exist, must contain only
-    one line, and that line must consist only of the clear-text private key
-    password.
+    password as the key store itself, it is possible to use a different
+    password for the private key.  If an alternate private key password is
+    needed, then one of the --private-key-password,
+    --private-key-password-file, or --prompt-for-private-key-password arguments
+    should be used to provide that private key password.  If none of these
+    arguments is given, then the key store password will be used as the private
+    key password.  If a private key password file is supplied, then the file
+    must exist, must contain only one line, and that line must consist only of
+    the clear-text private key password.
 --prompt-for-private-key-password
     Interactively prompt for the password to use to protect the private key.
     Although in many cases, private keys will be protected with the same
-    password as the keystore itself, it is possible to use a different password
-    for the private key.  If an alternate private key password is needed, then
-    one of the --private-key-password, --private-key-password-file, or
-    --prompt-for-private-key-password arguments should be used to provide that
-    private key password.  If none of these arguments is given, then the
-    keystore password will be used as the private key password.
+    password as the key store itself, it is possible to use a different
+    password for the private key.  If an alternate private key password is
+    needed, then one of the --private-key-password,
+    --private-key-password-file, or --prompt-for-private-key-password arguments
+    should be used to provide that private key password.  If none of these
+    arguments is given, then the key store password will be used as the private
+    key password.
 * --signing-certificate-alias {alias}
     The alias (also called a nickname) of the certificate to use to sign the
-    request.  This alias must exist in the keystore, and it must reference a
+    request.  This alias must exist in the key store, and it must reference a
     private key with a certificate chain.
 --subject-dn {dn}
     The subject DN for the signed certificate.  A subject DN typically includes
@@ -1503,7 +1508,7 @@ Available options include:
 Examples
 
   Signs the certificate signing request contained in file server-cert.csr using
-  the ca-cert certificate contained in the 'config/keystore' keystore.  The
+  the ca-cert certificate contained in the 'config/keystore' key store.  The
   subject DN, signature algorithm, and extensions from the provided certificate
   signing request will be used to generate the corresponding values in the
   signed certificate, and the certificate will be valid for 365 days, starting
@@ -1517,7 +1522,7 @@ Examples
          --signing-certificate-alias ca-cert --include-requested-extensions
 
   Signs the certificate signing request contained in file server-cert.csr using
-  the ca-cert certificate contained in the 'config/keystore' keystore.  The
+  the ca-cert certificate contained in the 'config/keystore' key store.  The
   subject DN, signature algorithm, and extensions from the provided certificate
   signing request will be used to generate the corresponding values in the
   signed certificate, and the certificate will also include an issuer
@@ -1540,47 +1545,48 @@ Examples
 
 Usage for subcommand change-certificate-alias:
 
-Changes the alias of a certificate in a keystore.
+Changes the alias of a certificate in a key store.
 
 Usage:  change-certificate-alias {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file containing the alias to rename.  This is
+    The path to the key store file containing the alias to rename.  This is
     required, and the keystore file must exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  A keystore password is required, so one of the
+    contents of the key store.  A key store password is required, so one of the
     --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 --keystore-password-file {path}
     The path to a file containing the password needed to access the contents of
-    the keystore.  A keystore password is required, so one of the
+    the key store.  A key store password is required, so one of the
     --keystore-password, --keystore-password-file, or
-    --prompt-for-keystore-password arguments must be provided.  If a keystore
+    --prompt-for-keystore-password arguments must be provided.  If a key store
     password file is supplied, then the file must exist, must contain only one
-    line, and that line must consist only of the clear-text keystore password.
+    line, and that line must consist only of the clear-text key store password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
+    Interactively prompt for the key store password.  A key store password is
     required so one of the --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 --private-key-password {password}
     The password (also called a passphrase or PIN) used to protect the private
     key.  In many cases, the private key password will be the same as the
-    password used to protect the keystore itself, and in such instances, the
-    private key password can be omitted and the keystore password will be used.
-    However, if the target alias includes a private key, and that private key
-    is protected with a different password than the keystore itself, then one
-    of the --private-key-password, --private-key-password-file, or
-    --prompt-for-private-key-password arguments must be provided.
+    password used to protect the key store itself, and in such instances, the
+    private key password can be omitted and the key store password will be
+    used.  However, if the target alias includes a private key, and that
+    private key is protected with a different password than the key store
+    itself, then one of the --private-key-password,
+    --private-key-password-file, or --prompt-for-private-key-password arguments
+    must be provided.
 --private-key-password-file {path}
     The path to a file containing the password used to protect the private key.
     In many cases, the private key password will be the same as the password
-    used to protect the keystore itself, and in such instances, the private key
-    password can be omitted and the keystore password will be used.  However,
-    if the target alias includes a private key, and that private key is
-    protected with a different password than the keystore itself, then one of
-    the --private-key-password, --private-key-password-file, or
+    used to protect the key store itself, and in such instances, the private
+    key password can be omitted and the key store password will be used.
+    However, if the target alias includes a private key, and that private key
+    is protected with a different password than the key store itself, then one
+    of the --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments must be provided.  If a private
     key password file is supplied, then the file must exist, must contain only
     one line, and that line must consist only of the clear-text private key
@@ -1588,17 +1594,17 @@ Available options include:
 --prompt-for-private-key-password
     Interactively prompt for the private key password.  In many cases, the
     private key password will be the same as the password used to protect the
-    keystore itself, and in such instances, the private key password can be
-    omitted and the keystore password will be used.  However, if the target
+    key store itself, and in such instances, the private key password can be
+    omitted and the key store password will be used.  However, if the target
     alias includes a private key, and that private key is protected with a
-    different password than the keystore itself, then one of the
+    different password than the key store itself, then one of the
     --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments must be provided.
 * --current-alias, --from {alias}
-    The current alias for the keystore entry to rename.  This is required, and
+    The current alias for the key store entry to rename.  This is required, and
     it may only be provided once.
 * --new-alias, --to {alias}
-    The new alias to assign to the target entry in the keystore.  This is
+    The new alias to assign to the target entry in the key store.  This is
     required, and it may only be provided once.
 --display-keytool-command
     Display a command that that can be invoked to achieve a similar result with
@@ -1623,44 +1629,44 @@ Examples
 
 Usage for subcommand change-keystore-password:
 
-Changes the password used to protect the contents of a keystore.
+Changes the password used to protect the contents of a key store.
 
 Usage:  change-keystore-password {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file for which to change the password.  This is
-    required, and the keystore file must exist.
+    The path to the key store file for which to change the password.  This is
+    required, and the key store file must exist.
 --current-keystore-password {password}
-    The current password for the keystore.  The current password is required,
+    The current password for the key store.  The current password is required,
     so one of the --current-keystore-password,
     --current-keystore-password-file, or --prompt-for-current-keystore-password
     arguments must be provided.
 --current-keystore-password-file {path}
-    The path to a file containing the current password for the keystore.  The
+    The path to a file containing the current password for the key store.  The
     current password is required, so one of the --current-keystore-password,
     --current-keystore-password-file, or --prompt-for-current-keystore-password
-    arguments must be provided.  If a keystore password file is supplied, then
+    arguments must be provided.  If a key store password file is supplied, then
     the file must exist, must contain only one line, and that line must consist
-    only of the clear-text keystore password.
+    only of the clear-text key store password.
 --prompt-for-current-keystore-password
-    Interactively prompt for the current keystore password.  The current
+    Interactively prompt for the current key store password.  The current
     password is required, so one of the --current-keystore-password,
     --current-keystore-password-file, or --prompt-for-current-keystore-password
     arguments must be provided.
 --new-keystore-password {password}
-    The new password for the keystore.  The new password is required, so one of
-    the --new-keystore-password, --new-keystore-password-file, or
+    The new password for the key store.  The new password is required, so one
+    of the --new-keystore-password, --new-keystore-password-file, or
     --prompt-for-new-keystore-password arguments must be provided.
 --new-keystore-password-file {path}
-    The path to a file containing the new password for the keystore.  The new
+    The path to a file containing the new password for the key store.  The new
     password is required, so one of the --new-keystore-password,
     --new-keystore-password-file, or --prompt-for-new-keystore-password
-    arguments must be provided.  If a keystore password file is supplied, then
+    arguments must be provided.  If a key store password file is supplied, then
     the file must exist, must contain only one line, and that line must consist
-    only of the clear-text keystore password.
+    only of the clear-text key store password.
 --prompt-for-new-keystore-password
-    Interactively prompt for the new keystore password.  The new password is
+    Interactively prompt for the new key store password.  The new password is
     required, so one of the --new-keystore-password,
     --new-keystore-password-file, or --prompt-for-new-keystore-password
     arguments must be provided.
@@ -1674,7 +1680,7 @@ Available options include:
 
 Examples
 
-  Changes the password for the 'config/keystore' keystore from the current
+  Changes the password for the 'config/keystore' key store from the current
   password contained in file 'config/current.pin' to the new password contained
   in file 'config/new.pin'.
 
@@ -1694,22 +1700,23 @@ Usage:  change-private-key-password {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file containing the private key entry for which to
-    change the password.  This is required, and the keystore file must exist.
+    The path to the key store file containing the private key entry for which
+    to change the password.  This is required, and the key store file must
+    exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  A keystore password is required, so one of the
+    contents of the key store.  A key store password is required, so one of the
     --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 --keystore-password-file {path}
     The path to a file containing the password needed to access the contents of
-    the keystore.  A keystore password is required, so one of the
+    the key store.  A key store password is required, so one of the
     --keystore-password, --keystore-password-file, or
-    --prompt-for-keystore-password arguments must be provided.  If a keystore
+    --prompt-for-keystore-password arguments must be provided.  If a key store
     password file is supplied, then the file must exist, must contain only one
-    line, and that line must consist only of the clear-text keystore password.
+    line, and that line must consist only of the clear-text key store password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
+    Interactively prompt for the key store password.  A key store password is
     required so one of the --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 * --alias {alias}
@@ -1762,7 +1769,7 @@ Available options include:
 Examples
 
   Changes the password for the server-cert private key entry in the
-  'config/keystore' keystore from the current password contained in file
+  'config/keystore' key store from the current password contained in file
   'config/current.pin' to the new password contained in file 'config/new.pin'.
 
     manage-certificates change-private-key-password \
@@ -1777,8 +1784,8 @@ Examples
 Usage for subcommand trust-server-certificate:
 
 Initiates a secure connection to a server to get that server's certificate
-chain, and then adds those certificates to a keystore so that it can be used as
-a trust store for that server.
+chain, and then adds those certificates to a key store so that it can be used
+as a trust store for that server.
 
 Usage:  trust-server-certificate {options}
 
@@ -1801,40 +1808,41 @@ Available options include:
     to an LDAP server, and then use the StartTLS extended operation to
     transition to using secure communication.
 * --keystore {path}
-    The path to the keystore file to which the certificates should be added.
+    The path to the key store file to which the certificates should be added.
     This is required, but if the file does not exist, then it will be created.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when importing
-    certificates, so one of the --keystore-password, --keystore-password-file,
-    or --prompt-for-keystore-password arguments must be provided.  The password
-    must contain at least six characters.
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
+    importing certificates, so one of the --keystore-password,
+    --keystore-password-file, or --prompt-for-keystore-password arguments must
+    be provided.  The password must contain at least six characters.
 --keystore-password-file {path}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  If the keystore does not exist, then it will be
-    created with this password.  A keystore password is required when importing
-    certificates, so one of the --keystore-password, --keystore-password-file,
-    or --prompt-for-keystore-password arguments must be provided.  If a
-    keystore password file is supplied, then the file must exist, must contain
-    only one line, and that line must consist only of the clear-text keystore
-    password.  The password must contain at least six characters.
+    contents of the key store.  If the key store does not exist, then it will
+    be created with this password.  A key store password is required when
+    importing certificates, so one of the --keystore-password,
+    --keystore-password-file, or --prompt-for-keystore-password arguments must
+    be provided.  If a key store password file is supplied, then the file must
+    exist, must contain only one line, and that line must consist only of the
+    clear-text key store password.  The password must contain at least six
+    characters.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  If the keystore does not
-    exist, then it will be created with this password.  A keystore password is
+    Interactively prompt for the key store password.  If the key store does not
+    exist, then it will be created with this password.  A key store password is
     required when importing certificates, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.  The password must contain at least six characters.
 --keystore-type {type}
-    The keystore type for the keystore to create.  This argument should only be
-    provided when creating a new keystore, and it will be ignored if the
-    keystore already exists.  The value must be either 'JKS' for the
-    non-standard Java KeyStore format, or 'PKCS12' for the standard PKCS #12
-    format.  If this is not provided, then a default keystore type of 'JKS'
-    will be used for newly-created keystores.
+    The key store type for the key store to create.  This argument should only
+    be provided when creating a new key store, and it will be ignored if the
+    key store already exists.  The value must be either 'JKS' for the
+    non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12
+    format.  If this is not provided, then a default key store type of 'JKS'
+    will be used for newly-created key stores.
 --alias {alias}
     The alias (also called a nickname) to use for the first certificate to add
-    to the keystore.  This alias must not already be in use in the keystore.
+    to the key store.  This alias must not already be in use in the key store.
     If multiple certificates are to be imported, then the first certificate
     imported will use this alias, and subsequent certificates will have either
     "-issuer" (if there is only one issuer certificate) or "-issuer-#" (if
@@ -1842,7 +1850,7 @@ Available options include:
     number for each subsequent issuer).  If this is omitted, then a default
     alias will be constructed from the hostname and port number.
 --issuers-only
-    Indicates that the tool should only update the keystore to include the
+    Indicates that the tool should only update the key store to include the
     issuer certificates for the target server, but omit the server certificate
     at the head of the chain.  This may be useful in environments in which all
     servers are signed by a common issuer and it is sufficient to trust just
@@ -1864,8 +1872,8 @@ Available options include:
 Examples
 
   Establishes a secure connection to the server ds.example.com on port 636 and
-  adds that server's certificate chain to the 'config/truststore' keystore with
-  a base alias of 'ds.example.com:636'.  The tool will display verbose
+  adds that server's certificate chain to the 'config/truststore' key store
+  with a base alias of 'ds.example.com:636'.  The tool will display verbose
   information about the certificate chain presented by the server, and will
   interactively prompt about whether to trust that chain.
 
@@ -1876,7 +1884,7 @@ Examples
   Establishes a non-secure connection to ds.example.com on port 389, and then
   uses the LDAP StartTLS extended operation to transition to a secure
   connection.  It will then add the server's issuer certificates to the
-  'config/truststore' keystore with a base alias of 'ds-start-tls-cert'.  The
+  'config/truststore' key store with a base alias of 'ds-start-tls-cert'.  The
   tool will trust the certificate chain without any confirmation from the user.
 
     manage-certificates trust-server-certificate trust-server-certificate \
@@ -1889,29 +1897,29 @@ Examples
 
 Usage for subcommand check-certificate-usability:
 
-Examines a keystore to determine how suitable a specified certificate is for
+Examines a key store to determine how suitable a specified certificate is for
 use as a server certificate.
 
 Usage:  check-certificate-usability {options}
 
 Available options include:
 * --keystore {path}
-    The path to the keystore file containing the certificate to check.  This is
-    required, and the keystore file must exist.
+    The path to the key store file containing the certificate to check.  This
+    is required, and the key store file must exist.
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
-    contents of the keystore.  A keystore password is required, so one of the
+    contents of the key store.  A key store password is required, so one of the
     --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 --keystore-password-file {path}
     The path to a file containing the password needed to access the contents of
-    the keystore.  A keystore password is required, so one of the
+    the key store.  A key store password is required, so one of the
     --keystore-password, --keystore-password-file, or
-    --prompt-for-keystore-password arguments must be provided.  If a keystore
+    --prompt-for-keystore-password arguments must be provided.  If a key store
     password file is supplied, then the file must exist, must contain only one
-    line, and that line must consist only of the clear-text keystore password.
+    line, and that line must consist only of the clear-text key store password.
 --prompt-for-keystore-password
-    Interactively prompt for the keystore password.  A keystore password is
+    Interactively prompt for the key store password.  A key store password is
     required, so one of the --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
 * --alias {alias}
@@ -1929,7 +1937,7 @@ Available options include:
 
 Examples
 
-  Check the server-cert certificate in the 'config/keystore' keystore to
+  Check the server-cert certificate in the 'config/keystore' key store to
   determine how suitable it is for use as a server certificate.
 
     manage-certificates check-certificate-usability \

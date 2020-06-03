@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2008-2020 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2007-2020 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -193,7 +193,7 @@
 <span class="sourceLineNo">185</span>        if (nameList.isEmpty())<a name="line.185"></a>
 <span class="sourceLineNo">186</span>        {<a name="line.186"></a>
 <span class="sourceLineNo">187</span>          pos = skipSpaces(matchingRuleString, pos, length);<a name="line.187"></a>
-<span class="sourceLineNo">188</span>          pos = readQDStrings(matchingRuleString, pos, length, nameList);<a name="line.188"></a>
+<span class="sourceLineNo">188</span>          pos = readQDStrings(matchingRuleString, pos, length, token, nameList);<a name="line.188"></a>
 <span class="sourceLineNo">189</span>        }<a name="line.189"></a>
 <span class="sourceLineNo">190</span>        else<a name="line.190"></a>
 <span class="sourceLineNo">191</span>        {<a name="line.191"></a>
@@ -209,7 +209,7 @@
 <span class="sourceLineNo">201</span>          pos = skipSpaces(matchingRuleString, pos, length);<a name="line.201"></a>
 <span class="sourceLineNo">202</span><a name="line.202"></a>
 <span class="sourceLineNo">203</span>          buffer = new StringBuilder();<a name="line.203"></a>
-<span class="sourceLineNo">204</span>          pos = readQDString(matchingRuleString, pos, length, buffer);<a name="line.204"></a>
+<span class="sourceLineNo">204</span>          pos = readQDString(matchingRuleString, pos, length, token, buffer);<a name="line.204"></a>
 <span class="sourceLineNo">205</span>          descr = buffer.toString();<a name="line.205"></a>
 <span class="sourceLineNo">206</span>        }<a name="line.206"></a>
 <span class="sourceLineNo">207</span>        else<a name="line.207"></a>
@@ -254,7 +254,7 @@
 <span class="sourceLineNo">246</span>        pos = skipSpaces(matchingRuleString, pos, length);<a name="line.246"></a>
 <span class="sourceLineNo">247</span><a name="line.247"></a>
 <span class="sourceLineNo">248</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;&gt;(5);<a name="line.248"></a>
-<span class="sourceLineNo">249</span>        pos = readQDStrings(matchingRuleString, pos, length, valueList);<a name="line.249"></a>
+<span class="sourceLineNo">249</span>        pos = readQDStrings(matchingRuleString, pos, length, token, valueList);<a name="line.249"></a>
 <span class="sourceLineNo">250</span><a name="line.250"></a>
 <span class="sourceLineNo">251</span>        final String[] values = new String[valueList.size()];<a name="line.251"></a>
 <span class="sourceLineNo">252</span>        valueList.toArray(values);<a name="line.252"></a>
@@ -581,9 +581,9 @@
 <span class="sourceLineNo">573</span>   * {@inheritDoc}<a name="line.573"></a>
 <span class="sourceLineNo">574</span>   */<a name="line.574"></a>
 <span class="sourceLineNo">575</span>  @Override()<a name="line.575"></a>
-<span class="sourceLineNo">576</span>  public int hashCode()<a name="line.576"></a>
+<span class="sourceLineNo">576</span>  public SchemaElementType getSchemaElementType()<a name="line.576"></a>
 <span class="sourceLineNo">577</span>  {<a name="line.577"></a>
-<span class="sourceLineNo">578</span>    return oid.hashCode();<a name="line.578"></a>
+<span class="sourceLineNo">578</span>    return SchemaElementType.MATCHING_RULE;<a name="line.578"></a>
 <span class="sourceLineNo">579</span>  }<a name="line.579"></a>
 <span class="sourceLineNo">580</span><a name="line.580"></a>
 <span class="sourceLineNo">581</span><a name="line.581"></a>
@@ -592,46 +592,57 @@
 <span class="sourceLineNo">584</span>   * {@inheritDoc}<a name="line.584"></a>
 <span class="sourceLineNo">585</span>   */<a name="line.585"></a>
 <span class="sourceLineNo">586</span>  @Override()<a name="line.586"></a>
-<span class="sourceLineNo">587</span>  public boolean equals(final Object o)<a name="line.587"></a>
+<span class="sourceLineNo">587</span>  public int hashCode()<a name="line.587"></a>
 <span class="sourceLineNo">588</span>  {<a name="line.588"></a>
-<span class="sourceLineNo">589</span>    if (o == null)<a name="line.589"></a>
-<span class="sourceLineNo">590</span>    {<a name="line.590"></a>
-<span class="sourceLineNo">591</span>      return false;<a name="line.591"></a>
-<span class="sourceLineNo">592</span>    }<a name="line.592"></a>
+<span class="sourceLineNo">589</span>    return oid.hashCode();<a name="line.589"></a>
+<span class="sourceLineNo">590</span>  }<a name="line.590"></a>
+<span class="sourceLineNo">591</span><a name="line.591"></a>
+<span class="sourceLineNo">592</span><a name="line.592"></a>
 <span class="sourceLineNo">593</span><a name="line.593"></a>
-<span class="sourceLineNo">594</span>    if (o == this)<a name="line.594"></a>
-<span class="sourceLineNo">595</span>    {<a name="line.595"></a>
-<span class="sourceLineNo">596</span>      return true;<a name="line.596"></a>
-<span class="sourceLineNo">597</span>    }<a name="line.597"></a>
-<span class="sourceLineNo">598</span><a name="line.598"></a>
-<span class="sourceLineNo">599</span>    if (! (o instanceof MatchingRuleDefinition))<a name="line.599"></a>
-<span class="sourceLineNo">600</span>    {<a name="line.600"></a>
-<span class="sourceLineNo">601</span>      return false;<a name="line.601"></a>
-<span class="sourceLineNo">602</span>    }<a name="line.602"></a>
-<span class="sourceLineNo">603</span><a name="line.603"></a>
-<span class="sourceLineNo">604</span>    final MatchingRuleDefinition d = (MatchingRuleDefinition) o;<a name="line.604"></a>
-<span class="sourceLineNo">605</span>    return (oid.equals(d.oid) &amp;&amp;<a name="line.605"></a>
-<span class="sourceLineNo">606</span>         syntaxOID.equals(d.syntaxOID) &amp;&amp;<a name="line.606"></a>
-<span class="sourceLineNo">607</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.607"></a>
-<span class="sourceLineNo">608</span>         StaticUtils.bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.608"></a>
-<span class="sourceLineNo">609</span>         (isObsolete == d.isObsolete) &amp;&amp;<a name="line.609"></a>
-<span class="sourceLineNo">610</span>         extensionsEqual(extensions, d.extensions));<a name="line.610"></a>
-<span class="sourceLineNo">611</span>  }<a name="line.611"></a>
-<span class="sourceLineNo">612</span><a name="line.612"></a>
-<span class="sourceLineNo">613</span><a name="line.613"></a>
+<span class="sourceLineNo">594</span>  /**<a name="line.594"></a>
+<span class="sourceLineNo">595</span>   * {@inheritDoc}<a name="line.595"></a>
+<span class="sourceLineNo">596</span>   */<a name="line.596"></a>
+<span class="sourceLineNo">597</span>  @Override()<a name="line.597"></a>
+<span class="sourceLineNo">598</span>  public boolean equals(final Object o)<a name="line.598"></a>
+<span class="sourceLineNo">599</span>  {<a name="line.599"></a>
+<span class="sourceLineNo">600</span>    if (o == null)<a name="line.600"></a>
+<span class="sourceLineNo">601</span>    {<a name="line.601"></a>
+<span class="sourceLineNo">602</span>      return false;<a name="line.602"></a>
+<span class="sourceLineNo">603</span>    }<a name="line.603"></a>
+<span class="sourceLineNo">604</span><a name="line.604"></a>
+<span class="sourceLineNo">605</span>    if (o == this)<a name="line.605"></a>
+<span class="sourceLineNo">606</span>    {<a name="line.606"></a>
+<span class="sourceLineNo">607</span>      return true;<a name="line.607"></a>
+<span class="sourceLineNo">608</span>    }<a name="line.608"></a>
+<span class="sourceLineNo">609</span><a name="line.609"></a>
+<span class="sourceLineNo">610</span>    if (! (o instanceof MatchingRuleDefinition))<a name="line.610"></a>
+<span class="sourceLineNo">611</span>    {<a name="line.611"></a>
+<span class="sourceLineNo">612</span>      return false;<a name="line.612"></a>
+<span class="sourceLineNo">613</span>    }<a name="line.613"></a>
 <span class="sourceLineNo">614</span><a name="line.614"></a>
-<span class="sourceLineNo">615</span>  /**<a name="line.615"></a>
-<span class="sourceLineNo">616</span>   * Retrieves a string representation of this matching rule definition, in the<a name="line.616"></a>
-<span class="sourceLineNo">617</span>   * format described in RFC 4512 section 4.1.3.<a name="line.617"></a>
-<span class="sourceLineNo">618</span>   *<a name="line.618"></a>
-<span class="sourceLineNo">619</span>   * @return  A string representation of this matching rule definition.<a name="line.619"></a>
-<span class="sourceLineNo">620</span>   */<a name="line.620"></a>
-<span class="sourceLineNo">621</span>  @Override()<a name="line.621"></a>
-<span class="sourceLineNo">622</span>  public String toString()<a name="line.622"></a>
-<span class="sourceLineNo">623</span>  {<a name="line.623"></a>
-<span class="sourceLineNo">624</span>    return matchingRuleString;<a name="line.624"></a>
-<span class="sourceLineNo">625</span>  }<a name="line.625"></a>
-<span class="sourceLineNo">626</span>}<a name="line.626"></a>
+<span class="sourceLineNo">615</span>    final MatchingRuleDefinition d = (MatchingRuleDefinition) o;<a name="line.615"></a>
+<span class="sourceLineNo">616</span>    return (oid.equals(d.oid) &amp;&amp;<a name="line.616"></a>
+<span class="sourceLineNo">617</span>         syntaxOID.equals(d.syntaxOID) &amp;&amp;<a name="line.617"></a>
+<span class="sourceLineNo">618</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.618"></a>
+<span class="sourceLineNo">619</span>         StaticUtils.bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.619"></a>
+<span class="sourceLineNo">620</span>         (isObsolete == d.isObsolete) &amp;&amp;<a name="line.620"></a>
+<span class="sourceLineNo">621</span>         extensionsEqual(extensions, d.extensions));<a name="line.621"></a>
+<span class="sourceLineNo">622</span>  }<a name="line.622"></a>
+<span class="sourceLineNo">623</span><a name="line.623"></a>
+<span class="sourceLineNo">624</span><a name="line.624"></a>
+<span class="sourceLineNo">625</span><a name="line.625"></a>
+<span class="sourceLineNo">626</span>  /**<a name="line.626"></a>
+<span class="sourceLineNo">627</span>   * Retrieves a string representation of this matching rule definition, in the<a name="line.627"></a>
+<span class="sourceLineNo">628</span>   * format described in RFC 4512 section 4.1.3.<a name="line.628"></a>
+<span class="sourceLineNo">629</span>   *<a name="line.629"></a>
+<span class="sourceLineNo">630</span>   * @return  A string representation of this matching rule definition.<a name="line.630"></a>
+<span class="sourceLineNo">631</span>   */<a name="line.631"></a>
+<span class="sourceLineNo">632</span>  @Override()<a name="line.632"></a>
+<span class="sourceLineNo">633</span>  public String toString()<a name="line.633"></a>
+<span class="sourceLineNo">634</span>  {<a name="line.634"></a>
+<span class="sourceLineNo">635</span>    return matchingRuleString;<a name="line.635"></a>
+<span class="sourceLineNo">636</span>  }<a name="line.636"></a>
+<span class="sourceLineNo">637</span>}<a name="line.637"></a>
 
 
 

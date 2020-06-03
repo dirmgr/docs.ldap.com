@@ -191,14 +191,15 @@ Available options include:
         --addAttributeBaseDN argument to identify the portion of the hierarchy
         in which to add values for the attribute targeted by the
         --addAttributeName argument.  This argument may be provided at most
-        once, but if it is not provided then a default scope of sub (which will
-        include all entries at and below the specified base DN) will be used.
+        once, but if it is not provided then a default scope of 'sub' (which
+        will include all entries at and below the specified base DN) will be
+        used.
     --addAttributeFilter {filter}
         The filter to use to identify entries in which the attribute specified
         by the --addAttributeName argument should be added.  This argument may
         be provided at most once, but if it is not provided then a default
-        filter of (&) (which is the LDAP true filter and will match any entry)
-        will be used.
+        filter of '(&)' (which is the LDAP true filter and will match any
+        entry) will be used.
 
   Arguments for Renaming Attributes
 
@@ -307,14 +308,14 @@ Available options include:
         The scope to use to identify entries to exclude from the output if at
         least one of the --excludeEntryBaseDN, --excludeEntryScope, or
         --excludeEntryFilter arguments is provided.  If this argument is not
-        provided, a default scope of sub (which will include all entries at or
-        below the base DN) will be used.  This argument cannot be used in
+        provided, a default scope of 'sub' (which will include all entries at
+        or below the base DN) will be used.  This argument cannot be used in
         conjunction with the --sourceContainsChangeRecords argument.
     --excludeEntryFilter {filter}
         The filter to use to identify entries to exclude from the output if at
         least one of the --excludeEntryBaseDN, --excludeEntryScope, or
         --excludeEntryFilter arguments is provided.  If this argument is not
-        provided, a default filter of (&) (which is the LDAP true filter and
+        provided, a default filter of '(&)' (which is the LDAP true filter and
         will match any entry) will be used.  This argument cannot be used in
         conjunction with the --sourceContainsChangeRecords argument.
     --excludeNonMatchingEntries
@@ -322,8 +323,8 @@ Available options include:
         the --excludeEntryBaseDN, --excludeEntryScope, and --excludeEntryFilter
         arguments should be excluded from the output, and entries that do match
         the criteria will be preserved.  If this argument is not provided, then
-        entries that do  match the criteria will be excluded and entries that
-        do not match the criteria will be preserved.
+        entries that do match the criteria will be excluded and entries that do
+        not match the criteria will be preserved.
     --excludeChangeType {add|delete|modify|moddn}
         Indicates that LDIF change records with the specified change type
         should be excluded from the output.  Allowed values include 'add',
@@ -389,7 +390,7 @@ Examples
   the givenName, sn, and cn attributes and write the result to the
   'scrambled.ldif' file.  Ten concurrent threads will be used to perform the
   processing, it will use the schema defined in the files in the
-  '/ds/config/schema directory', and the values of attributes that appear in
+  '/ds/config/schema' directory, and the values of attributes that appear in
   entry DNs may be scrambled.
 
     transform-ldif --sourceLDIF input.ldif --targetLDIF scrambled.ldif \

@@ -77,7 +77,7 @@ Available options include:
         present to the directory server for SSL client authentication.
     --enableSSLDebugging
         Enable Java's low-level support for debugging SSL/TLS communication.
-        This is equivalent to setting the "javax.net.debug" property to "all".
+        This is equivalent to setting the 'javax.net.debug' property to 'all'.
     -o, --saslOption {name=value}
         A name-value pair providing information to use when performing SASL
         authentication.
@@ -299,5 +299,5 @@ Examples
   specified file.
 
     collect-support-data \
-         --decrypt support-data-ds-inst1-20200316145841.812Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20200602230221.777Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt

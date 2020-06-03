@@ -54,7 +54,7 @@
     <p>Intercept and decode LDAP communication.</p>
 
     <h3><a href="ldapcompare.html">ldapcompare</a></h3>
-    <p>Perform LDAP compare operations in an LDAP directory server.</p>
+    <p>Perform compare operations in an LDAP directory server.  Compare operations may be used to efficiently determine whether a specified entry has a given value.</p>
 
     <h3><a href="ldapdelete.html">ldapdelete</a></h3>
     <p>Delete one or more entries from an LDAP directory server.  You can provide the DNs of the entries to delete using named arguments, as trailing arguments, from a file, or from standard input.  Alternatively, you can identify entries to delete using a search base DN and filter.</p>
@@ -62,8 +62,20 @@
     <h3><a href="ldapmodify.html">ldapmodify</a></h3>
     <p>Apply a set of add, delete, modify, and/or modify DN operations to a directory server.  Supply the changes to apply in LDIF format, either from standard input or from a file specified with the 'ldifFile' argument.  Change records must be separated by at least one blank line.</p>
 
+    <h3><a href="ldappasswordmodify.html">ldappasswordmodify</a></h3>
+    <p>Update the password for a user in an LDAP directory server using the password modify extended operation (as defined in RFC 3062), a standard LDAP modify operation, or an Active Directory-specific modification.</p>
+
     <h3><a href="ldapsearch.html">ldapsearch</a></h3>
     <p>Process one or more searches in an LDAP directory server.</p>
+
+    <h3><a href="ldif-diff.html">ldif-diff</a></h3>
+    <p>Compare the contents of two files containing LDIF entries.  The output will be an LDIF file containing the add, delete, and modify change records needed to convert the data in the source LDIF file into the data in the target LDIF file.</p>
+
+    <h3><a href="ldifmodify.html">ldifmodify</a></h3>
+    <p>Apply a set of changes (including add, delete, modify, and modify DN operations) to a set of entries contained in an LDIF file.  The changes will be read from a second file (containing change records rather than entries), and the updated entries will be written to a third LDIF file.  Unlike ldapmodify, the ldifmodify cannot read the changes to apply from standard input.</p>
+
+    <h3><a href="ldifsearch.html">ldifsearch</a></h3>
+    <p>Search one or more LDIF files to identify entries matching a given set of criteria.</p>
 
     <h3><a href="manage-account.html">manage-account</a></h3>
     <p>Retrieve or update information about the current state of a user account.  Processing will be performed using the password policy state extended operation, and you must have the password-reset privilege to use this extended operation.</p>
@@ -100,6 +112,9 @@
 
     <h3><a href="transform-ldif.html">transform-ldif</a></h3>
     <p>Apply one or more changes to entries or change records read from an LDIF file, writing the updating records to a new file.  This tool can apply a variety of transformations, including scrambling attribute values, redacting attribute values, excluding attributes or entries, replacing existing attributes, adding new attributes, renaming attributes, and moving entries from one subtree to another.</p>
+
+    <h3><a href="validate-ldap-schema.html">validate-ldap-schema</a></h3>
+    <p>Validate an LDAP schema read from one or more LDIF files.</p>
 
     <h3><a href="validate-ldif.html">validate-ldif</a></h3>
     <p>Validate the contents of an LDIF file against the server schema.</p>

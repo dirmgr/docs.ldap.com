@@ -30,6 +30,18 @@
         <br><br>
       </li>
       <li>
+        <tt>--reportCount <i>{value}</i></tt> &mdash; The number of values to display for each item being summarized.  A value of zero indicates that all items should be displayed.  If this is not provided, a default value of 20 will be used.
+        <br>
+        The specified value must not be less than 0 or greater than 2,147,483,647.
+        <br><br>
+      </li>
+      <li>
+        <tt>--doNotAnonymize</tt> &mdash; Do not anonymize the output, but include actual attribute values in filters and DNs.  This will also have the effect of de-generifying those values, so output including the most common filters and DNs in some category will be specific instances of those filters and DNs instead of generic patterns.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>--interactive</tt> &mdash; Launch the tool in interactive mode.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.

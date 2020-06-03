@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2008-2020 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2007-2020 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -202,7 +202,7 @@
 <span class="sourceLineNo">194</span>        if (nameList.isEmpty())<a name="line.194"></a>
 <span class="sourceLineNo">195</span>        {<a name="line.195"></a>
 <span class="sourceLineNo">196</span>          pos = skipSpaces(nameFormString, pos, length);<a name="line.196"></a>
-<span class="sourceLineNo">197</span>          pos = readQDStrings(nameFormString, pos, length, nameList);<a name="line.197"></a>
+<span class="sourceLineNo">197</span>          pos = readQDStrings(nameFormString, pos, length, token, nameList);<a name="line.197"></a>
 <span class="sourceLineNo">198</span>        }<a name="line.198"></a>
 <span class="sourceLineNo">199</span>        else<a name="line.199"></a>
 <span class="sourceLineNo">200</span>        {<a name="line.200"></a>
@@ -218,7 +218,7 @@
 <span class="sourceLineNo">210</span>          pos = skipSpaces(nameFormString, pos, length);<a name="line.210"></a>
 <span class="sourceLineNo">211</span><a name="line.211"></a>
 <span class="sourceLineNo">212</span>          buffer = new StringBuilder();<a name="line.212"></a>
-<span class="sourceLineNo">213</span>          pos = readQDString(nameFormString, pos, length, buffer);<a name="line.213"></a>
+<span class="sourceLineNo">213</span>          pos = readQDString(nameFormString, pos, length, token, buffer);<a name="line.213"></a>
 <span class="sourceLineNo">214</span>          descr = buffer.toString();<a name="line.214"></a>
 <span class="sourceLineNo">215</span>        }<a name="line.215"></a>
 <span class="sourceLineNo">216</span>        else<a name="line.216"></a>
@@ -263,7 +263,7 @@
 <span class="sourceLineNo">255</span>        if (reqAttrs.isEmpty())<a name="line.255"></a>
 <span class="sourceLineNo">256</span>        {<a name="line.256"></a>
 <span class="sourceLineNo">257</span>          pos = skipSpaces(nameFormString, pos, length);<a name="line.257"></a>
-<span class="sourceLineNo">258</span>          pos = readOIDs(nameFormString, pos, length, reqAttrs);<a name="line.258"></a>
+<span class="sourceLineNo">258</span>          pos = readOIDs(nameFormString, pos, length, token, reqAttrs);<a name="line.258"></a>
 <span class="sourceLineNo">259</span>        }<a name="line.259"></a>
 <span class="sourceLineNo">260</span>        else<a name="line.260"></a>
 <span class="sourceLineNo">261</span>        {<a name="line.261"></a>
@@ -277,7 +277,7 @@
 <span class="sourceLineNo">269</span>        if (optAttrs.isEmpty())<a name="line.269"></a>
 <span class="sourceLineNo">270</span>        {<a name="line.270"></a>
 <span class="sourceLineNo">271</span>          pos = skipSpaces(nameFormString, pos, length);<a name="line.271"></a>
-<span class="sourceLineNo">272</span>          pos = readOIDs(nameFormString, pos, length, optAttrs);<a name="line.272"></a>
+<span class="sourceLineNo">272</span>          pos = readOIDs(nameFormString, pos, length, token, optAttrs);<a name="line.272"></a>
 <span class="sourceLineNo">273</span>        }<a name="line.273"></a>
 <span class="sourceLineNo">274</span>        else<a name="line.274"></a>
 <span class="sourceLineNo">275</span>        {<a name="line.275"></a>
@@ -291,7 +291,7 @@
 <span class="sourceLineNo">283</span>        pos = skipSpaces(nameFormString, pos, length);<a name="line.283"></a>
 <span class="sourceLineNo">284</span><a name="line.284"></a>
 <span class="sourceLineNo">285</span>        final ArrayList&lt;String&gt; valueList = new ArrayList&lt;&gt;(5);<a name="line.285"></a>
-<span class="sourceLineNo">286</span>        pos = readQDStrings(nameFormString, pos, length, valueList);<a name="line.286"></a>
+<span class="sourceLineNo">286</span>        pos = readQDStrings(nameFormString, pos, length, token, valueList);<a name="line.286"></a>
 <span class="sourceLineNo">287</span><a name="line.287"></a>
 <span class="sourceLineNo">288</span>        final String[] values = new String[valueList.size()];<a name="line.288"></a>
 <span class="sourceLineNo">289</span>        valueList.toArray(values);<a name="line.289"></a>
@@ -738,9 +738,9 @@
 <span class="sourceLineNo">730</span>   * {@inheritDoc}<a name="line.730"></a>
 <span class="sourceLineNo">731</span>   */<a name="line.731"></a>
 <span class="sourceLineNo">732</span>  @Override()<a name="line.732"></a>
-<span class="sourceLineNo">733</span>  public int hashCode()<a name="line.733"></a>
+<span class="sourceLineNo">733</span>  public SchemaElementType getSchemaElementType()<a name="line.733"></a>
 <span class="sourceLineNo">734</span>  {<a name="line.734"></a>
-<span class="sourceLineNo">735</span>    return oid.hashCode();<a name="line.735"></a>
+<span class="sourceLineNo">735</span>    return SchemaElementType.NAME_FORM;<a name="line.735"></a>
 <span class="sourceLineNo">736</span>  }<a name="line.736"></a>
 <span class="sourceLineNo">737</span><a name="line.737"></a>
 <span class="sourceLineNo">738</span><a name="line.738"></a>
@@ -749,50 +749,61 @@
 <span class="sourceLineNo">741</span>   * {@inheritDoc}<a name="line.741"></a>
 <span class="sourceLineNo">742</span>   */<a name="line.742"></a>
 <span class="sourceLineNo">743</span>  @Override()<a name="line.743"></a>
-<span class="sourceLineNo">744</span>  public boolean equals(final Object o)<a name="line.744"></a>
+<span class="sourceLineNo">744</span>  public int hashCode()<a name="line.744"></a>
 <span class="sourceLineNo">745</span>  {<a name="line.745"></a>
-<span class="sourceLineNo">746</span>    if (o == null)<a name="line.746"></a>
-<span class="sourceLineNo">747</span>    {<a name="line.747"></a>
-<span class="sourceLineNo">748</span>      return false;<a name="line.748"></a>
-<span class="sourceLineNo">749</span>    }<a name="line.749"></a>
+<span class="sourceLineNo">746</span>    return oid.hashCode();<a name="line.746"></a>
+<span class="sourceLineNo">747</span>  }<a name="line.747"></a>
+<span class="sourceLineNo">748</span><a name="line.748"></a>
+<span class="sourceLineNo">749</span><a name="line.749"></a>
 <span class="sourceLineNo">750</span><a name="line.750"></a>
-<span class="sourceLineNo">751</span>    if (o == this)<a name="line.751"></a>
-<span class="sourceLineNo">752</span>    {<a name="line.752"></a>
-<span class="sourceLineNo">753</span>      return true;<a name="line.753"></a>
-<span class="sourceLineNo">754</span>    }<a name="line.754"></a>
-<span class="sourceLineNo">755</span><a name="line.755"></a>
-<span class="sourceLineNo">756</span>    if (! (o instanceof NameFormDefinition))<a name="line.756"></a>
-<span class="sourceLineNo">757</span>    {<a name="line.757"></a>
-<span class="sourceLineNo">758</span>      return false;<a name="line.758"></a>
-<span class="sourceLineNo">759</span>    }<a name="line.759"></a>
-<span class="sourceLineNo">760</span><a name="line.760"></a>
-<span class="sourceLineNo">761</span>    final NameFormDefinition d = (NameFormDefinition) o;<a name="line.761"></a>
-<span class="sourceLineNo">762</span>    return (oid.equals(d.oid) &amp;&amp;<a name="line.762"></a>
-<span class="sourceLineNo">763</span>         structuralClass.equalsIgnoreCase(d.structuralClass) &amp;&amp;<a name="line.763"></a>
-<span class="sourceLineNo">764</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.764"></a>
-<span class="sourceLineNo">765</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(requiredAttributes,<a name="line.765"></a>
-<span class="sourceLineNo">766</span>              d.requiredAttributes) &amp;&amp;<a name="line.766"></a>
-<span class="sourceLineNo">767</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(optionalAttributes,<a name="line.767"></a>
-<span class="sourceLineNo">768</span>                   d.optionalAttributes) &amp;&amp;<a name="line.768"></a>
-<span class="sourceLineNo">769</span>         StaticUtils.bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.769"></a>
-<span class="sourceLineNo">770</span>         (isObsolete == d.isObsolete) &amp;&amp;<a name="line.770"></a>
-<span class="sourceLineNo">771</span>         extensionsEqual(extensions, d.extensions));<a name="line.771"></a>
-<span class="sourceLineNo">772</span>  }<a name="line.772"></a>
-<span class="sourceLineNo">773</span><a name="line.773"></a>
-<span class="sourceLineNo">774</span><a name="line.774"></a>
-<span class="sourceLineNo">775</span><a name="line.775"></a>
-<span class="sourceLineNo">776</span>  /**<a name="line.776"></a>
-<span class="sourceLineNo">777</span>   * Retrieves a string representation of this name form definition, in the<a name="line.777"></a>
-<span class="sourceLineNo">778</span>   * format described in RFC 4512 section 4.1.7.2.<a name="line.778"></a>
-<span class="sourceLineNo">779</span>   *<a name="line.779"></a>
-<span class="sourceLineNo">780</span>   * @return  A string representation of this name form definition.<a name="line.780"></a>
-<span class="sourceLineNo">781</span>   */<a name="line.781"></a>
-<span class="sourceLineNo">782</span>  @Override()<a name="line.782"></a>
-<span class="sourceLineNo">783</span>  public String toString()<a name="line.783"></a>
-<span class="sourceLineNo">784</span>  {<a name="line.784"></a>
-<span class="sourceLineNo">785</span>    return nameFormString;<a name="line.785"></a>
-<span class="sourceLineNo">786</span>  }<a name="line.786"></a>
-<span class="sourceLineNo">787</span>}<a name="line.787"></a>
+<span class="sourceLineNo">751</span>  /**<a name="line.751"></a>
+<span class="sourceLineNo">752</span>   * {@inheritDoc}<a name="line.752"></a>
+<span class="sourceLineNo">753</span>   */<a name="line.753"></a>
+<span class="sourceLineNo">754</span>  @Override()<a name="line.754"></a>
+<span class="sourceLineNo">755</span>  public boolean equals(final Object o)<a name="line.755"></a>
+<span class="sourceLineNo">756</span>  {<a name="line.756"></a>
+<span class="sourceLineNo">757</span>    if (o == null)<a name="line.757"></a>
+<span class="sourceLineNo">758</span>    {<a name="line.758"></a>
+<span class="sourceLineNo">759</span>      return false;<a name="line.759"></a>
+<span class="sourceLineNo">760</span>    }<a name="line.760"></a>
+<span class="sourceLineNo">761</span><a name="line.761"></a>
+<span class="sourceLineNo">762</span>    if (o == this)<a name="line.762"></a>
+<span class="sourceLineNo">763</span>    {<a name="line.763"></a>
+<span class="sourceLineNo">764</span>      return true;<a name="line.764"></a>
+<span class="sourceLineNo">765</span>    }<a name="line.765"></a>
+<span class="sourceLineNo">766</span><a name="line.766"></a>
+<span class="sourceLineNo">767</span>    if (! (o instanceof NameFormDefinition))<a name="line.767"></a>
+<span class="sourceLineNo">768</span>    {<a name="line.768"></a>
+<span class="sourceLineNo">769</span>      return false;<a name="line.769"></a>
+<span class="sourceLineNo">770</span>    }<a name="line.770"></a>
+<span class="sourceLineNo">771</span><a name="line.771"></a>
+<span class="sourceLineNo">772</span>    final NameFormDefinition d = (NameFormDefinition) o;<a name="line.772"></a>
+<span class="sourceLineNo">773</span>    return (oid.equals(d.oid) &amp;&amp;<a name="line.773"></a>
+<span class="sourceLineNo">774</span>         structuralClass.equalsIgnoreCase(d.structuralClass) &amp;&amp;<a name="line.774"></a>
+<span class="sourceLineNo">775</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(names, d.names) &amp;&amp;<a name="line.775"></a>
+<span class="sourceLineNo">776</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(requiredAttributes,<a name="line.776"></a>
+<span class="sourceLineNo">777</span>              d.requiredAttributes) &amp;&amp;<a name="line.777"></a>
+<span class="sourceLineNo">778</span>         StaticUtils.stringsEqualIgnoreCaseOrderIndependent(optionalAttributes,<a name="line.778"></a>
+<span class="sourceLineNo">779</span>                   d.optionalAttributes) &amp;&amp;<a name="line.779"></a>
+<span class="sourceLineNo">780</span>         StaticUtils.bothNullOrEqualIgnoreCase(description, d.description) &amp;&amp;<a name="line.780"></a>
+<span class="sourceLineNo">781</span>         (isObsolete == d.isObsolete) &amp;&amp;<a name="line.781"></a>
+<span class="sourceLineNo">782</span>         extensionsEqual(extensions, d.extensions));<a name="line.782"></a>
+<span class="sourceLineNo">783</span>  }<a name="line.783"></a>
+<span class="sourceLineNo">784</span><a name="line.784"></a>
+<span class="sourceLineNo">785</span><a name="line.785"></a>
+<span class="sourceLineNo">786</span><a name="line.786"></a>
+<span class="sourceLineNo">787</span>  /**<a name="line.787"></a>
+<span class="sourceLineNo">788</span>   * Retrieves a string representation of this name form definition, in the<a name="line.788"></a>
+<span class="sourceLineNo">789</span>   * format described in RFC 4512 section 4.1.7.2.<a name="line.789"></a>
+<span class="sourceLineNo">790</span>   *<a name="line.790"></a>
+<span class="sourceLineNo">791</span>   * @return  A string representation of this name form definition.<a name="line.791"></a>
+<span class="sourceLineNo">792</span>   */<a name="line.792"></a>
+<span class="sourceLineNo">793</span>  @Override()<a name="line.793"></a>
+<span class="sourceLineNo">794</span>  public String toString()<a name="line.794"></a>
+<span class="sourceLineNo">795</span>  {<a name="line.795"></a>
+<span class="sourceLineNo">796</span>    return nameFormString;<a name="line.796"></a>
+<span class="sourceLineNo">797</span>  }<a name="line.797"></a>
+<span class="sourceLineNo">798</span>}<a name="line.798"></a>
 
 
 

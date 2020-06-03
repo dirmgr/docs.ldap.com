@@ -11,10 +11,22 @@
     <h1>The ldapcompare Command-Line Tool</h1>
 
     <p>
-      Perform LDAP compare operations in an LDAP directory server.
+      Perform compare operations in an LDAP directory server.  Compare operations may be used to efficiently determine whether a specified entry has a given value.
+    </p>
+    <p>
+      The exit code for this tool will reflect the result of its processing.  If only a single compare operation is processed, then the exit code will match the LDAP result code for that compare operation (5 for 'COMPARE_FALSE' to indicate that the assertion does not match the target entry, 6 for 'COMPARE_TRUE' to indicate that the assertion does match, or some other result code if an error occurred).  If multiple compare operations are processed, then the exit code will be zero if all compare operations yielded a result of either COMPARE_FALSE or COMPARE_TRUE, or a nonzero exit code that reflects the first error result encountered during processing.
+    </p>
+    <p>
+      The attribute type and assertion value to use for the compare operations will typically be provided as the first unnamed trailing argument provided on the command line.  It should be formatted with the name or OID of the target attribute type followed by a single colon and the string representation of the assertion value.  Alternatively, the attribute name or OID may be followed by two colons and the base64-encoded representation of the assertion value.
+    </p>
+    <p>
+      The DNs of the entries to compare may either be provided on the command line as additional unnamed trailing arguments after the provided attribute-value assertion, or they may be read from a file whose path is provided using the --dnFile argument.
+    </p>
+    <p>
+      If the attribute-value assertion is provided on the command line as an unnamed trailing argument, then the same assertion will be performed for all operations.  If multiple types of assertions should be performed, then you may use the --assertionFile argument to specify the path to a file containing both attribute-value assertions and entry DNs.
     </p>
     <h3>Usage</h3>
-    <blockquote><pre>ldapcompare <i>{arguments}</i> <i>attr:value dn1 [dn2 [dn3 [...]]]</i></pre></blockquote>
+    <blockquote><pre>ldapcompare <i>{arguments}</i> <i>[attribute:value|attribute::base64Value [dn1 [dn2 [ dn3 [ .. ]]]]]</i></pre></blockquote>
     <h3>LDAP Connection and Authentication Arguments</h3>
     <ul>
       <li>
@@ -120,7 +132,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--enableSSLDebugging</tt> &mdash; Enable Java's low-level support for debugging SSL/TLS communication.  This is equivalent to setting the "javax.net.debug" property to "all".
+        <tt>--enableSSLDebugging</tt> &mdash; Enable Java's low-level support for debugging SSL/TLS communication.  This is equivalent to setting the 'javax.net.debug' property to 'all'.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -142,40 +154,154 @@
         <br><br>
       </li>
     </ul>
-    <h3>Additional Arguments</h3>
+    <h3>Processing Arguments</h3>
     <ul>
       <li>
-        <tt>--bindControl <i>{oid}[:{criticality}[:{stringValue}|::{base64Value}]]</i></tt> &mdash; Information about a control to include in the bind request.
+        <tt>-f <i>{path}</i></tt> / <tt>--dnFile <i>{path}</i></tt> &mdash; The path to a file containing the DNs of the entries in which to perform the compare assertions.  If this argument is provided, then each DN must be provided on its own line with no other content on that line, and there must be exactly one unnamed trailing argument to specify the attribute-value assertion to evaluate against all entries referenced in the DN file.  If this argument is not provided, then there must be at least two unnamed trailing arguments, with the first specifying the attribute-value assertion and all remaining trailing arguments providing the DNs of the entries to evaluate.
         <br>
-        A provided value must be a string representation of a valid LDAP control in the form {oid}[:{criticality}[:{stringValue}|::{base64Value}]].
+        The specified path must refer to a file that exists.
         <br><br>
       </li>
       <li>
-        <tt>-J <i>{oid}[:{criticality}[:{stringValue}|::{base64Value}]]</i></tt> / <tt>--control <i>{oid}[:{criticality}[:{stringValue}|::{base64Value}]]</i></tt> &mdash; Information about a control to include in compare requests.
+        <tt>--assertionFile <i>{path}</i></tt> &mdash; The path to a file with information about the compare assertions to be evaluated.  If this is provided, then each line of the file must contain the DN of the target entry followed by one or more horizontal tab characters and the attribute-value assertion to process against that entry (specified as the attribute name followed by a single colon and the string representation of the value, or the attribute name followed by two colons and a base64-encoded representation of the value).
         <br>
-        A provided value must be a string representation of a valid LDAP control in the form {oid}[:{criticality}[:{stringValue}|::{base64Value}]].
+        The specified path must refer to a file that exists.
         <br><br>
       </li>
       <li>
-        <tt>--interactive</tt> &mdash; Launch the tool in interactive mode.
+        <tt>--followReferrals</tt> &mdash; Attempt to follow any referrals encountered during compare processing.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
       </li>
       <li>
-        <tt>--outputFile <i>{path}</i></tt> &mdash; Write all standard output and standard error messages to the specified file instead of to the console.
+        <tt>--useAdministrativeSession</tt> &mdash; Use an administrative session to process all operations using a dedicated pool of worker threads.  This may be useful when trying to diagnose problems in a server that is unresponsive because all normal worker threads are busy processing other requests.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>-c</tt> / <tt>--continueOnError</tt> &mdash; Continue processing even if there are errors.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>-n</tt> / <tt>--dryRun</tt> &mdash; Indicate which compare assertions would be processed, but do not actually send them to the server.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+    </ul>
+    <h3>Bind Control Arguments</h3>
+    <ul>
+      <li>
+        <tt>--bindControl <i>{oid}[:{criticality}[:{stringValue}|::{base64Value}]]</i></tt> &mdash; Include the indicated control in all bind requests used to authenticate to the server.
+        <br>
+        A provided value must be a string representation of a valid LDAP control in the form {oid}[:{criticality}[:{stringValue}|::{base64Value}]].
+        <br><br>
+      </li>
+      <li>
+        <tt>-E</tt> / <tt>--authorizationIdentity</tt> &mdash; Include the authorization identity request control (as described in RFC 3829) in all bind requests.  If this control is included, a successful bind result should include the authorization identity assigned to the connection.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--usePasswordPolicyControl</tt> &mdash; Include the password policy request control (as described in draft-behera-ldap-password-policy) in all bind requests.  If this control is included, the bind result may include additional information about the target user's password policy state.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--getAuthorizationEntryAttribute <i>{attribute}</i></tt> &mdash; Include the UnboundID-proprietary get authorization entry request control in all bind requests to indicate that the bind result should include the specified attributes from the entries for the authentication and authorization identities.  This argument may be provided multiple times to specify multiple attributes to request.
+        <br><br>
+      </li>
+      <li>
+        <tt>--getUserResourceLimits</tt> &mdash; Include the UnboundID-proprietary get user resource limits request control in all bind requests to indicate that a successful bind result should include information about resource limits (e.g., size limit, time limit, idle time limit, etc.) that the server may impose for the user.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+    </ul>
+    <h3>Compare Control Arguments</h3>
+    <ul>
+      <li>
+        <tt>-J <i>{oid}[:{criticality}[:{stringValue}|::{base64Value}]]</i></tt> / <tt>--compareControl <i>{oid}[:{criticality}[:{stringValue}|::{base64Value}]]</i></tt> &mdash; Include the indicated control in all compare requests sent to the directory server.
+        <br>
+        A provided value must be a string representation of a valid LDAP control in the form {oid}[:{criticality}[:{stringValue}|::{base64Value}]].
+        <br><br>
+      </li>
+      <li>
+        <tt>-Y <i>{authzID}</i></tt> / <tt>--proxyAs <i>{authzID}</i></tt> / <tt>--proxy-as <i>{authzID}</i></tt> / <tt>--proxyV2As <i>{authzID}</i></tt> / <tt>--proxy-v2-as <i>{authzID}</i></tt> / <tt>--proxyV2 <i>{authzID}</i></tt> / <tt>--proxy-v2 <i>{authzID}</i></tt> &mdash; Include the proxied authorization control (also known as the proxied authorization v2 request control, as described in RFC 4370) in compare requests to indicate that the server should process the operation under the authority of the specified user.  The authorization identity should generally be specified in the form 'dn:' followed by the DN of the target user, or 'u:' followed by a username for the target user.
+        <br><br>
+      </li>
+      <li>
+        <tt>--proxyV1As <i>{dn}</i></tt> / <tt>--proxy-v1-as <i>{dn}</i></tt> / <tt>--proxyV1 <i>{dn}</i></tt> / <tt>--proxy-v1 <i>{dn}</i></tt> &mdash; Include the proxied authorization v1 request control (as described in draft-weltman-ldapv3-proxy-04) in compare requests to indicate that the server should process the operation under the authority of the user with the specified DN.
+        <br>
+        A provided value must be able to be parsed as an LDAP distinguished name as described in RFC 4514.
+        <br><br>
+      </li>
+      <li>
+        <tt>--manageDsaIT</tt> &mdash; Include the manageDsaIT request control in all compare requests to indicate that any referral entries should be treated as regular entries rather than causing the server to generate a referral result.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--assertionFilter <i>{filter}</i></tt> &mdash; Include the LDAP assertion request control (as described in RFC 4528) in all compare requests to indicate that the compare operation should only be evaluated if the target entry matches the provided filter.
+        <br>
+        A provided value must be able to be parsed as an LDAP search filter as described in RFC 4515.
+        <br><br>
+      </li>
+      <li>
+        <tt>--operationPurpose <i>{purpose}</i></tt> &mdash; Include the UnboundID-proprietary operation purpose request control in all compare requests to provide information about the purpose for the operation.
+        <br><br>
+      </li>
+    </ul>
+    <h3>Output Arguments</h3>
+    <ul>
+      <li>
+        <tt>--outputFile <i>{path}</i></tt> &mdash; The path to a file to which standard output should be written.  Messages written to standard error will not be written to this file.
         <br>
         The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
         <br><br>
       </li>
       <li>
-        <tt>--appendToOutputFile</tt> &mdash; Indicates that the tool should append to the file specified by the --outputFile argument if it already exists.  If this argument is not provided and the output file already exists, it will be overwritten.
+        <tt>--teeOutput</tt> &mdash; Write standard output messages to both the specified output file and the default standard output stream.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
       </li>
       <li>
-        <tt>--teeOutput</tt> &mdash; Write all standard output and standard error messages to the console as well as to the specified output file.  The --outputFile argument must also be provided.
+        <tt>--outputFormat <i>{tab-delimited|csv|json}</i></tt> &mdash; Specifies the format in which the output should be written.  Allowed values include 'tab-delimited' 'csv', or 'json'.  For each output format, the output will include the DN of the target entry, the name of the attribute type, the assertion value, the numeric value for the result code, and the name for the result code.  The JSON format may also include additional fields.
+        <br>
+        A provided value should be one of the following:  'csv', 'json', 'tab-delimited'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--scriptFriendly</tt> &mdash; Indicates that the output should be generated in a script-friendly format.  This argument is not used, as the output will always be in a script-friendly format, and the --outputFormat argument may be used to customize the format in which the output is written.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>-v</tt> / <tt>--verbose</tt> &mdash; Indicates that the tool should generate verbose output.  If this is provided, then complete details about the result of each compare operation will be written to standard error.  If this is not provided, then that detail will only be written for operations that include an error result or that include one or more response controls.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--terse</tt> &mdash; Indicates that the tool should generate terse output.  If this is provided, then additional compare output will be suppressed, even for error results and results with response controls.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+    </ul>
+    <h3>Additional Arguments</h3>
+    <ul>
+      <li>
+        <tt>--interactive</tt> &mdash; Launch the tool in interactive mode.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -256,9 +382,6 @@
         If the <tt>--promptForBindPassword</tt> argument is provided, then at least one of the following arguments must also be provided:  <tt>--bindDN</tt>, <tt>--saslOption</tt>
       </li>
       <li>
-        If the <tt>--appendToOutputFile</tt> argument is provided, then the <tt>--outputFile</tt> argument must also be provided.
-      </li>
-      <li>
         If the <tt>--teeOutput</tt> argument is provided, then the <tt>--outputFile</tt> argument must also be provided.
       </li>
     </ul>
@@ -283,15 +406,37 @@
         The following arguments cannot be used together:  <tt>--bindPassword</tt>, <tt>--bindPasswordFile</tt>, <tt>--promptForBindPassword</tt>
       </li>
       <li>
+        The following arguments cannot be used together:  <tt>--dnFile</tt>, <tt>--assertionFile</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--proxyAs</tt>, <tt>--proxyV1As</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--verbose</tt>, <tt>--terse</tt>
+      </li>
+      <li>
         The following arguments cannot be used together:  <tt>--propertiesFilePath</tt>, <tt>--noPropertiesFile</tt>
       </li>
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Attempt to determine whether the entry for user 'uid=jdoe,ou=People,dc=example,dc=com' has a value of 'John' for the givenName attribute.</li>
+      <li>Use an LDAP compare operation to determine whether entry 'uid=jdoe,ou=People,dc=example,dc=com' has a value of 'Austin' for the 'l' attribute.  The result of the compare operation will be displayed in the default tab-delimited text format.</li>
     </ul>
-    <blockquote><pre>    ldapcompare --hostname server.example.com --port 389 \
-         --bindDN uid=admin,dc=example,dc=com --bindPassword password \
-         givenName:John uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+    <blockquote><pre>    ldapcompare --hostname ds.example.com --port 636 --useSSL \
+         --bindDN uid=admin,dc=example,dc=com l:Austin \
+         uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+    <ul>
+      <li>Use a series of LDAP compare operations to determine which of the entries with DNs are read from the file 'entry-dns.txt' have a 'title' value of 'manager'.  The result of each compare operation will be displayed in the comma-separated values (CSV) format, with all unnecessary output suppressed.</li>
+    </ul>
+    <blockquote><pre>    ldapcompare --hostname ds.example.com --port 636 --useSSL \
+         --bindDN uid=admin,dc=example,dc=com --dnFile entry-dns.txt \
+         --outputFormat csv --terse title:manager</pre></blockquote>
+    <ul>
+      <li>Use a series of LDAP compare operations using both entry DNs and attribute-value assertions read from the file 'compare-assertions.txt'.  The results of the compare operations will be written in JSON format to the file 'compare-assertion-results.json', and verbose output about the processing will be written to standard error.</li>
+    </ul>
+    <blockquote><pre>    ldapcompare --hostname ds.example.com --port 636 --useSSL \
+         --bindDN uid=admin,dc=example,dc=com \
+         --assertionFile compare-assertions.txt --outputFormat json \
+         --outputFile compare-assertion-results.json --verbose</pre></blockquote>
   </body>
 </html>

@@ -37,7 +37,7 @@ Examples
          --display-keytool-command
 
   Exports a PEM-formatted representation of the certificate contained in the
-  server-cert alias in the 'config/keystore' key store and writes it to the
+  'server-cert' alias in the 'config/keystore' key store and writes it to the
   'server-cert.crt' output file.  Also, display a command that can be used to
   obtain a similar result with the Java keytool utility.
 
@@ -47,7 +47,7 @@ Examples
          --display-keytool-command
 
   Exports a PEM-formatted representation of the private key contained in the
-  server-cert alias in the 'config/keystore' key store and writes it to the
+  'server-cert' alias in the 'config/keystore' key store and writes it to the
   'server-cert.private-key' output file.
 
     manage-certificates export-private-key --keystore config/keystore \
@@ -68,16 +68,16 @@ Examples
          --private-key-file server-cert.private-key \
          --display-keytool-command
 
-  Deletes the certificate stored in the server-cert alias in the
+  Deletes the certificate stored in the 'server-cert' alias in the
   'config/keystore' key store.
 
     manage-certificates delete-certificate --keystore config/keystore \
          --keystore-password-file config/keystore.pin --alias server-cert
 
-  Generates a self-signed certificate with alias ca-cert in the
+  Generates a self-signed certificate with alias 'ca-cert' in the
   'config/keystore' key store.  If the key store does not already exist, then
   it will be created using the standard PKCS #12 format.  The certificate will
-  have a subject DN of CN=Example Authority,O=Example Corporation,C=US, a
+  have a subject DN of 'CN=Example Authority,O=Example Corporation,C=US', a
   4096-bit RSA key, and a signature generated using the SHA256withRSA
   algorithm.  The certificate will be valid for 7300 days starting at midnight
   local time on January 1, 2017.  It will include a basic constraints extension
@@ -97,13 +97,13 @@ Examples
          --display-keytool-command
 
   Generates a certificate signing request for a new certificate with subject
-  CN=ldap.example.com,O=Example Corporation,C=US that will be stored in the
-  server-cert alias in the 'config/keystore' key store.  A new 256-bit elliptic
-  curve key pair will be created, the request will be signed with the
+  'CN=ldap.example.com,O=Example Corporation,C=US' that will be stored in the
+  'server-cert' alias in the 'config/keystore' key store.  A new 256-bit
+  elliptic curve key pair will be created, the request will be signed with the
   SHA256withECDSA signature algorithm, and the request will include a subject
-  alternative name extension with alternate DNS names of ldap1.example.com and
-  ldap2.example.com, and an extended key usage extension to indicate that the
-  certificate should be usable for either TLS server authentication or TLS
+  alternative name extension with alternate DNS names of 'ldap1.example.com'
+  and 'ldap2.example.com', and an extended key usage extension to indicate that
+  the certificate should be usable for either TLS server authentication or TLS
   client authentication.  The certificate signing request will be written in
   PEM format to output file 'server-cert.csr'.
 
@@ -120,7 +120,7 @@ Examples
          --display-keytool-command
 
   Generates a certificate signing request intended to renew the existing
-  certificate stored in alias server-cert in the 'config/keystore' key store.
+  certificate stored in alias 'server-cert' in the 'config/keystore' key store.
   The request will use the same subject DN and set of extensions as the
   certificate currently stored in that alias, and it will be written to
   standard output in PEM format.
@@ -131,7 +131,7 @@ Examples
          --use-existing-key-pair --inherit-extensions \
          --display-keytool-command
 
-  Uses the ca-cert certificate in key store 'config/keystore' to sign the
+  Uses the 'ca-cert' certificate in key store 'config/keystore' to sign the
   certificate signing request (CSR) contained in file 'server-cert.csr' and
   writes the signed certificate to PEM-formatted output file 'server-cert.crt'.
   The signed certificate will use the subject DN and set of extensions included
@@ -148,8 +148,9 @@ Examples
          --display-keytool-command
 
   Updates the 'config/keystore' key store to change the alias of the
-  server-cert certificate to be server-certificate.  Also, display a command
-  that can be used to obtain a similar result with the Java keytool utility.
+  'server-cert' certificate to be 'server-certificate'.  Also, display a
+  command that can be used to obtain a similar result with the Java keytool
+  utility.
 
     manage-certificates change-certificate-alias --keystore config/keystore \
          --keystore-password-file config/keystore.pin \
@@ -168,7 +169,7 @@ Examples
   Connects to the ldap.example.com server on port 636 to retrieve the
   certificate chain that the server presents during TLS negotiation.  That
   certificate chain will be added to the 'config/truststore' key store with a
-  base alias of ldap.example.com:636 after interactively confirming that the
+  base alias of 'ldap.example.com:636' after interactively confirming that the
   certificate chain should be trusted.
 
     manage-certificates trust-server-certificate --hostname ldap.example.com \
@@ -176,7 +177,7 @@ Examples
          --keystore-password-file config/truststore.pin \
          --alias ldap.example.com:636
 
-  Examines the server-cert certificate in the 'config/keystore' key store to
+  Examines the 'server-cert' certificate in the 'config/keystore' key store to
   determine whether that certificate is suitable for use as a TLS server
   certificate.
 
@@ -268,9 +269,13 @@ Displays a list of some or all of the certificates in a key store.
 Usage:  list-certificates {options}
 
 Available options include:
-* --keystore {path}
-    The path to the key store file containing the certificates to list.  This
-    is required, and the key store file must exist.
+--keystore {path}
+    The path to the key store file containing the certificates to list.  Either
+    this argument or the --useJVMDefaultTrustStore argument must be provided,
+    and if this argument is given, then the specified file must exist.
+--use-jvm-default-trust-store
+    List certificates from the JVM-default trust store
+    (/usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts).
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
     contents of the key store.  A key store password is optional for some key
@@ -306,8 +311,6 @@ Available options include:
     the manage-certificates and keytool utilities do not provide exactly the
     same sets of functionality.
 
-* Indicates the argument is required
-
 Examples
 
   Display basic information about all of the certificates in the
@@ -316,7 +319,7 @@ Examples
     manage-certificates list-certificates list-certificates \
          --keystore config/keystore
 
-  Display verbose information about the server-cert certificate in the
+  Display verbose information about the 'server-cert' certificate in the
   'config/keystore.p12' key store file, whose contents are protected by a
   password contained in the 'config/keystore.pin' file.  It will also display a
   command that can be used to accomplish a similar result using the Java
@@ -331,7 +334,7 @@ Examples
   trust store file.
 
     manage-certificates list-certificates list-certificates \
-         --keystore /usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts
+         --use-jvm-default-trust-store
 
 
 
@@ -342,9 +345,12 @@ Exports a certificate or certificate chain from a key store.
 Usage:  export-certificate {options}
 
 Available options include:
-* --keystore {path}
+--keystore {path}
     The path to the key store file containing the certificates to export.  This
     is required, and the key store file must exist.
+--use-jvm-default-trust-store
+    Export certificates from the JVM-default trust store
+    (/usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts).
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
     contents of the key store.  A key store password is optional for some key
@@ -643,7 +649,7 @@ Available options include:
 Examples
 
   Import the certificates in the 'server-cert.crt' file into the specified key
-  store using an alias of server-cert.
+  store using an alias of 'server-cert'.
 
     manage-certificates import-certificate import-certificate \
          --keystore config/keystore \
@@ -707,7 +713,7 @@ Available options include:
 
 Examples
 
-  Remove the server-cert certificate from the 'config/keystore' key store.
+  Remove the 'server-cert' certificate from the 'config/keystore' key store.
 
     manage-certificates delete-certificate delete-certificate \
          --keystore config/keystore --alias server-cert
@@ -809,11 +815,12 @@ Available options include:
     attribute (which in a server certificate should be the hostname that
     clients are expected to use when connecting to the server, and in other
     certificates indicates the purpose of that certificate), and may also
-    include additional attributes like 'OU' (the associated department name),
-    'O' (the company or organization name), 'L' (the city or locality name),
-    'ST' (the full name -- NOT the two-letter abbreviation -- of the state or
-    province), 'C' (the two-letter country code -- NOT the full country name).
-    For example:  'CN=ldap.example.com,OU=Directory Services,O=Example
+    include additional attributes like 'OU' (the associated department or
+    organizational unit name), 'O' (the company or organization name), 'L' (the
+    city or locality name), 'ST' (the full name -- NOT the two-letter
+    abbreviation -- of the state or province), 'C' (the two-letter country code
+    -- NOT the full country name).  For example:
+    'CN=ldap.example.com,OU=Directory Services,O=Example
     Corporation,L=Austin,ST=Texas,C=US'.
 --days-valid {value}
     The number of days that the certificate should be considered valid.  If
@@ -1360,13 +1367,14 @@ Available options include:
     hostname that clients are expected to use when connecting to the server,
     and in other certificates indicates the purpose of that certificate), and
     may also include additional attributes like 'OU' (the associated department
-    name), 'O' (the company or organization name), 'L' (the city or locality
-    name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the
-    state or province), 'C' (the two-letter country code -- NOT the full
-    country name).  For example:  'CN=ldap.example.com,OU=Directory
-    Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.  This argument is
-    optional, and if it is not provided, then the subject DN from the
-    certificate signing request will be used.
+    or organizational unit name), 'O' (the company or organization name), 'L'
+    (the city or locality name), 'ST' (the full name -- NOT the two-letter
+    abbreviation -- of the state or province), 'C' (the two-letter country code
+    -- NOT the full country name).  For example:
+    'CN=ldap.example.com,OU=Directory Services,O=Example
+    Corporation,L=Austin,ST=Texas,C=US'.  This argument is optional, and if it
+    is not provided, then the subject DN from the certificate signing request
+    will be used.
 --days-valid {value}
     The number of days that the signed certificate should be considered valid.
     If this argument is not provided, then a default value of 365 days will be
@@ -1507,13 +1515,13 @@ Available options include:
 
 Examples
 
-  Signs the certificate signing request contained in file server-cert.csr using
-  the ca-cert certificate contained in the 'config/keystore' key store.  The
-  subject DN, signature algorithm, and extensions from the provided certificate
-  signing request will be used to generate the corresponding values in the
-  signed certificate, and the certificate will be valid for 365 days, starting
-  immediately.  The signed certificate will be written to standard output in
-  PEM format.
+  Signs the certificate signing request contained in file 'server-cert.csr'
+  using the 'ca-cert' certificate contained in the 'config/keystore' key store.
+  The subject DN, signature algorithm, and extensions from the provided
+  certificate signing request will be used to generate the corresponding values
+  in the signed certificate, and the certificate will be valid for 365 days,
+  starting immediately.  The signed certificate will be written to standard
+  output in PEM format.
 
     manage-certificates sign-certificate-signing-request \
          sign-certificate-signing-request \
@@ -1521,15 +1529,15 @@ Examples
          --keystore-password-file config/keystore.pin \
          --signing-certificate-alias ca-cert --include-requested-extensions
 
-  Signs the certificate signing request contained in file server-cert.csr using
-  the ca-cert certificate contained in the 'config/keystore' key store.  The
-  subject DN, signature algorithm, and extensions from the provided certificate
-  signing request will be used to generate the corresponding values in the
-  signed certificate, and the certificate will also include an issuer
-  alternative name extension with an email address of ca@example.com.  The
+  Signs the certificate signing request contained in file 'server-cert.csr'
+  using the 'ca-cert' certificate contained in the 'config/keystore' key store.
+  The subject DN, signature algorithm, and extensions from the provided
+  certificate signing request will be used to generate the corresponding values
+  in the signed certificate, and the certificate will also include an issuer
+  alternative name extension with an email address of 'ca@example.com'.  The
   signed certificate will be valid for 730 days starting at midnight on January
   1, 2017 in the local timezone.  The signed certificate will be written to the
-  file server-cert.der file in the binary DER format.
+  file 'server-cert.der' file in the binary DER format.
 
     manage-certificates sign-certificate-signing-request \
          sign-certificate-signing-request \
@@ -1768,7 +1776,7 @@ Available options include:
 
 Examples
 
-  Changes the password for the server-cert private key entry in the
+  Changes the password for the 'server-cert' private key entry in the
   'config/keystore' key store from the current password contained in file
   'config/current.pin' to the new password contained in file 'config/new.pin'.
 
@@ -1845,7 +1853,7 @@ Available options include:
     to the key store.  This alias must not already be in use in the key store.
     If multiple certificates are to be imported, then the first certificate
     imported will use this alias, and subsequent certificates will have either
-    "-issuer" (if there is only one issuer certificate) or "-issuer-#" (if
+    '-issuer' (if there is only one issuer certificate) or '-issuer-#' (if
     there are multiple issuers, where # will be replaced with an incrementing
     number for each subsequent issuer).  If this is omitted, then a default
     alias will be constructed from the hostname and port number.
@@ -1858,7 +1866,7 @@ Available options include:
     self-signed certificates in which a certificate is its own issuer.
 --enableSSLDebugging
     Enable Java's low-level support for debugging SSL/TLS communication.  This
-    is equivalent to setting the "javax.net.debug" property to "all".
+    is equivalent to setting the 'javax.net.debug' property to 'all'.
 --verbose
     Display verbose information about the certificates in the server's
     certificate chain.
@@ -1937,7 +1945,7 @@ Available options include:
 
 Examples
 
-  Check the server-cert certificate in the 'config/keystore' key store to
+  Check the 'server-cert' certificate in the 'config/keystore' key store to
   determine how suitable it is for use as a server certificate.
 
     manage-certificates check-certificate-usability \

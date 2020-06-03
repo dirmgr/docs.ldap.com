@@ -162,13 +162,13 @@
         <br><br>
       </li>
       <li>
-        <tt>--addAttributeScope <i>{base|one|sub|subordinates}</i></tt> &mdash; The scope to use in conjunction with the value of the --addAttributeBaseDN argument to identify the portion of the hierarchy in which to add values for the attribute targeted by the --addAttributeName argument.  This argument may be provided at most once, but if it is not provided then a default scope of sub (which will include all entries at and below the specified base DN) will be used.
+        <tt>--addAttributeScope <i>{base|one|sub|subordinates}</i></tt> &mdash; The scope to use in conjunction with the value of the --addAttributeBaseDN argument to identify the portion of the hierarchy in which to add values for the attribute targeted by the --addAttributeName argument.  This argument may be provided at most once, but if it is not provided then a default scope of 'sub' (which will include all entries at and below the specified base DN) will be used.
         <br>
         The provided value should be one of 'base', 'one', 'sub', or 'subordinate'.
         <br><br>
       </li>
       <li>
-        <tt>--addAttributeFilter <i>{filter}</i></tt> &mdash; The filter to use to identify entries in which the attribute specified by the --addAttributeName argument should be added.  This argument may be provided at most once, but if it is not provided then a default filter of (&amp;) (which is the LDAP true filter and will match any entry) will be used.
+        <tt>--addAttributeFilter <i>{filter}</i></tt> &mdash; The filter to use to identify entries in which the attribute specified by the --addAttributeName argument should be added.  This argument may be provided at most once, but if it is not provided then a default filter of '(&amp;)' (which is the LDAP true filter and will match any entry) will be used.
         <br>
         A provided value must be able to be parsed as an LDAP search filter as described in RFC 4515.
         <br><br>
@@ -253,19 +253,19 @@
         <br><br>
       </li>
       <li>
-        <tt>--excludeEntryScope <i>{base|one|sub|subordinates}</i></tt> &mdash; The scope to use to identify entries to exclude from the output if at least one of the --excludeEntryBaseDN, --excludeEntryScope, or --excludeEntryFilter arguments is provided.  If this argument is not provided, a default scope of sub (which will include all entries at or below the base DN) will be used.  This argument cannot be used in conjunction with the --sourceContainsChangeRecords argument.
+        <tt>--excludeEntryScope <i>{base|one|sub|subordinates}</i></tt> &mdash; The scope to use to identify entries to exclude from the output if at least one of the --excludeEntryBaseDN, --excludeEntryScope, or --excludeEntryFilter arguments is provided.  If this argument is not provided, a default scope of 'sub' (which will include all entries at or below the base DN) will be used.  This argument cannot be used in conjunction with the --sourceContainsChangeRecords argument.
         <br>
         The provided value should be one of 'base', 'one', 'sub', or 'subordinate'.
         <br><br>
       </li>
       <li>
-        <tt>--excludeEntryFilter <i>{filter}</i></tt> &mdash; The filter to use to identify entries to exclude from the output if at least one of the --excludeEntryBaseDN, --excludeEntryScope, or --excludeEntryFilter arguments is provided.  If this argument is not provided, a default filter of (&amp;) (which is the LDAP true filter and will match any entry) will be used.  This argument cannot be used in conjunction with the --sourceContainsChangeRecords argument.
+        <tt>--excludeEntryFilter <i>{filter}</i></tt> &mdash; The filter to use to identify entries to exclude from the output if at least one of the --excludeEntryBaseDN, --excludeEntryScope, or --excludeEntryFilter arguments is provided.  If this argument is not provided, a default filter of '(&amp;)' (which is the LDAP true filter and will match any entry) will be used.  This argument cannot be used in conjunction with the --sourceContainsChangeRecords argument.
         <br>
         A provided value must be able to be parsed as an LDAP search filter as described in RFC 4515.
         <br><br>
       </li>
       <li>
-        <tt>--excludeNonMatchingEntries</tt> &mdash; Indicates that entries that do not match the criteria specified using the --excludeEntryBaseDN, --excludeEntryScope, and --excludeEntryFilter arguments should be excluded from the output, and entries that do match the criteria will be preserved.  If this argument is not provided, then entries that do  match the criteria will be excluded and entries that do not match the criteria will be preserved.
+        <tt>--excludeNonMatchingEntries</tt> &mdash; Indicates that entries that do not match the criteria specified using the --excludeEntryBaseDN, --excludeEntryScope, and --excludeEntryFilter arguments should be excluded from the output, and entries that do match the criteria will be preserved.  If this argument is not provided, then entries that do match the criteria will be excluded and entries that do not match the criteria will be preserved.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -462,7 +462,7 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Transform the data contained in file 'input.ldif' to scramble the values of the givenName, sn, and cn attributes and write the result to the 'scrambled.ldif' file.  Ten concurrent threads will be used to perform the processing, it will use the schema defined in the files in the '/ds/config/schema directory', and the values of attributes that appear in entry DNs may be scrambled.</li>
+      <li>Transform the data contained in file 'input.ldif' to scramble the values of the givenName, sn, and cn attributes and write the result to the 'scrambled.ldif' file.  Ten concurrent threads will be used to perform the processing, it will use the schema defined in the files in the '/ds/config/schema' directory, and the values of attributes that appear in entry DNs may be scrambled.</li>
     </ul>
     <blockquote><pre>    transform-ldif --sourceLDIF input.ldif --targetLDIF scrambled.ldif \
          --scrambleAttribute givenName --scrambleAttribute sn \

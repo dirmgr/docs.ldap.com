@@ -125,7 +125,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--enableSSLDebugging</tt> &mdash; Enable Java's low-level support for debugging SSL/TLS communication.  This is equivalent to setting the "javax.net.debug" property to "all".
+        <tt>--enableSSLDebugging</tt> &mdash; Enable Java's low-level support for debugging SSL/TLS communication.  This is equivalent to setting the 'javax.net.debug' property to 'all'.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -248,7 +248,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--suppressEmptyResultOperations</tt> &mdash; Indicates that the result information for each manage-account operation processed should suppress information about password policy state operations included in the result that do not have any values.  Operations presented without values generally indicated that the users password policy is not configured for the associated functionality (e.g., if the password expiration time was requested but password expiration is not enabled in the users password policy).
+        <tt>--suppressEmptyResultOperations</tt> &mdash; Indicates that the result information for each manage-account operation processed should suppress information about password policy state operations included in the result that do not have any values.  Operations presented without values generally indicated that the user's password policy is not configured for the associated functionality (e.g., if the password expiration time was requested but password expiration is not enabled in the user's password policy).
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -477,7 +477,7 @@
         <br><br>
       </li>
       <li>
-        <a href="#subcommand-clear-account-is-disabled">clear-account-is-disabled</a> &mdash; Clear the account disabled state information from a user entry, which is logically equivalent to using the set-account-is-disabled subcommand with an accountIsDisabled value of false.  This can also be accomplished with a standard LDAP modify operation by removing the ds-pwp-account-disabled operational attribute from the users entry.
+        <a href="#subcommand-clear-account-is-disabled">clear-account-is-disabled</a> &mdash; Clear the account disabled state information from a user entry, which is logically equivalent to using the set-account-is-disabled subcommand with an accountIsDisabled value of false.  This can also be accomplished with a standard LDAP modify operation by removing the ds-pwp-account-disabled operational attribute from the user's entry.
         <br><br>
       </li>
       <li>
@@ -870,13 +870,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200316145841.880Z'.</li>
+      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-changed-time set-password-changed-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordChangedTime 20200316145841.880Z</pre></blockquote>
+         --passwordChangedTime 20200602230221.843Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -930,7 +930,7 @@
     <p>&nbsp;</p>
 
     <h2><a name="subcommand-clear-account-is-disabled">Usage For Subcommand clear-account-is-disabled</a></h2>
-    <p>Clear the account disabled state information from a user entry, which is logically equivalent to using the set-account-is-disabled subcommand with an accountIsDisabled value of false.  This can also be accomplished with a standard LDAP modify operation by removing the ds-pwp-account-disabled operational attribute from the users entry.</p>
+    <p>Clear the account disabled state information from a user entry, which is logically equivalent to using the set-account-is-disabled subcommand with an accountIsDisabled value of false.  This can also be accomplished with a standard LDAP modify operation by removing the ds-pwp-account-disabled operational attribute from the user's entry.</p>
     <h3>Examples</h3>
     <ul>
       <li>Clear the account disabled state information for user 'uid=jdoe,ou=People,dc=example,dc=com'.</li>
@@ -968,13 +968,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200316145841.880Z'.</li>
+      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-activation-time set-account-activation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountActivationTime 20200316145841.880Z</pre></blockquote>
+         --accountActivationTime 20200602230221.843Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1046,13 +1046,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200316145841.880Z'.</li>
+      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-expiration-time set-account-expiration-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountExpirationTime 20200316145841.880Z</pre></blockquote>
+         --accountExpirationTime 20200602230221.843Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1124,14 +1124,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200316145841.880Z'.</li>
+      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-expiration-warned-time \
          set-password-expiration-warned-time --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordExpirationWarnedTime 20200316145841.880Z</pre></blockquote>
+         --passwordExpirationWarnedTime 20200602230221.843Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1272,7 +1272,7 @@
     <p>Retrieves the timestamps for any failed authentication attempts for a user since the user's last successful authentication.  This will only be available if failure lockout is enabled in the user's password policy.</p>
     <h3>Examples</h3>
     <ul>
-      <li>Retrieves the timestamps for any failed authentication attempts for user 'uid=jdoe,ou=People,dc=example,dc=com' since that users last successful authentication.</li>
+      <li>Retrieves the timestamps for any failed authentication attempts for user 'uid=jdoe,ou=People,dc=example,dc=com' since that user's last successful authentication.</li>
     </ul>
     <blockquote><pre>    manage-account get-authentication-failure-times \
          get-authentication-failure-times --hostname server.example.com \
@@ -1318,15 +1318,15 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20200316145829.535Z' and '20200316145841.880Z'.</li>
+      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20200602230209.498Z' and '20200602230221.843Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-authentication-failure-times \
          set-authentication-failure-times --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --authenticationFailureTime 20200316145829.535Z \
-         --authenticationFailureTime 20200316145841.880Z</pre></blockquote>
+         --authenticationFailureTime 20200602230209.498Z \
+         --authenticationFailureTime 20200602230221.843Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1515,13 +1515,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200316145841.880Z'.</li>
+      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-login-time set-last-login-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --lastLoginTime 20200316145841.880Z</pre></blockquote>
+         --lastLoginTime 20200602230221.843Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1542,7 +1542,7 @@
     <p>Retrieves the IP address of the client from which a user last authenticated.  This will only be available if last login IP address tracking is enabled in the user's password policy.</p>
     <h3>Examples</h3>
     <ul>
-      <li>Retrieves the IP address of the client from which  user 'uid=jdoe,ou=People,dc=example,dc=com' last authenticated.</li>
+      <li>Retrieves the IP address of the client from which user 'uid=jdoe,ou=People,dc=example,dc=com' last authenticated.</li>
     </ul>
     <blockquote><pre>    manage-account get-last-login-ip-address get-last-login-ip-address \
          --hostname server.example.com --port 389 \
@@ -1633,14 +1633,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20200316145829.535Z' and '20200316145841.880Z'.</li>
+      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20200602230209.498Z' and '20200602230221.843Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-grace-login-use-times set-grace-login-use-times \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --graceLoginUseTime 20200316145829.535Z \
-         --graceLoginUseTime 20200316145841.880Z</pre></blockquote>
+         --graceLoginUseTime 20200602230209.498Z \
+         --graceLoginUseTime 20200602230221.843Z</pre></blockquote>
 
     <p>&nbsp;</p>
 

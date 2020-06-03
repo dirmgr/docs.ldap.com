@@ -85,14 +85,14 @@
          --keystore-password-file config/keystore.pin --verbose \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Exports a PEM-formatted representation of the certificate contained in the server-cert alias in the 'config/keystore' key store and writes it to the 'server-cert.crt' output file.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
+      <li>Exports a PEM-formatted representation of the certificate contained in the 'server-cert' alias in the 'config/keystore' key store and writes it to the 'server-cert.crt' output file.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
     </ul>
     <blockquote><pre>    manage-certificates export-certificate --keystore config/keystore \
          --keystore-password-file config/keystore.pin --alias server-cert \
          --output-file server-cert.crt --output-format PEM --verbose \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Exports a PEM-formatted representation of the private key contained in the server-cert alias in the 'config/keystore' key store and writes it to the 'server-cert.private-key' output file.</li>
+      <li>Exports a PEM-formatted representation of the private key contained in the 'server-cert' alias in the 'config/keystore' key store and writes it to the 'server-cert.private-key' output file.</li>
     </ul>
     <blockquote><pre>    manage-certificates export-private-key --keystore config/keystore \
          --keystore-password-file config/keystore.pin \
@@ -108,12 +108,12 @@
          --private-key-file server-cert.private-key \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Deletes the certificate stored in the server-cert alias in the 'config/keystore' key store.</li>
+      <li>Deletes the certificate stored in the 'server-cert' alias in the 'config/keystore' key store.</li>
     </ul>
     <blockquote><pre>    manage-certificates delete-certificate --keystore config/keystore \
          --keystore-password-file config/keystore.pin --alias server-cert</pre></blockquote>
     <ul>
-      <li>Generates a self-signed certificate with alias ca-cert in the 'config/keystore' key store.  If the key store does not already exist, then it will be created using the standard PKCS #12 format.  The certificate will have a subject DN of CN=Example Authority,O=Example Corporation,C=US, a 4096-bit RSA key, and a signature generated using the SHA256withRSA algorithm.  The certificate will be valid for 7300 days starting at midnight local time on January 1, 2017.  It will include a basic constraints extension that indicates the certificate can act as a certification authority, and a key usage extension that indicates that the key can be used for signing certificates and CRLs.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
+      <li>Generates a self-signed certificate with alias 'ca-cert' in the 'config/keystore' key store.  If the key store does not already exist, then it will be created using the standard PKCS #12 format.  The certificate will have a subject DN of 'CN=Example Authority,O=Example Corporation,C=US', a 4096-bit RSA key, and a signature generated using the SHA256withRSA algorithm.  The certificate will be valid for 7300 days starting at midnight local time on January 1, 2017.  It will include a basic constraints extension that indicates the certificate can act as a certification authority, and a key usage extension that indicates that the key can be used for signing certificates and CRLs.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
     </ul>
     <blockquote><pre>    manage-certificates generate-self-signed-certificate \
          --keystore config/keystore --keystore-type PKCS12 \
@@ -125,7 +125,7 @@
          --key-usage key-cert-sign --key-usage crl-sign \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Generates a certificate signing request for a new certificate with subject CN=ldap.example.com,O=Example Corporation,C=US that will be stored in the server-cert alias in the 'config/keystore' key store.  A new 256-bit elliptic curve key pair will be created, the request will be signed with the SHA256withECDSA signature algorithm, and the request will include a subject alternative name extension with alternate DNS names of ldap1.example.com and ldap2.example.com, and an extended key usage extension to indicate that the certificate should be usable for either TLS server authentication or TLS client authentication.  The certificate signing request will be written in PEM format to output file 'server-cert.csr'.</li>
+      <li>Generates a certificate signing request for a new certificate with subject 'CN=ldap.example.com,O=Example Corporation,C=US' that will be stored in the 'server-cert' alias in the 'config/keystore' key store.  A new 256-bit elliptic curve key pair will be created, the request will be signed with the SHA256withECDSA signature algorithm, and the request will include a subject alternative name extension with alternate DNS names of 'ldap1.example.com' and 'ldap2.example.com', and an extended key usage extension to indicate that the certificate should be usable for either TLS server authentication or TLS client authentication.  The certificate signing request will be written in PEM format to output file 'server-cert.csr'.</li>
     </ul>
     <blockquote><pre>    manage-certificates generate-certificate-signing-request \
          --keystore config/keystore --keystore-type PKCS12 \
@@ -139,7 +139,7 @@
          --extended-key-usage server-auth --extended-key-usage client-auth \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Generates a certificate signing request intended to renew the existing certificate stored in alias server-cert in the 'config/keystore' key store.  The request will use the same subject DN and set of extensions as the certificate currently stored in that alias, and it will be written to standard output in PEM format.</li>
+      <li>Generates a certificate signing request intended to renew the existing certificate stored in alias 'server-cert' in the 'config/keystore' key store.  The request will use the same subject DN and set of extensions as the certificate currently stored in that alias, and it will be written to standard output in PEM format.</li>
     </ul>
     <blockquote><pre>    manage-certificates generate-certificate-signing-request \
          --keystore config/keystore \
@@ -147,7 +147,7 @@
          --use-existing-key-pair --inherit-extensions \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Uses the ca-cert certificate in key store 'config/keystore' to sign the certificate signing request (CSR) contained in file 'server-cert.csr' and writes the signed certificate to PEM-formatted output file 'server-cert.crt'.  The signed certificate will use the subject DN and set of extensions included in the request, and the resulting certificate will be valid for 730 days, starting immediately.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
+      <li>Uses the 'ca-cert' certificate in key store 'config/keystore' to sign the certificate signing request (CSR) contained in file 'server-cert.csr' and writes the signed certificate to PEM-formatted output file 'server-cert.crt'.  The signed certificate will use the subject DN and set of extensions included in the request, and the resulting certificate will be valid for 730 days, starting immediately.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
     </ul>
     <blockquote><pre>    manage-certificates sign-certificate-signing-request \
          --keystore config/keystore \
@@ -157,7 +157,7 @@
          --days-valid 730 --include-requested-extensions \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Updates the 'config/keystore' key store to change the alias of the server-cert certificate to be server-certificate.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
+      <li>Updates the 'config/keystore' key store to change the alias of the 'server-cert' certificate to be 'server-certificate'.  Also, display a command that can be used to obtain a similar result with the Java keytool utility.</li>
     </ul>
     <blockquote><pre>    manage-certificates change-certificate-alias --keystore config/keystore \
          --keystore-password-file config/keystore.pin \
@@ -171,14 +171,14 @@
          --new-keystore-password-file config/new.pin \
          --display-keytool-command</pre></blockquote>
     <ul>
-      <li>Connects to the ldap.example.com server on port 636 to retrieve the certificate chain that the server presents during TLS negotiation.  That certificate chain will be added to the 'config/truststore' key store with a base alias of ldap.example.com:636 after interactively confirming that the certificate chain should be trusted.</li>
+      <li>Connects to the ldap.example.com server on port 636 to retrieve the certificate chain that the server presents during TLS negotiation.  That certificate chain will be added to the 'config/truststore' key store with a base alias of 'ldap.example.com:636' after interactively confirming that the certificate chain should be trusted.</li>
     </ul>
     <blockquote><pre>    manage-certificates trust-server-certificate --hostname ldap.example.com \
          --port 636 --keystore config/truststore \
          --keystore-password-file config/truststore.pin \
          --alias ldap.example.com:636</pre></blockquote>
     <ul>
-      <li>Examines the server-cert certificate in the 'config/keystore' key store to determine whether that certificate is suitable for use as a TLS server certificate.</li>
+      <li>Examines the 'server-cert' certificate in the 'config/keystore' key store to determine whether that certificate is suitable for use as a TLS server certificate.</li>
     </ul>
     <blockquote><pre>    manage-certificates check-certificate-usability \
          --keystore config/keystore \
@@ -273,9 +273,15 @@
     <h3>Arguments</h3>
     <ul>
       <li>
-        <tt>--keystore <i>{path}</i></tt> &mdash; The path to the key store file containing the certificates to list.  This is required, and the key store file must exist.
+        <tt>--keystore <i>{path}</i></tt> &mdash; The path to the key store file containing the certificates to list.  Either this argument or the --useJVMDefaultTrustStore argument must be provided, and if this argument is given, then the specified file must exist.
         <br>
         The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--use-jvm-default-trust-store</tt> &mdash; List certificates from the JVM-default trust store (/usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts).
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
       </li>
       <li>
@@ -317,8 +323,17 @@
         <br><br>
       </li>
     </ul>
+    <h3>Required Argument Sets</h3>
+    <ul>
+      <li>
+        At least one of the following arguments must be provided:  <tt>--use-jvm-default-trust-store</tt>, <tt>--keystore</tt>
+      </li>
+    </ul>
     <h3>Exclusive Argument Sets</h3>
     <ul>
+      <li>
+        The following arguments cannot be used together:  <tt>--use-jvm-default-trust-store</tt>, <tt>--keystore</tt>
+      </li>
       <li>
         The following arguments cannot be used together:  <tt>--keystore-password</tt>, <tt>--keystore-password-file</tt>, <tt>--prompt-for-keystore-password</tt>
       </li>
@@ -330,7 +345,7 @@
     <blockquote><pre>    manage-certificates list-certificates list-certificates \
          --keystore config/keystore</pre></blockquote>
     <ul>
-      <li>Display verbose information about the server-cert certificate in the 'config/keystore.p12' key store file, whose contents are protected by a password contained in the 'config/keystore.pin' file.  It will also display a command that can be used to accomplish a similar result using the Java keytool utility, along with a PEM-encoded representation of the certificate.</li>
+      <li>Display verbose information about the 'server-cert' certificate in the 'config/keystore.p12' key store file, whose contents are protected by a password contained in the 'config/keystore.pin' file.  It will also display a command that can be used to accomplish a similar result using the Java keytool utility, along with a PEM-encoded representation of the certificate.</li>
     </ul>
     <blockquote><pre>    manage-certificates list-certificates list-certificates \
          --keystore config/keystore.p12 \
@@ -340,7 +355,7 @@
       <li>Display basic information about all of the certificates in the JVM's default trust store file.</li>
     </ul>
     <blockquote><pre>    manage-certificates list-certificates list-certificates \
-         --keystore /usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts</pre></blockquote>
+         --use-jvm-default-trust-store</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -352,6 +367,12 @@
         <tt>--keystore <i>{path}</i></tt> &mdash; The path to the key store file containing the certificates to export.  This is required, and the key store file must exist.
         <br>
         The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--use-jvm-default-trust-store</tt> &mdash; Export certificates from the JVM-default trust store (/usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts).
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
       </li>
       <li>
@@ -405,6 +426,12 @@
         <br><br>
       </li>
     </ul>
+    <h3>Required Argument Sets</h3>
+    <ul>
+      <li>
+        At least one of the following arguments must be provided:  <tt>--use-jvm-default-trust-store</tt>, <tt>--keystore</tt>
+      </li>
+    </ul>
     <h3>Dependent Argument Sets</h3>
     <ul>
       <li>
@@ -416,6 +443,9 @@
     </ul>
     <h3>Exclusive Argument Sets</h3>
     <ul>
+      <li>
+        The following arguments cannot be used together:  <tt>--use-jvm-default-trust-store</tt>, <tt>--keystore</tt>
+      </li>
       <li>
         The following arguments cannot be used together:  <tt>--keystore-password</tt>, <tt>--keystore-password-file</tt>, <tt>--prompt-for-keystore-password</tt>
       </li>
@@ -624,7 +654,7 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Import the certificates in the 'server-cert.crt' file into the specified key store using an alias of server-cert.</li>
+      <li>Import the certificates in the 'server-cert.crt' file into the specified key store using an alias of 'server-cert'.</li>
     </ul>
     <blockquote><pre>    manage-certificates import-certificate import-certificate \
          --keystore config/keystore \
@@ -699,7 +729,7 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Remove the server-cert certificate from the 'config/keystore' key store.</li>
+      <li>Remove the 'server-cert' certificate from the 'config/keystore' key store.</li>
     </ul>
     <blockquote><pre>    manage-certificates delete-certificate delete-certificate \
          --keystore config/keystore --alias server-cert</pre></blockquote>
@@ -765,7 +795,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the new certificate.  This must be provided unless then --replace-existing-certificate argument is given.  If the --replace-existing-certificate argument is provided, then the --subject-dn argument may be omitted if you want to reuse the same subject as the existing certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.
+        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the new certificate.  This must be provided unless then --replace-existing-certificate argument is given.  If the --replace-existing-certificate argument is provided, then the --subject-dn argument may be omitted if you want to reuse the same subject as the existing certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department or organizational unit name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.
         <br>
         A provided value must be able to be parsed as an LDAP distinguished name as described in RFC 4514.
         <br><br>
@@ -1205,7 +1235,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the signed certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.  This argument is optional, and if it is not provided, then the subject DN from the certificate signing request will be used.
+        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the signed certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department or organizational unit name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.  This argument is optional, and if it is not provided, then the subject DN from the certificate signing request will be used.
         <br>
         A provided value must be able to be parsed as an LDAP distinguished name as described in RFC 4514.
         <br><br>
@@ -1332,7 +1362,7 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Signs the certificate signing request contained in file server-cert.csr using the ca-cert certificate contained in the 'config/keystore' key store.  The subject DN, signature algorithm, and extensions from the provided certificate signing request will be used to generate the corresponding values in the signed certificate, and the certificate will be valid for 365 days, starting immediately.  The signed certificate will be written to standard output in PEM format.</li>
+      <li>Signs the certificate signing request contained in file 'server-cert.csr' using the 'ca-cert' certificate contained in the 'config/keystore' key store.  The subject DN, signature algorithm, and extensions from the provided certificate signing request will be used to generate the corresponding values in the signed certificate, and the certificate will be valid for 365 days, starting immediately.  The signed certificate will be written to standard output in PEM format.</li>
     </ul>
     <blockquote><pre>    manage-certificates sign-certificate-signing-request \
          sign-certificate-signing-request \
@@ -1340,7 +1370,7 @@
          --keystore-password-file config/keystore.pin \
          --signing-certificate-alias ca-cert --include-requested-extensions</pre></blockquote>
     <ul>
-      <li>Signs the certificate signing request contained in file server-cert.csr using the ca-cert certificate contained in the 'config/keystore' key store.  The subject DN, signature algorithm, and extensions from the provided certificate signing request will be used to generate the corresponding values in the signed certificate, and the certificate will also include an issuer alternative name extension with an email address of ca@example.com.  The signed certificate will be valid for 730 days starting at midnight on January 1, 2017 in the local timezone.  The signed certificate will be written to the file server-cert.der file in the binary DER format.</li>
+      <li>Signs the certificate signing request contained in file 'server-cert.csr' using the 'ca-cert' certificate contained in the 'config/keystore' key store.  The subject DN, signature algorithm, and extensions from the provided certificate signing request will be used to generate the corresponding values in the signed certificate, and the certificate will also include an issuer alternative name extension with an email address of 'ca@example.com'.  The signed certificate will be valid for 730 days starting at midnight on January 1, 2017 in the local timezone.  The signed certificate will be written to the file 'server-cert.der' file in the binary DER format.</li>
     </ul>
     <blockquote><pre>    manage-certificates sign-certificate-signing-request \
          sign-certificate-signing-request \
@@ -1612,7 +1642,7 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Changes the password for the server-cert private key entry in the 'config/keystore' key store from the current password contained in file 'config/current.pin' to the new password contained in file 'config/new.pin'.</li>
+      <li>Changes the password for the 'server-cert' private key entry in the 'config/keystore' key store from the current password contained in file 'config/current.pin' to the new password contained in file 'config/new.pin'.</li>
     </ul>
     <blockquote><pre>    manage-certificates change-private-key-password \
          change-private-key-password --keystore config/keystore \
@@ -1672,7 +1702,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--alias <i>{alias}</i></tt> &mdash; The alias (also called a nickname) to use for the first certificate to add to the key store.  This alias must not already be in use in the key store.  If multiple certificates are to be imported, then the first certificate imported will use this alias, and subsequent certificates will have either "-issuer" (if there is only one issuer certificate) or "-issuer-#" (if there are multiple issuers, where # will be replaced with an incrementing number for each subsequent issuer).  If this is omitted, then a default alias will be constructed from the hostname and port number.
+        <tt>--alias <i>{alias}</i></tt> &mdash; The alias (also called a nickname) to use for the first certificate to add to the key store.  This alias must not already be in use in the key store.  If multiple certificates are to be imported, then the first certificate imported will use this alias, and subsequent certificates will have either '-issuer' (if there is only one issuer certificate) or '-issuer-#' (if there are multiple issuers, where # will be replaced with an incrementing number for each subsequent issuer).  If this is omitted, then a default alias will be constructed from the hostname and port number.
         <br><br>
       </li>
       <li>
@@ -1682,7 +1712,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--enableSSLDebugging</tt> &mdash; Enable Java's low-level support for debugging SSL/TLS communication.  This is equivalent to setting the "javax.net.debug" property to "all".
+        <tt>--enableSSLDebugging</tt> &mdash; Enable Java's low-level support for debugging SSL/TLS communication.  This is equivalent to setting the 'javax.net.debug' property to 'all'.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -1781,7 +1811,7 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Check the server-cert certificate in the 'config/keystore' key store to determine how suitable it is for use as a server certificate.</li>
+      <li>Check the 'server-cert' certificate in the 'config/keystore' key store to determine how suitable it is for use as a server certificate.</li>
     </ul>
     <blockquote><pre>    manage-certificates check-certificate-usability \
          check-certificate-usability --keystore config/keystore \

@@ -18,42 +18,42 @@ Available options include:
         port to use.
     -Z, --useSSL
         Indicates that the server should encrypt all communication using SSL.
-        If this argument is provided, then the "--keyStorePath" and
-        "--keyStorePassword" arguments must also be given, and the
-        "--useStartTLS" argument must not be given.
+        If this argument is provided, then the '--keyStorePath' and
+        '--keyStorePassword' arguments must also be given, and the
+        '--useStartTLS' argument must not be given.
     -q, --useStartTLS
         Indicates that the server should support the use of the StartTLS
         extended operation to encrypt all subsequent communication.  If this
-        argument is provided, then the "--keyStorePath" and
-        "--keyStorePassword" arguments must also be given, and the "--useSSL"
+        argument is provided, then the '--keyStorePath' and
+        '--keyStorePassword' arguments must also be given, and the '--useSSL'
         argument must not be given.
     -K, --keyStorePath {path}
         The path to the Java key store file that will be used to obtain the
         certificate to use for SSL communication.  This may only be provided if
-        either the "--useSSL" or "--useStartTLS" argument is also given, and
-        cannot be provided if the "--generateSelfSignedCertificate" argument is
+        either the '--useSSL' or '--useStartTLS' argument is also given, and
+        cannot be provided if the '--generateSelfSignedCertificate' argument is
         given.
     -W, --keyStorePassword {password}
         The password to use to access the contents of the SSL key store.  This
-        may only be provided if either the "--useSSL" or "--useStartTLS"
+        may only be provided if either the '--useSSL' or '--useStartTLS'
         argument is also given.
     --keyStoreType {type}
         The key store type.
     --generateSelfSignedCertificate
         Generate a self-signed certificate instead of using a certificate from
-        a key store.  This may only be provided if either the "--useSSL" or
-        "--useStartTLS" argument is also given, and cannot be provided if the
-        "--keyStorePath" argument is given.
+        a key store.  This may only be provided if either the '--useSSL' or
+        '--useStartTLS' argument is also given, and cannot be provided if the
+        '--keyStorePath' argument is given.
     -P, --trustStorePath {path}
         The path to the Java trust store file that will be used to determine
         whether to trust any client certificates presented to the server.  This
-        may only be provided if either the "--useSSL" or "--useStartTLS"
+        may only be provided if either the '--useSSL' or '--useStartTLS'
         argument is given, but if SSL or StartTLS is to be used and no trust
         store path is specified, then the server will automatically trust any
         client certificate presented to it.
     -T, --trustStorePassword {password}
         The password to use to access the contents of the SSL trust store.
-        This may only be provided if the "--trustStorePath" argument is also
+        This may only be provided if the '--trustStorePath' argument is also
         given.  If a trust store path is specified but no trust store password
         is given, then the server will attempt to access the trust store
         contents without a password.
@@ -78,10 +78,10 @@ Available options include:
     -D, --additionalBindDN {bindDN}
         An additional DN that may be used to bind to the server even if the
         specified user does not exist in the data set.  If this is provided,
-        then the "--additionalBindPassword" argument must also be given.
+        then the '--additionalBindPassword' argument must also be given.
     -w, --additionalBindPassword {password}
         The password that should be used to authenticate when using the DN
-        specified with the "--additionalBindDN" argument.
+        specified with the '--additionalBindDN' argument.
     -s, --useDefaultSchema
         Indicates that the server should use a default set of standard schema.
     -S, --useSchemaFile {path}
@@ -91,6 +91,13 @@ Available options include:
         subentry.  If the path specified is a directory, then any files
         contained in it will be examined in lexicographic order by name to
         create an aggregate schema.
+    --doNotValidateSchemaDefinitions
+        Do not attempt to validate any custom schema definitions provided using
+        the --useSchemaFile argument.  By default, the server will examine
+        custom schema definitions and report any issues that it identifies.
+        Note that even if the server does identify one or more issues with the
+        provided schema, it will still attempt to use that schema to the best
+        of its ability.
     -I, --equalityIndex {attr}
         Maintain an equality index for the specified attribute.  The server
         must be configured to use a schema (which may optionally be the default
@@ -107,7 +114,7 @@ Available options include:
     --passwordAttribute {attr}
         The name or OID of an attribute type that will hold user passwords for
         authentication.  If this is not provided, then a default of
-        "userPassword" will be used.  This may be provided multiple times to
+        'userPassword' will be used.  This may be provided multiple times to
         specify multiple password attributes.
     --defaultPasswordEncoding {scheme}
         The default scheme that should be used for encoding new passwords.
@@ -138,34 +145,34 @@ Available options include:
 
     -A, --accessLogToStandardOut
         Indicates that access log information should be written to standard
-        output.  This cannot be used in conjunction with the
-        ''--accessLogFile'' argument.  If neither argument is provided, then no
-        access logging will be performed.
+        output.  This cannot be used in conjunction with the '--accessLogFile'
+        argument.  If neither argument is provided, then no access logging will
+        be performed.
     -a, --accessLogFile {path}
         The path to a file to which access log information should be written
         about operations processed by the server.  This cannot be used in
-        conjunction with the ''--accessLogToStandardOut'' argument.  If neither
+        conjunction with the '--accessLogToStandardOut' argument.  If neither
         argument is provided, then no access logging will be performed.
     --jsonAccessLogToStandardOut
         Indicates that JSON-formatted access log information should be written
         to standard output.  This cannot be used in conjunction with the
-        ''--jsonAccessLogFile'' argument.  If neither argument is provided,
-        then no access logging will be performed.
+        '--jsonAccessLogFile' argument.  If neither argument is provided, then
+        no access logging will be performed.
     --jsonAccessLogFile {path}
         The path to a file to which JSON-formatted access log information
         should be written about operations processed by the server.  This
-        cannot be used in conjunction with the ''--jsonAccessLogToStandardOut''
+        cannot be used in conjunction with the '--jsonAccessLogToStandardOut'
         argument.  If neither argument is provided, then no JSON-formatted
         access logging will be performed.
     --ldapDebugLogToStandardOut
         Indicates that LDAP debug log information should be written to standard
         output.  This cannot be used in conjunction with the
-        ''--ldapDebugLogFile'' argument.  If neither argument is provided, then
+        '--ldapDebugLogFile' argument.  If neither argument is provided, then
         no LDAP debug logging will be performed.
     -d, --ldapDebugLogFile {path}
         The path to a file to which detailed information should be written
         about the LDAP communication performed by the server.  This cannot be
-        used in conjunction with the ''--ldapDebugLogToStandardOut'' argument.
+        used in conjunction with the '--ldapDebugLogToStandardOut' argument.
         If neither argument is provided, then no LDAP debug logging will be
         performed.
     -C, --codeLogFile {path}

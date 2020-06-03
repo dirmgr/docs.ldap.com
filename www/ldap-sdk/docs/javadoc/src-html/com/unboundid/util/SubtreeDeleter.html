@@ -76,9 +76,9 @@
 <span class="sourceLineNo">068</span>import com.unboundid.ldap.sdk.SearchRequest;<a name="line.68"></a>
 <span class="sourceLineNo">069</span>import com.unboundid.ldap.sdk.SearchResult;<a name="line.69"></a>
 <span class="sourceLineNo">070</span>import com.unboundid.ldap.sdk.SearchScope;<a name="line.70"></a>
-<span class="sourceLineNo">071</span>import com.unboundid.ldap.sdk.controls.ManageDsaITRequestControl;<a name="line.71"></a>
-<span class="sourceLineNo">072</span>import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;<a name="line.72"></a>
-<span class="sourceLineNo">073</span>import com.unboundid.ldap.sdk.controls.SubentriesRequestControl;<a name="line.73"></a>
+<span class="sourceLineNo">071</span>import com.unboundid.ldap.sdk.controls.DraftLDUPSubentriesRequestControl;<a name="line.71"></a>
+<span class="sourceLineNo">072</span>import com.unboundid.ldap.sdk.controls.ManageDsaITRequestControl;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>import com.unboundid.ldap.sdk.controls.SimplePagedResultsControl;<a name="line.73"></a>
 <span class="sourceLineNo">074</span>import com.unboundid.ldap.sdk.extensions.WhoAmIExtendedRequest;<a name="line.74"></a>
 <span class="sourceLineNo">075</span>import com.unboundid.ldap.sdk.extensions.WhoAmIExtendedResult;<a name="line.75"></a>
 <span class="sourceLineNo">076</span>import com.unboundid.ldap.sdk.unboundidds.controls.HardDeleteRequestControl;<a name="line.76"></a>
@@ -573,7 +573,7 @@
 <span class="sourceLineNo">565</span><a name="line.565"></a>
 <span class="sourceLineNo">566</span><a name="line.566"></a>
 <span class="sourceLineNo">567</span>  /**<a name="line.567"></a>
-<span class="sourceLineNo">568</span>   * Indicates whether to use the {@link SubentriesRequestControl} when<a name="line.568"></a>
+<span class="sourceLineNo">568</span>   * Indicates whether to use the {@link DraftLDUPSubentriesRequestControl} when<a name="line.568"></a>
 <span class="sourceLineNo">569</span>   * searching for entries to delete if the server root DSE advertises support<a name="line.569"></a>
 <span class="sourceLineNo">570</span>   * for it.  The subentries request control allows LDAP subentries to be<a name="line.570"></a>
 <span class="sourceLineNo">571</span>   * included in search results.  These entries are normally excluded from<a name="line.571"></a>
@@ -595,7 +595,7 @@
 <span class="sourceLineNo">587</span><a name="line.587"></a>
 <span class="sourceLineNo">588</span><a name="line.588"></a>
 <span class="sourceLineNo">589</span>  /**<a name="line.589"></a>
-<span class="sourceLineNo">590</span>   * Specifies whether to use the {@link SubentriesRequestControl} when<a name="line.590"></a>
+<span class="sourceLineNo">590</span>   * Specifies whether to use the {@link DraftLDUPSubentriesRequestControl} when<a name="line.590"></a>
 <span class="sourceLineNo">591</span>   * searching for entries to delete if the server root DSE advertises support<a name="line.591"></a>
 <span class="sourceLineNo">592</span>   * for it.  The subentries request control allows LDAP subentries to be<a name="line.592"></a>
 <span class="sourceLineNo">593</span>   * included in search results.  These entries are normally excluded from<a name="line.593"></a>
@@ -1010,7 +1010,7 @@
 <span class="sourceLineNo">1002</span><a name="line.1002"></a>
 <span class="sourceLineNo">1003</span>    final boolean useSubentries = useSubentriesControlIfAvailable &amp;&amp;<a name="line.1003"></a>
 <span class="sourceLineNo">1004</span>         supportsControl(connection, rootDSE,<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>              SubentriesRequestControl.SUBENTRIES_REQUEST_OID);<a name="line.1005"></a>
+<span class="sourceLineNo">1005</span>              DraftLDUPSubentriesRequestControl.SUBENTRIES_REQUEST_OID);<a name="line.1005"></a>
 <span class="sourceLineNo">1006</span><a name="line.1006"></a>
 <span class="sourceLineNo">1007</span>    final List&lt;Control&gt; searchControls = new ArrayList&lt;&gt;(10);<a name="line.1007"></a>
 <span class="sourceLineNo">1008</span>    searchControls.addAll(additionalSearchControls);<a name="line.1008"></a>
@@ -1445,7 +1445,7 @@
 <span class="sourceLineNo">1437</span>    {<a name="line.1437"></a>
 <span class="sourceLineNo">1438</span>      searchRequest.addControl(c);<a name="line.1438"></a>
 <span class="sourceLineNo">1439</span>    }<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>    searchRequest.addControl(new SubentriesRequestControl(false));<a name="line.1440"></a>
+<span class="sourceLineNo">1440</span>    searchRequest.addControl(new DraftLDUPSubentriesRequestControl(false));<a name="line.1440"></a>
 <span class="sourceLineNo">1441</span><a name="line.1441"></a>
 <span class="sourceLineNo">1442</span>    return searchRequest;<a name="line.1442"></a>
 <span class="sourceLineNo">1443</span>  }<a name="line.1443"></a>

@@ -12,6 +12,15 @@ Available options include:
     is contained in the specified file.  If the log data is encrypted and this
     argument is not provided, then the tool will interactively prompt for the
     encryption passphrase.
+--reportCount {value}
+    The number of values to display for each item being summarized.  A value of
+    zero indicates that all items should be displayed.  If this is not
+    provided, a default value of 20 will be used.
+--doNotAnonymize
+    Do not anonymize the output, but include actual attribute values in filters
+    and DNs.  This will also have the effect of de-generifying those values, so
+    output including the most common filters and DNs in some category will be
+    specific instances of those filters and DNs instead of generic patterns.
 --interactive
     Launch the tool in interactive mode.
 --outputFile {path}

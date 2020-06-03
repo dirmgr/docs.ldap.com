@@ -68,7 +68,7 @@ Available options include:
         present to the directory server for SSL client authentication.
     --enableSSLDebugging
         Enable Java's low-level support for debugging SSL/TLS communication.
-        This is equivalent to setting the "javax.net.debug" property to "all".
+        This is equivalent to setting the 'javax.net.debug' property to 'all'.
     -o, --saslOption {name=value}
         A name-value pair providing information to use when performing SASL
         authentication.
@@ -210,7 +210,7 @@ Available options include:
         user.
     --operationPurpose {purpose}
         Indicates that all operations should include the UnboundID-proprietary
-        'operation purpose' request control to provide the specified reason for
+        operation purpose request control to provide the specified reason for
         the operation.
     --useManageDsaIT
         Indicates that all requests should include the manageDsaIT request
@@ -221,18 +221,18 @@ Available options include:
         request control (as described in RFC 4528) to indicate that the server
         should only apply changes to entries that match this filter.
     -E, --authorizationIdentity
-        Indicates that all bind requests should include the 'authorization
-        identity' request control as defined in RFC 3829.  With this control, a
+        Indicates that all bind requests should include the authorization
+        identity request control as defined in RFC 3829.  With this control, a
         successful bind result should include the authorization identity
         assigned to the connection.
     --generatePassword
-        Indicates that all add requests should include the 'generate password'
+        Indicates that all add requests should include the generate password
         request control to request that the server generate a password for the
         new account.  The generated password will be returned in a
         corresponding response control.
     --getAuthorizationEntryAttribute {attr}
         Indicates that all bind requests should include the
-        UnboundID-proprietary 'get authorization entry' request control to
+        UnboundID-proprietary get authorization entry request control to
         request that the server return the specified attribute (or collection
         of attributes, in the case of a special identifier like '*' to indicate
         all user attributes or '+' to indicate all operational attributes) from
@@ -240,25 +240,24 @@ Available options include:
         times to specify multiple attributes to request.
     --getBackendSetID
         Indicates that all add, delete, modify, and modify DN requests should
-        include the UnboundID-proprietary 'get backend set ID' request control
-        to request that the Directory Proxy Server include a corresponding get
+        include the UnboundID-proprietary get backend set ID request control to
+        request that the Directory Proxy Server include a corresponding get
         backend set ID response control in each operation response, indicating
         the entry-balancing backend set in which the write was processed.
     --getServerID
         Indicates that all add, delete modify, and modify DN requests should
-        include the UnboundID-proprietary 'get server ID'  request control to
+        include the UnboundID-proprietary get server ID request control to
         request that server include a corresponding get server ID response
         control in each operation response, indicating the server in which the
         write was processed.
     --getUserResourceLimits
         Indicates that all bind requests should include the
-        UnboundID-proprietary 'get user resource limits' request control to
-        request that the server return  information about resource limits
-        (e.g., size limit, time limit, idle time limit, etc.) imposed for the
-        user.
+        UnboundID-proprietary get user resource limits request control to
+        request that the server return information about resource limits (e.g.,
+        size limit, time limit, idle time limit, etc.) imposed for the user.
     --ignoreNoUserModification
         Indicates that all add requests should include the
-        UnboundID-proprietary 'ignore NO-USER-MODIFICATION' request control to
+        UnboundID-proprietary ignore NO-USER-MODIFICATION request control to
         permit setting values for certain operational attributes not normally
         permitted to be provided by external clients.
     --preReadAttribute {attr}
@@ -297,16 +296,17 @@ Available options include:
     --assuredReplicationLocalLevel {level}
         Specifies the local assurance level to use for the assured replication
         request control.  This should only be used if the
-        '--useAssuredReplication' argument is provided.    The value should be
-        one of none, received-any-server, or processed-all-servers.  If assured
-        replication is to be used but this argument is not provided, then the
-        server will automatically determine the local assurance level to use.
+        '--useAssuredReplication' argument is provided.  The value should be
+        one of 'none', 'received-any-server', or 'processed-all-servers'.  If
+        assured replication is to be used but this argument is not provided,
+        then the server will automatically determine the local assurance level
+        to use.
     --assuredReplicationRemoteLevel {level}
         Specifies the remote assurance level to use for the assured replication
         request control.  This should only be used if the
-        '--useAssuredReplication' argument is provided.    The value should be
-        one of none, received-any-remote-location,
-        received-all-remote-locations, or processed-all-remote-servers.  If
+        '--useAssuredReplication' argument is provided.  The value should be
+        one of 'none', 'received-any-remote-location',
+        'received-all-remote-locations', or 'processed-all-remote-servers'.  If
         assured replication is to be used but this argument is not provided,
         then the server will automatically determine the remote assurance level
         to use.
@@ -318,11 +318,11 @@ Available options include:
         to use.
     --replicationRepair
         Indicates that all operation requests should include the
-        UnboundID-proprietary 'replication repair' request control.  This will
+        UnboundID-proprietary replication repair request control.  This will
         cause the change to be applied only to the target directory server
         instance but not to any other server in the replication topology.
     --nameWithEntryUUID
-        Include the UnboundID-proprietary 'name with entryUUID' request control
+        Include the UnboundID-proprietary name with entryUUID request control
         in all add requests sent to the server to indicate that the server
         should use the entryUUID operational attribute as the naming attribute
         for the resulting entry instead of the provided RDN.
@@ -348,11 +348,11 @@ Available options include:
         UnboundID-proprietary password validation details request control to
         indicate that the response should include information about the
         password quality requirements that the server will impose for the
-        target users password and whether the provided password satisfies each
+        target user's password and whether the provided password satisfies each
         of those constraints.
     --permissiveModify
         Indicates that all modify operation requests should include the
-        'permissive modify' request control, which indicates that the server
+        permissive modify request control, which indicates that the server
         should be more lenient for certain types of changes (e.g., trying to
         add an attribute value that already exists, or trying to remove a value
         that does not exist) that would normally cause the modify operation to
@@ -363,16 +363,16 @@ Available options include:
         then deleting them.
     --serverSideSubtreeDelete
         Indicates that all delete requests should be processed as server-side
-        subtree deletes using the 'subtree delete' request control.
+        subtree deletes using the subtree delete request control.
     -s, --softDelete
         Indicates that all delete requests should include the
-        UnboundID-proprietary 'soft delete' request control, which indicates
-        that the server should hide the entry for a period of time before
-        deleting it so that it may be restored with an undelete operation if
-        the delete should be reverted.
+        UnboundID-proprietary soft delete request control, which indicates that
+        the server should hide the entry for a period of time before deleting
+        it so that it may be restored with an undelete operation if the delete
+        should be reverted.
     --hardDelete
         Indicates that all delete requests should include the
-        UnboundID-proprietary 'hard delete' request control, which will
+        UnboundID-proprietary hard delete request control, which will
         permanently delete the target entry even if the server would have
         otherwise performed a soft delete operation to hide the entry for a
         period of time before deleting it.
@@ -399,18 +399,18 @@ Available options include:
         brief period of time).
     --suppressOperationalAttributeUpdates {attr}
         Indicates that all operations should include the UnboundID-proprietary
-        'suppress operational attribute updates' request control to indicate
-        that the server should not apply any updates to the specified
-        operational attributes.  The value may be one of 'last-access-time',
+        suppress operational attribute updates request control to indicate that
+        the server should not apply any updates to the specified operational
+        attributes.  The value may be one of 'last-access-time',
         'last-login-time', 'last-login-ip', or 'lastmod'.
     --suppressReferentialIntegrityUpdates
         Indicates that the tool should include the UnboundID-proprietary
-        'suppress referential integrity updates' request control in all delete
+        suppress referential integrity updates request control in all delete
         and modify DN operations to indicate that the server should not perform
         any referential integrity processing for those operations.
     --usePasswordPolicyControl
         Indicates that all add, bind and modify requests should include the
-        'password policy' request control (as defined in
+        password policy request control (as defined in
         draft-behera-ldap-password-policy-10) to request that the response
         include password policy-related information about the target entry.
     --uniquenessAttribute {attr}

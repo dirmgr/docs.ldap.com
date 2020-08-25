@@ -14,10 +14,10 @@
       Perform compare operations in an LDAP directory server.  Compare operations may be used to efficiently determine whether a specified entry has a given value.
     </p>
     <p>
-      The exit code for this tool will reflect the result of its processing.  If only a single compare operation is processed, then the exit code will match the LDAP result code for that compare operation (5 for 'COMPARE_FALSE' to indicate that the assertion does not match the target entry, 6 for 'COMPARE_TRUE' to indicate that the assertion does match, or some other result code if an error occurred).  If multiple compare operations are processed, then the exit code will be zero if all compare operations yielded a result of either COMPARE_FALSE or COMPARE_TRUE, or a nonzero exit code that reflects the first error result encountered during processing.
+      The exit code for this tool will indicate whether processing was successful or unsuccessful, and to provide a basic indication of the reason for unsuccessful attempts.  By default, it will use an exit code of zero (which corresponds to the LDAP 'success' result) if all compare operations completed with a result code of either 'compare false' or 'compare true' (integer values 5 and 6, respectively), but if the --useCompareResultCodeAsExitCode argument is provided, only one compare assertion is performed, and it yields an exit code of 'compare false' or 'compare true', then the numeric value for that result code will be used as the exit code.  If any error occurs during processing, then the exit code will be a nonzero value that reflects the first error result that was encountered.
     </p>
     <p>
-      The attribute type and assertion value to use for the compare operations will typically be provided as the first unnamed trailing argument provided on the command line.  It should be formatted with the name or OID of the target attribute type followed by a single colon and the string representation of the assertion value.  Alternatively, the attribute name or OID may be followed by two colons and the base64-encoded representation of the assertion value.
+      The attribute type and assertion value to use for the compare operations will typically be provided as the first unnamed trailing argument provided on the command line.  It should be formatted with the name or OID of the target attribute type followed by a single colon and the string representation of the assertion value.  Alternatively, the attribute name or OID may be followed by two colons and the base64-encoded representation of the assertion value, or it may be followed by a colon and a less-than symbol to indicate that the assertion value should be read from a file (in which case the exact bytes of the file, including line breaks, will be used as the assertion value).
     </p>
     <p>
       The DNs of the entries to compare may either be provided on the command line as additional unnamed trailing arguments after the provided attribute-value assertion, or they may be read from a file whose path is provided using the --dnFile argument.
@@ -26,7 +26,7 @@
       If the attribute-value assertion is provided on the command line as an unnamed trailing argument, then the same assertion will be performed for all operations.  If multiple types of assertions should be performed, then you may use the --assertionFile argument to specify the path to a file containing both attribute-value assertions and entry DNs.
     </p>
     <h3>Usage</h3>
-    <blockquote><pre>ldapcompare <i>{arguments}</i> <i>[attribute:value|attribute::base64Value [dn1 [dn2 [ dn3 [ .. ]]]]]</i></pre></blockquote>
+    <blockquote><pre>ldapcompare <i>{arguments}</i> <i>[attribute:value|attribute::base64Value|attribute:&lt;valueFilePath [dn1 [dn2 [ dn3 [ .. ]]]]]</i></pre></blockquote>
     <h3>LDAP Connection and Authentication Arguments</h3>
     <ul>
       <li>
@@ -163,7 +163,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--assertionFile <i>{path}</i></tt> &mdash; The path to a file with information about the compare assertions to be evaluated.  If this is provided, then each line of the file must contain the DN of the target entry followed by one or more horizontal tab characters and the attribute-value assertion to process against that entry (specified as the attribute name followed by a single colon and the string representation of the value, or the attribute name followed by two colons and a base64-encoded representation of the value).
+        <tt>--assertionFile <i>{path}</i></tt> &mdash; The path to a file with information about the compare assertions to be evaluated.  If this is provided, then each line of the file must contain the DN of the target entry followed by one or more horizontal tab characters and the attribute-value assertion to process against that entry (specified as the attribute name followed by a single colon and the string representation of the assertion value, the attribute name followed by two colons and a base64-encoded representation of the assertion value, or the attribute name followed by a colon, a less-than sign, and the path to a file from which the raw assertion value should be read).
         <br>
         The specified path must refer to a file that exists.
         <br><br>
@@ -233,11 +233,11 @@
         <br><br>
       </li>
       <li>
-        <tt>-Y <i>{authzID}</i></tt> / <tt>--proxyAs <i>{authzID}</i></tt> / <tt>--proxy-as <i>{authzID}</i></tt> / <tt>--proxyV2As <i>{authzID}</i></tt> / <tt>--proxy-v2-as <i>{authzID}</i></tt> / <tt>--proxyV2 <i>{authzID}</i></tt> / <tt>--proxy-v2 <i>{authzID}</i></tt> &mdash; Include the proxied authorization control (also known as the proxied authorization v2 request control, as described in RFC 4370) in compare requests to indicate that the server should process the operation under the authority of the specified user.  The authorization identity should generally be specified in the form 'dn:' followed by the DN of the target user, or 'u:' followed by a username for the target user.
+        <tt>-Y <i>{authzID}</i></tt> / <tt>--proxyAs <i>{authzID}</i></tt> &mdash; Include the proxied authorization control (also known as the proxied authorization v2 request control, as described in RFC 4370) in compare requests to indicate that the server should process the operation under the authority of the specified user.  The authorization identity should generally be specified in the form 'dn:' followed by the DN of the target user, or 'u:' followed by a username for the target user.
         <br><br>
       </li>
       <li>
-        <tt>--proxyV1As <i>{dn}</i></tt> / <tt>--proxy-v1-as <i>{dn}</i></tt> / <tt>--proxyV1 <i>{dn}</i></tt> / <tt>--proxy-v1 <i>{dn}</i></tt> &mdash; Include the proxied authorization v1 request control (as described in draft-weltman-ldapv3-proxy-04) in compare requests to indicate that the server should process the operation under the authority of the user with the specified DN.
+        <tt>--proxyV1As <i>{dn}</i></tt> &mdash; Include the proxied authorization v1 request control (as described in draft-weltman-ldapv3-proxy-04) in compare requests to indicate that the server should process the operation under the authority of the user with the specified DN.
         <br>
         A provided value must be able to be parsed as an LDAP distinguished name as described in RFC 4514.
         <br><br>
@@ -293,6 +293,12 @@
       </li>
       <li>
         <tt>--terse</tt> &mdash; Indicates that the tool should generate terse output.  If this is provided, then additional compare output will be suppressed, even for error results and results with response controls.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--useCompareResultCodeAsExitCode</tt> &mdash; Use the integer value of the compare operation result code as the tool exit code.  This primarily applies to cases in which only a single compare assertion is processed and the response to that compare operation has a result code of either 'compare false' (integer value 5) or 'compare true' (integer value 6).  By default, the tool will use an exit code of zero in such cases to indicate that processing completed successfully, but the exit code may be useful in scripts to more easily obtain the result of the compare operation.  Note that if multiple compare operations are all processed successfully, then the tool will always return an exit code of zero, and if an error is encountered during processing, then the exit code will reflect the LDAP result code for that associated error.  This option only affects the tool exit code and does not alter the visible output in any way.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>

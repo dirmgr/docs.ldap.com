@@ -71,10 +71,10 @@
 <span class="sourceLineNo">063</span>       extends InputStream<a name="line.63"></a>
 <span class="sourceLineNo">064</span>{<a name="line.64"></a>
 <span class="sourceLineNo">065</span>  // The currently-active input stream.<a name="line.65"></a>
-<span class="sourceLineNo">066</span>  private volatile InputStream activeInputStream;<a name="line.66"></a>
+<span class="sourceLineNo">066</span>  @Nullable private volatile InputStream activeInputStream;<a name="line.66"></a>
 <span class="sourceLineNo">067</span><a name="line.67"></a>
 <span class="sourceLineNo">068</span>  // The iterator that will be used to access the input streams.<a name="line.68"></a>
-<span class="sourceLineNo">069</span>  private final Iterator&lt;InputStream&gt; streamIterator;<a name="line.69"></a>
+<span class="sourceLineNo">069</span>  @NotNull private final Iterator&lt;InputStream&gt; streamIterator;<a name="line.69"></a>
 <span class="sourceLineNo">070</span><a name="line.70"></a>
 <span class="sourceLineNo">071</span><a name="line.71"></a>
 <span class="sourceLineNo">072</span><a name="line.72"></a>
@@ -85,7 +85,7 @@
 <span class="sourceLineNo">077</span>   * @param  inputStreams  The input streams to be used by this aggregate input<a name="line.77"></a>
 <span class="sourceLineNo">078</span>   *                       stream.  It must not be {@code null}.<a name="line.78"></a>
 <span class="sourceLineNo">079</span>   */<a name="line.79"></a>
-<span class="sourceLineNo">080</span>  public AggregateInputStream(final InputStream... inputStreams)<a name="line.80"></a>
+<span class="sourceLineNo">080</span>  public AggregateInputStream(@NotNull final InputStream... inputStreams)<a name="line.80"></a>
 <span class="sourceLineNo">081</span>  {<a name="line.81"></a>
 <span class="sourceLineNo">082</span>    this(StaticUtils.toList(inputStreams));<a name="line.82"></a>
 <span class="sourceLineNo">083</span>  }<a name="line.83"></a>
@@ -100,7 +100,7 @@
 <span class="sourceLineNo">092</span>   *                       stream.  It must not be {@code null}.<a name="line.92"></a>
 <span class="sourceLineNo">093</span>   */<a name="line.93"></a>
 <span class="sourceLineNo">094</span>  public AggregateInputStream(<a name="line.94"></a>
-<span class="sourceLineNo">095</span>              final Collection&lt;? extends InputStream&gt; inputStreams)<a name="line.95"></a>
+<span class="sourceLineNo">095</span>              @NotNull final Collection&lt;? extends InputStream&gt; inputStreams)<a name="line.95"></a>
 <span class="sourceLineNo">096</span>  {<a name="line.96"></a>
 <span class="sourceLineNo">097</span>    Validator.ensureNotNull(inputStreams);<a name="line.97"></a>
 <span class="sourceLineNo">098</span><a name="line.98"></a>
@@ -121,7 +121,7 @@
 <span class="sourceLineNo">113</span>   * @throws  IOException  If a problem is encountered while attempting to<a name="line.113"></a>
 <span class="sourceLineNo">114</span>   *                       create input streams for the provided files.<a name="line.114"></a>
 <span class="sourceLineNo">115</span>   */<a name="line.115"></a>
-<span class="sourceLineNo">116</span>  public AggregateInputStream(final File... files)<a name="line.116"></a>
+<span class="sourceLineNo">116</span>  public AggregateInputStream(@NotNull final File... files)<a name="line.116"></a>
 <span class="sourceLineNo">117</span>         throws IOException<a name="line.117"></a>
 <span class="sourceLineNo">118</span>  {<a name="line.118"></a>
 <span class="sourceLineNo">119</span>    this(false, files);<a name="line.119"></a>
@@ -151,7 +151,7 @@
 <span class="sourceLineNo">143</span>   *                       create input streams for the provided files.<a name="line.143"></a>
 <span class="sourceLineNo">144</span>   */<a name="line.144"></a>
 <span class="sourceLineNo">145</span>  public AggregateInputStream(final boolean ensureBlankLinesBetweenFiles,<a name="line.145"></a>
-<span class="sourceLineNo">146</span>                              final File... files)<a name="line.146"></a>
+<span class="sourceLineNo">146</span>                              @NotNull final File... files)<a name="line.146"></a>
 <span class="sourceLineNo">147</span>         throws IOException<a name="line.147"></a>
 <span class="sourceLineNo">148</span>  {<a name="line.148"></a>
 <span class="sourceLineNo">149</span>    Validator.ensureNotNull(files);<a name="line.149"></a>
@@ -265,7 +265,7 @@
 <span class="sourceLineNo">257</span>   *                       data from an input stream.<a name="line.257"></a>
 <span class="sourceLineNo">258</span>   */<a name="line.258"></a>
 <span class="sourceLineNo">259</span>  @Override()<a name="line.259"></a>
-<span class="sourceLineNo">260</span>  public int read(final byte[] b)<a name="line.260"></a>
+<span class="sourceLineNo">260</span>  public int read(@NotNull final byte[] b)<a name="line.260"></a>
 <span class="sourceLineNo">261</span>         throws IOException<a name="line.261"></a>
 <span class="sourceLineNo">262</span>  {<a name="line.262"></a>
 <span class="sourceLineNo">263</span>    return read(b, 0, b.length);<a name="line.263"></a>
@@ -289,7 +289,7 @@
 <span class="sourceLineNo">281</span>   *                       data from an input stream.<a name="line.281"></a>
 <span class="sourceLineNo">282</span>   */<a name="line.282"></a>
 <span class="sourceLineNo">283</span>  @Override()<a name="line.283"></a>
-<span class="sourceLineNo">284</span>  public int read(final byte[] b, final int off, final int len)<a name="line.284"></a>
+<span class="sourceLineNo">284</span>  public int read(@NotNull final byte[] b, final int off, final int len)<a name="line.284"></a>
 <span class="sourceLineNo">285</span>         throws IOException<a name="line.285"></a>
 <span class="sourceLineNo">286</span>  {<a name="line.286"></a>
 <span class="sourceLineNo">287</span>    while (true)<a name="line.287"></a>

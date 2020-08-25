@@ -70,7 +70,7 @@
 <span class="sourceLineNo">062</span><a name="line.62"></a>
 <span class="sourceLineNo">063</span><a name="line.63"></a>
 <span class="sourceLineNo">064</span>  // The comparator that will be used to make the underlying determination.<a name="line.64"></a>
-<span class="sourceLineNo">065</span>  private final Comparator&lt;T&gt; baseComparator;<a name="line.65"></a>
+<span class="sourceLineNo">065</span>  @Nullable private final Comparator&lt;T&gt; baseComparator;<a name="line.65"></a>
 <span class="sourceLineNo">066</span><a name="line.66"></a>
 <span class="sourceLineNo">067</span><a name="line.67"></a>
 <span class="sourceLineNo">068</span><a name="line.68"></a>
@@ -93,7 +93,7 @@
 <span class="sourceLineNo">085</span>   * @param  baseComparator  The base comparator that will be used to make the<a name="line.85"></a>
 <span class="sourceLineNo">086</span>   *                         determination.<a name="line.86"></a>
 <span class="sourceLineNo">087</span>   */<a name="line.87"></a>
-<span class="sourceLineNo">088</span>  public ReverseComparator(final Comparator&lt;T&gt; baseComparator)<a name="line.88"></a>
+<span class="sourceLineNo">088</span>  public ReverseComparator(@NotNull final Comparator&lt;T&gt; baseComparator)<a name="line.88"></a>
 <span class="sourceLineNo">089</span>  {<a name="line.89"></a>
 <span class="sourceLineNo">090</span>    this.baseComparator = baseComparator;<a name="line.90"></a>
 <span class="sourceLineNo">091</span>  }<a name="line.91"></a>
@@ -114,7 +114,7 @@
 <span class="sourceLineNo">106</span>   */<a name="line.106"></a>
 <span class="sourceLineNo">107</span>  @SuppressWarnings("unchecked")<a name="line.107"></a>
 <span class="sourceLineNo">108</span>  @Override()<a name="line.108"></a>
-<span class="sourceLineNo">109</span>  public int compare(final T o1, final T o2)<a name="line.109"></a>
+<span class="sourceLineNo">109</span>  public int compare(@NotNull final T o1, @NotNull final T o2)<a name="line.109"></a>
 <span class="sourceLineNo">110</span>  {<a name="line.110"></a>
 <span class="sourceLineNo">111</span>    final int baseValue;<a name="line.111"></a>
 <span class="sourceLineNo">112</span>    if (baseComparator == null)<a name="line.112"></a>
@@ -173,7 +173,7 @@
 <span class="sourceLineNo">165</span>   */<a name="line.165"></a>
 <span class="sourceLineNo">166</span>  @Override()<a name="line.166"></a>
 <span class="sourceLineNo">167</span>  @SuppressWarnings("unchecked")<a name="line.167"></a>
-<span class="sourceLineNo">168</span>  public boolean equals(final Object o)<a name="line.168"></a>
+<span class="sourceLineNo">168</span>  public boolean equals(@Nullable final Object o)<a name="line.168"></a>
 <span class="sourceLineNo">169</span>  {<a name="line.169"></a>
 <span class="sourceLineNo">170</span>    if (o == null)<a name="line.170"></a>
 <span class="sourceLineNo">171</span>    {<a name="line.171"></a>

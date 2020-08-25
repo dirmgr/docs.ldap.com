@@ -63,10 +63,10 @@
 <span class="sourceLineNo">055</span>  private final boolean autoFlush;<a name="line.55"></a>
 <span class="sourceLineNo">056</span><a name="line.56"></a>
 <span class="sourceLineNo">057</span>  // The fixed-rate barrier that will serve as a rate limiter for this class.<a name="line.57"></a>
-<span class="sourceLineNo">058</span>  private final FixedRateBarrier rateLimiter;<a name="line.58"></a>
+<span class="sourceLineNo">058</span>  @NotNull private final FixedRateBarrier rateLimiter;<a name="line.58"></a>
 <span class="sourceLineNo">059</span><a name="line.59"></a>
 <span class="sourceLineNo">060</span>  // The output stream to which the data will actually be written.<a name="line.60"></a>
-<span class="sourceLineNo">061</span>  private final OutputStream wrappedStream;<a name="line.61"></a>
+<span class="sourceLineNo">061</span>  @NotNull private final OutputStream wrappedStream;<a name="line.61"></a>
 <span class="sourceLineNo">062</span><a name="line.62"></a>
 <span class="sourceLineNo">063</span>  // The maximum number of bytes that can be written in any single call to the<a name="line.63"></a>
 <span class="sourceLineNo">064</span>  // rate limiter.<a name="line.64"></a>
@@ -87,7 +87,7 @@
 <span class="sourceLineNo">079</span>   * @param  autoFlush          Indicates whether to automatically flush the<a name="line.79"></a>
 <span class="sourceLineNo">080</span>   *                            wrapped output stream after each write.<a name="line.80"></a>
 <span class="sourceLineNo">081</span>   */<a name="line.81"></a>
-<span class="sourceLineNo">082</span>  public RateLimitedOutputStream(final OutputStream wrappedStream,<a name="line.82"></a>
+<span class="sourceLineNo">082</span>  public RateLimitedOutputStream(@NotNull final OutputStream wrappedStream,<a name="line.82"></a>
 <span class="sourceLineNo">083</span>                                 final int maxBytesPerSecond,<a name="line.83"></a>
 <span class="sourceLineNo">084</span>                                 final boolean autoFlush)<a name="line.84"></a>
 <span class="sourceLineNo">085</span>  {<a name="line.85"></a>
@@ -155,7 +155,7 @@
 <span class="sourceLineNo">147</span>   *                       wrapped stream.<a name="line.147"></a>
 <span class="sourceLineNo">148</span>   */<a name="line.148"></a>
 <span class="sourceLineNo">149</span>  @Override()<a name="line.149"></a>
-<span class="sourceLineNo">150</span>  public void write(final byte[] b)<a name="line.150"></a>
+<span class="sourceLineNo">150</span>  public void write(@NotNull final byte[] b)<a name="line.150"></a>
 <span class="sourceLineNo">151</span>         throws IOException<a name="line.151"></a>
 <span class="sourceLineNo">152</span>  {<a name="line.152"></a>
 <span class="sourceLineNo">153</span>    write(b, 0, b.length);<a name="line.153"></a>
@@ -180,7 +180,7 @@
 <span class="sourceLineNo">172</span>   *                       wrapped stream.<a name="line.172"></a>
 <span class="sourceLineNo">173</span>   */<a name="line.173"></a>
 <span class="sourceLineNo">174</span>  @Override()<a name="line.174"></a>
-<span class="sourceLineNo">175</span>  public void write(final byte[] b, final int offset, final int length)<a name="line.175"></a>
+<span class="sourceLineNo">175</span>  public void write(@NotNull final byte[] b, final int offset, final int length)<a name="line.175"></a>
 <span class="sourceLineNo">176</span>         throws IOException<a name="line.176"></a>
 <span class="sourceLineNo">177</span>  {<a name="line.177"></a>
 <span class="sourceLineNo">178</span>    if (length &lt;= 0)<a name="line.178"></a>

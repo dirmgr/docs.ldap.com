@@ -402,7 +402,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--output-format <i>{format}</i></tt> / <tt>--outputFormat <i>{format}</i></tt> &mdash; The output format to use for the exported certificate.  The value may be either 'PEM' (to export the certificate in the text-based PEM format), or 'DER' (to export the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.
+        <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the exported certificate.  The value may be either 'PEM' (to export the certificate in the text-based PEM format), or 'DER' (to export the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.
         <br>
         A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
         <br><br>
@@ -514,7 +514,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--output-format <i>{format}</i></tt> / <tt>--outputFormat <i>{format}</i></tt> &mdash; The output format to use for the exported private key.  The value may be either 'PEM' (to export the private key in the text-based PEM format), or 'DER' (to export the key in the binary DER format).  If this is not provided, then the PEM output format will be used.
+        <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the exported private key.  The value may be either 'PEM' (to export the private key in the text-based PEM format), or 'DER' (to export the key in the binary DER format).  If this is not provided, then the PEM output format will be used.
         <br>
         A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
         <br><br>
@@ -964,7 +964,7 @@
     <h3>Arguments</h3>
     <ul>
       <li>
-        <tt>--output-format <i>{format}</i></tt> / <tt>--outputFormat <i>{format}</i></tt> &mdash; The output format to use for the the generated certificate signing request.  The value may be either 'PEM' (to export the request in the text-based PEM format), or 'DER' (to export the request in the binary DER format).  If this is not provided, then the PEM output format will be used.
+        <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the the generated certificate signing request.  The value may be either 'PEM' (to export the request in the text-based PEM format), or 'DER' (to export the request in the binary DER format).  If this is not provided, then the PEM output format will be used.
         <br>
         A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
         <br><br>
@@ -1040,7 +1040,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--key-size-bits <i>{bits}</i></tt> &mdash; The name of the key algorithm to use to generate the key pair.  If present, the value will typically be 'RSA' or 'EC' (for elliptic curve).  This argument must not be provided if the --replace-existing-certificate argument is used.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default key algorithm of 'RSA' will be used.
+        <tt>--key-size-bits <i>{bits}</i></tt> &mdash; The size of the key to generate, in bits.  This argument must not be provided if the --replace-existing-certificate argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default key size of 2048 bits will be used.
         <br>
         The specified value must not be less than 1 or greater than 2,147,483,647.
         <br><br>
@@ -1187,7 +1187,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--output-format <i>{format}</i></tt> / <tt>--outputFormat <i>{format}</i></tt> &mdash; The output format to use for the signed certificate.  The value may be either 'PEM' (to write the certificate in the text-based PEM format), or 'DER' (to write the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.  If an output format of 'DER' is specified, then the --certificate-output-file argument must also be provided.
+        <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the signed certificate.  The value may be either 'PEM' (to write the certificate in the text-based PEM format), or 'DER' (to write the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.  If an output format of 'DER' is specified, then the --certificate-output-file argument must also be provided.
         <br>
         A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
         <br><br>

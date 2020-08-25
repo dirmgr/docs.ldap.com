@@ -27,6 +27,302 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 5.1.1</h3>
+
+              <p>
+                The following changes were made between the 5.1.0 and 5.1.1 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added new @NotNull and @Nullable annotation types and updated the LDAP SDK
+                  codebase to mark all non-primitive fields, parameters, and return values to
+                  indicate whether they may or may not be null.  These annotations will appear in
+                  the generated Javadoc documentation, and they will be available for runtime
+                  introspection by IDEs and other tools.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved the logic used to validate certificate hostnames.  The previous
+                  implementation handled certificates that used wildcards in hostnames, but only
+                  in the CN attribute of the subject DN or in the dNSName element of a subject
+                  alternative name extension, and only for cases in which the leftmost component
+                  of the hostname was comprised entirely of a wildcard.  It now handles the case
+                  in which the wildcard is combined with additional text, and it also handles
+                  wildcards in hostnames in uniformResourceIndicator elements of a subject
+                  alternative name extension.  It also does a better job of handling IP address
+                  matching in URI elements of the subject alternative name extension or in the CN
+                  attribute of the subject DN.  Further, there is now an option that allows you to
+                  indicate whether to match a hostname against the CN attribute of a certificate
+                  even if that certificate has a subject alternative name extension with at least
+                  one dNSName, iPAddress, or uniformResourceIdentifier element.  Even though this
+                  is not permitted by RFC 6125 section 6.4.4, LDAP clients historically treat both
+                  sources as equally valid.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed issues in the code used to format strings in the comma-separated values
+                  (CSV) format.  Previously, all ASCII control characters and all non-ASCII
+                  characters were silently dropped from the output.  They are now included, but
+                  the value will be in quotes (and may span multiple lines if the value to format
+                  includes line breaks).  Further, it had previously used a backslash to escape
+                  any double quotes in the data (like '\"'), but RFC 4180 states that each double
+                  quote should be escaped by preceding it with another double quote (like '""').
+                  The LDAP SDK now uses the RFC-specified behavior for escaping double quotes, but
+                  the former behavior can be requested by either using the
+                  FormattableColumn.setCSVQuoteEscapeCharacter method, or by setting the
+                  com.unboundid.util.FormattableColumn.csvQuoteEscapeCharacter system property to
+                  a value that contains only the backslash character.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that prevented command-line tools from performing all necessary
+                  validation when run in interactive mode.  For tools that support subcommands,
+                  the interactive mode processor did not attempt to validate required, dependent,
+                  and exclusive argument sets for the selected subcommand.  This could cause the
+                  tool to run with an inappropriate set of arguments, which may result in
+                  unexpected errors.  This was only an issue for commands run in interactive mode,
+                  and all appropriate validation was already being performed for tools run in
+                  non-interactive mode.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated ldapsearch to add multi-valued-csv and multi-valued-tab-delimited output
+                  formats for ldapsearch.  These are like the existing csv and tab-delimited
+                  output formats, but whereas those formats only include the first value for
+                  multivalued attributes, the new formats include all values with the vertical bar
+                  (|) character as the delimiter between values.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldappasswordmodify tool to default to using the password modify
+                  extended operation if the attempt to retrieve the root DSE fails for some reason
+                  (e.g., because of an access control problem, or because the requester's account
+                  is in a "must change password" state).  The tool would previously exit with an
+                  error if it couldn't retrieve the root DSE.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the authrate tool so that the --filter argument is not required if the
+                  --bindOnly argument is provided.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapcompare tool so that it always uses an exit code of zero
+                  (corresponding to the LDAP SUCCESS result code) by default if all compare
+                  operations are processed successfully, regardless of whether the compare
+                  assertions matched or did not match the target entries.  Previously, the tool
+                  would use an exit code of 5 (corresponding to the COMPARE_FALSE result code) or
+                  6 corresponding to the COMPARE_TRUE result code) if only a single compare
+                  operation was processed and completed with that result code, but this may cause
+                  issues with scripts that invoke the tool and expect that a nonzero exit code
+                  indicates that the tool did not complete successfully.  The
+                  --useCompareResultCodeAsExitCode argument can be used to explicitly indicate
+                  that the tool should use an exit code of 5 or 6 if only a single compare
+                  operation was attempted and it completed with a result code of COMPARE_FALSE or
+                  COMPARE_TRUE, respectively.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapcompare tool to allow reading the raw assertion value from a
+                  file.  If this option is used, then the attribute name or OID should be followed
+                  by a single colon, a less-than sign, and the path to the file from which the
+                  value should be read.  Note that if this option is used, then the exact bytes of
+                  the specified file, including any line breaks, will be used as the assertion
+                  value.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated ldifsearch so that all non-LDIF output is written as LDIF comments so
+                  that output will not interfere with the ability to parse the remaining output as
+                  LDIF.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added support for the OAUTHBEARER SASL mechanism as described in RFC 7628.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP command-line tool framework to add support for authenticating
+                  with additional SASL mechanisms, including OAUTHBEARER, SCRAM-SHA-1,
+                  SCRAM-SHA-256, and SCRAM-SHA-512.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added support for a new get recent login history control that will be supported
+                  in an upcoming release of the Ping Identity Directory Server.  The request
+                  control may be included in a bind request to indicate that a successful bind
+                  result should include information about other recent successful and failed
+                  authentication attempts for that account.  The ldapsearch and ldapmodify
+                  command-line tools have been updated to include support for this control.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the password policy state extended operation and the
+                  manage-account command-line tool (both of which are specific to the Ping
+                  Identity Directory Server) to provide support for retrieving and clearing a
+                  user's recent login history.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the Ping Identity Directory Server's ds-pwp-state-json
+                  virtual attribute to handle additional fields related to a user's recent login
+                  history.  This includes fields that can be used to retrieve the history, the
+                  maximum number of successful and failed login attempts the server should
+                  maintain, and the maximum age in seconds of successful and failed login attempts
+                  that the server should maintain.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the password policy state extended operation and the manage-account
+                  command-line tool (both of which are specific to the Ping Identity Directory
+                  Server) to provide support for a property (that can be retrieved, set, and
+                  cleared) that specifies the last time that password validators were invoked
+                  during a bind operation for the user, and for a property (that can be retrieved
+                  and set) that indicates whether the account is locked because it contains a
+                  password that does not satisfy all of the configured password validators.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the Ping Identity Directory Server's ds-pwp-state-json
+                  virtual attribute to handle additional fields related to password validation for
+                  bind operations.  This includes fields for the time that validation was last
+                  performed, the minimum length of time between validations, the action the server
+                  should take for a bind operation in which the provided password fails to satisfy
+                  one or more of the configured password validators, and whether the account is
+                  currently locked because it contains a password that does not satisfy all of the
+                  configured password validators.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the Ping Identity Directory Server's ds-pwp-state-json
+                  virtual attribute to handle additional fields related to the quality
+                  requirements that must be satisfied for passwords included in add, self change,
+                  administrative reset, and bind operations.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the set of potential authentication failure reasons for the Ping
+                  Identity Directory Server to include an additional failure type for use in cases
+                  in which a password used in a bind request failed to satisfy all of the
+                  configured password validators.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new password policy state account usability error that the Ping Identity
+                  Directory Server can use if an account is locked because it contains a password
+                  that does not satisfy all of the configured password validators.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new password policy state account usability warning that the Ping Identity
+                  Directory Server can use if an account is locked because it contains a password
+                  that is encoded with a deprecated password storage scheme.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the collect-support-data functionality offered by the Ping
+                  Identity Directory Server to include the ability to specify the amount of data
+                  to capture from the beginning and end of each log file.  This includes the
+                  collect-support-data command-line tool as well as the administrative task and
+                  extended operation that can be used to invoke the tool.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the ldifsearch, ldifmodify, and ldif-diff tools that could
+                  arise if they were run in a manner that would case the output to be both
+                  compressed and encrypted.  The data should have been compressed before it was
+                  encrypted, but instead the compression was applied after encryption.  This makes
+                  the compression ineffective, and it also makes the output less compatible with
+                  tools that rightfully expect compression to be applied before encryption.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the ldifsearch tool in which it could fail to properly
+                  finalize the output file when using compression or encryption, potentially
+                  leaving buffered data unwritten.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldifmodify tool so that it no longer reports an error when it is
+                  only used to add one or more entries to an empty source LDIF file.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldifmodify tool to use lenient mode by default for modifications.
+                  In this mode, the tool will ignore attempts to update an entry to add an
+                  attribute value that already exists or to remove an attribute value that does
+                  not exist.  This mode was previously available when using the
+                  --lenientModifications argument, but the default lenient mode was found to cause
+                  compatibility issues with other versions of the ldifmodify tool.  A new
+                  --strictModifications argument has been added to allow the tool to run in the
+                  former strict mode if desired.  The existing --lenientModifications argument
+                  still exists for the purpose of backward compatibility with scripts that try to
+                  use it, but it is hidden so that it doesn't appear in the usage.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK so that when displaying a command that is split across
+                  multiple lines, it will use an appropriate continuation character for the
+                  underlying platform.  It previously always used the backslash character (also
+                  known as a reverse solidus) for this purpose, which is appropriate for Linux and
+                  UNIX-based systems, but it now uses the caret (or circumflex accent) character
+                  on Windows.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the ldifsearch tool that caused its usage output to include
+                  example arguments and descriptions from the ldif-diff tool.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed a typo in the manage-certificates usage output for the
+                  generate-certificate-signing-request subcommand.  The key-size-bits argument
+                  inadvertently reused the description for the key-algorithm argument instead of
+                  including the appropriate text.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest versions of
+                  draft-ietf-kitten-gss-sanon, draft-melnikov-scram-2fa, and
+                  draft-melnikov-scram-sha3-512-00 in the set of LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 5.1.0</h3>
 
               <p>

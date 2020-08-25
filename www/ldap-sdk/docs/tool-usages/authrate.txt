@@ -87,7 +87,7 @@ Available options include:
         The scope to use for the searches.  It should be 'base', 'one', 'sub',
         or 'subord'.  If this is not provided, a default scope of 'sub' will be
         used.
-  * -f, --filter {filter}
+    -f, --filter {filter}
         The filter to use for the searches.  It may be a simple filter or a
         value pattern to specify a range of filters (e.g.,
         "(uid=user.[1-1000])").  See

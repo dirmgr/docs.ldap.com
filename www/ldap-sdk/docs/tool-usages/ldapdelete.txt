@@ -169,7 +169,7 @@ Available options include:
         Indicates that the tool should continue processing even after
         encountering an error.  This is only applicable if it is run with
         arguments that would cause it to attempt to delete multiple entries.
-    --followReferrals, --follow-referrals
+    --followReferrals
         Indicates that the tool should attempt to follow any referrals that it
         encounters.  By default, any referrals that are returned will be
         treated as failures.

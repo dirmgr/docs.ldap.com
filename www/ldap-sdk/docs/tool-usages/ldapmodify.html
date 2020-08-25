@@ -323,6 +323,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--getRecentLoginHistory</tt> &mdash; Indicates that all bind requests should include the get recent login history request control to request that the server include a corresponding response control with information about the user's recent login history.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>--getServerID</tt> &mdash; Indicates that all add, delete modify, and modify DN requests should include the UnboundID-proprietary get server ID request control to request that server include a corresponding get server ID response control in each operation response, indicating the server in which the write was processed.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.

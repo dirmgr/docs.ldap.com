@@ -227,15 +227,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Identify the changes needed to transform the set of entries contained in the 'actual.ldif' file into the set of entries contained in the 'desired.ldif' file.  Operational attributes will be ignored, and modifications will be presented in reversible form.</li>
+      <li>Search for entries with a uid value of 'jdoe' in the data.ldif file.  The matching entries will be written to standard output.</li>
     </ul>
-    <blockquote><pre>    ldifsearch --sourceLDIF actual.ldif --targetLDIF desired.ldif \
-         --outputLDIF diff.ldif</pre></blockquote>
+    <blockquote><pre>    ldifsearch --ldifFile data.ldif "(uid=jdoe)"</pre></blockquote>
     <ul>
-      <li>Identify the changes needed to transform the set of entries contained in the 'actual.ldif' file into the set of entries contained in the 'desired.ldif' file.  Operational attributes not declared with the NO-USER-MODIFICATION will be included, and modifications will be presented in non-reversible form.</li>
+      <li>Search for all entries with the 'person' object class below 'dc=example,dc=com' in the data.ldif file.  Write the matching entries to the 'people.ldif' file, but only include the 'givenName', 'sn', and 'cn' attributes.</li>
     </ul>
-    <blockquote><pre>    ldifsearch --sourceLDIF actual.ldif --targetLDIF desired.ldif \
-         --outputLDIF diff.ldif --includeOperationalAttributes \
-         --excludeNoUserModificationAttributes --nonReversibleModifications</pre></blockquote>
+    <blockquote><pre>    ldifsearch --ldifFile data.ldif --outputFile people.ldif \
+         --baseDN dc=example,dc=com --scope sub "(objectClass=person)" \
+         givenName sn cn</pre></blockquote>
   </body>
 </html>

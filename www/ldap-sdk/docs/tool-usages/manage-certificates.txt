@@ -371,7 +371,7 @@ Available options include:
     Indicates that the entire certificate chain (the target certificate and all
     of the certificates in its issuer chain) should be exported rather than
     just the specified target certificate.
---output-format, --outputFormat {format}
+--output-format {format}
     The output format to use for the exported certificate.  The value may be
     either 'PEM' (to export the certificate in the text-based PEM format), or
     'DER' (to export the certificate in the binary DER format).  If this is not
@@ -472,7 +472,7 @@ Available options include:
 * --alias {alias}
     The alias (also called a nickname) of the private key to export.  This is
     required, and it may only be provided once.
---output-format, --outputFormat {format}
+--output-format {format}
     The output format to use for the exported private key.  The value may be
     either 'PEM' (to export the private key in the text-based PEM format), or
     'DER' (to export the key in the binary DER format).  If this is not
@@ -1015,7 +1015,7 @@ request may be either written to standard output or to a specified output file.
 Usage:  generate-certificate-signing-request {options}
 
 Available options include:
---output-format, --outputFormat {format}
+--output-format {format}
     The output format to use for the the generated certificate signing request.
     The value may be either 'PEM' (to export the request in the text-based PEM
     format), or 'DER' (to export the request in the binary DER format).  If
@@ -1127,12 +1127,12 @@ Available options include:
     --replace-existing-certificate argument is provided, then a default key
     algorithm of 'RSA' will be used.
 --key-size-bits {bits}
-    The name of the key algorithm to use to generate the key pair.  If present,
-    the value will typically be 'RSA' or 'EC' (for elliptic curve).  This
-    argument must not be provided if the --replace-existing-certificate
-    argument is used.  If neither this argument nor the
+    The size of the key to generate, in bits.  This argument must not be
+    provided if the --replace-existing-certificate argument is used.  This
+    argument must be provided if the --key-algorithm argument is used to
+    specify an algorithm other than 'RSA'.  If neither this argument nor the
     --replace-existing-certificate argument is provided, then a default key
-    algorithm of 'RSA' will be used.
+    size of 2048 bits will be used.
 --signature-algorithm {name}
     The name of the algorithm to use to sign the certificate.  This argument
     must not be provided if the --replace-existing-certificate argument is
@@ -1295,7 +1295,7 @@ Available options include:
     The path to the output file to which the signed certificate should be
     written.  If this is not provided, then the certificate will be written to
     standard output.
---output-format, --outputFormat {format}
+--output-format {format}
     The output format to use for the signed certificate.  The value may be
     either 'PEM' (to write the certificate in the text-based PEM format), or
     'DER' (to write the certificate in the binary DER format).  If this is not

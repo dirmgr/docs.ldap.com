@@ -760,6 +760,38 @@
         <a href="#subcommand-get-has-static-password">get-has-static-password</a> &mdash; Determines whether a user has one static password.
         <br><br>
       </li>
+      <li>
+        <a href="#subcommand-get-last-bind-password-validation-time">get-last-bind-password-validation-time</a> &mdash; Retrieves the time the server last invoked password validators during a bind operation for a user.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-get-seconds-since-last-bind-password-validation">get-seconds-since-last-bind-password-validation</a> &mdash; Retrieves the length of time in seconds since the server last invoked password validators during a bind operation for a user.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-set-last-bind-password-validation-time">set-last-bind-password-validation-time</a> &mdash; Specifies the time the server last invoked password validators during a bind operation for a user.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-clear-last-bind-password-validation-time">clear-last-bind-password-validation-time</a> &mdash; Clears the time the server last invoked password validators during a bind operation for a user.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-get-account-is-validation-locked">get-account-is-validation-locked</a> &mdash; Determines whether a user's account is locked because it contains a password that does not satisfy all of the configured password validators.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-set-account-is-validation-locked">set-account-is-validation-locked</a> &mdash; Specifies whether a user's account should be locked because it contains a password that does not satisfy all of the configured password validators.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-get-recent-login-history">get-recent-login-history</a> &mdash; Retrieves the user's recent login history.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-clear-recent-login-history">clear-recent-login-history</a> &mdash; Clears the user's recent login history.
+        <br><br>
+      </li>
     </ul>
 
     <p>&nbsp;</p>
@@ -870,13 +902,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
+      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200825164314.828Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-changed-time set-password-changed-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordChangedTime 20200602230221.843Z</pre></blockquote>
+         --passwordChangedTime 20200825164314.828Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -968,13 +1000,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
+      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200825164314.828Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-activation-time set-account-activation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountActivationTime 20200602230221.843Z</pre></blockquote>
+         --accountActivationTime 20200825164314.828Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1046,13 +1078,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
+      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200825164314.828Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-expiration-time set-account-expiration-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountExpirationTime 20200602230221.843Z</pre></blockquote>
+         --accountExpirationTime 20200825164314.828Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1124,14 +1156,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
+      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200825164314.828Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-expiration-warned-time \
          set-password-expiration-warned-time --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordExpirationWarnedTime 20200602230221.843Z</pre></blockquote>
+         --passwordExpirationWarnedTime 20200825164314.828Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1318,15 +1350,15 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20200602230209.498Z' and '20200602230221.843Z'.</li>
+      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20200825164302.483Z' and '20200825164314.828Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-authentication-failure-times \
          set-authentication-failure-times --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --authenticationFailureTime 20200602230209.498Z \
-         --authenticationFailureTime 20200602230221.843Z</pre></blockquote>
+         --authenticationFailureTime 20200825164302.483Z \
+         --authenticationFailureTime 20200825164314.828Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1515,13 +1547,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200602230221.843Z'.</li>
+      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20200825164314.828Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-login-time set-last-login-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --lastLoginTime 20200602230221.843Z</pre></blockquote>
+         --lastLoginTime 20200825164314.828Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1633,14 +1665,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20200602230209.498Z' and '20200602230221.843Z'.</li>
+      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20200825164302.483Z' and '20200825164314.828Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-grace-login-use-times set-grace-login-use-times \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --graceLoginUseTime 20200602230209.498Z \
-         --graceLoginUseTime 20200602230221.843Z</pre></blockquote>
+         --graceLoginUseTime 20200825164302.483Z \
+         --graceLoginUseTime 20200825164314.828Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -2047,6 +2079,136 @@
       <li>Determines whether user 'uid=jdoe,ou=People,dc=example,dc=com' has a static password.</li>
     </ul>
     <blockquote><pre>    manage-account get-has-static-password get-has-static-password \
+         --hostname server.example.com --port 389 \
+         --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-get-last-bind-password-validation-time">Usage For Subcommand get-last-bind-password-validation-time</a></h2>
+    <p>Retrieves the time the server last invoked password validators during a bind operation for a user.</p>
+    <h3>Examples</h3>
+    <ul>
+      <li>Retrieves the time the server last invoked password validators during a bind operation for user 'uid=jdoe,ou=People,dc=example,dc=com'.</li>
+    </ul>
+    <blockquote><pre>    manage-account get-last-bind-password-validation-time \
+         get-last-bind-password-validation-time \
+         --hostname server.example.com --port 389 \
+         --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-get-seconds-since-last-bind-password-validation">Usage For Subcommand get-seconds-since-last-bind-password-validation</a></h2>
+    <p>Retrieves the length of time in seconds since the server last invoked password validators during a bind operation for a user.</p>
+    <h3>Examples</h3>
+    <ul>
+      <li>Retrieves the length of time in seconds since the server last invoked password validators during a bind operation for user 'uid=jdoe,ou=People,dc=example,dc=com'.</li>
+    </ul>
+    <blockquote><pre>    manage-account get-seconds-since-last-bind-password-validation \
+         get-seconds-since-last-bind-password-validation \
+         --hostname server.example.com --port 389 \
+         --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-set-last-bind-password-validation-time">Usage For Subcommand set-last-bind-password-validation-time</a></h2>
+    <p>Specifies the time the server last invoked password validators during a bind operation for a user.</p>
+    <h3>Arguments</h3>
+    <ul>
+      <li>
+        <tt>-O <i>{timestamp}</i></tt> / <tt>--validationTime <i>{timestamp}</i></tt> &mdash; The new value for the last bind password validation time for the user.  It must be a timestamp formatted either in generalized time form or in the local time zone using one of the following formats:  YYYYMMDDhhmmss.uuu, YYYYMMDDhhmmss, or YYYYMMDDhhmm.  If this argument is not provided, the last bind password validation time will be set to the current time.
+        <br>
+        A provided value must be able to be parsed as a valid generalized time (as described in RFC 4517 section 3.1.13) or as a timestamp in the local time zone using any of the formats 'YYYYMMDDhhmmss.uuu', 'YYYYMMDDhhmmss', or 'YYYYMMDDhhmm'.
+        <br><br>
+      </li>
+    </ul>
+    <h3>Examples</h3>
+    <ul>
+      <li>Updates the password policy state for user 'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last invoked password validators during a bind at time '20200825164314.828Z'.</li>
+    </ul>
+    <blockquote><pre>    manage-account set-last-bind-password-validation-time \
+         set-last-bind-password-validation-time \
+         --hostname server.example.com --port 389 \
+         --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com \
+         --validationTime 20200825164314.828Z</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-clear-last-bind-password-validation-time">Usage For Subcommand clear-last-bind-password-validation-time</a></h2>
+    <p>Clears the time the server last invoked password validators during a bind operation for a user.</p>
+    <h3>Examples</h3>
+    <ul>
+      <li>Clears the time the server last invoked password validators during a bind operation for user 'uid=jdoe,ou=People,dc=example,dc=com'.</li>
+    </ul>
+    <blockquote><pre>    manage-account clear-last-bind-password-validation-time \
+         clear-last-bind-password-validation-time \
+         --hostname server.example.com --port 389 \
+         --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-get-account-is-validation-locked">Usage For Subcommand get-account-is-validation-locked</a></h2>
+    <p>Determines whether a user's account is locked because it contains a password that does not satisfy all of the configured password validators.</p>
+    <h3>Examples</h3>
+    <ul>
+      <li>Determines whether the account for user 'uid=jdoe,ou=People,dc=example,dc=com' is locked because it contains a password that does not satisfy all of the configured password validators.</li>
+    </ul>
+    <blockquote><pre>    manage-account get-account-is-validation-locked \
+         get-account-is-validation-locked --hostname server.example.com \
+         --port 389 --bindDN uid=admin,dc=example,dc=com \
+         --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-set-account-is-validation-locked">Usage For Subcommand set-account-is-validation-locked</a></h2>
+    <p>Specifies whether a user's account should be locked because it contains a password that does not satisfy all of the configured password validators.</p>
+    <h3>Arguments</h3>
+    <ul>
+      <li>
+        <tt>-O <i>{true|false}</i></tt> / <tt>--accountIsValidationLocked <i>{true|false}</i></tt> &mdash; Indicates whether the user's account should be locked because it contains a password that does not satisfy all of the configured password validators.  The value must be either 'true' or 'false'.
+        <br>
+        A provided value should be either 'true' or 'false'.
+        <br><br>
+      </li>
+    </ul>
+    <h3>Examples</h3>
+    <ul>
+      <li>Forces the account for user 'uid=jdoe,ou=People,dc=example,dc=com' to be locked because it contains a password that does not satisfy all of the configured password validators.</li>
+    </ul>
+    <blockquote><pre>    manage-account set-account-is-validation-locked \
+         set-account-is-validation-locked --hostname server.example.com \
+         --port 389 --bindDN uid=admin,dc=example,dc=com \
+         --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com \
+         --accountIsValidationLocked true</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-get-recent-login-history">Usage For Subcommand get-recent-login-history</a></h2>
+    <p>Retrieves the user's recent login history.</p>
+    <h3>Examples</h3>
+    <ul>
+      <li>Retrieves the recent login history for user 'uid=jdoe,ou=People,dc=example,dc=com'.</li>
+    </ul>
+    <blockquote><pre>    manage-account get-recent-login-history get-recent-login-history \
+         --hostname server.example.com --port 389 \
+         --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
+         --targetDN uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-clear-recent-login-history">Usage For Subcommand clear-recent-login-history</a></h2>
+    <p>Clears the user's recent login history.</p>
+    <h3>Examples</h3>
+    <ul>
+      <li>Clears the recent login history for user 'uid=jdoe,ou=People,dc=example,dc=com'.</li>
+    </ul>
+    <blockquote><pre>    manage-account clear-recent-login-history clear-recent-login-history \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com</pre></blockquote>

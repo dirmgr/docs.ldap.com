@@ -36,7 +36,7 @@ Available options include:
 
   * -s, --sourceLDIF {path}
         The path to an LDIF file containing the source entries to be updated.
-        THis argument must be provided exactly once, and the file must exist.
+        This argument must be provided exactly once, and the file must exist.
     --sourceEncryptionPassphraseFile {path}
         The path to to file containing the passphrase needed to decrypt the
         contents of the source LDIF file (if it is encrypted).  If this
@@ -60,11 +60,13 @@ Available options include:
     --stripTrailingSpaces
         Strip off any illegal trailing spaces identified in LDIF entries rather
         than rejecting those entries.
-    --lenientModifications
-        Be lenient when applying modifications.  If this argument is provided,
-        then neither attempts to add an attribute value that already exists nor
-        attempts to remove an attribute value that does not exist will be
-        considered an error.
+    --strictModifications
+        Use strict mode when applying modifications to entries.  If this
+        argument is provided, then the tool will report an error when trying to
+        modify an entry to add an attribute value that already exists in the
+        entry or to remove an attribute value that does not exist in the entry.
+        By default, the tool will operate in lenient mode, and these 'no-op'
+        modifications will be permitted.
 
   Output Arguments
 

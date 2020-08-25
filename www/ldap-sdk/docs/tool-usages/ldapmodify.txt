@@ -244,6 +244,11 @@ Available options include:
         request that the Directory Proxy Server include a corresponding get
         backend set ID response control in each operation response, indicating
         the entry-balancing backend set in which the write was processed.
+    --getRecentLoginHistory
+        Indicates that all bind requests should include the get recent login
+        history request control to request that the server include a
+        corresponding response control with information about the user's recent
+        login history.
     --getServerID
         Indicates that all add, delete modify, and modify DN requests should
         include the UnboundID-proprietary get server ID request control to

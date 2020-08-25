@@ -101,12 +101,6 @@ Available options include:
         ignored.  If neither this argument nor the --filterFile argument is
         provided, then the filter must be provided as the first trailing
         argument.
-    -z, --sizeLimit {value}
-        The maximum number of entries to return for each search.  If this is
-        not provided, then no size limit will be enforced.
-    -t, --timeLimitSeconds {value}
-        The maximum length of time in seconds to spend processing.  If this is
-        not provided, then no time limit will be enforced.
 
   Usage Arguments
 
@@ -131,19 +125,16 @@ Available options include:
 
 Examples
 
-  Identify the changes needed to transform the set of entries contained in the
-  'actual.ldif' file into the set of entries contained in the 'desired.ldif'
-  file.  Operational attributes will be ignored, and modifications will be
-  presented in reversible form.
+  Search for entries with a uid value of 'jdoe' in the data.ldif file.  The
+  matching entries will be written to standard output.
 
-    ldifsearch --sourceLDIF actual.ldif --targetLDIF desired.ldif \
-         --outputLDIF diff.ldif
+    ldifsearch --ldifFile data.ldif "(uid=jdoe)"
 
-  Identify the changes needed to transform the set of entries contained in the
-  'actual.ldif' file into the set of entries contained in the 'desired.ldif'
-  file.  Operational attributes not declared with the NO-USER-MODIFICATION will
-  be included, and modifications will be presented in non-reversible form.
+  Search for all entries with the 'person' object class below
+  'dc=example,dc=com' in the data.ldif file.  Write the matching entries to the
+  'people.ldif' file, but only include the 'givenName', 'sn', and 'cn'
+  attributes.
 
-    ldifsearch --sourceLDIF actual.ldif --targetLDIF desired.ldif \
-         --outputLDIF diff.ldif --includeOperationalAttributes \
-         --excludeNoUserModificationAttributes --nonReversibleModifications
+    ldifsearch --ldifFile data.ldif --outputFile people.ldif \
+         --baseDN dc=example,dc=com --scope sub "(objectClass=person)" \
+         givenName sn cn

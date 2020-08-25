@@ -30,7 +30,7 @@
     <h3>Input Arguments</h3>
     <ul>
       <li>
-        <tt>-s <i>{path}</i></tt> / <tt>--sourceLDIF <i>{path}</i></tt> &mdash; The path to an LDIF file containing the source entries to be updated.  THis argument must be provided exactly once, and the file must exist.
+        <tt>-s <i>{path}</i></tt> / <tt>--sourceLDIF <i>{path}</i></tt> &mdash; The path to an LDIF file containing the source entries to be updated.  This argument must be provided exactly once, and the file must exist.
         <br>
         The specified path must refer to a file that exists.
         <br><br>
@@ -61,6 +61,12 @@
       </li>
       <li>
         <tt>--lenientModifications</tt> &mdash; Be lenient when applying modifications.  If this argument is provided, then neither attempts to add an attribute value that already exists nor attempts to remove an attribute value that does not exist will be considered an error.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--strictModifications</tt> &mdash; Use strict mode when applying modifications to entries.  If this argument is provided, then the tool will report an error when trying to modify an entry to add an attribute value that already exists in the entry or to remove an attribute value that does not exist in the entry.  By default, the tool will operate in lenient mode, and these 'no-op' modifications will be permitted.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -170,6 +176,9 @@
     </ul>
     <h3>Exclusive Argument Sets</h3>
     <ul>
+      <li>
+        The following arguments cannot be used together:  <tt>--lenientModifications</tt>, <tt>--strictModifications</tt>
+      </li>
       <li>
         The following arguments cannot be used together:  <tt>--wrapColumn</tt>, <tt>--doNotWrap</tt>
       </li>

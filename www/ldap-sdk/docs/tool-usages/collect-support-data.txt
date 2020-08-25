@@ -199,6 +199,14 @@ Available options include:
         time.  If specified, the value must consist of an integer followed by a
         time unit, which may be one of millisecond, second, minute, hour, or
         day, or their plurals (e.g., '5 minutes' or '1 hour').
+    --logFileHeadCollectionSizeKB {sizeKB}
+        The amount of data in kilobytes that the tool should capture from the
+        beginning of each log file.  If this is specified, then the value must
+        be greater than or equal to zero.
+    --logFileTailCollectionSizeKB {sizeKB}
+        The amount of data in kilobytes that the tool should capture from the
+        end of each log file.  If this is specified, then the value must be
+        greater than or equal to zero.
     --pid {pid}
         Specifies the process ID of an additional process about which
         information should be collected.  This option may be useful for
@@ -299,5 +307,5 @@ Examples
   specified file.
 
     collect-support-data \
-         --decrypt support-data-ds-inst1-20200602230221.777Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20200825164314.765Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt

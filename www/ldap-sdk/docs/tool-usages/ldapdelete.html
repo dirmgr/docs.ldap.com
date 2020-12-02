@@ -218,6 +218,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--neverRetry</tt> &mdash; Indicates that the tool should not attempt to retry operations that fail in a way that the connection to the directory server may be invalid.  By default, it will automatically try to establish a new connection and retry the failed operation.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-n</tt> / <tt>--dryRun</tt> &mdash; Indicates that the tool should display what it would do, and may perform searches if appropriate, but will not actually attempt to delete any entries.  Note that if the server supports the no-operation request control, you may wish to use the --noOperation argument instead, which will actually send the delete requests with a control indicating that the server should perform as much validation of the request that it can, but should not actually delete the target entry.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.

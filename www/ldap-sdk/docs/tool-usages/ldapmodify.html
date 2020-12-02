@@ -224,6 +224,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--neverRetry</tt> &mdash; Indicates that the tool should not attempt to retry operations that fail in a way that the connection to the directory server may be invalid.  By default, it will automatically try to establish a new connection and retry the failed operation.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-n</tt> / <tt>--dryRun</tt> &mdash; Parse the LDIF representations of the changes to apply but don't actually perform any LDAP communication.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -341,7 +347,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--ignoreNoUserModification</tt> &mdash; Indicates that all add requests should include the UnboundID-proprietary ignore NO-USER-MODIFICATION request control to permit setting values for certain operational attributes not normally permitted to be provided by external clients.
+        <tt>--ignoreNoUserModification</tt> &mdash; Indicates that all add and modify requests should include the UnboundID-proprietary ignore NO-USER-MODIFICATION request control to permit setting values for certain operational attributes not normally permitted to be provided by external clients.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -996,7 +1002,7 @@
     <blockquote><pre>    ldapmodify --hostname ds1.example.com --port 636 \
          --hostname ds2.example.com --port 636 --useSSL \
          --bindDN uid=admin,dc=example,dc=com --bindPassword password \
-         --filename changes.ldif \
+         --ldifFile changes.ldif \
          --modifyEntriesMatchingFilter "(objectClass=person)" \
          --searchPageSize 100</pre></blockquote>
   </body>

@@ -27,6 +27,276 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 5.1.2</h3>
+
+              <p>
+                The following changes were made between the 5.1.1 and 5.1.2 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added a parallel-update command-line tool that can be used to apply changes read
+                  from an LDIF file against an LDAP server using multiple concurrent threads for
+                  higher throughput than single-threaded tools like ldapmodify.  It properly
+                  handles dependencies between concurrent operations (for example, it will delay
+                  adding a child entry if the add for its parent is still in progress), and it
+                  also supports retrying operations that fail in a way that indicates that the
+                  operation might succeed if attempted after all other operations have completed.
+                  Any changes that cannot be processed successfully will be written to a reject
+                  file for later examination.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapmodify and ldapdelete tools so that they will now retry failed
+                  operations by default on a newly established connection if the failure indicates
+                  that the underlying connection may no longer be valid.  This behavior was
+                  previously available if the --retryFailedOperations argument was provided, and
+                  that argument is still available (but hidden) to preserve backward compatibility
+                  with scripts that use it, but it now has no effect.  A new --neverRetry argument
+                  has been added that can disable this feature if the retry functionality should
+                  be disabled.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new OIDRegistry class that provides a registry of object identifiers
+                  used by LDAP schema elements, controls, extended operations, and other sources.
+                  Each item has an OID, name, and type, and it may optionally have an origin
+                  string and a URL to content that can provide additional information about the
+                  item.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new oid-lookup command-line tool that can be used to search the OID
+                  registry to find items with a given OID, name, type, or other content.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new ldap-result-code command-line tool that can be used to list defined
+                  result codes or search for result codes with a given name or integer value.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP listener framework and the in-memory directory server to
+                  provide support for mutual TLS authentication. in which the server requests a
+                  certificate chain from the client and validates any chain that is provided).
+                  The server may be configured to request that a client certificate chain, and it
+                  may optionally choose to continue with or reject the TLS negotiation attempt if
+                  the client does not present a certificate chain.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the logic used to generate temporary self-signed certificates for use by
+                  the in-memory-directory-server and ldap-debugger tools so that the certificates
+                  will be more acceptable to a wide range of TLS clients. The certificates will
+                  now have a validity duration of one year rather than the former duration of ten
+                  years, as some TLS clients balk at certificates with long lifetimes. Further,
+                  the subject alternative name extension will now default to only using canonical
+                  host names and IP addresses associated with non-loopback interfaces, and it will
+                  only include loopback addresses if no non-loopback values can be identified.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new DNS host name argument value validator that can be used to determine
+                  whether a string represents a valid DNS host name.  It can optionally accept or
+                  reject values that are numeric IP addresses rather than host names, can
+                  optionally accept or reject values that represent unqualified names, and can
+                  optionally accept or reject values that represent unresolvable names.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a SASLClientBindHandler class that can be used to invoke SASL bind
+                  operations that use a javax.security.sasl.SaslClient object to perform the
+                  actual SASL processing.  This includes support for updating the underlying
+                  connection with a negotiated security layer if the SASL mechanism supports and
+                  uses a quality of protection (QoP) value of auth-int or auth-conf.  Also added
+                  an LDAPConnection.applySASLSecurityLayer method that can be used to add a
+                  security layer negotiated with a SaslClient object to an established, clear-text
+                  connection.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the HostNameSSLSocketVerifier to automatically trust any certificate
+                  when the client connected to the peer using an IP address that referenced a
+                  loopback interface on the system.  As per the W3C Secure Contexts Candidate
+                  Recommendation (https://www.w3.org/TR/secure-contexts/) section 3.2, connections
+                  established with a loopback IP address should be considered potentially
+                  trustworthy.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the HostNameSSLSocketVerifier and TrustAllSSLSocketVerifier classes to
+                  implement the javax.net.ssl.HostnameVerifier interface so they may be used in
+                  contexts where that interface is accepted.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF writer to improve the human readability for the comments that
+                  it generates beneath base64-encoded values.  It would previously only include
+                  printable ASCII characters, with all other characters (and ASCII characters that
+                  would normally require base64 encoding, like leading and trailing spaces, and
+                  leading colons and less-than signs) displayed as the hexadecimal-escaped bytes
+                  that comprise them.  It will now also include printable non-ASCII characters
+                  that are identified as letters, numbers, punctuation, and select symbols.  For
+                  other characters, it will look up the name in the Unicode character table and if
+                  a name is found then it will be displayed, enclosed in curly braces.  For all
+                  other characters, it will use the hexadecimal representation of the bytes that
+                  comprise it.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a "dns-only" output format for the ldapsearch command-line tool.  If this
+                  output format is selected, only the DNs of matching entries will be included in
+                  the output, with one DN per line, no blank lines between DNs, and no prefix
+                  (like "dn:") before each DN.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a null X.509 trust manager that will never trust any certificate chain.
+                  This is primarily useful for testing purposes.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK's support for the OAUTHBEARER SASL mechanism to make it
+                  possible to include arbitrary additional key-value pairs in the SASL
+                  credentials.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates tool to add a new retrieve-server-certificate
+                  subcommand.  When this subcommand is used, the tool will retrieve the
+                  certificate chain for a specified remote server and write information about the
+                  certificates to standard output.  It may also optionally write a PEM-encoded or
+                  DER-encoded representation of that chain (or just the peer certificate, if
+                  desired) to a specified file.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the manage-certificates trust-server-certificate command
+                  that caused it to wait for a maximum of 60 milliseconds rather than the intended
+                  60 seconds when trying to establish a connection to the target server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in the command-line tool framework in which the output stream
+                  that the tool creates when writing output to a file (for tools that support the
+                  outputFile argument, and when that argument is used to send the output to a
+                  file) was never explicitly closed.  It was implicitly closed when the tool
+                  exited, but this could cause problems in cases where a program programmatically
+                  invoked the tool and then tried to do something with the output file in the same
+                  JVM process.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a StaticUtils.isIANAReservedIPAddress method that can be used to determine
+                  whether a provided IPv4 or IPv6 address is contained in an IANA-reserved range,
+                  optionally including ranges that are reserved for private-use networks (for
+                  example, home networks, corporate LANs, etc.).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ChangeLogEntry class so that it will fall back to using
+                  includedAttributes if the deletedEntryAttrs attribute does not exist.  This can
+                  help parse deleted attributes from OpenDJ changelog entries.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK's support for passphrase-based encryption to provide better
+                  support for explicitly specifying the type of cipher that should be used.
+                  Previously, you could request either a baseline level of protection (which would
+                  have always been based on 128-bit AES) or the strongest supported level of
+                  protection (which would have either been based on 128-bit or 256-bit AES,
+                  depending on what the underlying JVM supported).  It is now possible to
+                  explicitly request 128-bit or 256-bit AES, with attempts to use the latter
+                  failing if the JVM doesn't support it.  This framework will provide even more
+                  flexibility if we add support for additional cipher types in the future.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a new ds-pwp-modifiable-state-json operational
+                  attribute that may be used to manipulate a select set of password policy state
+                  properties in the Ping Identity Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a new remove attribute type task that can be used
+                  to safely remove an attribute type definition from a Ping Identity Directory
+                  Server's schema.  It will make sure that the attribute type is not in use in the
+                  server before removing it.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for interacting with AES256-encoded passwords in the
+                  Ping Identity Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the Filter.matchesEntry method to add limited support for extensible
+                  matching filters that contain both an attribute type and matching rule ID,
+                  whose matching rule ID targets the jsonObjectFilterExtensibleMatch matching
+                  rule, and whose dnAttributes flag is not set.  These filters can be used to
+                  identify entries with attribute values that are JSON objects matching a given
+                  JSON object filter.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the proprietary uniqueness request control to make it
+                  possible to indicate whether the server should raise an administrative alert if
+                  an un-prevented conflict is detected during post-commit validation, and to
+                  indicate whether the server should create a temporary conflict prevention
+                  details entry to provide better support for preventing conflicts that arise from
+                  other concurrent updates.
+                  <br><br>
+                </li>
+
+                <li>
+                  Deprecated the client-side code related to support for interactive transactions
+                  in the Ping Identity Directory Server, including the MoveSubtree option for
+                  using interactive transactions when moving a subtree.  The classes for starting
+                  and ending an interactive transaction and for using the interactive transaction
+                  specification control have also been excluded from the Javadoc documentation.
+                  The server-side functionality has been deprecated and hidden in the server for
+                  many releases (including all currently supported versions) and should no longer
+                  be used.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest versions of
+                  draft-melnikov-scram-sha-512, draft-melnikov-scram-sha3-512, and
+                  draft-ietf-kitten-password-storage in the set of LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 5.1.1</h3>
 
               <p>
@@ -314,7 +584,7 @@
                 <li>
                   Updated the documentation to include the latest versions of
                   draft-ietf-kitten-gss-sanon, draft-melnikov-scram-2fa, and
-                  draft-melnikov-scram-sha3-512-00 in the set of LDAP-related specifications.
+                  draft-melnikov-scram-sha3-512 in the set of LDAP-related specifications.
                   <br><br>
                 </li>
               </ul>
@@ -502,7 +772,7 @@
 
                 <li>
                   Updated the manage-certificates tool make it easier to list and export
-                  certificates from the JMV's default trust store.  The new
+                  certificates from the JVM's default trust store.  The new
                   --use-jvm-default-trust-store argument can be used as an alternative to the
                   existing --keystore argument to indicate that it should use the JVM's default
                   set of trusted issuer certificates without the need to provide the path to the
@@ -6504,7 +6774,7 @@
                   a convenience that makes it possible to use the tools when only the LDAP SDK jar
                   file is available.  The tools can be invoked using a command like:
                   <blockquote>
-                    <tt>java -jar unboundid-ldapsdk.jar </tt><i>{tool-name} {tool-args}</i>
+                    java -jar unboundid-ldapsdk.jar <i>{tool-name} {tool-args}</i>
                   </blockquote>
                   <br><br>
                 </li>

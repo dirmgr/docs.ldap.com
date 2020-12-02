@@ -66,7 +66,7 @@ Available options include:
 -c, --compressTarget
     Indicates that the target LDIF files should be gzip-compressed.
 --encryptTarget
-    Indicates that the target LDIF LDIF files should be encrypted with a key
+    Indicates that the target LDIF files should be encrypted with a key
     generated from a provided passphrase.  If the --encryptionPassphraseFile
     argument is provided, then the passphrase will be read from the specified
     file.  Otherwise, it will be interactively requested from the user.
@@ -240,7 +240,7 @@ Available options include:
     DN will be exactly one level below that entry, so that it is not necessary
     to maintain a cache to determine where a subordinate entry's parent
     resides.  If this argument is provided but one or more subordinate entries
-    are found, then then will be added to a separate file so the appropriate
+    are found, then they will be added to a separate file so the appropriate
     set can be manually identified.
 
 * Indicates the argument is required
@@ -282,7 +282,7 @@ Available options include:
     DN will be exactly one level below that entry, so that it is not necessary
     to maintain a cache to determine where a subordinate entry's parent
     resides.  If this argument is provided but one or more subordinate entries
-    are found, then then will be added to a separate file so the appropriate
+    are found, then they will be added to a separate file so the appropriate
     set can be manually identified.
 
 * Indicates the argument is required
@@ -326,7 +326,7 @@ Available options include:
     DN will be exactly one level below that entry, so that it is not necessary
     to maintain a cache to determine where a subordinate entry's parent
     resides.  If this argument is provided but one or more subordinate entries
-    are found, then then will be added to a separate file so the appropriate
+    are found, then they will be added to a separate file so the appropriate
     set can be manually identified.
 
 * Indicates the argument is required

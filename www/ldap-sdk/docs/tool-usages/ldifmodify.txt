@@ -38,7 +38,7 @@ Available options include:
         The path to an LDIF file containing the source entries to be updated.
         This argument must be provided exactly once, and the file must exist.
     --sourceEncryptionPassphraseFile {path}
-        The path to to file containing the passphrase needed to decrypt the
+        The path to the file containing the passphrase needed to decrypt the
         contents of the source LDIF file (if it is encrypted).  If this
         argument is provided, the file must exist and must contain exactly one
         line that contains only the encryption passphrase.  If the source LDIF
@@ -51,7 +51,7 @@ Available options include:
         memory so that all changes will be available when processing entries in
         the source LDIF file.
     --changesEncryptionPassphraseFile {path}
-        The path to to file containing the passphrase needed to decrypt the
+        The path to the file containing the passphrase needed to decrypt the
         contents of the changes LDIF file (if it is encrypted).  If this
         argument is provided, the file must exist and must contain exactly one
         line that contains only the encryption passphrase.  If the changes LDIF

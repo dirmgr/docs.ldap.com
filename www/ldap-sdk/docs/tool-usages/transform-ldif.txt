@@ -21,12 +21,12 @@ Available options include:
         line.  Either the --sourceLDIF or the --sourceFromStandardInput
         argument (but not both) must be provided.
     --sourceFromStandardInput
-        Indicates that the source data data will be read from standard input
-        rather than from one or more LDIF files.  This option is primarily
-        intended for use when piping the output of another tool (perhaps even
-        another invocation of the transform-ldif tool) into this tool.  Either
-        the --sourceLDIF or the --sourceFromStandardInput argument (but not
-        both) must be provided.
+        Indicates that the source data will be read from standard input rather
+        than from one or more LDIF files.  This option is primarily intended
+        for use when piping the output of another tool (perhaps even another
+        invocation of the transform-ldif tool) into this tool.  Either the
+        --sourceLDIF or the --sourceFromStandardInput argument (but not both)
+        must be provided.
     -o, --targetLDIF {path}
         The path to the LDIF file to which the transformed entries and change
         records will be written.  This argument must be provided at most once.

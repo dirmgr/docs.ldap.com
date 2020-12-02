@@ -153,10 +153,11 @@ Available options include:
 
   Delete Operation Arguments
 
-    --retryFailedOperations
-        Indicates that if an operation fails in a way that indicates that the
-        connection to the directory server may be invalid, the tool should
-        automatically retry the failed operation on a newly created connection.
+    --neverRetry
+        Indicates that the tool should not attempt to retry operations that
+        fail in a way that the connection to the directory server may be
+        invalid.  By default, it will automatically try to establish a new
+        connection and retry the failed operation.
     -n, --dryRun
         Indicates that the tool should display what it would do, and may
         perform searches if appropriate, but will not actually attempt to

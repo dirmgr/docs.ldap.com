@@ -31,12 +31,12 @@ Available options include:
   Source LDIF Arguments
 
   * -s, --sourceLDIF {path}
-        The path to to the LDIF file containing the entries to use as the
-        source data set.  This argument must be specified, and the source LDIF
-        file must exist.  The LDIF file may optionally be gzip-compressed
-        and/or passphrase-encrypted.
+        The path to the LDIF file containing the entries to use as the source
+        data set.  This argument must be specified, and the source LDIF file
+        must exist.  The LDIF file may optionally be gzip-compressed and/or
+        passphrase-encrypted.
     --sourceEncryptionPassphraseFile {path}
-        The path to to file containing the passphrase used to encrypt the
+        The path to the file containing the passphrase used to encrypt the
         contents of the source LDIF file.  If this argument is provided, the
         file must exist and must contain exactly one line that contains only
         the encryption passphrase.  If the source LDIF file is encrypted but
@@ -46,12 +46,12 @@ Available options include:
   Target LDIF Arguments
 
   * -t, --targetLDIF {path}
-        The path to to the LDIF file containing the entries to use as the
-        target data set.  This argument must be specified, and the target LDIF
-        file must exist.  The LDIF file may optionally be gzip-compressed
-        and/or passphrase-encrypted.
+        The path to the LDIF file containing the entries to use as the target
+        data set.  This argument must be specified, and the target LDIF file
+        must exist.  The LDIF file may optionally be gzip-compressed and/or
+        passphrase-encrypted.
     --targetEncryptionPassphraseFile {path}
-        The path to to file containing the passphrase used to encrypt the
+        The path to the file containing the passphrase used to encrypt the
         contents of the target LDIF file.  If this argument is provided, the
         file must exist and must contain exactly one line that contains only
         the encryption passphrase.  If the target LDIF file is encrypted but
@@ -61,9 +61,9 @@ Available options include:
   Output LDIF Arguments
 
     -o, --outputLDIF {path}
-        The path to to the LDIF file to which the resulting LDIF add, delete,
-        and modify change records will be written.  If this file already
-        exists, then the new LDIF records will be appended to it unless the
+        The path to the LDIF file to which the resulting LDIF add, delete, and
+        modify change records will be written.  If this file already exists,
+        then the new LDIF records will be appended to it unless the
         '--overwriteExisting' argument is provided.  If this file does not
         exist, then the parent directory must exist.  If this argument is not
         provided, then the changes will be written to standard output.
@@ -92,12 +92,12 @@ Available options include:
         (to indicate that the output should include LDIF add change records for
         all entries that are present in the target LDIF but not in the source),
         'delete' (to indicate that the output should include LDIF delete change
-        records for all entries that are present present in the source LDIF but
-        not in the target), and 'modify' (to indicate that the output should
-        include LDIF modify change records for all entries that are present in
-        both the source and target LDIF files but that differ between the two
-        versions).  This argument may be provided multiple times to specify
-        multiple change types.  By default, all change types will be included.
+        records for all entries that are present in the source LDIF but not in
+        the target), and 'modify' (to indicate that the output should include
+        LDIF modify change records for all entries that are present in both the
+        source and target LDIF files but that differ between the two versions).
+        This argument may be provided multiple times to specify multiple change
+        types.  By default, all change types will be included.
     --includeFilter {filter}
         Only include changes to entries that match the given filter (either
         before or after the change).  This argument may be provided multiple

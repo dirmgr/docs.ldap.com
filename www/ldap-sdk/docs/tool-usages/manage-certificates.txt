@@ -166,6 +166,12 @@ Examples
          --new-keystore-password-file config/new.pin \
          --display-keytool-command
 
+  Establish a secure connection to ds.example.com on port 636 and display basic
+  information about the server's certificate chain.
+
+    manage-certificates retrieve-server-certificate \
+         --hostname ds.example.com --port 636
+
   Connects to the ldap.example.com server on port 636 to retrieve the
   certificate chain that the server presents during TLS negotiation.  That
   certificate chain will be added to the 'config/truststore' key store with a
@@ -213,7 +219,6 @@ Available Subcommands:
   list
 
 * export-certificate
-  export
 
 * export-private-key
 
@@ -221,44 +226,28 @@ Available Subcommands:
   import
 
 * delete-certificate
-  remove-certificate
-  delete
-  remove
 
 * generate-self-signed-certificate
-  generate-certificate
 
 * generate-certificate-signing-request
-  generate-certificate-request
 
 * sign-certificate-signing-request
-  sign-certificate-request
-  sign-certificate
-  sign
 
 * change-certificate-alias
-  change-alias
-  rename
 
 * change-keystore-password
 
 * change-private-key-password
-  change-key-password
+
+* retrieve-server-certificate
 
 * trust-server-certificate
-  trust-server
 
 * check-certificate-usability
 
 * display-certificate-file
-  display-certificate
-  print-certificate-file
-  print-certificate
 
 * display-certificate-signing-request-file
-  display-certificate-request
-  print-certificate-signing-request-file
-  print-certificate-request
 
 
 
@@ -598,7 +587,7 @@ Available options include:
     certificate chain, or when importing a certificate chain into an alias with
     an existing private key.  In many cases, the private key password will be
     the same as the key store password and in such instances, the private key
-    password can be omitted and the the key store password will be used as the
+    password can be omitted and the key store password will be used as the
     private key password.  However, if you are importing a private key and wish
     to protect it with a password that does not match the key store password,
     or if you are importing a new certificate chain for an existing private key
@@ -611,7 +600,7 @@ Available options include:
     certificate chain, or when importing a certificate chain into an alias with
     an existing private key.  In many cases, the private key password will be
     the same as the key store password and in such instances, the private key
-    password can be omitted and the the key store password will be used as the
+    password can be omitted and the key store password will be used as the
     private key password.  However, if you are importing a private key and wish
     to protect it with a password that does not match the key store password,
     or if you are importing a new certificate chain for an existing private key
@@ -627,7 +616,7 @@ Available options include:
     chain, or when importing a certificate chain into an alias with an existing
     private key.  In many cases, the private key password will be the same as
     the key store password and in such instances, the private key password can
-    be omitted and the the key store password will be used as the private key
+    be omitted and the key store password will be used as the private key
     password.  However, if you are importing a private key and wish to protect
     it with a password that does not match the key store password, or if you
     are importing a new certificate chain for an existing private key that uses
@@ -935,10 +924,10 @@ Available options include:
     representation of the extension value (for example, --ext
     2.5.29.19:true:30030101ff).
 --display-keytool-command
-    Display a command that that can be invoked to achieve a similar result with
-    the Java keytool utility.  Note that this may just be an approximation,
-    since the manage-certificates and keytool utilities do not provide exactly
-    the same sets of functionality.
+    Display a command that can be invoked to achieve a similar result with the
+    Java keytool utility.  Note that this may just be an approximation, since
+    the manage-certificates and keytool utilities do not provide exactly the
+    same sets of functionality.
 
 * Indicates the argument is required
 
@@ -1016,7 +1005,7 @@ Usage:  generate-certificate-signing-request {options}
 
 Available options include:
 --output-format {format}
-    The output format to use for the the generated certificate signing request.
+    The output format to use for the generated certificate signing request.
     The value may be either 'PEM' (to export the request in the text-based PEM
     format), or 'DER' (to export the request in the binary DER format).  If
     this is not provided, then the PEM output format will be used.
@@ -1223,10 +1212,10 @@ Available options include:
     the hexadecimal representation of the extension value (for example, --ext
     2.5.29.19:true:30030101ff).
 --display-keytool-command
-    Display a command that that can be invoked to achieve a similar result with
-    the Java keytool utility.  Note that this may just be an approximation,
-    since the manage-certificates and keytool utilities do not provide exactly
-    the same sets of functionality.
+    Display a command that can be invoked to achieve a similar result with the
+    Java keytool utility.  Note that this may just be an approximation, since
+    the manage-certificates and keytool utilities do not provide exactly the
+    same sets of functionality.
 
 * Indicates the argument is required
 
@@ -1506,10 +1495,10 @@ Available options include:
     certificate signing request will be displayed and the user will be
     interactively prompted about whether to sign it.
 --display-keytool-command
-    Display a command that that can be invoked to achieve a similar result with
-    the Java keytool utility.  Note that this may just be an approximation,
-    since the manage-certificates and keytool utilities do not provide exactly
-    the same sets of functionality.
+    Display a command that can be invoked to achieve a similar result with the
+    Java keytool utility.  Note that this may just be an approximation, since
+    the manage-certificates and keytool utilities do not provide exactly the
+    same sets of functionality.
 
 * Indicates the argument is required
 
@@ -1615,10 +1604,10 @@ Available options include:
     The new alias to assign to the target entry in the key store.  This is
     required, and it may only be provided once.
 --display-keytool-command
-    Display a command that that can be invoked to achieve a similar result with
-    the Java keytool utility.  Note that this may just be an approximation,
-    since the manage-certificates and keytool utilities do not provide exactly
-    the same sets of functionality.
+    Display a command that can be invoked to achieve a similar result with the
+    Java keytool utility.  Note that this may just be an approximation, since
+    the manage-certificates and keytool utilities do not provide exactly the
+    same sets of functionality.
 
 * Indicates the argument is required
 
@@ -1679,10 +1668,10 @@ Available options include:
     --new-keystore-password-file, or --prompt-for-new-keystore-password
     arguments must be provided.
 --display-keytool-command
-    Display a command that that can be invoked to achieve a similar result with
-    the Java keytool utility.  Note that this may just be an approximation,
-    since the manage-certificates and keytool utilities do not provide exactly
-    the same sets of functionality.
+    Display a command that can be invoked to achieve a similar result with the
+    Java keytool utility.  Note that this may just be an approximation, since
+    the manage-certificates and keytool utilities do not provide exactly the
+    same sets of functionality.
 
 * Indicates the argument is required
 
@@ -1767,10 +1756,10 @@ Available options include:
     --new-private-key-password-file, and --prompt-for-new-private-key-password
     arguments is required.
 --display-keytool-command
-    Display a command that that can be invoked to achieve a similar result with
-    the Java keytool utility.  Note that this may just be an approximation,
-    since the manage-certificates and keytool utilities do not provide exactly
-    the same sets of functionality.
+    Display a command that can be invoked to achieve a similar result with the
+    Java keytool utility.  Note that this may just be an approximation, since
+    the manage-certificates and keytool utilities do not provide exactly the
+    same sets of functionality.
 
 * Indicates the argument is required
 
@@ -1786,6 +1775,78 @@ Examples
          --current-private-key-password-file config/current.pin \
          --new-private-key-password-file config/new.pin \
          --display-keytool-command
+
+
+
+Usage for subcommand retrieve-server-certificate:
+
+Initiates a secure connection to a server to get that server's certificate
+chain, and then displays that certificate and optionally writes it to a file.
+
+Usage:  retrieve-server-certificate {options}
+
+Available options include:
+* -h, --hostname {host}
+    The hostname or IP address of the server to which the connection should be
+    established.  This must be provided.
+* -p, --port {port}
+    The TCP port number of the server to which the connection should be
+    established.  Unless the --use-ldap-start-tls argument is provided, the
+    port number must be one on which the server expects to accept TLS-based
+    connections.  If the --use-ldap-start-tls argument is provided, then the
+    specified port must be one on which an LDAP server is listening for
+    non-secure connections but on which clients may use the StartTLS extended
+    operation to transition to using secure communication.  Standard secure
+    port numbers include 636 for LDAPS and 443 for HTTPS, and the standard
+    non-secure port for LDAP is 389.  This must be provided.
+-q, --use-ldap-start-tls
+    Indicates that the tool should initially establish a non-secure connection
+    to an LDAP server, and then use the StartTLS extended operation to
+    transition to using secure communication.
+--output-file {path}
+    The path to the output file to which the retrieved certificates should be
+    written.  If this argument is provided, then a PEM or DER representation of
+    all certificates in the chain will be written to the specified file.  If
+    this argument is not provided, then information about the certificate will
+    only be written to standard output.
+--output-format {format}
+    The format in which the certificates should be written to the specified
+    output file.  The value may be either 'PEM' (to use the text-based PEM
+    format), or 'DER' (to use the binary DER format).  This argument may only
+    be provided if the --output-file argument is also given.  If this is not
+    provided, then the PEM output format will be used.
+--only-peer-certificate
+    Only provide information about the peer certificate.  If this argument is
+    not provided, then the tool will provide information about all certificates
+    in the presented chain.
+--enableSSLDebugging
+    Enable Java's low-level support for debugging SSL/TLS communication.  This
+    is equivalent to setting the 'javax.net.debug' property to 'all'.
+--verbose
+    Display verbose information about the certificates that are retrieved.
+    This will only affect what is written to standard output and will not alter
+    what may be written to the output file (if one was requested).
+
+* Indicates the argument is required
+
+Examples
+
+  Establish a secure connection to ds.example.com on port 636 and display basic
+  information about the server's certificate chain.
+
+    manage-certificates retrieve-server-certificate \
+         retrieve-server-certificate --hostname ds.example.com --port 636
+
+  Establish an initially insecure connection to ds.example.com on port 389 and
+  then invoke an LDAP StartTLS extended operation to establish a secure
+  communication channel.  Display verbose information about the peer
+  certificate (ignoring any issuer certificates), and write a PEM
+  representation of that certificate to the 'ds-cert.pem' file.
+
+    manage-certificates retrieve-server-certificate \
+         retrieve-server-certificate --hostname ds.example.com --port 389 \
+         --use-ldap-start-tls --only-peer-certificate \
+         --output-file ds-cert.pem --output-format PEM --verbose
 
 
 
@@ -2015,7 +2076,7 @@ format.
 Usage:  display-certificate-signing-request-file {options}
 
 Available options include:
-* --certificate-signing-request-file, --request-file {path}
+* --certificate-signing-request-file {path}
     The path to a file containing the certificate signing request (CSR) to be
     printed.  The CSR may be formatted in either the text-based PEM format or
     the binary DER format.  If the request is in PEM format, it must include

@@ -148,11 +148,11 @@ Available options include:
 
   Operation Arguments
 
-    --retryFailedOperations
-        Indicates that, if an operation fails in a way that indicates the
-        connection to the server may no longer be valid, the tool should
-        automatically create a new connection and re-try the operation before
-        reporting it as a failure.
+    --neverRetry
+        Indicates that the tool should not attempt to retry operations that
+        fail in a way that the connection to the directory server may be
+        invalid.  By default, it will automatically try to establish a new
+        connection and retry the failed operation.
     -n, --dryRun
         Parse the LDIF representations of the changes to apply but don't
         actually perform any LDAP communication.
@@ -261,7 +261,7 @@ Available options include:
         request that the server return information about resource limits (e.g.,
         size limit, time limit, idle time limit, etc.) imposed for the user.
     --ignoreNoUserModification
-        Indicates that all add requests should include the
+        Indicates that all add and modify requests should include the
         UnboundID-proprietary ignore NO-USER-MODIFICATION request control to
         permit setting values for certain operational attributes not normally
         permitted to be provided by external clients.
@@ -556,6 +556,6 @@ Examples
     ldapmodify --hostname ds1.example.com --port 636 \
          --hostname ds2.example.com --port 636 --useSSL \
          --bindDN uid=admin,dc=example,dc=com --bindPassword password \
-         --filename changes.ldif \
+         --ldifFile changes.ldif \
          --modifyEntriesMatchingFilter "(objectClass=person)" \
          --searchPageSize 100

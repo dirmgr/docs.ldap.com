@@ -70,6 +70,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--sslClientAuthPolicy <i>{prohibited|optional|required}</i></tt> &mdash; The policy that the server should use for requesting client certificates during TLS negotiation.  If this is 'prohibited' (or not specified), then the server will not ask clients to present a certificate chain.  If this is 'optional', then the server will ask clients to present a certificate chain but will continue with TLS negotiation if the client does not present one.  If this is 'required', then the server will ask clients to present a certificate chain and will abort TLS negotiation if the client does not present one.
+        <br>
+        A provided value should be one of the following:  'required', 'prohibited', 'optional'.
+        <br><br>
+      </li>
+      <li>
         <tt>--maxConcurrentConnections <i>{value}</i></tt> &mdash; The maximum number of concurrent connections that the server will allow at any time.  If this is not provided, then the server will not impose any limit on the number of concurrent connections.
         <br>
         The specified value must not be less than 1 or greater than 2,147,483,647.

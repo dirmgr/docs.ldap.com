@@ -59,6 +59,15 @@ Available options include:
         contents without a password.
     --trustStoreType {type}
         The trust store type.
+    --sslClientAuthPolicy {prohibited|optional|required}
+        The policy that the server should use for requesting client
+        certificates during TLS negotiation.  If this is 'prohibited' (or not
+        specified), then the server will not ask clients to present a
+        certificate chain.  If this is 'optional', then the server will ask
+        clients to present a certificate chain but will continue with TLS
+        negotiation if the client does not present one.  If this is 'required',
+        then the server will ask clients to present a certificate chain and
+        will abort TLS negotiation if the client does not present one.
     --maxConcurrentConnections {value}
         The maximum number of concurrent connections that the server will allow
         at any time.  If this is not provided, then the server will not impose

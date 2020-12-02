@@ -27,13 +27,13 @@
     <h3>Source LDIF Arguments</h3>
     <ul>
       <li>
-        <tt>-s <i>{path}</i></tt> / <tt>--sourceLDIF <i>{path}</i></tt> &mdash; The path to to the LDIF file containing the entries to use as the source data set.  This argument must be specified, and the source LDIF file must exist.  The LDIF file may optionally be gzip-compressed and/or passphrase-encrypted.
+        <tt>-s <i>{path}</i></tt> / <tt>--sourceLDIF <i>{path}</i></tt> &mdash; The path to the LDIF file containing the entries to use as the source data set.  This argument must be specified, and the source LDIF file must exist.  The LDIF file may optionally be gzip-compressed and/or passphrase-encrypted.
         <br>
         The specified path must refer to a file that exists.
         <br><br>
       </li>
       <li>
-        <tt>--sourceEncryptionPassphraseFile <i>{path}</i></tt> &mdash; The path to to file containing the passphrase used to encrypt the contents of the source LDIF file.  If this argument is provided, the file must exist and must contain exactly one line that contains only the encryption passphrase.  If the source LDIF file is encrypted but this argument is not provided, then the tool will interactively prompt for the passphrase.
+        <tt>--sourceEncryptionPassphraseFile <i>{path}</i></tt> &mdash; The path to the file containing the passphrase used to encrypt the contents of the source LDIF file.  If this argument is provided, the file must exist and must contain exactly one line that contains only the encryption passphrase.  If the source LDIF file is encrypted but this argument is not provided, then the tool will interactively prompt for the passphrase.
         <br>
         The specified path must refer to a file that exists.
         <br><br>
@@ -42,13 +42,13 @@
     <h3>Target LDIF Arguments</h3>
     <ul>
       <li>
-        <tt>-t <i>{path}</i></tt> / <tt>--targetLDIF <i>{path}</i></tt> &mdash; The path to to the LDIF file containing the entries to use as the target data set.  This argument must be specified, and the target LDIF file must exist.  The LDIF file may optionally be gzip-compressed and/or passphrase-encrypted.
+        <tt>-t <i>{path}</i></tt> / <tt>--targetLDIF <i>{path}</i></tt> &mdash; The path to the LDIF file containing the entries to use as the target data set.  This argument must be specified, and the target LDIF file must exist.  The LDIF file may optionally be gzip-compressed and/or passphrase-encrypted.
         <br>
         The specified path must refer to a file that exists.
         <br><br>
       </li>
       <li>
-        <tt>--targetEncryptionPassphraseFile <i>{path}</i></tt> &mdash; The path to to file containing the passphrase used to encrypt the contents of the target LDIF file.  If this argument is provided, the file must exist and must contain exactly one line that contains only the encryption passphrase.  If the target LDIF file is encrypted but this argument is not provided, then the tool will interactively prompt for the passphrase.
+        <tt>--targetEncryptionPassphraseFile <i>{path}</i></tt> &mdash; The path to the file containing the passphrase used to encrypt the contents of the target LDIF file.  If this argument is provided, the file must exist and must contain exactly one line that contains only the encryption passphrase.  If the target LDIF file is encrypted but this argument is not provided, then the tool will interactively prompt for the passphrase.
         <br>
         The specified path must refer to a file that exists.
         <br><br>
@@ -57,7 +57,7 @@
     <h3>Output LDIF Arguments</h3>
     <ul>
       <li>
-        <tt>-o <i>{path}</i></tt> / <tt>--outputLDIF <i>{path}</i></tt> &mdash; The path to to the LDIF file to which the resulting LDIF add, delete, and modify change records will be written.  If this file already exists, then the new LDIF records will be appended to it unless the '--overwriteExisting' argument is provided.  If this file does not exist, then the parent directory must exist.  If this argument is not provided, then the changes will be written to standard output.
+        <tt>-o <i>{path}</i></tt> / <tt>--outputLDIF <i>{path}</i></tt> &mdash; The path to the LDIF file to which the resulting LDIF add, delete, and modify change records will be written.  If this file already exists, then the new LDIF records will be appended to it unless the '--overwriteExisting' argument is provided.  If this file does not exist, then the parent directory must exist.  If this argument is not provided, then the changes will be written to standard output.
         <br>
         The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
         <br><br>
@@ -90,7 +90,7 @@
     <h3>Content Arguments</h3>
     <ul>
       <li>
-        <tt>--changeType <i>{add|delete|modify}</i></tt> &mdash; The type of change to include in the output.  Allowed values are 'add' (to indicate that the output should include LDIF add change records for all entries that are present in the target LDIF but not in the source), 'delete' (to indicate that the output should include LDIF delete change records for all entries that are present present in the source LDIF but not in the target), and 'modify' (to indicate that the output should include LDIF modify change records for all entries that are present in both the source and target LDIF files but that differ between the two versions).  This argument may be provided multiple times to specify multiple change types.  By default, all change types will be included.
+        <tt>--changeType <i>{add|delete|modify}</i></tt> &mdash; The type of change to include in the output.  Allowed values are 'add' (to indicate that the output should include LDIF add change records for all entries that are present in the target LDIF but not in the source), 'delete' (to indicate that the output should include LDIF delete change records for all entries that are present in the source LDIF but not in the target), and 'modify' (to indicate that the output should include LDIF modify change records for all entries that are present in both the source and target LDIF files but that differ between the two versions).  This argument may be provided multiple times to specify multiple change types.  By default, all change types will be included.
         <br>
         A provided value should be one of the following:  'delete', 'modify', 'add'.
         <br><br>

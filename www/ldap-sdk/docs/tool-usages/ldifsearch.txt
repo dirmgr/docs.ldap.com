@@ -15,7 +15,7 @@ Available options include:
         be searched in the order provided.  The file may optionally be
         compressed or encrypted.
     --ldifEncryptionPassphraseFile {path}
-        The path to to file containing the passphrase used to encrypt the
+        The path to the file containing the passphrase used to encrypt the
         contents of the input LDIF files.  If this argument is provided, the
         file must exist and must contain exactly one line that contains only
         the encryption passphrase.  If the input LDIF file is encrypted but

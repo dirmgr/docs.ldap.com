@@ -27,6 +27,55 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 5.1.3</h3>
+
+              <p>
+                The following changes were made between the 5.1.2 and 5.1.3 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue in the LDAP listener framework that caused listeners to use a
+                  maximum message size of two gigabytes, which could allow malicious or errant
+                  clients to cause the server to allocate large amounts of memory.  The listener
+                  will now default to a maximum message size of twenty megabytes (which is the
+                  same as the maximum message size for LDAP client connections), and the LDAP
+                  listener configuration and in-memory directory server configuration have been
+                  updated to allow configuring the maximum message size that should be used.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated OID support to add methods that leverage hierarchy.  It is now possible
+                  to create an OID that is a child of a provided OID, to retrieve the parent of a
+                  provided OID, and to determine whether an OID is an ancestor or descendant of a
+                  provided OID.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the oid-lookup tool to add an --exact-match argument that will cause it
+                  to only return items in which the OID, name, type, origin, or URL exactly
+                  matches the provided search string (ignoring differences in capitalization).  By
+                  default, the tool uses substring matching.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldap-result-code tool to add support for an --output-format argument
+                  that can cause the output to be formatted as a user-friendly table (the default
+                  output), CSV, tab-delimited text, or JSON objects.  The former --script-friendly
+                  argument (which would cause the tool to format the output as tab-delimited text)
+                  has been hidden in favor of the new --output-format argument, but is still
+                  available and supported for the purpose of backward compatibility.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 5.1.2</h3>
 
               <p>

@@ -6,6 +6,9 @@ This tool may be used to list all known defined LDAP result codes, retrieve the
 name of the result code with a given integer value, or search for all result
 codes with names containing a given substring.
 
+At most one of the --list, --int-value, and --search arguments may be provided.
+If none of them is provided, then the --list option will be chosen by default.
+
 Usage:  ldap-result-code {options}
 
 Available options include:
@@ -17,8 +20,10 @@ Available options include:
     Search for result codes whose name contains the given substring.
 -a, --alphabetic-order
     List result codes in alphabetic order rather than in numeric order.
---script-friendly
-    Format the output as tab-delimited text rather than as a table.
+--output-format {csv|json|tab-delimited|table}
+    The format to use for the output.  The value may be one of 'csv', 'json',
+    'tab-delimited', or 'table'.  If the output format is not specified, then
+    the 'table' format will be used by default.
 --interactive
     Launch the tool in interactive mode.
 --outputFile {path}
@@ -54,9 +59,9 @@ Examples
     ldap-result-code
 
   Display information about the result code with an integer value of '49'.  The
-  output will be formatted as tab-delimited text instead of as a table.
+  matching result code should be formatted as a JSON object.
 
-    ldap-result-code --int-value 49 --script-friendly
+    ldap-result-code --int-value 49 --output-format json
 
   Display information about any defined result codes whose name contains the
   substring 'attribute'.

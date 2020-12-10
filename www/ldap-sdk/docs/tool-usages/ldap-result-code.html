@@ -16,6 +16,9 @@
     <p>
       This tool may be used to list all known defined LDAP result codes, retrieve the name of the result code with a given integer value, or search for all result codes with names containing a given substring.
     </p>
+    <p>
+      At most one of the --list, --int-value, and --search arguments may be provided.  If none of them is provided, then the --list option will be chosen by default.
+    </p>
     <h3>Usage</h3>
     <blockquote><pre>ldap-result-code <i>{arguments}</i></pre></blockquote>
     <h3>Arguments</h3>
@@ -40,6 +43,12 @@
         <tt>-a</tt> / <tt>--alphabetic-order</tt> &mdash; List result codes in alphabetic order rather than in numeric order.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--output-format <i>{csv|json|tab-delimited|table}</i></tt> &mdash; The format to use for the output.  The value may be one of 'csv', 'json', 'tab-delimited', or 'table'.  If the output format is not specified, then the 'table' format will be used by default.
+        <br>
+        A provided value should be one of the following:  'table', 'csv', 'json', 'tab-delimited'.
         <br><br>
       </li>
       <li>
@@ -124,6 +133,9 @@
         The following arguments cannot be used together:  <tt>--list</tt>, <tt>--int-value</tt>, <tt>--search</tt>
       </li>
       <li>
+        The following arguments cannot be used together:  <tt>--output-format</tt>, <tt>--script-friendly</tt>
+      </li>
+      <li>
         The following arguments cannot be used together:  <tt>--propertiesFilePath</tt>, <tt>--noPropertiesFile</tt>
       </li>
     </ul>
@@ -133,9 +145,9 @@
     </ul>
     <blockquote><pre>    ldap-result-code</pre></blockquote>
     <ul>
-      <li>Display information about the result code with an integer value of '49'.  The output will be formatted as tab-delimited text instead of as a table.</li>
+      <li>Display information about the result code with an integer value of '49'.  The matching result code should be formatted as a JSON object.</li>
     </ul>
-    <blockquote><pre>    ldap-result-code --int-value 49 --script-friendly</pre></blockquote>
+    <blockquote><pre>    ldap-result-code --int-value 49 --output-format json</pre></blockquote>
     <ul>
       <li>Display information about any defined result codes whose name contains the substring 'attribute'.</li>
     </ul>

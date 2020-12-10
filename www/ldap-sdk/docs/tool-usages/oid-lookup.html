@@ -33,6 +33,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--exact-match</tt> &mdash; Only return OID registry items that contain a string (the OID, name, type, origin, or URL) that exactly matches the provided search string (ignoring differences in capitalization).  By default, the tool will use substring matching rather than exact matching.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>--terse</tt> &mdash; Generate only the minimal amount of output with no additional comments.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.

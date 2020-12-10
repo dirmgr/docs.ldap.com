@@ -23,6 +23,11 @@ Available options include:
     The format to use for the output.  The value may be one of 'csv', 'json',
     'multi-line', or 'tab-delimited'.  If the output format is not specified,
     then the 'multi-line' format will be used by default.
+--exact-match
+    Only return OID registry items that contain a string (the OID, name, type,
+    origin, or URL) that exactly matches the provided search string (ignoring
+    differences in capitalization).  By default, the tool will use substring
+    matching rather than exact matching.
 --terse
     Generate only the minimal amount of output with no additional comments.
 --interactive

@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2018-2020 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2018-2021 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2018-2020 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2018-2021 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2018-2020 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2018-2021 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -444,7 +444,7 @@
 <span class="sourceLineNo">436</span>      macBuffer.append(e.encode());<a name="line.436"></a>
 <span class="sourceLineNo">437</span>    }<a name="line.437"></a>
 <span class="sourceLineNo">438</span><a name="line.438"></a>
-<span class="sourceLineNo">439</span>    final Mac mac = Mac.getInstance(macAlgorithm);<a name="line.439"></a>
+<span class="sourceLineNo">439</span>    final Mac mac = CryptoHelper.getMAC(macAlgorithm);<a name="line.439"></a>
 <span class="sourceLineNo">440</span>    mac.init(secretKey);<a name="line.440"></a>
 <span class="sourceLineNo">441</span><a name="line.441"></a>
 <span class="sourceLineNo">442</span>    final byte[] macValue = mac.doFinal(macBuffer.toByteArray());<a name="line.442"></a>
@@ -788,7 +788,7 @@
 <span class="sourceLineNo">780</span>          }<a name="line.780"></a>
 <span class="sourceLineNo">781</span>        }<a name="line.781"></a>
 <span class="sourceLineNo">782</span><a name="line.782"></a>
-<span class="sourceLineNo">783</span>        final Mac mac = Mac.getInstance(macAlgorithm);<a name="line.783"></a>
+<span class="sourceLineNo">783</span>        final Mac mac = CryptoHelper.getMAC(macAlgorithm);<a name="line.783"></a>
 <span class="sourceLineNo">784</span>        mac.init(secretKey);<a name="line.784"></a>
 <span class="sourceLineNo">785</span>        final byte[] computedMacValue = mac.doFinal(macBuffer.toByteArray());<a name="line.785"></a>
 <span class="sourceLineNo">786</span>        if (! Arrays.equals(computedMacValue, macValue))<a name="line.786"></a>
@@ -869,7 +869,7 @@
 <span class="sourceLineNo">861</span>    for (int i = 0; i &lt; iterations; i++)<a name="line.861"></a>
 <span class="sourceLineNo">862</span>    {<a name="line.862"></a>
 <span class="sourceLineNo">863</span>      final SecretKeyFactory keyFactory =<a name="line.863"></a>
-<span class="sourceLineNo">864</span>           SecretKeyFactory.getInstance(keyFactoryAlgorithm);<a name="line.864"></a>
+<span class="sourceLineNo">864</span>           CryptoHelper.getSecretKeyFactory(keyFactoryAlgorithm);<a name="line.864"></a>
 <span class="sourceLineNo">865</span>      final String cipherAlgorithm = cipherTransformation.substring(0,<a name="line.865"></a>
 <span class="sourceLineNo">866</span>           cipherTransformation.indexOf('/'));<a name="line.866"></a>
 <span class="sourceLineNo">867</span>      final PBEKeySpec pbeKeySpec = new PBEKeySpec(passphrase, keyFactorySalt,<a name="line.867"></a>
@@ -931,7 +931,7 @@
 <span class="sourceLineNo">923</span>           ERR_PW_ENCRYPTED_HEADER_NO_KEY_AVAILABLE.get());<a name="line.923"></a>
 <span class="sourceLineNo">924</span>    }<a name="line.924"></a>
 <span class="sourceLineNo">925</span><a name="line.925"></a>
-<span class="sourceLineNo">926</span>    final Cipher cipher = Cipher.getInstance(cipherTransformation);<a name="line.926"></a>
+<span class="sourceLineNo">926</span>    final Cipher cipher = CryptoHelper.getCipher(cipherTransformation);<a name="line.926"></a>
 <span class="sourceLineNo">927</span>    cipher.init(mode, secretKey,<a name="line.927"></a>
 <span class="sourceLineNo">928</span>         new IvParameterSpec(cipherInitializationVector));<a name="line.928"></a>
 <span class="sourceLineNo">929</span><a name="line.929"></a>

@@ -1,9 +1,9 @@
 /*
- * Copyright 2010-2020 Ping Identity Corporation
+ * Copyright 2010-2021 Ping Identity Corporation
  * All Rights Reserved.
  */
 /*
- * Copyright 2010-2020 Ping Identity Corporation
+ * Copyright 2010-2021 Ping Identity Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2010-2020 Ping Identity Corporation
+ * Copyright (C) 2010-2021 Ping Identity Corporation
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License (GPLv2 only)
@@ -58,6 +58,7 @@ import com.unboundid.ldap.sdk.LDAPConnectionOptions;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.ResultCode;
 import com.unboundid.ldap.sdk.Version;
+import com.unboundid.util.CryptoHelper;
 import com.unboundid.util.Debug;
 import com.unboundid.util.LDAPCommandLineTool;
 import com.unboundid.util.MinimalLogFormatter;
@@ -571,11 +572,12 @@ public final class LDAPDebugger
           final ObjectPair<File,char[]> keyStoreInfo =
                SelfSignedCertificateGenerator.
                     generateTemporarySelfSignedCertificate(getToolName(),
-                         "JKS");
+                         CryptoHelper.KEY_STORE_TYPE_JKS);
 
           sslUtil = new SSLUtil(
                new KeyStoreKeyManager(keyStoreInfo.getFirst(),
-                    keyStoreInfo.getSecond(), "JKS", null, true),
+                    keyStoreInfo.getSecond(), CryptoHelper.KEY_STORE_TYPE_JKS,
+                    null, true),
                new TrustAllTrustManager(false));
         }
         else

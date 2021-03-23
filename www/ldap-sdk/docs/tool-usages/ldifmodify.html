@@ -71,6 +71,24 @@
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
       </li>
+      <li>
+        <tt>--ignoreDuplicateDeletes</tt> &mdash; Ignore subsequent deletes that target an entry that has already been deleted by an earlier change.  By default, subsequent deletes that target an already-deleted entry will be reported as an error.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--ignoreDeletesOfNonexistentEntries</tt> &mdash; Ignore deletes that target entries that do not exist in the source LDIF file.  By default, deletes targeting nonexistent entries will be reported as an error.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--ignoreModifiesOfNonexistentEntries</tt> &mdash; Ignore modifies that target entries that do not exist in the source LDIF file.  By default, modifies targeting nonexistent entries will be reported as an error.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
     </ul>
     <h3>Output Arguments</h3>
     <ul>

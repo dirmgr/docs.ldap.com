@@ -67,6 +67,18 @@ Available options include:
         entry or to remove an attribute value that does not exist in the entry.
         By default, the tool will operate in lenient mode, and these 'no-op'
         modifications will be permitted.
+    --ignoreDuplicateDeletes
+        Ignore subsequent deletes that target an entry that has already been
+        deleted by an earlier change.  By default, subsequent deletes that
+        target an already-deleted entry will be reported as an error.
+    --ignoreDeletesOfNonexistentEntries
+        Ignore deletes that target entries that do not exist in the source LDIF
+        file.  By default, deletes targeting nonexistent entries will be
+        reported as an error.
+    --ignoreModifiesOfNonexistentEntries
+        Ignore modifies that target entries that do not exist in the source
+        LDIF file.  By default, modifies targeting nonexistent entries will be
+        reported as an error.
 
   Output Arguments
 

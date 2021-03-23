@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2011-2020 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2011-2021 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2011-2020 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2011-2021 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2011-2020 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2011-2021 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -49,29 +49,29 @@
 <span class="sourceLineNo">041</span>import java.io.OutputStream;<a name="line.41"></a>
 <span class="sourceLineNo">042</span>import java.io.Serializable;<a name="line.42"></a>
 <span class="sourceLineNo">043</span>import java.net.Socket;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import java.security.MessageDigest;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import java.util.ArrayList;<a name="line.45"></a>
-<span class="sourceLineNo">046</span>import java.util.EnumSet;<a name="line.46"></a>
-<span class="sourceLineNo">047</span>import java.util.Iterator;<a name="line.47"></a>
-<span class="sourceLineNo">048</span>import java.util.LinkedHashMap;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>import java.util.List;<a name="line.49"></a>
-<span class="sourceLineNo">050</span>import java.util.Map;<a name="line.50"></a>
-<span class="sourceLineNo">051</span>import java.util.Set;<a name="line.51"></a>
-<span class="sourceLineNo">052</span>import java.util.TreeMap;<a name="line.52"></a>
-<span class="sourceLineNo">053</span>import java.util.logging.FileHandler;<a name="line.53"></a>
-<span class="sourceLineNo">054</span>import java.util.logging.Level;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>import java.util.logging.StreamHandler;<a name="line.55"></a>
-<span class="sourceLineNo">056</span>import javax.net.ssl.KeyManager;<a name="line.56"></a>
-<span class="sourceLineNo">057</span>import javax.net.ssl.TrustManager;<a name="line.57"></a>
-<span class="sourceLineNo">058</span><a name="line.58"></a>
-<span class="sourceLineNo">059</span>import com.unboundid.ldap.sdk.DN;<a name="line.59"></a>
-<span class="sourceLineNo">060</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.60"></a>
-<span class="sourceLineNo">061</span>import com.unboundid.ldap.sdk.OperationType;<a name="line.61"></a>
-<span class="sourceLineNo">062</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.62"></a>
-<span class="sourceLineNo">063</span>import com.unboundid.ldap.sdk.Version;<a name="line.63"></a>
-<span class="sourceLineNo">064</span>import com.unboundid.ldap.sdk.schema.Schema;<a name="line.64"></a>
-<span class="sourceLineNo">065</span>import com.unboundid.ldap.sdk.schema.SchemaValidator;<a name="line.65"></a>
-<span class="sourceLineNo">066</span>import com.unboundid.util.CommandLineTool;<a name="line.66"></a>
+<span class="sourceLineNo">044</span>import java.util.ArrayList;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.util.EnumSet;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.util.Iterator;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.util.LinkedHashMap;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import java.util.List;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import java.util.Map;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import java.util.Set;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import java.util.TreeMap;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import java.util.logging.FileHandler;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import java.util.logging.Level;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import java.util.logging.StreamHandler;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import javax.net.ssl.KeyManager;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import javax.net.ssl.TrustManager;<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>import com.unboundid.ldap.sdk.DN;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.59"></a>
+<span class="sourceLineNo">060</span>import com.unboundid.ldap.sdk.OperationType;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>import com.unboundid.ldap.sdk.Version;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>import com.unboundid.ldap.sdk.schema.Schema;<a name="line.63"></a>
+<span class="sourceLineNo">064</span>import com.unboundid.ldap.sdk.schema.SchemaValidator;<a name="line.64"></a>
+<span class="sourceLineNo">065</span>import com.unboundid.util.CommandLineTool;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>import com.unboundid.util.CryptoHelper;<a name="line.66"></a>
 <span class="sourceLineNo">067</span>import com.unboundid.util.Debug;<a name="line.67"></a>
 <span class="sourceLineNo">068</span>import com.unboundid.util.MinimalLogFormatter;<a name="line.68"></a>
 <span class="sourceLineNo">069</span>import com.unboundid.util.NotMutable;<a name="line.69"></a>
@@ -627,7 +627,7 @@
 <span class="sourceLineNo">619</span><a name="line.619"></a>
 <span class="sourceLineNo">620</span>    keyStoreTypeArgument = new StringArgument(null, "keyStoreType",<a name="line.620"></a>
 <span class="sourceLineNo">621</span>         false, 1, "{type}", INFO_MEM_DS_TOOL_ARG_DESC_KEY_STORE_TYPE.get(),<a name="line.621"></a>
-<span class="sourceLineNo">622</span>         "JKS");<a name="line.622"></a>
+<span class="sourceLineNo">622</span>         CryptoHelper.KEY_STORE_TYPE_JKS);<a name="line.622"></a>
 <span class="sourceLineNo">623</span>    keyStoreTypeArgument.setArgumentGroupName(<a name="line.623"></a>
 <span class="sourceLineNo">624</span>         INFO_MEM_DS_TOOL_GROUP_CONNECTIVITY.get());<a name="line.624"></a>
 <span class="sourceLineNo">625</span>    keyStoreTypeArgument.addLongIdentifier("keyStoreFormat", true);<a name="line.625"></a>
@@ -674,7 +674,7 @@
 <span class="sourceLineNo">666</span><a name="line.666"></a>
 <span class="sourceLineNo">667</span>    trustStoreTypeArgument = new StringArgument(null, "trustStoreType",<a name="line.667"></a>
 <span class="sourceLineNo">668</span>         false, 1, "{type}", INFO_MEM_DS_TOOL_ARG_DESC_TRUST_STORE_TYPE.get(),<a name="line.668"></a>
-<span class="sourceLineNo">669</span>         "JKS");<a name="line.669"></a>
+<span class="sourceLineNo">669</span>         CryptoHelper.KEY_STORE_TYPE_JKS);<a name="line.669"></a>
 <span class="sourceLineNo">670</span>    trustStoreTypeArgument.setArgumentGroupName(<a name="line.670"></a>
 <span class="sourceLineNo">671</span>         INFO_MEM_DS_TOOL_GROUP_CONNECTIVITY.get());<a name="line.671"></a>
 <span class="sourceLineNo">672</span>    trustStoreTypeArgument.addLongIdentifier("trustStoreFormat", true);<a name="line.672"></a>
@@ -1584,7 +1584,7 @@
 <span class="sourceLineNo">1576</span>      {<a name="line.1576"></a>
 <span class="sourceLineNo">1577</span>        try<a name="line.1577"></a>
 <span class="sourceLineNo">1578</span>        {<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>          keyStoreType = "JKS";<a name="line.1579"></a>
+<span class="sourceLineNo">1579</span>          keyStoreType = CryptoHelper.KEY_STORE_TYPE_JKS;<a name="line.1579"></a>
 <span class="sourceLineNo">1580</span>          final ObjectPair&lt;File,char[]&gt; keyStoreInfo =<a name="line.1580"></a>
 <span class="sourceLineNo">1581</span>               SelfSignedCertificateGenerator.<a name="line.1581"></a>
 <span class="sourceLineNo">1582</span>                    generateTemporarySelfSignedCertificate(<a name="line.1582"></a>
@@ -1728,7 +1728,7 @@
 <span class="sourceLineNo">1720</span>           new UnsaltedMessageDigestInMemoryPasswordEncoder(<a name="line.1720"></a>
 <span class="sourceLineNo">1721</span>                '{' + schemeName + '}',<a name="line.1721"></a>
 <span class="sourceLineNo">1722</span>                Base64PasswordEncoderOutputFormatter.getInstance(),<a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>                MessageDigest.getInstance(digestAlgorithm));<a name="line.1723"></a>
+<span class="sourceLineNo">1723</span>                CryptoHelper.getMessageDigest(digestAlgorithm));<a name="line.1723"></a>
 <span class="sourceLineNo">1724</span>      encoderMap.put(StaticUtils.toLowerCase(schemeName), encoder);<a name="line.1724"></a>
 <span class="sourceLineNo">1725</span>    }<a name="line.1725"></a>
 <span class="sourceLineNo">1726</span>    catch (final Exception e)<a name="line.1726"></a>
@@ -1759,7 +1759,7 @@
 <span class="sourceLineNo">1751</span>           new SaltedMessageDigestInMemoryPasswordEncoder(<a name="line.1751"></a>
 <span class="sourceLineNo">1752</span>                '{' + schemeName + '}',<a name="line.1752"></a>
 <span class="sourceLineNo">1753</span>                Base64PasswordEncoderOutputFormatter.getInstance(),<a name="line.1753"></a>
-<span class="sourceLineNo">1754</span>                MessageDigest.getInstance(digestAlgorithm), 8, true, true);<a name="line.1754"></a>
+<span class="sourceLineNo">1754</span>                CryptoHelper.getMessageDigest(digestAlgorithm), 8, true, true);<a name="line.1754"></a>
 <span class="sourceLineNo">1755</span>      encoderMap.put(StaticUtils.toLowerCase(schemeName), encoder);<a name="line.1755"></a>
 <span class="sourceLineNo">1756</span>    }<a name="line.1756"></a>
 <span class="sourceLineNo">1757</span>    catch (final Exception e)<a name="line.1757"></a>

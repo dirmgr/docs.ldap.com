@@ -1,9 +1,9 @@
 /*
- * Copyright 2020 Ping Identity Corporation
+ * Copyright 2020-2021 Ping Identity Corporation
  * All Rights Reserved.
  */
 /*
- * Copyright 2020 Ping Identity Corporation
+ * Copyright 2020-2021 Ping Identity Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2020 Ping Identity Corporation
+ * Copyright (C) 2020-2021 Ping Identity Corporation
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License (GPLv2 only)
@@ -56,6 +56,7 @@ import com.unboundid.ldap.sdk.ResultCode;
 import com.unboundid.ldap.sdk.SearchResultReference;
 import com.unboundid.ldap.sdk.Version;
 import com.unboundid.util.CommandLineTool;
+import com.unboundid.util.CryptoHelper;
 import com.unboundid.util.Debug;
 import com.unboundid.util.NotNull;
 import com.unboundid.util.Nullable;
@@ -586,7 +587,7 @@ public final class TestLDAPSDKPerformance
                   "generate-self-signed-certificate",
                   "--keystore", keyStoreFile.getAbsolutePath(),
                   "--keystore-password", keyStoreFile.getAbsolutePath(),
-                  "--keystore-type", "JKS",
+                  "--keystore-type", CryptoHelper.KEY_STORE_TYPE_JKS,
                   "--alias", "server-cert",
                   "--subject-dn", "CN=Test LDAP SDK Performance");
         if (manageCertificatesResultCode != ResultCode.SUCCESS)
@@ -606,7 +607,7 @@ public final class TestLDAPSDKPerformance
         final SSLUtil sslUtil = new SSLUtil(
              new KeyStoreKeyManager(keyStoreFile,
                   keyStoreFile.getAbsolutePath().toCharArray(),
-                  "JKS", "server-cert"),
+                  CryptoHelper.KEY_STORE_TYPE_JKS, "server-cert"),
              new TrustAllTrustManager());
         serverSocketFactory = sslUtil.createSSLServerSocketFactory();
       }

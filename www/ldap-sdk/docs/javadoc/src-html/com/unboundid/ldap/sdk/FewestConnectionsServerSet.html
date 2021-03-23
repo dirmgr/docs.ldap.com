@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2013-2020 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2013-2021 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2013-2020 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2013-2021 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2013-2020 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2013-2021 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -708,39 +708,53 @@
 <span class="sourceLineNo">700</span>   * {@inheritDoc}<a name="line.700"></a>
 <span class="sourceLineNo">701</span>   */<a name="line.701"></a>
 <span class="sourceLineNo">702</span>  @Override()<a name="line.702"></a>
-<span class="sourceLineNo">703</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.703"></a>
+<span class="sourceLineNo">703</span>  public void shutDown()<a name="line.703"></a>
 <span class="sourceLineNo">704</span>  {<a name="line.704"></a>
-<span class="sourceLineNo">705</span>    buffer.append("FewestConnectionsServerSet(servers={");<a name="line.705"></a>
-<span class="sourceLineNo">706</span><a name="line.706"></a>
-<span class="sourceLineNo">707</span>    final Iterator&lt;Map.Entry&lt;ObjectPair&lt;String,Integer&gt;,AtomicLong&gt;&gt;<a name="line.707"></a>
-<span class="sourceLineNo">708</span>         cbsIterator = connectionCountsByServer.entrySet().iterator();<a name="line.708"></a>
-<span class="sourceLineNo">709</span>    while (cbsIterator.hasNext())<a name="line.709"></a>
-<span class="sourceLineNo">710</span>    {<a name="line.710"></a>
-<span class="sourceLineNo">711</span>      final Map.Entry&lt;ObjectPair&lt;String,Integer&gt;,AtomicLong&gt; e =<a name="line.711"></a>
-<span class="sourceLineNo">712</span>           cbsIterator.next();<a name="line.712"></a>
-<span class="sourceLineNo">713</span>      final ObjectPair&lt;String,Integer&gt; hostPort = e.getKey();<a name="line.713"></a>
-<span class="sourceLineNo">714</span>      final long count = e.getValue().get();<a name="line.714"></a>
-<span class="sourceLineNo">715</span><a name="line.715"></a>
-<span class="sourceLineNo">716</span>      buffer.append('\'');<a name="line.716"></a>
-<span class="sourceLineNo">717</span>      buffer.append(hostPort.getFirst());<a name="line.717"></a>
-<span class="sourceLineNo">718</span>      buffer.append(':');<a name="line.718"></a>
-<span class="sourceLineNo">719</span>      buffer.append(hostPort.getSecond());<a name="line.719"></a>
-<span class="sourceLineNo">720</span>      buffer.append("':");<a name="line.720"></a>
-<span class="sourceLineNo">721</span>      buffer.append(count);<a name="line.721"></a>
-<span class="sourceLineNo">722</span><a name="line.722"></a>
-<span class="sourceLineNo">723</span>      if (cbsIterator.hasNext())<a name="line.723"></a>
-<span class="sourceLineNo">724</span>      {<a name="line.724"></a>
-<span class="sourceLineNo">725</span>        buffer.append(", ");<a name="line.725"></a>
-<span class="sourceLineNo">726</span>      }<a name="line.726"></a>
-<span class="sourceLineNo">727</span>    }<a name="line.727"></a>
-<span class="sourceLineNo">728</span><a name="line.728"></a>
-<span class="sourceLineNo">729</span>    buffer.append("}, includesAuthentication=");<a name="line.729"></a>
-<span class="sourceLineNo">730</span>    buffer.append(bindRequest != null);<a name="line.730"></a>
-<span class="sourceLineNo">731</span>    buffer.append(", includesPostConnectProcessing=");<a name="line.731"></a>
-<span class="sourceLineNo">732</span>    buffer.append(postConnectProcessor != null);<a name="line.732"></a>
-<span class="sourceLineNo">733</span>    buffer.append(')');<a name="line.733"></a>
-<span class="sourceLineNo">734</span>  }<a name="line.734"></a>
-<span class="sourceLineNo">735</span>}<a name="line.735"></a>
+<span class="sourceLineNo">705</span>    if (blacklistManager != null)<a name="line.705"></a>
+<span class="sourceLineNo">706</span>    {<a name="line.706"></a>
+<span class="sourceLineNo">707</span>      blacklistManager.shutDown();<a name="line.707"></a>
+<span class="sourceLineNo">708</span>    }<a name="line.708"></a>
+<span class="sourceLineNo">709</span>  }<a name="line.709"></a>
+<span class="sourceLineNo">710</span><a name="line.710"></a>
+<span class="sourceLineNo">711</span><a name="line.711"></a>
+<span class="sourceLineNo">712</span><a name="line.712"></a>
+<span class="sourceLineNo">713</span>  /**<a name="line.713"></a>
+<span class="sourceLineNo">714</span>   * {@inheritDoc}<a name="line.714"></a>
+<span class="sourceLineNo">715</span>   */<a name="line.715"></a>
+<span class="sourceLineNo">716</span>  @Override()<a name="line.716"></a>
+<span class="sourceLineNo">717</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.717"></a>
+<span class="sourceLineNo">718</span>  {<a name="line.718"></a>
+<span class="sourceLineNo">719</span>    buffer.append("FewestConnectionsServerSet(servers={");<a name="line.719"></a>
+<span class="sourceLineNo">720</span><a name="line.720"></a>
+<span class="sourceLineNo">721</span>    final Iterator&lt;Map.Entry&lt;ObjectPair&lt;String,Integer&gt;,AtomicLong&gt;&gt;<a name="line.721"></a>
+<span class="sourceLineNo">722</span>         cbsIterator = connectionCountsByServer.entrySet().iterator();<a name="line.722"></a>
+<span class="sourceLineNo">723</span>    while (cbsIterator.hasNext())<a name="line.723"></a>
+<span class="sourceLineNo">724</span>    {<a name="line.724"></a>
+<span class="sourceLineNo">725</span>      final Map.Entry&lt;ObjectPair&lt;String,Integer&gt;,AtomicLong&gt; e =<a name="line.725"></a>
+<span class="sourceLineNo">726</span>           cbsIterator.next();<a name="line.726"></a>
+<span class="sourceLineNo">727</span>      final ObjectPair&lt;String,Integer&gt; hostPort = e.getKey();<a name="line.727"></a>
+<span class="sourceLineNo">728</span>      final long count = e.getValue().get();<a name="line.728"></a>
+<span class="sourceLineNo">729</span><a name="line.729"></a>
+<span class="sourceLineNo">730</span>      buffer.append('\'');<a name="line.730"></a>
+<span class="sourceLineNo">731</span>      buffer.append(hostPort.getFirst());<a name="line.731"></a>
+<span class="sourceLineNo">732</span>      buffer.append(':');<a name="line.732"></a>
+<span class="sourceLineNo">733</span>      buffer.append(hostPort.getSecond());<a name="line.733"></a>
+<span class="sourceLineNo">734</span>      buffer.append("':");<a name="line.734"></a>
+<span class="sourceLineNo">735</span>      buffer.append(count);<a name="line.735"></a>
+<span class="sourceLineNo">736</span><a name="line.736"></a>
+<span class="sourceLineNo">737</span>      if (cbsIterator.hasNext())<a name="line.737"></a>
+<span class="sourceLineNo">738</span>      {<a name="line.738"></a>
+<span class="sourceLineNo">739</span>        buffer.append(", ");<a name="line.739"></a>
+<span class="sourceLineNo">740</span>      }<a name="line.740"></a>
+<span class="sourceLineNo">741</span>    }<a name="line.741"></a>
+<span class="sourceLineNo">742</span><a name="line.742"></a>
+<span class="sourceLineNo">743</span>    buffer.append("}, includesAuthentication=");<a name="line.743"></a>
+<span class="sourceLineNo">744</span>    buffer.append(bindRequest != null);<a name="line.744"></a>
+<span class="sourceLineNo">745</span>    buffer.append(", includesPostConnectProcessing=");<a name="line.745"></a>
+<span class="sourceLineNo">746</span>    buffer.append(postConnectProcessor != null);<a name="line.746"></a>
+<span class="sourceLineNo">747</span>    buffer.append(')');<a name="line.747"></a>
+<span class="sourceLineNo">748</span>  }<a name="line.748"></a>
+<span class="sourceLineNo">749</span>}<a name="line.749"></a>
 
 
 

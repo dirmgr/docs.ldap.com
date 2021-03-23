@@ -278,6 +278,15 @@ Available options include:
 --prompt-for-keystore-password
     Interactively prompt for the key store password.  A key store password is
     optional for some key store types, but may be required for others.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    listing certificates, but it may be required in some cases (for example,
+    when listing the certificates in a BCFKS key store when not operating in
+    FIPS mode).  The value must be one of 'JKS' (for the Java Key Store
+    format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the
+    Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 --alias {alias}
     The alias (also called a nickname) of a certificate to include in the
     output.  This argument may be provided multiple times to identify multiple
@@ -353,6 +362,15 @@ Available options include:
 --prompt-for-keystore-password
     Interactively prompt for the key store password.  A key store password is
     optional for some key store types, but may be required for others.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    exporting certificates, but it may be required in some cases (for example,
+    when listing the certificates in a BCFKS key store when not operating in
+    FIPS mode).  The value must be one of 'JKS' (for the Java Key Store
+    format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the
+    Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 * --alias {alias}
     The alias (also called a nickname) of the certificate to export.  This is
     required, and it may only be provided once.
@@ -458,6 +476,15 @@ Available options include:
     is protected with a different password than the key store itself, then one
     of the --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments must be provided.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    exporting private keys, but it may be required in some cases (for example,
+    when listing the certificates in a BCFKS key store when not operating in
+    FIPS mode).  The value must be one of 'JKS' (for the Java Key Store
+    format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the
+    Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 * --alias {alias}
     The alias (also called a nickname) of the private key to export.  This is
     required, and it may only be provided once.
@@ -685,6 +712,15 @@ Available options include:
     required when importing certificates, so one of the --keystore-password,
     --keystore-password-file, or --prompt-for-keystore-password arguments must
     be provided.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    deleting certificates, but it may be required in some cases (for example,
+    when listing the certificates in a BCFKS key store when not operating in
+    FIPS mode).  The value must be one of 'JKS' (for the Java Key Store
+    format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the
+    Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 * --alias {alias}
     The alias (also called a nickname) of the certificate to delete.  This is
     required, and it may only be provided once.
@@ -1346,6 +1382,15 @@ Available options include:
     should be used to provide that private key password.  If none of these
     arguments is given, then the key store password will be used as the private
     key password.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    signing certificates, but it may be required in some cases (for example,
+    when listing the certificates in a BCFKS key store when not operating in
+    FIPS mode).  The value must be one of 'JKS' (for the Java Key Store
+    format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the
+    Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 * --signing-certificate-alias {alias}
     The alias (also called a nickname) of the certificate to use to sign the
     request.  This alias must exist in the key store, and it must reference a
@@ -1597,6 +1642,15 @@ Available options include:
     different password than the key store itself, then one of the
     --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments must be provided.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    changing a certificate alias, but it may be required in some cases (for
+    example, when listing the certificates in a BCFKS key store when not
+    operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key
+    Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for
+    the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 * --current-alias, --from {alias}
     The current alias for the key store entry to rename.  This is required, and
     it may only be provided once.
@@ -1716,6 +1770,15 @@ Available options include:
     Interactively prompt for the key store password.  A key store password is
     required so one of the --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    changing private key passwords, but it may be required in some cases (for
+    example, when listing the certificates in a BCFKS key store when not
+    operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key
+    Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for
+    the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 * --alias {alias}
     The alias (also called a nickname) of the private key entry for which to
     change the password.  This is required.
@@ -1991,6 +2054,15 @@ Available options include:
     Interactively prompt for the key store password.  A key store password is
     required, so one of the --keystore-password, --keystore-password-file, or
     --prompt-for-keystore-password arguments must be provided.
+--keystore-type {type}
+    The key store type for the key store.  This is usually not necessary when
+    checking certificate usability, but it may be required in some cases (for
+    example, when listing the certificates in a BCFKS key store when not
+    operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key
+    Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for
+    the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not
+    provided, then an attempt will be made to automatically infer the correct
+    key store type.
 * --alias {alias}
     The alias (also called a nickname) of the certificate to examine.  This is
     required, and it may only be provided once.

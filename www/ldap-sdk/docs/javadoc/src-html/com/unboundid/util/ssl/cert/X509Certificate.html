@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2017-2020 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2017-2021 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2017-2020 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2017-2021 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2017-2020 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2017-2021 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -56,35 +56,35 @@
 <span class="sourceLineNo">048</span>import java.security.Signature;<a name="line.48"></a>
 <span class="sourceLineNo">049</span>import java.security.cert.Certificate;<a name="line.49"></a>
 <span class="sourceLineNo">050</span>import java.security.cert.CertificateException;<a name="line.50"></a>
-<span class="sourceLineNo">051</span>import java.security.cert.CertificateFactory;<a name="line.51"></a>
-<span class="sourceLineNo">052</span>import java.util.ArrayList;<a name="line.52"></a>
-<span class="sourceLineNo">053</span>import java.util.Arrays;<a name="line.53"></a>
-<span class="sourceLineNo">054</span>import java.util.Calendar;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>import java.util.Collections;<a name="line.55"></a>
-<span class="sourceLineNo">056</span>import java.util.Date;<a name="line.56"></a>
-<span class="sourceLineNo">057</span>import java.util.GregorianCalendar;<a name="line.57"></a>
-<span class="sourceLineNo">058</span>import java.util.Iterator;<a name="line.58"></a>
-<span class="sourceLineNo">059</span>import java.util.List;<a name="line.59"></a>
-<span class="sourceLineNo">060</span>import java.util.UUID;<a name="line.60"></a>
-<span class="sourceLineNo">061</span><a name="line.61"></a>
-<span class="sourceLineNo">062</span>import com.unboundid.asn1.ASN1BigInteger;<a name="line.62"></a>
-<span class="sourceLineNo">063</span>import com.unboundid.asn1.ASN1BitString;<a name="line.63"></a>
-<span class="sourceLineNo">064</span>import com.unboundid.asn1.ASN1Constants;<a name="line.64"></a>
-<span class="sourceLineNo">065</span>import com.unboundid.asn1.ASN1Element;<a name="line.65"></a>
-<span class="sourceLineNo">066</span>import com.unboundid.asn1.ASN1Exception;<a name="line.66"></a>
-<span class="sourceLineNo">067</span>import com.unboundid.asn1.ASN1GeneralizedTime;<a name="line.67"></a>
-<span class="sourceLineNo">068</span>import com.unboundid.asn1.ASN1Integer;<a name="line.68"></a>
-<span class="sourceLineNo">069</span>import com.unboundid.asn1.ASN1ObjectIdentifier;<a name="line.69"></a>
-<span class="sourceLineNo">070</span>import com.unboundid.asn1.ASN1OctetString;<a name="line.70"></a>
-<span class="sourceLineNo">071</span>import com.unboundid.asn1.ASN1Sequence;<a name="line.71"></a>
-<span class="sourceLineNo">072</span>import com.unboundid.asn1.ASN1Set;<a name="line.72"></a>
-<span class="sourceLineNo">073</span>import com.unboundid.asn1.ASN1UTCTime;<a name="line.73"></a>
-<span class="sourceLineNo">074</span>import com.unboundid.asn1.ASN1UTF8String;<a name="line.74"></a>
-<span class="sourceLineNo">075</span>import com.unboundid.ldap.sdk.DN;<a name="line.75"></a>
-<span class="sourceLineNo">076</span>import com.unboundid.ldap.sdk.RDN;<a name="line.76"></a>
-<span class="sourceLineNo">077</span>import com.unboundid.ldap.sdk.schema.AttributeTypeDefinition;<a name="line.77"></a>
-<span class="sourceLineNo">078</span>import com.unboundid.ldap.sdk.schema.Schema;<a name="line.78"></a>
-<span class="sourceLineNo">079</span>import com.unboundid.util.Base64;<a name="line.79"></a>
+<span class="sourceLineNo">051</span>import java.util.ArrayList;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import java.util.Arrays;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import java.util.Calendar;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import java.util.Collections;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import java.util.Date;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import java.util.GregorianCalendar;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>import java.util.Iterator;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>import java.util.List;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>import java.util.UUID;<a name="line.59"></a>
+<span class="sourceLineNo">060</span><a name="line.60"></a>
+<span class="sourceLineNo">061</span>import com.unboundid.asn1.ASN1BigInteger;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>import com.unboundid.asn1.ASN1BitString;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>import com.unboundid.asn1.ASN1Constants;<a name="line.63"></a>
+<span class="sourceLineNo">064</span>import com.unboundid.asn1.ASN1Element;<a name="line.64"></a>
+<span class="sourceLineNo">065</span>import com.unboundid.asn1.ASN1Exception;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>import com.unboundid.asn1.ASN1GeneralizedTime;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>import com.unboundid.asn1.ASN1Integer;<a name="line.67"></a>
+<span class="sourceLineNo">068</span>import com.unboundid.asn1.ASN1ObjectIdentifier;<a name="line.68"></a>
+<span class="sourceLineNo">069</span>import com.unboundid.asn1.ASN1OctetString;<a name="line.69"></a>
+<span class="sourceLineNo">070</span>import com.unboundid.asn1.ASN1Sequence;<a name="line.70"></a>
+<span class="sourceLineNo">071</span>import com.unboundid.asn1.ASN1Set;<a name="line.71"></a>
+<span class="sourceLineNo">072</span>import com.unboundid.asn1.ASN1UTCTime;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>import com.unboundid.asn1.ASN1UTF8String;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>import com.unboundid.ldap.sdk.DN;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>import com.unboundid.ldap.sdk.RDN;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>import com.unboundid.ldap.sdk.schema.AttributeTypeDefinition;<a name="line.76"></a>
+<span class="sourceLineNo">077</span>import com.unboundid.ldap.sdk.schema.Schema;<a name="line.77"></a>
+<span class="sourceLineNo">078</span>import com.unboundid.util.Base64;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>import com.unboundid.util.CryptoHelper;<a name="line.79"></a>
 <span class="sourceLineNo">080</span>import com.unboundid.util.Debug;<a name="line.80"></a>
 <span class="sourceLineNo">081</span>import com.unboundid.util.NotMutable;<a name="line.81"></a>
 <span class="sourceLineNo">082</span>import com.unboundid.util.NotNull;<a name="line.82"></a>
@@ -1187,7 +1187,7 @@
 <span class="sourceLineNo">1179</span>    try<a name="line.1179"></a>
 <span class="sourceLineNo">1180</span>    {<a name="line.1180"></a>
 <span class="sourceLineNo">1181</span>      keyPairGenerator =<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>           KeyPairGenerator.getInstance(publicKeyAlgorithm.getName());<a name="line.1182"></a>
+<span class="sourceLineNo">1182</span>           CryptoHelper.getKeyPairGenerator(publicKeyAlgorithm.getName());<a name="line.1182"></a>
 <span class="sourceLineNo">1183</span>    }<a name="line.1183"></a>
 <span class="sourceLineNo">1184</span>    catch (final Exception e)<a name="line.1184"></a>
 <span class="sourceLineNo">1185</span>    {<a name="line.1185"></a>
@@ -1316,7 +1316,7 @@
 <span class="sourceLineNo">1308</span>        Debug.debugException(e);<a name="line.1308"></a>
 <span class="sourceLineNo">1309</span>      }<a name="line.1309"></a>
 <span class="sourceLineNo">1310</span><a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>      final MessageDigest sha256 = MessageDigest.getInstance(<a name="line.1311"></a>
+<span class="sourceLineNo">1311</span>      final MessageDigest sha256 = CryptoHelper.getMessageDigest(<a name="line.1311"></a>
 <span class="sourceLineNo">1312</span>           SubjectKeyIdentifierExtension.<a name="line.1312"></a>
 <span class="sourceLineNo">1313</span>                SUBJECT_KEY_IDENTIFIER_DIGEST_ALGORITHM);<a name="line.1313"></a>
 <span class="sourceLineNo">1314</span>      subjectKeyIdentifier = sha256.digest(encodedPublicKey.getBytes());<a name="line.1314"></a>
@@ -1438,7 +1438,7 @@
 <span class="sourceLineNo">1430</span>    final byte[] subjectKeyIdentifier;<a name="line.1430"></a>
 <span class="sourceLineNo">1431</span>    try<a name="line.1431"></a>
 <span class="sourceLineNo">1432</span>    {<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>      final MessageDigest sha256 = MessageDigest.getInstance(<a name="line.1433"></a>
+<span class="sourceLineNo">1433</span>      final MessageDigest sha256 = CryptoHelper.getMessageDigest(<a name="line.1433"></a>
 <span class="sourceLineNo">1434</span>           SubjectKeyIdentifierExtension.<a name="line.1434"></a>
 <span class="sourceLineNo">1435</span>                SUBJECT_KEY_IDENTIFIER_DIGEST_ALGORITHM);<a name="line.1435"></a>
 <span class="sourceLineNo">1436</span>      subjectKeyIdentifier = sha256.digest(encodedPublicKey.getBytes());<a name="line.1436"></a>
@@ -1596,7 +1596,7 @@
 <span class="sourceLineNo">1588</span>    final Signature signature;<a name="line.1588"></a>
 <span class="sourceLineNo">1589</span>    try<a name="line.1589"></a>
 <span class="sourceLineNo">1590</span>    {<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>      signature = Signature.getInstance(signatureAlgorithm.getJavaName());<a name="line.1591"></a>
+<span class="sourceLineNo">1591</span>      signature = CryptoHelper.getSignature(signatureAlgorithm.getJavaName());<a name="line.1591"></a>
 <span class="sourceLineNo">1592</span>    }<a name="line.1592"></a>
 <span class="sourceLineNo">1593</span>    catch (final Exception e)<a name="line.1593"></a>
 <span class="sourceLineNo">1594</span>    {<a name="line.1594"></a>
@@ -2114,7 +2114,7 @@
 <span class="sourceLineNo">2106</span>    {<a name="line.2106"></a>
 <span class="sourceLineNo">2107</span>      signatureAlgorithm =<a name="line.2107"></a>
 <span class="sourceLineNo">2108</span>           SignatureAlgorithmIdentifier.forOID(signatureAlgorithmOID);<a name="line.2108"></a>
-<span class="sourceLineNo">2109</span>      signature = Signature.getInstance(signatureAlgorithm.getJavaName());<a name="line.2109"></a>
+<span class="sourceLineNo">2109</span>      signature = CryptoHelper.getSignature(signatureAlgorithm.getJavaName());<a name="line.2109"></a>
 <span class="sourceLineNo">2110</span>    }<a name="line.2110"></a>
 <span class="sourceLineNo">2111</span>    catch (final Exception e)<a name="line.2111"></a>
 <span class="sourceLineNo">2112</span>    {<a name="line.2112"></a>
@@ -2239,404 +2239,451 @@
 <span class="sourceLineNo">2231</span>  {<a name="line.2231"></a>
 <span class="sourceLineNo">2232</span>    try<a name="line.2232"></a>
 <span class="sourceLineNo">2233</span>    {<a name="line.2233"></a>
-<span class="sourceLineNo">2234</span>      final MessageDigest digest = MessageDigest.getInstance(digestAlgorithm);<a name="line.2234"></a>
-<span class="sourceLineNo">2235</span>      return digest.digest(x509CertificateBytes);<a name="line.2235"></a>
-<span class="sourceLineNo">2236</span>    }<a name="line.2236"></a>
-<span class="sourceLineNo">2237</span>    catch (final Exception e)<a name="line.2237"></a>
-<span class="sourceLineNo">2238</span>    {<a name="line.2238"></a>
-<span class="sourceLineNo">2239</span>      // This should never happen.<a name="line.2239"></a>
-<span class="sourceLineNo">2240</span>      Debug.debugException(e);<a name="line.2240"></a>
-<span class="sourceLineNo">2241</span>      throw new CertException(<a name="line.2241"></a>
-<span class="sourceLineNo">2242</span>           ERR_CERT_CANNOT_COMPUTE_FINGERPRINT.get(digestAlgorithm,<a name="line.2242"></a>
-<span class="sourceLineNo">2243</span>                StaticUtils.getExceptionMessage(e)),<a name="line.2243"></a>
-<span class="sourceLineNo">2244</span>           e);<a name="line.2244"></a>
-<span class="sourceLineNo">2245</span>    }<a name="line.2245"></a>
-<span class="sourceLineNo">2246</span>  }<a name="line.2246"></a>
-<span class="sourceLineNo">2247</span><a name="line.2247"></a>
+<span class="sourceLineNo">2234</span>      final MessageDigest digest =<a name="line.2234"></a>
+<span class="sourceLineNo">2235</span>           CryptoHelper.getMessageDigest(digestAlgorithm);<a name="line.2235"></a>
+<span class="sourceLineNo">2236</span>      return digest.digest(x509CertificateBytes);<a name="line.2236"></a>
+<span class="sourceLineNo">2237</span>    }<a name="line.2237"></a>
+<span class="sourceLineNo">2238</span>    catch (final Exception e)<a name="line.2238"></a>
+<span class="sourceLineNo">2239</span>    {<a name="line.2239"></a>
+<span class="sourceLineNo">2240</span>      // This should never happen.<a name="line.2240"></a>
+<span class="sourceLineNo">2241</span>      Debug.debugException(e);<a name="line.2241"></a>
+<span class="sourceLineNo">2242</span>      throw new CertException(<a name="line.2242"></a>
+<span class="sourceLineNo">2243</span>           ERR_CERT_CANNOT_COMPUTE_FINGERPRINT.get(digestAlgorithm,<a name="line.2243"></a>
+<span class="sourceLineNo">2244</span>                StaticUtils.getExceptionMessage(e)),<a name="line.2244"></a>
+<span class="sourceLineNo">2245</span>           e);<a name="line.2245"></a>
+<span class="sourceLineNo">2246</span>    }<a name="line.2246"></a>
+<span class="sourceLineNo">2247</span>  }<a name="line.2247"></a>
 <span class="sourceLineNo">2248</span><a name="line.2248"></a>
 <span class="sourceLineNo">2249</span><a name="line.2249"></a>
-<span class="sourceLineNo">2250</span>  /**<a name="line.2250"></a>
-<span class="sourceLineNo">2251</span>   * Indicates whether this certificate is self-signed.  The following criteria<a name="line.2251"></a>
-<span class="sourceLineNo">2252</span>   * will be used to make the determination:<a name="line.2252"></a>
-<span class="sourceLineNo">2253</span>   * &lt;OL&gt;<a name="line.2253"></a>
-<span class="sourceLineNo">2254</span>   *   &lt;LI&gt;<a name="line.2254"></a>
-<span class="sourceLineNo">2255</span>   *     If the certificate has both subject key identifier and authority<a name="line.2255"></a>
-<span class="sourceLineNo">2256</span>   *     key identifier extensions, then it will be considered self-signed if<a name="line.2256"></a>
-<span class="sourceLineNo">2257</span>   *     and only if the subject key identifier matches the authority key<a name="line.2257"></a>
-<span class="sourceLineNo">2258</span>   *     identifier.<a name="line.2258"></a>
-<span class="sourceLineNo">2259</span>   *   &lt;/LI&gt;<a name="line.2259"></a>
-<span class="sourceLineNo">2260</span>   *   &lt;LI&gt;<a name="line.2260"></a>
-<span class="sourceLineNo">2261</span>   *     If the certificate does not have both a subject key identifier and an<a name="line.2261"></a>
-<span class="sourceLineNo">2262</span>   *     authority key identifier, then it will be considered self-signed if and<a name="line.2262"></a>
-<span class="sourceLineNo">2263</span>   *     only if its subject DN matches its issuer DN.<a name="line.2263"></a>
-<span class="sourceLineNo">2264</span>   *   &lt;/LI&gt;<a name="line.2264"></a>
-<span class="sourceLineNo">2265</span>   * &lt;/OL&gt;<a name="line.2265"></a>
-<span class="sourceLineNo">2266</span>   *<a name="line.2266"></a>
-<span class="sourceLineNo">2267</span>   * @return  {@code true} if this certificate is self-signed, or {@code false}<a name="line.2267"></a>
-<span class="sourceLineNo">2268</span>   *          if it is not.<a name="line.2268"></a>
-<span class="sourceLineNo">2269</span>   */<a name="line.2269"></a>
-<span class="sourceLineNo">2270</span>  public boolean isSelfSigned()<a name="line.2270"></a>
-<span class="sourceLineNo">2271</span>  {<a name="line.2271"></a>
-<span class="sourceLineNo">2272</span>    AuthorityKeyIdentifierExtension akie = null;<a name="line.2272"></a>
-<span class="sourceLineNo">2273</span>    SubjectKeyIdentifierExtension skie = null;<a name="line.2273"></a>
-<span class="sourceLineNo">2274</span>    for (final X509CertificateExtension e : extensions)<a name="line.2274"></a>
-<span class="sourceLineNo">2275</span>    {<a name="line.2275"></a>
-<span class="sourceLineNo">2276</span>      if (e instanceof AuthorityKeyIdentifierExtension)<a name="line.2276"></a>
-<span class="sourceLineNo">2277</span>      {<a name="line.2277"></a>
-<span class="sourceLineNo">2278</span>        akie = (AuthorityKeyIdentifierExtension) e;<a name="line.2278"></a>
-<span class="sourceLineNo">2279</span>      }<a name="line.2279"></a>
-<span class="sourceLineNo">2280</span>      else if (e instanceof SubjectKeyIdentifierExtension)<a name="line.2280"></a>
-<span class="sourceLineNo">2281</span>      {<a name="line.2281"></a>
-<span class="sourceLineNo">2282</span>        skie = (SubjectKeyIdentifierExtension) e;<a name="line.2282"></a>
-<span class="sourceLineNo">2283</span>      }<a name="line.2283"></a>
-<span class="sourceLineNo">2284</span>    }<a name="line.2284"></a>
-<span class="sourceLineNo">2285</span><a name="line.2285"></a>
-<span class="sourceLineNo">2286</span>    if ((akie != null) &amp;&amp; (skie != null))<a name="line.2286"></a>
-<span class="sourceLineNo">2287</span>    {<a name="line.2287"></a>
-<span class="sourceLineNo">2288</span>      return ((akie.getKeyIdentifier() != null) &amp;&amp;<a name="line.2288"></a>
-<span class="sourceLineNo">2289</span>           Arrays.equals(akie.getKeyIdentifier().getValue(),<a name="line.2289"></a>
-<span class="sourceLineNo">2290</span>                skie.getKeyIdentifier().getValue()));<a name="line.2290"></a>
-<span class="sourceLineNo">2291</span>    }<a name="line.2291"></a>
-<span class="sourceLineNo">2292</span>    else<a name="line.2292"></a>
-<span class="sourceLineNo">2293</span>    {<a name="line.2293"></a>
-<span class="sourceLineNo">2294</span>      return subjectDN.equals(issuerDN);<a name="line.2294"></a>
-<span class="sourceLineNo">2295</span>    }<a name="line.2295"></a>
-<span class="sourceLineNo">2296</span>  }<a name="line.2296"></a>
-<span class="sourceLineNo">2297</span><a name="line.2297"></a>
+<span class="sourceLineNo">2250</span><a name="line.2250"></a>
+<span class="sourceLineNo">2251</span>  /**<a name="line.2251"></a>
+<span class="sourceLineNo">2252</span>   * Indicates whether this certificate is self-signed.  The following criteria<a name="line.2252"></a>
+<span class="sourceLineNo">2253</span>   * will be used to make the determination:<a name="line.2253"></a>
+<span class="sourceLineNo">2254</span>   * &lt;OL&gt;<a name="line.2254"></a>
+<span class="sourceLineNo">2255</span>   *   &lt;LI&gt;<a name="line.2255"></a>
+<span class="sourceLineNo">2256</span>   *     If the certificate has both subject key identifier and authority<a name="line.2256"></a>
+<span class="sourceLineNo">2257</span>   *     key identifier extensions, then it will be considered self-signed if<a name="line.2257"></a>
+<span class="sourceLineNo">2258</span>   *     and only if the subject key identifier matches the authority key<a name="line.2258"></a>
+<span class="sourceLineNo">2259</span>   *     identifier.<a name="line.2259"></a>
+<span class="sourceLineNo">2260</span>   *   &lt;/LI&gt;<a name="line.2260"></a>
+<span class="sourceLineNo">2261</span>   *   &lt;LI&gt;<a name="line.2261"></a>
+<span class="sourceLineNo">2262</span>   *     If the certificate does not have both a subject key identifier and an<a name="line.2262"></a>
+<span class="sourceLineNo">2263</span>   *     authority key identifier, then it will be considered self-signed if and<a name="line.2263"></a>
+<span class="sourceLineNo">2264</span>   *     only if its subject DN matches its issuer DN.<a name="line.2264"></a>
+<span class="sourceLineNo">2265</span>   *   &lt;/LI&gt;<a name="line.2265"></a>
+<span class="sourceLineNo">2266</span>   * &lt;/OL&gt;<a name="line.2266"></a>
+<span class="sourceLineNo">2267</span>   *<a name="line.2267"></a>
+<span class="sourceLineNo">2268</span>   * @return  {@code true} if this certificate is self-signed, or {@code false}<a name="line.2268"></a>
+<span class="sourceLineNo">2269</span>   *          if it is not.<a name="line.2269"></a>
+<span class="sourceLineNo">2270</span>   */<a name="line.2270"></a>
+<span class="sourceLineNo">2271</span>  public boolean isSelfSigned()<a name="line.2271"></a>
+<span class="sourceLineNo">2272</span>  {<a name="line.2272"></a>
+<span class="sourceLineNo">2273</span>    AuthorityKeyIdentifierExtension akie = null;<a name="line.2273"></a>
+<span class="sourceLineNo">2274</span>    SubjectKeyIdentifierExtension skie = null;<a name="line.2274"></a>
+<span class="sourceLineNo">2275</span>    for (final X509CertificateExtension e : extensions)<a name="line.2275"></a>
+<span class="sourceLineNo">2276</span>    {<a name="line.2276"></a>
+<span class="sourceLineNo">2277</span>      if (e instanceof AuthorityKeyIdentifierExtension)<a name="line.2277"></a>
+<span class="sourceLineNo">2278</span>      {<a name="line.2278"></a>
+<span class="sourceLineNo">2279</span>        akie = (AuthorityKeyIdentifierExtension) e;<a name="line.2279"></a>
+<span class="sourceLineNo">2280</span>      }<a name="line.2280"></a>
+<span class="sourceLineNo">2281</span>      else if (e instanceof SubjectKeyIdentifierExtension)<a name="line.2281"></a>
+<span class="sourceLineNo">2282</span>      {<a name="line.2282"></a>
+<span class="sourceLineNo">2283</span>        skie = (SubjectKeyIdentifierExtension) e;<a name="line.2283"></a>
+<span class="sourceLineNo">2284</span>      }<a name="line.2284"></a>
+<span class="sourceLineNo">2285</span>    }<a name="line.2285"></a>
+<span class="sourceLineNo">2286</span><a name="line.2286"></a>
+<span class="sourceLineNo">2287</span>    if ((akie != null) &amp;&amp; (skie != null))<a name="line.2287"></a>
+<span class="sourceLineNo">2288</span>    {<a name="line.2288"></a>
+<span class="sourceLineNo">2289</span>      return ((akie.getKeyIdentifier() != null) &amp;&amp;<a name="line.2289"></a>
+<span class="sourceLineNo">2290</span>           Arrays.equals(akie.getKeyIdentifier().getValue(),<a name="line.2290"></a>
+<span class="sourceLineNo">2291</span>                skie.getKeyIdentifier().getValue()));<a name="line.2291"></a>
+<span class="sourceLineNo">2292</span>    }<a name="line.2292"></a>
+<span class="sourceLineNo">2293</span>    else<a name="line.2293"></a>
+<span class="sourceLineNo">2294</span>    {<a name="line.2294"></a>
+<span class="sourceLineNo">2295</span>      return subjectDN.equals(issuerDN);<a name="line.2295"></a>
+<span class="sourceLineNo">2296</span>    }<a name="line.2296"></a>
+<span class="sourceLineNo">2297</span>  }<a name="line.2297"></a>
 <span class="sourceLineNo">2298</span><a name="line.2298"></a>
 <span class="sourceLineNo">2299</span><a name="line.2299"></a>
-<span class="sourceLineNo">2300</span>  /**<a name="line.2300"></a>
-<span class="sourceLineNo">2301</span>   * Indicates whether this certificate is the issuer for the provided<a name="line.2301"></a>
-<span class="sourceLineNo">2302</span>   * certificate.  In order for this to be true, the following conditions must<a name="line.2302"></a>
-<span class="sourceLineNo">2303</span>   * be met:<a name="line.2303"></a>
-<span class="sourceLineNo">2304</span>   * &lt;OL&gt;<a name="line.2304"></a>
-<span class="sourceLineNo">2305</span>   *   &lt;LI&gt;<a name="line.2305"></a>
-<span class="sourceLineNo">2306</span>   *     The subject DN of this certificate must match the issuer DN for the<a name="line.2306"></a>
-<span class="sourceLineNo">2307</span>   *     provided certificate.<a name="line.2307"></a>
-<span class="sourceLineNo">2308</span>   *   &lt;/LI&gt;<a name="line.2308"></a>
-<span class="sourceLineNo">2309</span>   *   &lt;LI&gt;<a name="line.2309"></a>
-<span class="sourceLineNo">2310</span>   *     If the provided certificate has an authority key identifier extension,<a name="line.2310"></a>
-<span class="sourceLineNo">2311</span>   *     then this certificate must have a subject key identifier extension with<a name="line.2311"></a>
-<span class="sourceLineNo">2312</span>   *     a matching identifier value.<a name="line.2312"></a>
-<span class="sourceLineNo">2313</span>   *   &lt;/LI&gt;<a name="line.2313"></a>
-<span class="sourceLineNo">2314</span>   * &lt;/OL&gt;<a name="line.2314"></a>
-<span class="sourceLineNo">2315</span>   *<a name="line.2315"></a>
-<span class="sourceLineNo">2316</span>   * @param  c  The certificate for which to make the determination.  This must<a name="line.2316"></a>
-<span class="sourceLineNo">2317</span>   *            not be {@code null}.<a name="line.2317"></a>
-<span class="sourceLineNo">2318</span>   *<a name="line.2318"></a>
-<span class="sourceLineNo">2319</span>   * @return  {@code true} if this certificate is considered the issuer for the<a name="line.2319"></a>
-<span class="sourceLineNo">2320</span>   *          provided certificate, or {@code } false if not.<a name="line.2320"></a>
-<span class="sourceLineNo">2321</span>   */<a name="line.2321"></a>
-<span class="sourceLineNo">2322</span>  public boolean isIssuerFor(@NotNull final X509Certificate c)<a name="line.2322"></a>
-<span class="sourceLineNo">2323</span>  {<a name="line.2323"></a>
-<span class="sourceLineNo">2324</span>    return isIssuerFor(c, null);<a name="line.2324"></a>
-<span class="sourceLineNo">2325</span>  }<a name="line.2325"></a>
-<span class="sourceLineNo">2326</span><a name="line.2326"></a>
+<span class="sourceLineNo">2300</span><a name="line.2300"></a>
+<span class="sourceLineNo">2301</span>  /**<a name="line.2301"></a>
+<span class="sourceLineNo">2302</span>   * Indicates whether this certificate is the issuer for the provided<a name="line.2302"></a>
+<span class="sourceLineNo">2303</span>   * certificate.  In order for this to be true, the following conditions must<a name="line.2303"></a>
+<span class="sourceLineNo">2304</span>   * be met:<a name="line.2304"></a>
+<span class="sourceLineNo">2305</span>   * &lt;OL&gt;<a name="line.2305"></a>
+<span class="sourceLineNo">2306</span>   *   &lt;LI&gt;<a name="line.2306"></a>
+<span class="sourceLineNo">2307</span>   *     The subject DN of this certificate must match the issuer DN for the<a name="line.2307"></a>
+<span class="sourceLineNo">2308</span>   *     provided certificate.<a name="line.2308"></a>
+<span class="sourceLineNo">2309</span>   *   &lt;/LI&gt;<a name="line.2309"></a>
+<span class="sourceLineNo">2310</span>   *   &lt;LI&gt;<a name="line.2310"></a>
+<span class="sourceLineNo">2311</span>   *     If the provided certificate has an authority key identifier extension,<a name="line.2311"></a>
+<span class="sourceLineNo">2312</span>   *     then this certificate must have a subject key identifier extension with<a name="line.2312"></a>
+<span class="sourceLineNo">2313</span>   *     a matching identifier value.<a name="line.2313"></a>
+<span class="sourceLineNo">2314</span>   *   &lt;/LI&gt;<a name="line.2314"></a>
+<span class="sourceLineNo">2315</span>   * &lt;/OL&gt;<a name="line.2315"></a>
+<span class="sourceLineNo">2316</span>   *<a name="line.2316"></a>
+<span class="sourceLineNo">2317</span>   * @param  c  The certificate for which to make the determination.  This must<a name="line.2317"></a>
+<span class="sourceLineNo">2318</span>   *            not be {@code null}.<a name="line.2318"></a>
+<span class="sourceLineNo">2319</span>   *<a name="line.2319"></a>
+<span class="sourceLineNo">2320</span>   * @return  {@code true} if this certificate is considered the issuer for the<a name="line.2320"></a>
+<span class="sourceLineNo">2321</span>   *          provided certificate, or {@code } false if not.<a name="line.2321"></a>
+<span class="sourceLineNo">2322</span>   */<a name="line.2322"></a>
+<span class="sourceLineNo">2323</span>  public boolean isIssuerFor(@NotNull final X509Certificate c)<a name="line.2323"></a>
+<span class="sourceLineNo">2324</span>  {<a name="line.2324"></a>
+<span class="sourceLineNo">2325</span>    return isIssuerFor(c, null);<a name="line.2325"></a>
+<span class="sourceLineNo">2326</span>  }<a name="line.2326"></a>
 <span class="sourceLineNo">2327</span><a name="line.2327"></a>
 <span class="sourceLineNo">2328</span><a name="line.2328"></a>
-<span class="sourceLineNo">2329</span>  /**<a name="line.2329"></a>
-<span class="sourceLineNo">2330</span>   * Indicates whether this certificate is the issuer for the provided<a name="line.2330"></a>
-<span class="sourceLineNo">2331</span>   * certificate.  In order for this to be true, the following conditions must<a name="line.2331"></a>
-<span class="sourceLineNo">2332</span>   * be met:<a name="line.2332"></a>
-<span class="sourceLineNo">2333</span>   * &lt;OL&gt;<a name="line.2333"></a>
-<span class="sourceLineNo">2334</span>   *   &lt;LI&gt;<a name="line.2334"></a>
-<span class="sourceLineNo">2335</span>   *     The subject DN of this certificate must match the issuer DN for the<a name="line.2335"></a>
-<span class="sourceLineNo">2336</span>   *     provided certificate.<a name="line.2336"></a>
-<span class="sourceLineNo">2337</span>   *   &lt;/LI&gt;<a name="line.2337"></a>
-<span class="sourceLineNo">2338</span>   *   &lt;LI&gt;<a name="line.2338"></a>
-<span class="sourceLineNo">2339</span>   *     If the provided certificate has an authority key identifier extension,<a name="line.2339"></a>
-<span class="sourceLineNo">2340</span>   *     then this certificate must have a subject key identifier extension with<a name="line.2340"></a>
-<span class="sourceLineNo">2341</span>   *     a matching identifier value.<a name="line.2341"></a>
-<span class="sourceLineNo">2342</span>   *   &lt;/LI&gt;<a name="line.2342"></a>
-<span class="sourceLineNo">2343</span>   * &lt;/OL&gt;<a name="line.2343"></a>
-<span class="sourceLineNo">2344</span>   *<a name="line.2344"></a>
-<span class="sourceLineNo">2345</span>   * @param  c               The certificate for which to make the<a name="line.2345"></a>
-<span class="sourceLineNo">2346</span>   *                         determination.  This must not be {@code null}.<a name="line.2346"></a>
-<span class="sourceLineNo">2347</span>   * @param  nonMatchReason  An optional buffer that may be updated with the<a name="line.2347"></a>
-<span class="sourceLineNo">2348</span>   *                         reason that this certificate is not considered the<a name="line.2348"></a>
-<span class="sourceLineNo">2349</span>   *                         issuer for the provided certificate.  This may be<a name="line.2349"></a>
-<span class="sourceLineNo">2350</span>   *                         {@code null} if the caller does not require a<a name="line.2350"></a>
-<span class="sourceLineNo">2351</span>   *                         reason.<a name="line.2351"></a>
-<span class="sourceLineNo">2352</span>   *<a name="line.2352"></a>
-<span class="sourceLineNo">2353</span>   * @return  {@code true} if this certificate is considered the issuer for the<a name="line.2353"></a>
-<span class="sourceLineNo">2354</span>   *          provided certificate, or {@code } false if not.<a name="line.2354"></a>
-<span class="sourceLineNo">2355</span>   */<a name="line.2355"></a>
-<span class="sourceLineNo">2356</span>  public boolean isIssuerFor(@NotNull final X509Certificate c,<a name="line.2356"></a>
-<span class="sourceLineNo">2357</span>                             @Nullable final StringBuilder nonMatchReason)<a name="line.2357"></a>
-<span class="sourceLineNo">2358</span>  {<a name="line.2358"></a>
-<span class="sourceLineNo">2359</span>    if (! c.issuerDN.equals(subjectDN))<a name="line.2359"></a>
-<span class="sourceLineNo">2360</span>    {<a name="line.2360"></a>
-<span class="sourceLineNo">2361</span>      if (nonMatchReason != null)<a name="line.2361"></a>
-<span class="sourceLineNo">2362</span>      {<a name="line.2362"></a>
-<span class="sourceLineNo">2363</span>        nonMatchReason.append(INFO_CERT_IS_ISSUER_FOR_DN_MISMATCH.get(<a name="line.2363"></a>
-<span class="sourceLineNo">2364</span>             subjectDN, c.subjectDN, issuerDN));<a name="line.2364"></a>
-<span class="sourceLineNo">2365</span>      }<a name="line.2365"></a>
-<span class="sourceLineNo">2366</span><a name="line.2366"></a>
-<span class="sourceLineNo">2367</span>      return false;<a name="line.2367"></a>
-<span class="sourceLineNo">2368</span>    }<a name="line.2368"></a>
-<span class="sourceLineNo">2369</span><a name="line.2369"></a>
+<span class="sourceLineNo">2329</span><a name="line.2329"></a>
+<span class="sourceLineNo">2330</span>  /**<a name="line.2330"></a>
+<span class="sourceLineNo">2331</span>   * Indicates whether this certificate is the issuer for the provided<a name="line.2331"></a>
+<span class="sourceLineNo">2332</span>   * certificate.  In order for this to be true, the following conditions must<a name="line.2332"></a>
+<span class="sourceLineNo">2333</span>   * be met:<a name="line.2333"></a>
+<span class="sourceLineNo">2334</span>   * &lt;OL&gt;<a name="line.2334"></a>
+<span class="sourceLineNo">2335</span>   *   &lt;LI&gt;<a name="line.2335"></a>
+<span class="sourceLineNo">2336</span>   *     The subject DN of this certificate must match the issuer DN for the<a name="line.2336"></a>
+<span class="sourceLineNo">2337</span>   *     provided certificate.<a name="line.2337"></a>
+<span class="sourceLineNo">2338</span>   *   &lt;/LI&gt;<a name="line.2338"></a>
+<span class="sourceLineNo">2339</span>   *   &lt;LI&gt;<a name="line.2339"></a>
+<span class="sourceLineNo">2340</span>   *     If the provided certificate has an authority key identifier extension,<a name="line.2340"></a>
+<span class="sourceLineNo">2341</span>   *     then this certificate must have a subject key identifier extension with<a name="line.2341"></a>
+<span class="sourceLineNo">2342</span>   *     a matching identifier value.<a name="line.2342"></a>
+<span class="sourceLineNo">2343</span>   *   &lt;/LI&gt;<a name="line.2343"></a>
+<span class="sourceLineNo">2344</span>   * &lt;/OL&gt;<a name="line.2344"></a>
+<span class="sourceLineNo">2345</span>   *<a name="line.2345"></a>
+<span class="sourceLineNo">2346</span>   * @param  c               The certificate for which to make the<a name="line.2346"></a>
+<span class="sourceLineNo">2347</span>   *                         determination.  This must not be {@code null}.<a name="line.2347"></a>
+<span class="sourceLineNo">2348</span>   * @param  nonMatchReason  An optional buffer that may be updated with the<a name="line.2348"></a>
+<span class="sourceLineNo">2349</span>   *                         reason that this certificate is not considered the<a name="line.2349"></a>
+<span class="sourceLineNo">2350</span>   *                         issuer for the provided certificate.  This may be<a name="line.2350"></a>
+<span class="sourceLineNo">2351</span>   *                         {@code null} if the caller does not require a<a name="line.2351"></a>
+<span class="sourceLineNo">2352</span>   *                         reason.<a name="line.2352"></a>
+<span class="sourceLineNo">2353</span>   *<a name="line.2353"></a>
+<span class="sourceLineNo">2354</span>   * @return  {@code true} if this certificate is considered the issuer for the<a name="line.2354"></a>
+<span class="sourceLineNo">2355</span>   *          provided certificate, or {@code } false if not.<a name="line.2355"></a>
+<span class="sourceLineNo">2356</span>   */<a name="line.2356"></a>
+<span class="sourceLineNo">2357</span>  public boolean isIssuerFor(@NotNull final X509Certificate c,<a name="line.2357"></a>
+<span class="sourceLineNo">2358</span>                             @Nullable final StringBuilder nonMatchReason)<a name="line.2358"></a>
+<span class="sourceLineNo">2359</span>  {<a name="line.2359"></a>
+<span class="sourceLineNo">2360</span>    if (! c.issuerDN.equals(subjectDN))<a name="line.2360"></a>
+<span class="sourceLineNo">2361</span>    {<a name="line.2361"></a>
+<span class="sourceLineNo">2362</span>      if (nonMatchReason != null)<a name="line.2362"></a>
+<span class="sourceLineNo">2363</span>      {<a name="line.2363"></a>
+<span class="sourceLineNo">2364</span>        nonMatchReason.append(INFO_CERT_IS_ISSUER_FOR_DN_MISMATCH.get(<a name="line.2364"></a>
+<span class="sourceLineNo">2365</span>             subjectDN, c.subjectDN, issuerDN));<a name="line.2365"></a>
+<span class="sourceLineNo">2366</span>      }<a name="line.2366"></a>
+<span class="sourceLineNo">2367</span><a name="line.2367"></a>
+<span class="sourceLineNo">2368</span>      return false;<a name="line.2368"></a>
+<span class="sourceLineNo">2369</span>    }<a name="line.2369"></a>
 <span class="sourceLineNo">2370</span><a name="line.2370"></a>
-<span class="sourceLineNo">2371</span>    byte[] authorityKeyIdentifier = null;<a name="line.2371"></a>
-<span class="sourceLineNo">2372</span>    for (final X509CertificateExtension extension : c.extensions)<a name="line.2372"></a>
-<span class="sourceLineNo">2373</span>    {<a name="line.2373"></a>
-<span class="sourceLineNo">2374</span>      if (extension instanceof AuthorityKeyIdentifierExtension)<a name="line.2374"></a>
-<span class="sourceLineNo">2375</span>      {<a name="line.2375"></a>
-<span class="sourceLineNo">2376</span>        final AuthorityKeyIdentifierExtension akie =<a name="line.2376"></a>
-<span class="sourceLineNo">2377</span>             (AuthorityKeyIdentifierExtension) extension;<a name="line.2377"></a>
-<span class="sourceLineNo">2378</span>        if (akie.getKeyIdentifier() != null)<a name="line.2378"></a>
-<span class="sourceLineNo">2379</span>        {<a name="line.2379"></a>
-<span class="sourceLineNo">2380</span>          authorityKeyIdentifier = akie.getKeyIdentifier().getValue();<a name="line.2380"></a>
-<span class="sourceLineNo">2381</span>          break;<a name="line.2381"></a>
-<span class="sourceLineNo">2382</span>        }<a name="line.2382"></a>
-<span class="sourceLineNo">2383</span>      }<a name="line.2383"></a>
-<span class="sourceLineNo">2384</span>    }<a name="line.2384"></a>
-<span class="sourceLineNo">2385</span><a name="line.2385"></a>
-<span class="sourceLineNo">2386</span>    if (authorityKeyIdentifier != null)<a name="line.2386"></a>
-<span class="sourceLineNo">2387</span>    {<a name="line.2387"></a>
-<span class="sourceLineNo">2388</span>      boolean matchFound = false;<a name="line.2388"></a>
-<span class="sourceLineNo">2389</span>      for (final X509CertificateExtension extension : extensions)<a name="line.2389"></a>
-<span class="sourceLineNo">2390</span>      {<a name="line.2390"></a>
-<span class="sourceLineNo">2391</span>        if (extension instanceof SubjectKeyIdentifierExtension)<a name="line.2391"></a>
-<span class="sourceLineNo">2392</span>        {<a name="line.2392"></a>
-<span class="sourceLineNo">2393</span>          final SubjectKeyIdentifierExtension skie =<a name="line.2393"></a>
-<span class="sourceLineNo">2394</span>               (SubjectKeyIdentifierExtension) extension;<a name="line.2394"></a>
-<span class="sourceLineNo">2395</span>          matchFound = Arrays.equals(authorityKeyIdentifier,<a name="line.2395"></a>
-<span class="sourceLineNo">2396</span>               skie.getKeyIdentifier().getValue());<a name="line.2396"></a>
-<span class="sourceLineNo">2397</span>          break;<a name="line.2397"></a>
-<span class="sourceLineNo">2398</span>        }<a name="line.2398"></a>
-<span class="sourceLineNo">2399</span>      }<a name="line.2399"></a>
-<span class="sourceLineNo">2400</span><a name="line.2400"></a>
-<span class="sourceLineNo">2401</span>      if (! matchFound)<a name="line.2401"></a>
-<span class="sourceLineNo">2402</span>      {<a name="line.2402"></a>
-<span class="sourceLineNo">2403</span>        if (nonMatchReason != null)<a name="line.2403"></a>
-<span class="sourceLineNo">2404</span>        {<a name="line.2404"></a>
-<span class="sourceLineNo">2405</span>          nonMatchReason.append(INFO_CERT_IS_ISSUER_FOR_KEY_ID_MISMATCH.get(<a name="line.2405"></a>
-<span class="sourceLineNo">2406</span>               subjectDN, c.subjectDN));<a name="line.2406"></a>
-<span class="sourceLineNo">2407</span>        }<a name="line.2407"></a>
-<span class="sourceLineNo">2408</span><a name="line.2408"></a>
-<span class="sourceLineNo">2409</span>        return false;<a name="line.2409"></a>
-<span class="sourceLineNo">2410</span>      }<a name="line.2410"></a>
-<span class="sourceLineNo">2411</span>    }<a name="line.2411"></a>
-<span class="sourceLineNo">2412</span><a name="line.2412"></a>
+<span class="sourceLineNo">2371</span><a name="line.2371"></a>
+<span class="sourceLineNo">2372</span>    byte[] authorityKeyIdentifier = null;<a name="line.2372"></a>
+<span class="sourceLineNo">2373</span>    for (final X509CertificateExtension extension : c.extensions)<a name="line.2373"></a>
+<span class="sourceLineNo">2374</span>    {<a name="line.2374"></a>
+<span class="sourceLineNo">2375</span>      if (extension instanceof AuthorityKeyIdentifierExtension)<a name="line.2375"></a>
+<span class="sourceLineNo">2376</span>      {<a name="line.2376"></a>
+<span class="sourceLineNo">2377</span>        final AuthorityKeyIdentifierExtension akie =<a name="line.2377"></a>
+<span class="sourceLineNo">2378</span>             (AuthorityKeyIdentifierExtension) extension;<a name="line.2378"></a>
+<span class="sourceLineNo">2379</span>        if (akie.getKeyIdentifier() != null)<a name="line.2379"></a>
+<span class="sourceLineNo">2380</span>        {<a name="line.2380"></a>
+<span class="sourceLineNo">2381</span>          authorityKeyIdentifier = akie.getKeyIdentifier().getValue();<a name="line.2381"></a>
+<span class="sourceLineNo">2382</span>          break;<a name="line.2382"></a>
+<span class="sourceLineNo">2383</span>        }<a name="line.2383"></a>
+<span class="sourceLineNo">2384</span>      }<a name="line.2384"></a>
+<span class="sourceLineNo">2385</span>    }<a name="line.2385"></a>
+<span class="sourceLineNo">2386</span><a name="line.2386"></a>
+<span class="sourceLineNo">2387</span>    if (authorityKeyIdentifier != null)<a name="line.2387"></a>
+<span class="sourceLineNo">2388</span>    {<a name="line.2388"></a>
+<span class="sourceLineNo">2389</span>      boolean matchFound = false;<a name="line.2389"></a>
+<span class="sourceLineNo">2390</span>      for (final X509CertificateExtension extension : extensions)<a name="line.2390"></a>
+<span class="sourceLineNo">2391</span>      {<a name="line.2391"></a>
+<span class="sourceLineNo">2392</span>        if (extension instanceof SubjectKeyIdentifierExtension)<a name="line.2392"></a>
+<span class="sourceLineNo">2393</span>        {<a name="line.2393"></a>
+<span class="sourceLineNo">2394</span>          final SubjectKeyIdentifierExtension skie =<a name="line.2394"></a>
+<span class="sourceLineNo">2395</span>               (SubjectKeyIdentifierExtension) extension;<a name="line.2395"></a>
+<span class="sourceLineNo">2396</span>          matchFound = Arrays.equals(authorityKeyIdentifier,<a name="line.2396"></a>
+<span class="sourceLineNo">2397</span>               skie.getKeyIdentifier().getValue());<a name="line.2397"></a>
+<span class="sourceLineNo">2398</span>          break;<a name="line.2398"></a>
+<span class="sourceLineNo">2399</span>        }<a name="line.2399"></a>
+<span class="sourceLineNo">2400</span>      }<a name="line.2400"></a>
+<span class="sourceLineNo">2401</span><a name="line.2401"></a>
+<span class="sourceLineNo">2402</span>      if (! matchFound)<a name="line.2402"></a>
+<span class="sourceLineNo">2403</span>      {<a name="line.2403"></a>
+<span class="sourceLineNo">2404</span>        if (nonMatchReason != null)<a name="line.2404"></a>
+<span class="sourceLineNo">2405</span>        {<a name="line.2405"></a>
+<span class="sourceLineNo">2406</span>          nonMatchReason.append(INFO_CERT_IS_ISSUER_FOR_KEY_ID_MISMATCH.get(<a name="line.2406"></a>
+<span class="sourceLineNo">2407</span>               subjectDN, c.subjectDN));<a name="line.2407"></a>
+<span class="sourceLineNo">2408</span>        }<a name="line.2408"></a>
+<span class="sourceLineNo">2409</span><a name="line.2409"></a>
+<span class="sourceLineNo">2410</span>        return false;<a name="line.2410"></a>
+<span class="sourceLineNo">2411</span>      }<a name="line.2411"></a>
+<span class="sourceLineNo">2412</span>    }<a name="line.2412"></a>
 <span class="sourceLineNo">2413</span><a name="line.2413"></a>
-<span class="sourceLineNo">2414</span>    return true;<a name="line.2414"></a>
-<span class="sourceLineNo">2415</span>  }<a name="line.2415"></a>
-<span class="sourceLineNo">2416</span><a name="line.2416"></a>
+<span class="sourceLineNo">2414</span><a name="line.2414"></a>
+<span class="sourceLineNo">2415</span>    return true;<a name="line.2415"></a>
+<span class="sourceLineNo">2416</span>  }<a name="line.2416"></a>
 <span class="sourceLineNo">2417</span><a name="line.2417"></a>
 <span class="sourceLineNo">2418</span><a name="line.2418"></a>
-<span class="sourceLineNo">2419</span>  /**<a name="line.2419"></a>
-<span class="sourceLineNo">2420</span>   * Converts this X.509 certificate object to a Java {@code Certificate}<a name="line.2420"></a>
-<span class="sourceLineNo">2421</span>   * object.<a name="line.2421"></a>
-<span class="sourceLineNo">2422</span>   *<a name="line.2422"></a>
-<span class="sourceLineNo">2423</span>   * @return  The Java {@code Certificate} object that corresponds to this<a name="line.2423"></a>
-<span class="sourceLineNo">2424</span>   *          X.509 certificate.<a name="line.2424"></a>
-<span class="sourceLineNo">2425</span>   *<a name="line.2425"></a>
-<span class="sourceLineNo">2426</span>   * @throws  CertificateException  If a problem is encountered while performing<a name="line.2426"></a>
-<span class="sourceLineNo">2427</span>   *                                the conversion.<a name="line.2427"></a>
-<span class="sourceLineNo">2428</span>   */<a name="line.2428"></a>
-<span class="sourceLineNo">2429</span>  @NotNull()<a name="line.2429"></a>
-<span class="sourceLineNo">2430</span>  public Certificate toCertificate()<a name="line.2430"></a>
-<span class="sourceLineNo">2431</span>         throws CertificateException<a name="line.2431"></a>
-<span class="sourceLineNo">2432</span>  {<a name="line.2432"></a>
-<span class="sourceLineNo">2433</span>    return CertificateFactory.getInstance("X.509").generateCertificate(<a name="line.2433"></a>
-<span class="sourceLineNo">2434</span>         new ByteArrayInputStream(x509CertificateBytes));<a name="line.2434"></a>
-<span class="sourceLineNo">2435</span>  }<a name="line.2435"></a>
-<span class="sourceLineNo">2436</span><a name="line.2436"></a>
+<span class="sourceLineNo">2419</span><a name="line.2419"></a>
+<span class="sourceLineNo">2420</span>  /**<a name="line.2420"></a>
+<span class="sourceLineNo">2421</span>   * Converts this X.509 certificate object to a Java {@code Certificate}<a name="line.2421"></a>
+<span class="sourceLineNo">2422</span>   * object.<a name="line.2422"></a>
+<span class="sourceLineNo">2423</span>   *<a name="line.2423"></a>
+<span class="sourceLineNo">2424</span>   * @return  The Java {@code Certificate} object that corresponds to this<a name="line.2424"></a>
+<span class="sourceLineNo">2425</span>   *          X.509 certificate.<a name="line.2425"></a>
+<span class="sourceLineNo">2426</span>   *<a name="line.2426"></a>
+<span class="sourceLineNo">2427</span>   * @throws  CertificateException  If a problem is encountered while performing<a name="line.2427"></a>
+<span class="sourceLineNo">2428</span>   *                                the conversion.<a name="line.2428"></a>
+<span class="sourceLineNo">2429</span>   */<a name="line.2429"></a>
+<span class="sourceLineNo">2430</span>  @NotNull()<a name="line.2430"></a>
+<span class="sourceLineNo">2431</span>  public Certificate toCertificate()<a name="line.2431"></a>
+<span class="sourceLineNo">2432</span>         throws CertificateException<a name="line.2432"></a>
+<span class="sourceLineNo">2433</span>  {<a name="line.2433"></a>
+<span class="sourceLineNo">2434</span>    return CryptoHelper.getCertificateFactory("X.509").generateCertificate(<a name="line.2434"></a>
+<span class="sourceLineNo">2435</span>         new ByteArrayInputStream(x509CertificateBytes));<a name="line.2435"></a>
+<span class="sourceLineNo">2436</span>  }<a name="line.2436"></a>
 <span class="sourceLineNo">2437</span><a name="line.2437"></a>
 <span class="sourceLineNo">2438</span><a name="line.2438"></a>
-<span class="sourceLineNo">2439</span>  /**<a name="line.2439"></a>
-<span class="sourceLineNo">2440</span>   * Retrieves a string representation of the decoded X.509 certificate.<a name="line.2440"></a>
-<span class="sourceLineNo">2441</span>   *<a name="line.2441"></a>
-<span class="sourceLineNo">2442</span>   * @return  A string representation of the decoded X.509 certificate.<a name="line.2442"></a>
-<span class="sourceLineNo">2443</span>   */<a name="line.2443"></a>
-<span class="sourceLineNo">2444</span>  @Override()<a name="line.2444"></a>
-<span class="sourceLineNo">2445</span>  @NotNull()<a name="line.2445"></a>
-<span class="sourceLineNo">2446</span>  public String toString()<a name="line.2446"></a>
+<span class="sourceLineNo">2439</span><a name="line.2439"></a>
+<span class="sourceLineNo">2440</span>  /**<a name="line.2440"></a>
+<span class="sourceLineNo">2441</span>   * Retrieves a hash code for this certificate.<a name="line.2441"></a>
+<span class="sourceLineNo">2442</span>   *<a name="line.2442"></a>
+<span class="sourceLineNo">2443</span>   * @return  A hash code for this certificate.<a name="line.2443"></a>
+<span class="sourceLineNo">2444</span>   */<a name="line.2444"></a>
+<span class="sourceLineNo">2445</span>  @Override()<a name="line.2445"></a>
+<span class="sourceLineNo">2446</span>  public int hashCode()<a name="line.2446"></a>
 <span class="sourceLineNo">2447</span>  {<a name="line.2447"></a>
-<span class="sourceLineNo">2448</span>    final StringBuilder buffer = new StringBuilder();<a name="line.2448"></a>
-<span class="sourceLineNo">2449</span>    toString(buffer);<a name="line.2449"></a>
-<span class="sourceLineNo">2450</span>    return buffer.toString();<a name="line.2450"></a>
-<span class="sourceLineNo">2451</span>  }<a name="line.2451"></a>
+<span class="sourceLineNo">2448</span>    return Arrays.hashCode(x509CertificateBytes);<a name="line.2448"></a>
+<span class="sourceLineNo">2449</span>  }<a name="line.2449"></a>
+<span class="sourceLineNo">2450</span><a name="line.2450"></a>
+<span class="sourceLineNo">2451</span><a name="line.2451"></a>
 <span class="sourceLineNo">2452</span><a name="line.2452"></a>
-<span class="sourceLineNo">2453</span><a name="line.2453"></a>
-<span class="sourceLineNo">2454</span><a name="line.2454"></a>
-<span class="sourceLineNo">2455</span>  /**<a name="line.2455"></a>
-<span class="sourceLineNo">2456</span>   * Appends a string representation of the decoded X.509 certificate to the<a name="line.2456"></a>
-<span class="sourceLineNo">2457</span>   * provided buffer.<a name="line.2457"></a>
+<span class="sourceLineNo">2453</span>  /**<a name="line.2453"></a>
+<span class="sourceLineNo">2454</span>   * Indicates whether the provided object is considered equal to this X.509<a name="line.2454"></a>
+<span class="sourceLineNo">2455</span>   * certificate.<a name="line.2455"></a>
+<span class="sourceLineNo">2456</span>   *<a name="line.2456"></a>
+<span class="sourceLineNo">2457</span>   * @param  o  The object for which to make the determination.<a name="line.2457"></a>
 <span class="sourceLineNo">2458</span>   *<a name="line.2458"></a>
-<span class="sourceLineNo">2459</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.2459"></a>
-<span class="sourceLineNo">2460</span>   */<a name="line.2460"></a>
-<span class="sourceLineNo">2461</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.2461"></a>
-<span class="sourceLineNo">2462</span>  {<a name="line.2462"></a>
-<span class="sourceLineNo">2463</span>    buffer.append("X509Certificate(version='");<a name="line.2463"></a>
-<span class="sourceLineNo">2464</span>    buffer.append(version.getName());<a name="line.2464"></a>
-<span class="sourceLineNo">2465</span>    buffer.append("', serialNumber='");<a name="line.2465"></a>
-<span class="sourceLineNo">2466</span>    StaticUtils.toHex(serialNumber.toByteArray(), ":", buffer);<a name="line.2466"></a>
-<span class="sourceLineNo">2467</span>    buffer.append("', signatureAlgorithmOID='");<a name="line.2467"></a>
-<span class="sourceLineNo">2468</span>    buffer.append(signatureAlgorithmOID.toString());<a name="line.2468"></a>
-<span class="sourceLineNo">2469</span>    buffer.append('\'');<a name="line.2469"></a>
-<span class="sourceLineNo">2470</span><a name="line.2470"></a>
-<span class="sourceLineNo">2471</span>    if (signatureAlgorithmName != null)<a name="line.2471"></a>
-<span class="sourceLineNo">2472</span>    {<a name="line.2472"></a>
-<span class="sourceLineNo">2473</span>      buffer.append(", signatureAlgorithmName='");<a name="line.2473"></a>
-<span class="sourceLineNo">2474</span>      buffer.append(signatureAlgorithmName);<a name="line.2474"></a>
-<span class="sourceLineNo">2475</span>      buffer.append('\'');<a name="line.2475"></a>
-<span class="sourceLineNo">2476</span>    }<a name="line.2476"></a>
-<span class="sourceLineNo">2477</span><a name="line.2477"></a>
-<span class="sourceLineNo">2478</span>    buffer.append(", issuerDN='");<a name="line.2478"></a>
-<span class="sourceLineNo">2479</span>    buffer.append(issuerDN.toString());<a name="line.2479"></a>
-<span class="sourceLineNo">2480</span>    buffer.append("', notBefore='");<a name="line.2480"></a>
-<span class="sourceLineNo">2481</span>    buffer.append(StaticUtils.encodeGeneralizedTime(notBefore));<a name="line.2481"></a>
-<span class="sourceLineNo">2482</span>    buffer.append("', notAfter='");<a name="line.2482"></a>
-<span class="sourceLineNo">2483</span>    buffer.append(StaticUtils.encodeGeneralizedTime(notAfter));<a name="line.2483"></a>
-<span class="sourceLineNo">2484</span>    buffer.append("', subjectDN='");<a name="line.2484"></a>
-<span class="sourceLineNo">2485</span>    buffer.append(subjectDN.toString());<a name="line.2485"></a>
-<span class="sourceLineNo">2486</span>    buffer.append("', publicKeyAlgorithmOID='");<a name="line.2486"></a>
-<span class="sourceLineNo">2487</span>    buffer.append(publicKeyAlgorithmOID.toString());<a name="line.2487"></a>
-<span class="sourceLineNo">2488</span>    buffer.append('\'');<a name="line.2488"></a>
-<span class="sourceLineNo">2489</span><a name="line.2489"></a>
-<span class="sourceLineNo">2490</span>    if (publicKeyAlgorithmName != null)<a name="line.2490"></a>
-<span class="sourceLineNo">2491</span>    {<a name="line.2491"></a>
-<span class="sourceLineNo">2492</span>      buffer.append(", publicKeyAlgorithmName='");<a name="line.2492"></a>
-<span class="sourceLineNo">2493</span>      buffer.append(publicKeyAlgorithmName);<a name="line.2493"></a>
-<span class="sourceLineNo">2494</span>      buffer.append('\'');<a name="line.2494"></a>
-<span class="sourceLineNo">2495</span>    }<a name="line.2495"></a>
-<span class="sourceLineNo">2496</span><a name="line.2496"></a>
-<span class="sourceLineNo">2497</span>    buffer.append(", subjectPublicKey=");<a name="line.2497"></a>
-<span class="sourceLineNo">2498</span>    if (decodedPublicKey == null)<a name="line.2498"></a>
-<span class="sourceLineNo">2499</span>    {<a name="line.2499"></a>
-<span class="sourceLineNo">2500</span>      buffer.append('\'');<a name="line.2500"></a>
+<span class="sourceLineNo">2459</span>   * @return  {@code true} if the provided object is considered equal to this<a name="line.2459"></a>
+<span class="sourceLineNo">2460</span>   *          X.509 certificate, or {@code false} if not.<a name="line.2460"></a>
+<span class="sourceLineNo">2461</span>   */<a name="line.2461"></a>
+<span class="sourceLineNo">2462</span>  @Override()<a name="line.2462"></a>
+<span class="sourceLineNo">2463</span>  public boolean equals(@Nullable final Object o)<a name="line.2463"></a>
+<span class="sourceLineNo">2464</span>  {<a name="line.2464"></a>
+<span class="sourceLineNo">2465</span>    if (o == null)<a name="line.2465"></a>
+<span class="sourceLineNo">2466</span>    {<a name="line.2466"></a>
+<span class="sourceLineNo">2467</span>      return false;<a name="line.2467"></a>
+<span class="sourceLineNo">2468</span>    }<a name="line.2468"></a>
+<span class="sourceLineNo">2469</span><a name="line.2469"></a>
+<span class="sourceLineNo">2470</span>    if (o == this)<a name="line.2470"></a>
+<span class="sourceLineNo">2471</span>    {<a name="line.2471"></a>
+<span class="sourceLineNo">2472</span>      return true;<a name="line.2472"></a>
+<span class="sourceLineNo">2473</span>    }<a name="line.2473"></a>
+<span class="sourceLineNo">2474</span><a name="line.2474"></a>
+<span class="sourceLineNo">2475</span>    if (! (o instanceof X509Certificate))<a name="line.2475"></a>
+<span class="sourceLineNo">2476</span>    {<a name="line.2476"></a>
+<span class="sourceLineNo">2477</span>      return false;<a name="line.2477"></a>
+<span class="sourceLineNo">2478</span>    }<a name="line.2478"></a>
+<span class="sourceLineNo">2479</span><a name="line.2479"></a>
+<span class="sourceLineNo">2480</span>    final X509Certificate c = (X509Certificate) o;<a name="line.2480"></a>
+<span class="sourceLineNo">2481</span>    return Arrays.equals(x509CertificateBytes, c.x509CertificateBytes);<a name="line.2481"></a>
+<span class="sourceLineNo">2482</span>  }<a name="line.2482"></a>
+<span class="sourceLineNo">2483</span><a name="line.2483"></a>
+<span class="sourceLineNo">2484</span><a name="line.2484"></a>
+<span class="sourceLineNo">2485</span><a name="line.2485"></a>
+<span class="sourceLineNo">2486</span>  /**<a name="line.2486"></a>
+<span class="sourceLineNo">2487</span>   * Retrieves a string representation of the decoded X.509 certificate.<a name="line.2487"></a>
+<span class="sourceLineNo">2488</span>   *<a name="line.2488"></a>
+<span class="sourceLineNo">2489</span>   * @return  A string representation of the decoded X.509 certificate.<a name="line.2489"></a>
+<span class="sourceLineNo">2490</span>   */<a name="line.2490"></a>
+<span class="sourceLineNo">2491</span>  @Override()<a name="line.2491"></a>
+<span class="sourceLineNo">2492</span>  @NotNull()<a name="line.2492"></a>
+<span class="sourceLineNo">2493</span>  public String toString()<a name="line.2493"></a>
+<span class="sourceLineNo">2494</span>  {<a name="line.2494"></a>
+<span class="sourceLineNo">2495</span>    final StringBuilder buffer = new StringBuilder();<a name="line.2495"></a>
+<span class="sourceLineNo">2496</span>    toString(buffer);<a name="line.2496"></a>
+<span class="sourceLineNo">2497</span>    return buffer.toString();<a name="line.2497"></a>
+<span class="sourceLineNo">2498</span>  }<a name="line.2498"></a>
+<span class="sourceLineNo">2499</span><a name="line.2499"></a>
+<span class="sourceLineNo">2500</span><a name="line.2500"></a>
 <span class="sourceLineNo">2501</span><a name="line.2501"></a>
-<span class="sourceLineNo">2502</span>      try<a name="line.2502"></a>
-<span class="sourceLineNo">2503</span>      {<a name="line.2503"></a>
-<span class="sourceLineNo">2504</span>        StaticUtils.toHex(encodedPublicKey.getBytes(), ":", buffer);<a name="line.2504"></a>
-<span class="sourceLineNo">2505</span>      }<a name="line.2505"></a>
-<span class="sourceLineNo">2506</span>      catch (final Exception e)<a name="line.2506"></a>
-<span class="sourceLineNo">2507</span>      {<a name="line.2507"></a>
-<span class="sourceLineNo">2508</span>        Debug.debugException(e);<a name="line.2508"></a>
-<span class="sourceLineNo">2509</span>        encodedPublicKey.toString(buffer);<a name="line.2509"></a>
-<span class="sourceLineNo">2510</span>      }<a name="line.2510"></a>
-<span class="sourceLineNo">2511</span><a name="line.2511"></a>
-<span class="sourceLineNo">2512</span>      buffer.append('\'');<a name="line.2512"></a>
-<span class="sourceLineNo">2513</span>    }<a name="line.2513"></a>
-<span class="sourceLineNo">2514</span>    else<a name="line.2514"></a>
-<span class="sourceLineNo">2515</span>    {<a name="line.2515"></a>
-<span class="sourceLineNo">2516</span>      decodedPublicKey.toString(buffer);<a name="line.2516"></a>
+<span class="sourceLineNo">2502</span>  /**<a name="line.2502"></a>
+<span class="sourceLineNo">2503</span>   * Appends a string representation of the decoded X.509 certificate to the<a name="line.2503"></a>
+<span class="sourceLineNo">2504</span>   * provided buffer.<a name="line.2504"></a>
+<span class="sourceLineNo">2505</span>   *<a name="line.2505"></a>
+<span class="sourceLineNo">2506</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.2506"></a>
+<span class="sourceLineNo">2507</span>   */<a name="line.2507"></a>
+<span class="sourceLineNo">2508</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.2508"></a>
+<span class="sourceLineNo">2509</span>  {<a name="line.2509"></a>
+<span class="sourceLineNo">2510</span>    buffer.append("X509Certificate(version='");<a name="line.2510"></a>
+<span class="sourceLineNo">2511</span>    buffer.append(version.getName());<a name="line.2511"></a>
+<span class="sourceLineNo">2512</span>    buffer.append("', serialNumber='");<a name="line.2512"></a>
+<span class="sourceLineNo">2513</span>    StaticUtils.toHex(serialNumber.toByteArray(), ":", buffer);<a name="line.2513"></a>
+<span class="sourceLineNo">2514</span>    buffer.append("', signatureAlgorithmOID='");<a name="line.2514"></a>
+<span class="sourceLineNo">2515</span>    buffer.append(signatureAlgorithmOID.toString());<a name="line.2515"></a>
+<span class="sourceLineNo">2516</span>    buffer.append('\'');<a name="line.2516"></a>
 <span class="sourceLineNo">2517</span><a name="line.2517"></a>
-<span class="sourceLineNo">2518</span>      if (decodedPublicKey instanceof EllipticCurvePublicKey)<a name="line.2518"></a>
-<span class="sourceLineNo">2519</span>      {<a name="line.2519"></a>
-<span class="sourceLineNo">2520</span>        try<a name="line.2520"></a>
-<span class="sourceLineNo">2521</span>        {<a name="line.2521"></a>
-<span class="sourceLineNo">2522</span>          final OID namedCurveOID =<a name="line.2522"></a>
-<span class="sourceLineNo">2523</span>               publicKeyAlgorithmParameters.decodeAsObjectIdentifier().getOID();<a name="line.2523"></a>
-<span class="sourceLineNo">2524</span>          buffer.append(", ellipticCurvePublicKeyParameters=namedCurve='");<a name="line.2524"></a>
-<span class="sourceLineNo">2525</span>          buffer.append(NamedCurve.getNameOrOID(namedCurveOID));<a name="line.2525"></a>
-<span class="sourceLineNo">2526</span>          buffer.append('\'');<a name="line.2526"></a>
-<span class="sourceLineNo">2527</span>        }<a name="line.2527"></a>
-<span class="sourceLineNo">2528</span>        catch (final Exception e)<a name="line.2528"></a>
-<span class="sourceLineNo">2529</span>        {<a name="line.2529"></a>
-<span class="sourceLineNo">2530</span>          Debug.debugException(e);<a name="line.2530"></a>
-<span class="sourceLineNo">2531</span>        }<a name="line.2531"></a>
-<span class="sourceLineNo">2532</span>      }<a name="line.2532"></a>
-<span class="sourceLineNo">2533</span>    }<a name="line.2533"></a>
-<span class="sourceLineNo">2534</span><a name="line.2534"></a>
-<span class="sourceLineNo">2535</span>    if (issuerUniqueID != null)<a name="line.2535"></a>
-<span class="sourceLineNo">2536</span>    {<a name="line.2536"></a>
-<span class="sourceLineNo">2537</span>      buffer.append(", issuerUniqueID='");<a name="line.2537"></a>
-<span class="sourceLineNo">2538</span>      buffer.append(issuerUniqueID.toString());<a name="line.2538"></a>
-<span class="sourceLineNo">2539</span>      buffer.append('\'');<a name="line.2539"></a>
-<span class="sourceLineNo">2540</span>    }<a name="line.2540"></a>
-<span class="sourceLineNo">2541</span><a name="line.2541"></a>
-<span class="sourceLineNo">2542</span>    if (subjectUniqueID != null)<a name="line.2542"></a>
-<span class="sourceLineNo">2543</span>    {<a name="line.2543"></a>
-<span class="sourceLineNo">2544</span>      buffer.append(", subjectUniqueID='");<a name="line.2544"></a>
-<span class="sourceLineNo">2545</span>      buffer.append(subjectUniqueID.toString());<a name="line.2545"></a>
-<span class="sourceLineNo">2546</span>      buffer.append('\'');<a name="line.2546"></a>
-<span class="sourceLineNo">2547</span>    }<a name="line.2547"></a>
+<span class="sourceLineNo">2518</span>    if (signatureAlgorithmName != null)<a name="line.2518"></a>
+<span class="sourceLineNo">2519</span>    {<a name="line.2519"></a>
+<span class="sourceLineNo">2520</span>      buffer.append(", signatureAlgorithmName='");<a name="line.2520"></a>
+<span class="sourceLineNo">2521</span>      buffer.append(signatureAlgorithmName);<a name="line.2521"></a>
+<span class="sourceLineNo">2522</span>      buffer.append('\'');<a name="line.2522"></a>
+<span class="sourceLineNo">2523</span>    }<a name="line.2523"></a>
+<span class="sourceLineNo">2524</span><a name="line.2524"></a>
+<span class="sourceLineNo">2525</span>    buffer.append(", issuerDN='");<a name="line.2525"></a>
+<span class="sourceLineNo">2526</span>    buffer.append(issuerDN.toString());<a name="line.2526"></a>
+<span class="sourceLineNo">2527</span>    buffer.append("', notBefore='");<a name="line.2527"></a>
+<span class="sourceLineNo">2528</span>    buffer.append(StaticUtils.encodeGeneralizedTime(notBefore));<a name="line.2528"></a>
+<span class="sourceLineNo">2529</span>    buffer.append("', notAfter='");<a name="line.2529"></a>
+<span class="sourceLineNo">2530</span>    buffer.append(StaticUtils.encodeGeneralizedTime(notAfter));<a name="line.2530"></a>
+<span class="sourceLineNo">2531</span>    buffer.append("', subjectDN='");<a name="line.2531"></a>
+<span class="sourceLineNo">2532</span>    buffer.append(subjectDN.toString());<a name="line.2532"></a>
+<span class="sourceLineNo">2533</span>    buffer.append("', publicKeyAlgorithmOID='");<a name="line.2533"></a>
+<span class="sourceLineNo">2534</span>    buffer.append(publicKeyAlgorithmOID.toString());<a name="line.2534"></a>
+<span class="sourceLineNo">2535</span>    buffer.append('\'');<a name="line.2535"></a>
+<span class="sourceLineNo">2536</span><a name="line.2536"></a>
+<span class="sourceLineNo">2537</span>    if (publicKeyAlgorithmName != null)<a name="line.2537"></a>
+<span class="sourceLineNo">2538</span>    {<a name="line.2538"></a>
+<span class="sourceLineNo">2539</span>      buffer.append(", publicKeyAlgorithmName='");<a name="line.2539"></a>
+<span class="sourceLineNo">2540</span>      buffer.append(publicKeyAlgorithmName);<a name="line.2540"></a>
+<span class="sourceLineNo">2541</span>      buffer.append('\'');<a name="line.2541"></a>
+<span class="sourceLineNo">2542</span>    }<a name="line.2542"></a>
+<span class="sourceLineNo">2543</span><a name="line.2543"></a>
+<span class="sourceLineNo">2544</span>    buffer.append(", subjectPublicKey=");<a name="line.2544"></a>
+<span class="sourceLineNo">2545</span>    if (decodedPublicKey == null)<a name="line.2545"></a>
+<span class="sourceLineNo">2546</span>    {<a name="line.2546"></a>
+<span class="sourceLineNo">2547</span>      buffer.append('\'');<a name="line.2547"></a>
 <span class="sourceLineNo">2548</span><a name="line.2548"></a>
-<span class="sourceLineNo">2549</span>    if (! extensions.isEmpty())<a name="line.2549"></a>
-<span class="sourceLineNo">2550</span>    {<a name="line.2550"></a>
-<span class="sourceLineNo">2551</span>      buffer.append(", extensions={");<a name="line.2551"></a>
-<span class="sourceLineNo">2552</span><a name="line.2552"></a>
-<span class="sourceLineNo">2553</span>      final Iterator&lt;X509CertificateExtension&gt; iterator = extensions.iterator();<a name="line.2553"></a>
-<span class="sourceLineNo">2554</span>      while (iterator.hasNext())<a name="line.2554"></a>
-<span class="sourceLineNo">2555</span>      {<a name="line.2555"></a>
-<span class="sourceLineNo">2556</span>        iterator.next().toString(buffer);<a name="line.2556"></a>
-<span class="sourceLineNo">2557</span>        if (iterator.hasNext())<a name="line.2557"></a>
-<span class="sourceLineNo">2558</span>        {<a name="line.2558"></a>
-<span class="sourceLineNo">2559</span>          buffer.append(", ");<a name="line.2559"></a>
-<span class="sourceLineNo">2560</span>        }<a name="line.2560"></a>
-<span class="sourceLineNo">2561</span>      }<a name="line.2561"></a>
-<span class="sourceLineNo">2562</span><a name="line.2562"></a>
-<span class="sourceLineNo">2563</span>      buffer.append('}');<a name="line.2563"></a>
-<span class="sourceLineNo">2564</span>    }<a name="line.2564"></a>
-<span class="sourceLineNo">2565</span><a name="line.2565"></a>
-<span class="sourceLineNo">2566</span>    buffer.append(", signatureValue='");<a name="line.2566"></a>
-<span class="sourceLineNo">2567</span><a name="line.2567"></a>
-<span class="sourceLineNo">2568</span>    try<a name="line.2568"></a>
-<span class="sourceLineNo">2569</span>    {<a name="line.2569"></a>
-<span class="sourceLineNo">2570</span>      StaticUtils.toHex(signatureValue.getBytes(), ":", buffer);<a name="line.2570"></a>
-<span class="sourceLineNo">2571</span>    }<a name="line.2571"></a>
-<span class="sourceLineNo">2572</span>    catch (final Exception e)<a name="line.2572"></a>
-<span class="sourceLineNo">2573</span>    {<a name="line.2573"></a>
-<span class="sourceLineNo">2574</span>      Debug.debugException(e);<a name="line.2574"></a>
-<span class="sourceLineNo">2575</span>      buffer.append(signatureValue.toString());<a name="line.2575"></a>
-<span class="sourceLineNo">2576</span>    }<a name="line.2576"></a>
-<span class="sourceLineNo">2577</span><a name="line.2577"></a>
-<span class="sourceLineNo">2578</span>    buffer.append("')");<a name="line.2578"></a>
-<span class="sourceLineNo">2579</span>  }<a name="line.2579"></a>
-<span class="sourceLineNo">2580</span><a name="line.2580"></a>
+<span class="sourceLineNo">2549</span>      try<a name="line.2549"></a>
+<span class="sourceLineNo">2550</span>      {<a name="line.2550"></a>
+<span class="sourceLineNo">2551</span>        StaticUtils.toHex(encodedPublicKey.getBytes(), ":", buffer);<a name="line.2551"></a>
+<span class="sourceLineNo">2552</span>      }<a name="line.2552"></a>
+<span class="sourceLineNo">2553</span>      catch (final Exception e)<a name="line.2553"></a>
+<span class="sourceLineNo">2554</span>      {<a name="line.2554"></a>
+<span class="sourceLineNo">2555</span>        Debug.debugException(e);<a name="line.2555"></a>
+<span class="sourceLineNo">2556</span>        encodedPublicKey.toString(buffer);<a name="line.2556"></a>
+<span class="sourceLineNo">2557</span>      }<a name="line.2557"></a>
+<span class="sourceLineNo">2558</span><a name="line.2558"></a>
+<span class="sourceLineNo">2559</span>      buffer.append('\'');<a name="line.2559"></a>
+<span class="sourceLineNo">2560</span>    }<a name="line.2560"></a>
+<span class="sourceLineNo">2561</span>    else<a name="line.2561"></a>
+<span class="sourceLineNo">2562</span>    {<a name="line.2562"></a>
+<span class="sourceLineNo">2563</span>      decodedPublicKey.toString(buffer);<a name="line.2563"></a>
+<span class="sourceLineNo">2564</span><a name="line.2564"></a>
+<span class="sourceLineNo">2565</span>      if (decodedPublicKey instanceof EllipticCurvePublicKey)<a name="line.2565"></a>
+<span class="sourceLineNo">2566</span>      {<a name="line.2566"></a>
+<span class="sourceLineNo">2567</span>        try<a name="line.2567"></a>
+<span class="sourceLineNo">2568</span>        {<a name="line.2568"></a>
+<span class="sourceLineNo">2569</span>          final OID namedCurveOID =<a name="line.2569"></a>
+<span class="sourceLineNo">2570</span>               publicKeyAlgorithmParameters.decodeAsObjectIdentifier().getOID();<a name="line.2570"></a>
+<span class="sourceLineNo">2571</span>          buffer.append(", ellipticCurvePublicKeyParameters=namedCurve='");<a name="line.2571"></a>
+<span class="sourceLineNo">2572</span>          buffer.append(NamedCurve.getNameOrOID(namedCurveOID));<a name="line.2572"></a>
+<span class="sourceLineNo">2573</span>          buffer.append('\'');<a name="line.2573"></a>
+<span class="sourceLineNo">2574</span>        }<a name="line.2574"></a>
+<span class="sourceLineNo">2575</span>        catch (final Exception e)<a name="line.2575"></a>
+<span class="sourceLineNo">2576</span>        {<a name="line.2576"></a>
+<span class="sourceLineNo">2577</span>          Debug.debugException(e);<a name="line.2577"></a>
+<span class="sourceLineNo">2578</span>        }<a name="line.2578"></a>
+<span class="sourceLineNo">2579</span>      }<a name="line.2579"></a>
+<span class="sourceLineNo">2580</span>    }<a name="line.2580"></a>
 <span class="sourceLineNo">2581</span><a name="line.2581"></a>
-<span class="sourceLineNo">2582</span><a name="line.2582"></a>
-<span class="sourceLineNo">2583</span>  /**<a name="line.2583"></a>
-<span class="sourceLineNo">2584</span>   * Retrieves a list of the lines that comprise a PEM representation of this<a name="line.2584"></a>
-<span class="sourceLineNo">2585</span>   * X.509 certificate.<a name="line.2585"></a>
-<span class="sourceLineNo">2586</span>   *<a name="line.2586"></a>
-<span class="sourceLineNo">2587</span>   * @return  A list of the lines that comprise a PEM representation of this<a name="line.2587"></a>
-<span class="sourceLineNo">2588</span>   *          X.509 certificate.<a name="line.2588"></a>
-<span class="sourceLineNo">2589</span>   */<a name="line.2589"></a>
-<span class="sourceLineNo">2590</span>  @NotNull()<a name="line.2590"></a>
-<span class="sourceLineNo">2591</span>  public List&lt;String&gt; toPEM()<a name="line.2591"></a>
-<span class="sourceLineNo">2592</span>  {<a name="line.2592"></a>
-<span class="sourceLineNo">2593</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(10);<a name="line.2593"></a>
-<span class="sourceLineNo">2594</span>    lines.add("-----BEGIN CERTIFICATE-----");<a name="line.2594"></a>
+<span class="sourceLineNo">2582</span>    if (issuerUniqueID != null)<a name="line.2582"></a>
+<span class="sourceLineNo">2583</span>    {<a name="line.2583"></a>
+<span class="sourceLineNo">2584</span>      buffer.append(", issuerUniqueID='");<a name="line.2584"></a>
+<span class="sourceLineNo">2585</span>      buffer.append(issuerUniqueID.toString());<a name="line.2585"></a>
+<span class="sourceLineNo">2586</span>      buffer.append('\'');<a name="line.2586"></a>
+<span class="sourceLineNo">2587</span>    }<a name="line.2587"></a>
+<span class="sourceLineNo">2588</span><a name="line.2588"></a>
+<span class="sourceLineNo">2589</span>    if (subjectUniqueID != null)<a name="line.2589"></a>
+<span class="sourceLineNo">2590</span>    {<a name="line.2590"></a>
+<span class="sourceLineNo">2591</span>      buffer.append(", subjectUniqueID='");<a name="line.2591"></a>
+<span class="sourceLineNo">2592</span>      buffer.append(subjectUniqueID.toString());<a name="line.2592"></a>
+<span class="sourceLineNo">2593</span>      buffer.append('\'');<a name="line.2593"></a>
+<span class="sourceLineNo">2594</span>    }<a name="line.2594"></a>
 <span class="sourceLineNo">2595</span><a name="line.2595"></a>
-<span class="sourceLineNo">2596</span>    final String certBase64 = Base64.encode(x509CertificateBytes);<a name="line.2596"></a>
-<span class="sourceLineNo">2597</span>    lines.addAll(StaticUtils.wrapLine(certBase64, 64));<a name="line.2597"></a>
-<span class="sourceLineNo">2598</span><a name="line.2598"></a>
-<span class="sourceLineNo">2599</span>    lines.add("-----END CERTIFICATE-----");<a name="line.2599"></a>
-<span class="sourceLineNo">2600</span><a name="line.2600"></a>
-<span class="sourceLineNo">2601</span>    return Collections.unmodifiableList(lines);<a name="line.2601"></a>
-<span class="sourceLineNo">2602</span>  }<a name="line.2602"></a>
-<span class="sourceLineNo">2603</span><a name="line.2603"></a>
-<span class="sourceLineNo">2604</span><a name="line.2604"></a>
-<span class="sourceLineNo">2605</span><a name="line.2605"></a>
-<span class="sourceLineNo">2606</span>  /**<a name="line.2606"></a>
-<span class="sourceLineNo">2607</span>   * Retrieves a multi-line string containing a PEM representation of this X.509<a name="line.2607"></a>
-<span class="sourceLineNo">2608</span>   * certificate.<a name="line.2608"></a>
-<span class="sourceLineNo">2609</span>   *<a name="line.2609"></a>
-<span class="sourceLineNo">2610</span>   * @return  A multi-line string containing a PEM representation of this X.509<a name="line.2610"></a>
-<span class="sourceLineNo">2611</span>   *          certificate.<a name="line.2611"></a>
-<span class="sourceLineNo">2612</span>   */<a name="line.2612"></a>
-<span class="sourceLineNo">2613</span>  @NotNull()<a name="line.2613"></a>
-<span class="sourceLineNo">2614</span>  public String toPEMString()<a name="line.2614"></a>
-<span class="sourceLineNo">2615</span>  {<a name="line.2615"></a>
-<span class="sourceLineNo">2616</span>    final StringBuilder buffer = new StringBuilder();<a name="line.2616"></a>
-<span class="sourceLineNo">2617</span>    buffer.append("-----BEGIN CERTIFICATE-----");<a name="line.2617"></a>
-<span class="sourceLineNo">2618</span>    buffer.append(StaticUtils.EOL);<a name="line.2618"></a>
-<span class="sourceLineNo">2619</span><a name="line.2619"></a>
-<span class="sourceLineNo">2620</span>    final String certBase64 = Base64.encode(x509CertificateBytes);<a name="line.2620"></a>
-<span class="sourceLineNo">2621</span>    for (final String line : StaticUtils.wrapLine(certBase64, 64))<a name="line.2621"></a>
-<span class="sourceLineNo">2622</span>    {<a name="line.2622"></a>
-<span class="sourceLineNo">2623</span>      buffer.append(line);<a name="line.2623"></a>
-<span class="sourceLineNo">2624</span>      buffer.append(StaticUtils.EOL);<a name="line.2624"></a>
-<span class="sourceLineNo">2625</span>    }<a name="line.2625"></a>
-<span class="sourceLineNo">2626</span>    buffer.append("-----END CERTIFICATE-----");<a name="line.2626"></a>
-<span class="sourceLineNo">2627</span>    buffer.append(StaticUtils.EOL);<a name="line.2627"></a>
+<span class="sourceLineNo">2596</span>    if (! extensions.isEmpty())<a name="line.2596"></a>
+<span class="sourceLineNo">2597</span>    {<a name="line.2597"></a>
+<span class="sourceLineNo">2598</span>      buffer.append(", extensions={");<a name="line.2598"></a>
+<span class="sourceLineNo">2599</span><a name="line.2599"></a>
+<span class="sourceLineNo">2600</span>      final Iterator&lt;X509CertificateExtension&gt; iterator = extensions.iterator();<a name="line.2600"></a>
+<span class="sourceLineNo">2601</span>      while (iterator.hasNext())<a name="line.2601"></a>
+<span class="sourceLineNo">2602</span>      {<a name="line.2602"></a>
+<span class="sourceLineNo">2603</span>        iterator.next().toString(buffer);<a name="line.2603"></a>
+<span class="sourceLineNo">2604</span>        if (iterator.hasNext())<a name="line.2604"></a>
+<span class="sourceLineNo">2605</span>        {<a name="line.2605"></a>
+<span class="sourceLineNo">2606</span>          buffer.append(", ");<a name="line.2606"></a>
+<span class="sourceLineNo">2607</span>        }<a name="line.2607"></a>
+<span class="sourceLineNo">2608</span>      }<a name="line.2608"></a>
+<span class="sourceLineNo">2609</span><a name="line.2609"></a>
+<span class="sourceLineNo">2610</span>      buffer.append('}');<a name="line.2610"></a>
+<span class="sourceLineNo">2611</span>    }<a name="line.2611"></a>
+<span class="sourceLineNo">2612</span><a name="line.2612"></a>
+<span class="sourceLineNo">2613</span>    buffer.append(", signatureValue='");<a name="line.2613"></a>
+<span class="sourceLineNo">2614</span><a name="line.2614"></a>
+<span class="sourceLineNo">2615</span>    try<a name="line.2615"></a>
+<span class="sourceLineNo">2616</span>    {<a name="line.2616"></a>
+<span class="sourceLineNo">2617</span>      StaticUtils.toHex(signatureValue.getBytes(), ":", buffer);<a name="line.2617"></a>
+<span class="sourceLineNo">2618</span>    }<a name="line.2618"></a>
+<span class="sourceLineNo">2619</span>    catch (final Exception e)<a name="line.2619"></a>
+<span class="sourceLineNo">2620</span>    {<a name="line.2620"></a>
+<span class="sourceLineNo">2621</span>      Debug.debugException(e);<a name="line.2621"></a>
+<span class="sourceLineNo">2622</span>      buffer.append(signatureValue.toString());<a name="line.2622"></a>
+<span class="sourceLineNo">2623</span>    }<a name="line.2623"></a>
+<span class="sourceLineNo">2624</span><a name="line.2624"></a>
+<span class="sourceLineNo">2625</span>    buffer.append("')");<a name="line.2625"></a>
+<span class="sourceLineNo">2626</span>  }<a name="line.2626"></a>
+<span class="sourceLineNo">2627</span><a name="line.2627"></a>
 <span class="sourceLineNo">2628</span><a name="line.2628"></a>
-<span class="sourceLineNo">2629</span>    return buffer.toString();<a name="line.2629"></a>
-<span class="sourceLineNo">2630</span>  }<a name="line.2630"></a>
-<span class="sourceLineNo">2631</span>}<a name="line.2631"></a>
+<span class="sourceLineNo">2629</span><a name="line.2629"></a>
+<span class="sourceLineNo">2630</span>  /**<a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>   * Retrieves a list of the lines that comprise a PEM representation of this<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span>   * X.509 certificate.<a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>   *<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>   * @return  A list of the lines that comprise a PEM representation of this<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span>   *          X.509 certificate.<a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>   */<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>  @NotNull()<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span>  public List&lt;String&gt; toPEM()<a name="line.2638"></a>
+<span class="sourceLineNo">2639</span>  {<a name="line.2639"></a>
+<span class="sourceLineNo">2640</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(10);<a name="line.2640"></a>
+<span class="sourceLineNo">2641</span>    lines.add("-----BEGIN CERTIFICATE-----");<a name="line.2641"></a>
+<span class="sourceLineNo">2642</span><a name="line.2642"></a>
+<span class="sourceLineNo">2643</span>    final String certBase64 = Base64.encode(x509CertificateBytes);<a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>    lines.addAll(StaticUtils.wrapLine(certBase64, 64));<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span><a name="line.2645"></a>
+<span class="sourceLineNo">2646</span>    lines.add("-----END CERTIFICATE-----");<a name="line.2646"></a>
+<span class="sourceLineNo">2647</span><a name="line.2647"></a>
+<span class="sourceLineNo">2648</span>    return Collections.unmodifiableList(lines);<a name="line.2648"></a>
+<span class="sourceLineNo">2649</span>  }<a name="line.2649"></a>
+<span class="sourceLineNo">2650</span><a name="line.2650"></a>
+<span class="sourceLineNo">2651</span><a name="line.2651"></a>
+<span class="sourceLineNo">2652</span><a name="line.2652"></a>
+<span class="sourceLineNo">2653</span>  /**<a name="line.2653"></a>
+<span class="sourceLineNo">2654</span>   * Retrieves a multi-line string containing a PEM representation of this X.509<a name="line.2654"></a>
+<span class="sourceLineNo">2655</span>   * certificate.<a name="line.2655"></a>
+<span class="sourceLineNo">2656</span>   *<a name="line.2656"></a>
+<span class="sourceLineNo">2657</span>   * @return  A multi-line string containing a PEM representation of this X.509<a name="line.2657"></a>
+<span class="sourceLineNo">2658</span>   *          certificate.<a name="line.2658"></a>
+<span class="sourceLineNo">2659</span>   */<a name="line.2659"></a>
+<span class="sourceLineNo">2660</span>  @NotNull()<a name="line.2660"></a>
+<span class="sourceLineNo">2661</span>  public String toPEMString()<a name="line.2661"></a>
+<span class="sourceLineNo">2662</span>  {<a name="line.2662"></a>
+<span class="sourceLineNo">2663</span>    final StringBuilder buffer = new StringBuilder();<a name="line.2663"></a>
+<span class="sourceLineNo">2664</span>    buffer.append("-----BEGIN CERTIFICATE-----");<a name="line.2664"></a>
+<span class="sourceLineNo">2665</span>    buffer.append(StaticUtils.EOL);<a name="line.2665"></a>
+<span class="sourceLineNo">2666</span><a name="line.2666"></a>
+<span class="sourceLineNo">2667</span>    final String certBase64 = Base64.encode(x509CertificateBytes);<a name="line.2667"></a>
+<span class="sourceLineNo">2668</span>    for (final String line : StaticUtils.wrapLine(certBase64, 64))<a name="line.2668"></a>
+<span class="sourceLineNo">2669</span>    {<a name="line.2669"></a>
+<span class="sourceLineNo">2670</span>      buffer.append(line);<a name="line.2670"></a>
+<span class="sourceLineNo">2671</span>      buffer.append(StaticUtils.EOL);<a name="line.2671"></a>
+<span class="sourceLineNo">2672</span>    }<a name="line.2672"></a>
+<span class="sourceLineNo">2673</span>    buffer.append("-----END CERTIFICATE-----");<a name="line.2673"></a>
+<span class="sourceLineNo">2674</span>    buffer.append(StaticUtils.EOL);<a name="line.2674"></a>
+<span class="sourceLineNo">2675</span><a name="line.2675"></a>
+<span class="sourceLineNo">2676</span>    return buffer.toString();<a name="line.2676"></a>
+<span class="sourceLineNo">2677</span>  }<a name="line.2677"></a>
+<span class="sourceLineNo">2678</span>}<a name="line.2678"></a>
 
 
 

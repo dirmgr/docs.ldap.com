@@ -131,6 +131,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--doNotGenerateOperationalAttributes</tt> / <tt>--do-not-generate-operational-attributes</tt> &mdash; Do not automatically maintain any operational attributes (including entryDN, entryUUID, subschemaSubentry, creatorsName, createTimestamp, modifiersName, and modifyTimestamp) in entries.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-I <i>{attr}</i></tt> / <tt>--equalityIndex <i>{attr}</i></tt> &mdash; Maintain an equality index for the specified attribute.  The server must be configured to use a schema (which may optionally be the default standard schema), and the specified attribute type must be defined in the schema.
         <br><br>
       </li>

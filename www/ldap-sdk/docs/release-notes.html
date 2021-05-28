@@ -27,6 +27,285 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.0</h3>
+
+              <p>
+                The following changes were made between the 5.1.4 and 6.0.0 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue that could cause the LDAP SDK to use the JVM's default set of
+                  TLS cipher suites instead of the recommended set as determined by the
+                  TLSCipherSuiteSelector class.  This could have allowed certain less-desirable
+                  suites to have been enabled, and could have prevented certain desirable
+                  suites from being enabled.  In some cases, this could have also affected the set
+                  of TLS protocols that were available for use (for example, in cases where the
+                  JVM supports TLSv1.3 but does not enable TLSv1.3 cipher suites by default).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the logic used to select the set of TLS protocol versions so that only
+                  the TLSv1.2 and TLSv1.3 (if supported by the JVM) will be enabled by default,
+                  with the higher protocol version being the preferred version.  As per RFC 8996,
+                  the older TLSv1 and TLSv1.1 protocol versions are no longer considered secure
+                  and will not be enabled by default.  If necessary or desired, you can override
+                  the enabled set of TLS protocol versions through the
+                  com.unboundid.util.SSLUtil.enabledSSLProtocols system property or by calling the
+                  SSLUtil.setEnabledSSLProtocols method.  You can override the preferred TLS
+                  protocol version using the com.unboundid.util.SSLUtil.defaultSSLProtocol system
+                  property or the SSLUtil.setDefaultSSLProtocol method.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the logic used to select the set of TLS cipher suites so that suites
+                  that use the SHA-1 digest algorithm are no longer enabled by default.  The SHA-1
+                  digest is no longer considered secure, and cipher suites that use it are only
+                  needed by older TLS protocol versions (like TLSv1 and TLSv1.1) that are no
+                  longer enabled by default.  If necessary or desired, you can override the
+                  enabled set of TLS cipher suites using the
+                  com.unboundid.util.SSLUtil.enabledSSLCipherSuites system property or by calling
+                  the SSLUtil.setEnabledSSLCipherSuites method.  You can also use the
+                  com.unboundid.util.ssl.TLSCipherSuiteSelector.allowSHA1 property or the
+                  TLSCipherSuiteSelector.setAllowSHA1 method to override just the restriction on
+                  the use of the SHA-1 digest algorithm.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the logic used to select the set of TLS cipher suites so that suites
+                  that use the RSA key exchange algorithm are no longer enabled by default.  The
+                  RSA key exchange algorithm does not provide forward secrecy, and if a
+                  certificate's private key is compromised, then it may be used to decrypt any TLS
+                  communication in which the RSA key exchange algorithm was used.  If necessary or
+                  desired, you can override the enabled set of TLS cipher suites using the
+                  com.unboundid.util.SSLUtil.enabledSSLCipherSuites system property or by calling
+                  the SSLUtil.setEnabledSSLCipherSuites method.  You can also use the
+                  com.unboundid.util.ssl.TLSCipherSuiteSelector.allowRSAKeyExchange property or the
+                  TLSCipherSuiteSelector.setAllowRSAKeyExchange method to override just the
+                  restriction on the use of the RSA key exchange algorithm.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved the logic used to decide which types of optional escaping should be used
+                  when generating the string representation of a DN or RDN.  If a DN or RDN was
+                  created from a string representation, then that string representation will
+                  generally be preserved.  However, if a DN or RDN is created from its component
+                  parts, then the string representation will be generated, and the LDAP SDK may
+                  choose to escape more characters than are required by RFC 4514.  Previously, the
+                  LDAP SDK always escaped all ASCII control characters and all non-ASCII
+                  characters.  It will now still escape all ASCII control characters, but it will
+                  only escape non-ASCII characters if it does not believe that they are
+                  displayable.  If it believes that a non-ASCII character is displayable
+                  (including Latin characters with diacritics and letters, digits, spacing,
+                  punctuation, and symbols from languages that use non-Latin characters), that
+                  character now be left unescaped.  The default behavior can be overridden either
+                  programmatically or through a system property.  The logic used to generate
+                  normalized representations of DNs and RDNs has not changed.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF writer to make it possible to customize the logic that it uses
+                  when deciding which whether values should be base64-encoded.  Previously, it
+                  would always base64-encode values with non-ASCII characters, regardless of
+                  whether those characters may be suitable for display, but it would not
+                  necessarily encode values with ASCII control characters (other than NUL, LF, or
+                  CR, which are required to always be encoded by the LDIF specification).  It will
+                  now always base64 encode values with any ASCII control characters.  It also
+                  provides an option to skip base64 encoding for different classes of non-ASCII
+                  data, which would technically violate the LDIF specification but may be more
+                  user-friendly for cases in which the value is to be displayed.  The default
+                  behavior can be overridden programmatically or through a system property.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF reader to add decodeLDIFRecord methods that can be used to
+                  decode a set of LDIF lines as a generic LDIF record, which may represent either
+                  an entry or an LDIF change record.  There were already methods for decoding an
+                  array of lines as an entry or as a change record if you knew what type of record
+                  that it represented, and it was already possible to read a generic LDIF record
+                  from an LDIF file, but there was not a public method for decoding an array of
+                  lines as a generic LDIF record.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF reader to make it possible to disable support for LDAP controls
+                  in LDIF records.  By default, the LDAP SDK will handle controls in accordance
+                  with RFC 2849, so that if the first unwrapped line after the DN starts with
+                  "control", then that record will be treated as an LDIF change record with one or
+                  more LDAP controls.  However, this may cause a problem when the LDIF record
+                  represents an entry rather than a change record, and when the first attribute in
+                  the LDIF representation of that entry is named "control".  In such cases,
+                  attempting to read that record as a generic LDIF record or as an LDIF change
+                  record with defaultAdd set to true (rather than trying to read it as an LDIF
+                  entry) will cause the LDIF reader to attempt to treat that control element as an
+                  LDAP control rather than an attribute named "control".  It is now possible to
+                  disable support for controls to handle this corner case in cases where you may
+                  have an LDAP attribute named "control" that may be the first attribute of an
+                  entry, and in which LDIF change records do not contain LDAP controls.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the PKCS #11 key manager to make it easier to interact with PKCS #11
+                  tokens without needing to alter the JVM configuration.  The key manager can now
+                  dynamically instantiate the provider (either using a class specified by the
+                  caller or one inferred by the LDAP SDK) and optionally configure it with
+                  information from a specified provider configuration file.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates tool to add support for interacting with
+                  PKCS #11 key stores.  The --keystore-type argument must be provided with a
+                  value of PKCS11, and the --keystore argument must be provided with a value of
+                  the path to the provider configuration file.  The types of operations that can
+                  be performed in PKCS #11 key stores may depend on what is allowed by the token
+                  being used.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP command-line tool framework to add support for using PKCS #11
+                  key stores.  The --keyStoreFormat argument must be provided with a value of
+                  PKCS11, and the --keyStorePath argument must be provided with a value of the
+                  path to the provider configuration file.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the in-memory-directory-server command-line tool to add a new
+                  --doNotGenerateOperationalAttributes argument that can be used to prevent the
+                  server from maintaining operational attributes like entryDN, entryUUID,
+                  subschemaSubentry, creatorsName, createTimestamp, modifiersName, and
+                  modifyTimestamp).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for running in a FIPS 140-2-compliant mode using the Bouncy
+                  Castle FIPS provider to reduce the chance that uses of SecureRandom will
+                  encounter severe performance issues as a result of lack of entropy on the
+                  underlying system.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK to make it possible to customize the providers that will be
+                  allowed when it is running in FIPS 140-2-compliant mode.  This can be customized
+                  either through a system property or a method call.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the command-line tool framework so that it will check to determine
+                  whether the LDAP SDK is running in FIPS 140-2-compliant mode upon invoking the
+                  tool constructor.  This can help prevent cases in which the tool may
+                  inadvertently perform operations with a non-FIPS-compliant provider.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates tool to add a new copy-keystore subcommand.
+                  This subcommand can be used to copy all or some of the certificates from one key
+                  store to another, creating the destination key store if necessary.  The source
+                  and destination key stores can be of different types, allowing you to convert
+                  one type of key store to another (for example, converting a JKS key store to a
+                  PKCS #12 key store).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates tool to add optional --output-file and
+                  --output-format arguments to the generate-self-signed-certificate subcommand.
+                  This allows you to obtain a PEM or DER representation of the certificate in the
+                  same command used to generate it, whereas it was previously necessary to use a
+                  separate command to export the certificate.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates tool to provide improved support for managing
+                  key stores in the BCFKS (Bouncy Castle FIPS 140-2-compliant key store) format.
+                  Previously, this only worked if the LDAP SDK was running in FIPS-compliant mode.
+                  It will now work as long as the necessary Bouncy Castle provider classes are
+                  found in the classpath, even if the LDAP SDK is not operating in FIPS-compliant
+                  mode.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates tool to display the keystore type when listing
+                  certificates.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the manage-certificates tool to add additional alternative long
+                  identifiers for the keystore-type argument.  It was formerly possible to refer
+                  to the argument as either keystore-type or keystoreType.  It is now also
+                  possible to use key-store-type, keystore-format, key-store-format, or
+                  keystoreFormat.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the FileArgument class to provide better support for interacting with
+                  files that are potentially encrypted or compressed.  The getFileLines,
+                  getNonBlankFileLines, and getFileBytes methods have been updated so that they
+                  can transparently handle reading from files that are gzip-compressed.  Further,
+                  for tools that are associated with a Ping Identity server instance, these
+                  methods can transparently handle reading from files that are encrypted with a
+                  key from the server's encryption settings database.  In addition, a new
+                  getFileInputStream method has been added that can retrieve an input stream for
+                  reading from the file, and that also handles compressed and encrypted files.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a ThreadLocalSecureRandom class that can be used to maintain a set of
+                  per-thread SecureRandom instances that can be used without synchronization or
+                  contention.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the collect-support-data tool so that the keyStoreFormat and
+                  trustStoreFormat arguments are allowed when invoking the server-side version of
+                  the tool.  Formerly, these arguments were only available when
+                  collect-support-data was run with the useRemoteServer option because the
+                  server-side version of the tool didn't support the arguments used to specify the
+                  key/trust store format, but that will no longer be the case in the next release
+                  of the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a new remove object class task that can be used to
+                  safely remove an object class definition from a Ping Identity Directory Server's
+                  schema.  It will make sure that the object class is not in use in the server
+                  before removing it.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated to the latest revisions of draft-coretta-x660-ldap,
+                  draft-ietf-kitten-password-storage, and draft-melnikov-scram-2fa in the set of
+                  LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 5.1.4</h3>
 
               <p>

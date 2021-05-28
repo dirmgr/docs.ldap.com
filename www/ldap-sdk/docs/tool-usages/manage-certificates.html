@@ -11,7 +11,7 @@
     <h1>The manage-certificates Command-Line Tool</h1>
 
     <p>
-      Manage certificates and private keys in a JKS or PKCS #12 key store.
+      Manage certificates and private keys in a JKS, PKCS #12, PKCS #11, or BCFKS key store.
     </p>
     <h3>Usage</h3>
     <blockquote><pre>manage-certificates <i>{subCommand}</i> <i>{arguments}</i></pre></blockquote>
@@ -176,6 +176,15 @@
     <blockquote><pre>    manage-certificates retrieve-server-certificate \
          --hostname ds.example.com --port 636</pre></blockquote>
     <ul>
+      <li>Copies the contents of the 'keystore.jks' JKS key store to the 'keystore.p12' PKCS #12 key store.</li>
+    </ul>
+    <blockquote><pre>    manage-certificates copy-keystore --source-keystore config/keystore.jks \
+         --source-keystore-password-file config/keystore.pin \
+         --source-keystore-type JKS \
+         --destination-keystore config/keystore.p12 \
+         --destination-keystore-password-file config/keystore.pin \
+         --destination-keystore-type PKCS12</pre></blockquote>
+    <ul>
       <li>Connects to the ldap.example.com server on port 636 to retrieve the certificate chain that the server presents during TLS negotiation.  That certificate chain will be added to the 'config/truststore' key store with a base alias of 'ldap.example.com:636' after interactively confirming that the certificate chain should be trusted.</li>
     </ul>
     <blockquote><pre>    manage-certificates trust-server-certificate --hostname ldap.example.com \
@@ -210,7 +219,7 @@
     <h3><a name="available-subcommands">Available Subcommands</a></h3>
     <ul>
       <li>
-        <a href="#subcommand-list-certificates">list-certificates</a> / list &mdash; Displays a list of some or all of the certificates in a key store.
+        <a href="#subcommand-list-certificates">list-certificates</a> &mdash; Displays a list of some or all of the certificates in a key store.
         <br><br>
       </li>
       <li>
@@ -222,7 +231,7 @@
         <br><br>
       </li>
       <li>
-        <a href="#subcommand-import-certificate">import-certificate</a> / import &mdash; Imports a certificate or certificate chain, and optionally a private key, into a key store.
+        <a href="#subcommand-import-certificate">import-certificate</a> &mdash; Imports a certificate or certificate chain, and optionally a private key, into a key store.
         <br><br>
       </li>
       <li>
@@ -251,6 +260,10 @@
       </li>
       <li>
         <a href="#subcommand-change-private-key-password">change-private-key-password</a> &mdash; Changes the password used to protect a specified private key.
+        <br><br>
+      </li>
+      <li>
+        <a href="#subcommand-copy-keystore">copy-keystore</a> &mdash; Copies the contents of one key store to another.  If the destination key store does not exist, then a new one will be created (allowing you to convert one type of key store to another).  If the destination key store does exist, then there must not be any conflicts between the aliases of the source and destination key stores.
         <br><br>
       </li>
       <li>
@@ -310,9 +323,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when listing certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when listing certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -407,9 +420,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when exporting certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when exporting certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -531,9 +544,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when exporting private keys, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when exporting private keys, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -614,9 +627,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be either 'JKS' for the non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12 format.  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -726,9 +739,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when deleting certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when deleting certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -812,9 +825,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be either 'JKS' for the non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12 format.  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -910,6 +923,18 @@
         <br><br>
       </li>
       <li>
+        <tt>--output-file <i>{path}</i></tt> &mdash; The output file to which the generated certificate should be written, if desired.
+        <br>
+        The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
+        <br><br>
+      </li>
+      <li>
+        <tt>--output-format <i>{format}</i></tt> &mdash; The format in which the generated certificate should be written to the specified output file.  The value may be either 'PEM' (to export the certificate in the text-based PEM format), or 'DER' (to export the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.
+        <br>
+        A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
+        <br><br>
+      </li>
+      <li>
         <tt>--display-keytool-command</tt> &mdash; Display a command that can be invoked to achieve a similar result with the Java keytool utility.  Note that this may just be an approximation, since the manage-certificates and keytool utilities do not provide exactly the same sets of functionality.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -926,6 +951,9 @@
     <ul>
       <li>
         If the <tt>--basic-constraints-maximum-path-length</tt> argument is provided, then the <tt>--basic-constraints-is-ca</tt> argument must also be provided.
+      </li>
+      <li>
+        If the <tt>--output-format</tt> argument is provided, then the <tt>--output-file</tt> argument must also be provided.
       </li>
     </ul>
     <h3>Exclusive Argument Sets</h3>
@@ -1047,9 +1075,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be either 'JKS' for the non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12 format.  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -1264,9 +1292,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when signing certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when signing certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -1466,9 +1494,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when changing a certificate alias, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when changing a certificate alias, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -1619,9 +1647,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when changing private key passwords, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when changing private key passwords, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -1701,6 +1729,138 @@
          --current-private-key-password-file config/current.pin \
          --new-private-key-password-file config/new.pin \
          --display-keytool-command</pre></blockquote>
+
+    <p>&nbsp;</p>
+
+    <h2><a name="subcommand-copy-keystore">Usage For Subcommand copy-keystore</a></h2>
+    <p>Copies the contents of one key store to another.  If the destination key store does not exist, then a new one will be created (allowing you to convert one type of key store to another).  If the destination key store does exist, then there must not be any conflicts between the aliases of the source and destination key stores.</p>
+    <h3>Arguments</h3>
+    <ul>
+      <li>
+        <tt>--source-keystore <i>{path}</i></tt> &mdash; The path to the source key store whose contents should be copied.  This must be provided, and the file must exist.
+        <br>
+        The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--source-keystore-password <i>{password}</i></tt> &mdash; The password needed to access the contents of the source key store.  Exactly one of the --source-keystore-password, --source-keystore-password-file, and --prompt-for-source-keystore-password arguments must be provided.
+        <br><br>
+      </li>
+      <li>
+        <tt>--source-keystore-password-file <i>{path}</i></tt> &mdash; The path to a file containing the password needed to access the contents of the source key store.  Exactly one of the --source-keystore-password, --source-keystore-password-file, and --prompt-for-source-keystore-password arguments must be provided.
+        <br>
+        The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--prompt-for-source-keystore-password</tt> &mdash; Interactively prompt for the password needed to access the contents of the source key store.  Exactly one of the --source-keystore-password, --source-keystore-password-file, and --prompt-for-source-keystore-password arguments must be provided.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--source-private-key-password <i>{password}</i></tt> &mdash; The password needed to access private keys in the source key store.  At most one of the --source-keystore-password, --source-keystore-password-file, and --prompt-for-source-keystore-password arguments must be provided, and if none of them is provided, then the source key store password will be used as the source private key password.
+        <br><br>
+      </li>
+      <li>
+        <tt>--source-private-key-password-file <i>{path}</i></tt> &mdash; The path to a file containing the password needed to access the private keys in the source key store.  At most one of the --source-keystore-password, --source-keystore-password-file, and --prompt-for-source-keystore-password arguments must be provided, and if none of them is provided, then the source key store password will be used as the source private key password.
+        <br>
+        The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--prompt-for-source-private-key-password</tt> &mdash; Interactively prompt for the password needed to access private keys in the source key store.  At most one of the --source-keystore-password, --source-keystore-password-file, and --prompt-for-source-keystore-password arguments must be provided, and if none of them is provided, then the source key store password will be used as the source private key password.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--source-keystore-type <i>{type}</i></tt> &mdash; The key store type for the source key store.  If provided, the value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 key store format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <br>
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--destination-keystore <i>{path}</i></tt> &mdash; The path to the destination key store to which the source key store contents should be copied.  This must be provided, but if the file does not exist, then a new key store will be created.
+        <br>
+        The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
+        <br><br>
+      </li>
+      <li>
+        <tt>--destination-keystore-password <i>{password}</i></tt> &mdash; The password needed to access the contents of the destination key store.  At most one of the --destination-keystore-password, --destination-keystore-password-file, and --prompt-for-destination-keystore-password arguments may be provided, and if none of them is given, then the source key store password will be used as the destination key store password.
+        <br><br>
+      </li>
+      <li>
+        <tt>--destination-keystore-password-file <i>{path}</i></tt> &mdash; The path to a file containing the password needed to access the contents of the destination key store.  At most one of the --destination-keystore-password, --destination-keystore-password-file, and --prompt-for-destination-keystore-password arguments may be provided, and if none of them is given, then the source key store password will be used as the destination key store password.
+        <br>
+        The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--prompt-for-destination-keystore-password</tt> &mdash; Interactively prompt for the password needed to access the contents of the destination key store.  At most one of the --destination-keystore-password, --destination-keystore-password-file, and --prompt-for-destination-keystore-password arguments may be provided, and if none of them is given, then the source key store password will be used as the destination key store password.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--destination-private-key-password <i>{password}</i></tt> &mdash; The password needed to access private keys in the destination key store.  At most one of the --destination-keystore-password, --destination-keystore-password-file, and --prompt-for-destination-keystore-password arguments must be provided, and if none of them is provided, then the destination key store password will be used as the destination private key password.
+        <br><br>
+      </li>
+      <li>
+        <tt>--destination-private-key-password-file <i>{path}</i></tt> &mdash; The path to a file containing the password needed to access the private keys in the destination key store.  At most one of the --destination-keystore-password, --destination-keystore-password-file, and --prompt-for-destination-keystore-password arguments must be provided, and if none of them is provided, then the destination key store password will be used as the destination private key password.
+        <br>
+        The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--prompt-for-destination-private-key-password</tt> &mdash; Interactively prompt for the password needed to access private keys in the destination key store.  At most one of the --destination-keystore-password, --destination-keystore-password-file, and --prompt-for-destination-keystore-password arguments must be provided, and if none of them is provided, then the destination key store password will be used as the destination private key password.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--destination-keystore-type <i>{type}</i></tt> &mdash; The key store type for the destination key store.  If provided, the value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 key store format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type if the destination key store exists, or a default type of 'JKS' will be used if the file does not exist.
+        <br>
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--alias <i>{alias}</i></tt> &mdash; The alias for a certificate to copy from the source key store to the destination key store.  This may be provided multiple times if multiple specific certificates should be copied.  If this is not provided, then all certificates in the source key store will be copied to the destination key store.
+        <br><br>
+      </li>
+    </ul>
+    <h3>Required Argument Sets</h3>
+    <ul>
+      <li>
+        At least one of the following arguments must be provided:  <tt>--source-keystore-password</tt>, <tt>--source-keystore-password-file</tt>, <tt>--prompt-for-source-keystore-password</tt>
+      </li>
+    </ul>
+    <h3>Exclusive Argument Sets</h3>
+    <ul>
+      <li>
+        The following arguments cannot be used together:  <tt>--source-keystore-password</tt>, <tt>--source-keystore-password-file</tt>, <tt>--prompt-for-source-keystore-password</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--source-private-key-password</tt>, <tt>--source-private-key-password-file</tt>, <tt>--prompt-for-destination-private-key-password</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--destination-keystore-password</tt>, <tt>--destination-keystore-password-file</tt>, <tt>--prompt-for-destination-keystore-password</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--destination-private-key-password</tt>, <tt>--destination-private-key-password-file</tt>, <tt>--prompt-for-destination-private-key-password</tt>
+      </li>
+    </ul>
+    <h3>Examples</h3>
+    <ul>
+      <li>Copies the contents of the 'keystore.jks' JKS key store to the 'keystore.p12' PKCS #12 key store.</li>
+    </ul>
+    <blockquote><pre>    manage-certificates copy-keystore copy-keystore \
+         --source-keystore config/keystore.jks \
+         --source-keystore-password-file config/keystore.pin \
+         --source-keystore-type JKS \
+         --destination-keystore config/keystore.p12 \
+         --destination-keystore-password-file config/keystore.pin \
+         --destination-keystore-type PKCS12</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1820,9 +1980,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be either 'JKS' for the non-standard Java Key Store format, or 'PKCS12' for the standard PKCS #12 format.  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>
@@ -1911,9 +2071,9 @@
         <br><br>
       </li>
       <li>
-        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when checking certificate usability, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store type).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
+        <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when checking certificate usability, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs 12', 'jks', 'pkcs#12', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
         <br><br>
       </li>
       <li>

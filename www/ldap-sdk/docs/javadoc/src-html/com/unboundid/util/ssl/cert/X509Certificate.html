@@ -1533,7 +1533,7 @@
 <span class="sourceLineNo">1525</span>  @NotNull()<a name="line.1525"></a>
 <span class="sourceLineNo">1526</span>  private static BigInteger generateSerialNumber()<a name="line.1526"></a>
 <span class="sourceLineNo">1527</span>  {<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>    final UUID uuid = UUID.randomUUID();<a name="line.1528"></a>
+<span class="sourceLineNo">1528</span>    final UUID uuid = CryptoHelper.getRandomUUID();<a name="line.1528"></a>
 <span class="sourceLineNo">1529</span>    final long msb = uuid.getMostSignificantBits() &amp; 0x7FFF_FFFF_FFFF_FFFFL;<a name="line.1529"></a>
 <span class="sourceLineNo">1530</span>    final long lsb = uuid.getLeastSignificantBits() &amp; 0x7FFF_FFFF_FFFF_FFFFL;<a name="line.1530"></a>
 <span class="sourceLineNo">1531</span>    return BigInteger.valueOf(msb).shiftLeft(64).add(BigInteger.valueOf(lsb));<a name="line.1531"></a>

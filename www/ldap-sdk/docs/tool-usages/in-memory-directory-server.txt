@@ -107,6 +107,11 @@ Available options include:
         Note that even if the server does identify one or more issues with the
         provided schema, it will still attempt to use that schema to the best
         of its ability.
+    --doNotGenerateOperationalAttributes,
+    --do-not-generate-operational-attributes
+        Do not automatically maintain any operational attributes (including
+        entryDN, entryUUID, subschemaSubentry, creatorsName, createTimestamp,
+        modifiersName, and modifyTimestamp) in entries.
     -I, --equalityIndex {attr}
         Maintain an equality index for the specified attribute.  The server
         must be configured to use a schema (which may optionally be the default

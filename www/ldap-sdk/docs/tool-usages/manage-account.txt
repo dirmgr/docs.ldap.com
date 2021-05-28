@@ -51,7 +51,8 @@ Available options include:
         Indicates that the tool should interactively prompt the user for the
         password to use to access the key store contents.
     --keyStoreFormat {format}
-        The format (e.g., jks, jceks, pkcs12, etc.) for the key store file.
+        The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the key store
+        file.
     -P, --trustStorePath {path}
         The path to the file to use as trust store when determining whether to
         trust a certificate presented by the directory server.
@@ -64,7 +65,8 @@ Available options include:
         Indicates that the tool should interactively prompt the user for the
         password to use to access the trust store contents.
     --trustStoreFormat {format}
-        The format (e.g., jks, jceks, pkcs12, etc.) for the trust store file.
+        The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the trust store
+        file.
     -N, --certNickname {nickname}
         The nickname (alias) of the client certificate in the key store to
         present to the directory server for SSL client authentication.
@@ -502,13 +504,13 @@ Available options include:
 Examples
 
   Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com'
-  to '20210323155601.257Z'.
+  to '20210528161547.101Z'.
 
     manage-account set-password-changed-time set-password-changed-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordChangedTime 20210323155601.257Z
+         --passwordChangedTime 20210528161547.101Z
 
 
 
@@ -650,13 +652,13 @@ Available options include:
 Examples
 
   Set the account activation time for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to '20210323155601.257Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to '20210528161547.101Z'.
 
     manage-account set-account-activation-time set-account-activation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountActivationTime 20210323155601.257Z
+         --accountActivationTime 20210528161547.101Z
 
 
 
@@ -766,13 +768,13 @@ Available options include:
 Examples
 
   Set the account expiration time for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to '20210323155601.257Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to '20210528161547.101Z'.
 
     manage-account set-account-expiration-time set-account-expiration-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountExpirationTime 20210323155601.257Z
+         --accountExpirationTime 20210528161547.101Z
 
 
 
@@ -879,14 +881,14 @@ Available options include:
 Examples
 
   Set the password expiration warned time for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to '20210323155601.257Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to '20210528161547.101Z'.
 
     manage-account set-password-expiration-warned-time \
          set-password-expiration-warned-time --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordExpirationWarnedTime 20210323155601.257Z
+         --passwordExpirationWarnedTime 20210528161547.101Z
 
 
 
@@ -1165,15 +1167,15 @@ Examples
 
   Sets the authentication failure times for user
   'uid=jdoe,ou=People,dc=example,dc=com' to include values of
-  '20210323155548.912Z' and '20210323155601.257Z'.
+  '20210528161534.756Z' and '20210528161547.101Z'.
 
     manage-account set-authentication-failure-times \
          set-authentication-failure-times --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --authenticationFailureTime 20210323155548.912Z \
-         --authenticationFailureTime 20210323155601.257Z
+         --authenticationFailureTime 20210528161534.756Z \
+         --authenticationFailureTime 20210528161547.101Z
 
 
 
@@ -1468,13 +1470,13 @@ Available options include:
 Examples
 
   Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to
-  '20210323155601.257Z'.
+  '20210528161547.101Z'.
 
     manage-account set-last-login-time set-last-login-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --lastLoginTime 20210323155601.257Z
+         --lastLoginTime 20210528161547.101Z
 
 
 
@@ -1633,15 +1635,15 @@ Available options include:
 Examples
 
   Sets the grace login use times for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to be '20210323155548.912Z' and
-  '20210323155601.257Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to be '20210528161534.756Z' and
+  '20210528161547.101Z'.
 
     manage-account set-grace-login-use-times set-grace-login-use-times \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --graceLoginUseTime 20210323155548.912Z \
-         --graceLoginUseTime 20210323155601.257Z
+         --graceLoginUseTime 20210528161534.756Z \
+         --graceLoginUseTime 20210528161547.101Z
 
 
 
@@ -2277,14 +2279,14 @@ Examples
 
   Updates the password policy state for user
   'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last
-  invoked password validators during a bind at time '20210323155601.257Z'.
+  invoked password validators during a bind at time '20210528161547.101Z'.
 
     manage-account set-last-bind-password-validation-time \
          set-last-bind-password-validation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --validationTime 20210323155601.257Z
+         --validationTime 20210528161547.101Z
 
 
 

@@ -50,18 +50,18 @@
 <span class="sourceLineNo">042</span>import java.util.Iterator;<a name="line.42"></a>
 <span class="sourceLineNo">043</span>import java.util.LinkedHashSet;<a name="line.43"></a>
 <span class="sourceLineNo">044</span>import java.util.Set;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import java.util.UUID;<a name="line.45"></a>
-<span class="sourceLineNo">046</span><a name="line.46"></a>
-<span class="sourceLineNo">047</span>import com.unboundid.asn1.ASN1Boolean;<a name="line.47"></a>
-<span class="sourceLineNo">048</span>import com.unboundid.asn1.ASN1Element;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>import com.unboundid.asn1.ASN1Enumerated;<a name="line.49"></a>
-<span class="sourceLineNo">050</span>import com.unboundid.asn1.ASN1OctetString;<a name="line.50"></a>
-<span class="sourceLineNo">051</span>import com.unboundid.asn1.ASN1Sequence;<a name="line.51"></a>
-<span class="sourceLineNo">052</span>import com.unboundid.asn1.ASN1Set;<a name="line.52"></a>
-<span class="sourceLineNo">053</span>import com.unboundid.ldap.sdk.Control;<a name="line.53"></a>
-<span class="sourceLineNo">054</span>import com.unboundid.ldap.sdk.Filter;<a name="line.54"></a>
-<span class="sourceLineNo">055</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.55"></a>
-<span class="sourceLineNo">056</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.56"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>import com.unboundid.asn1.ASN1Boolean;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import com.unboundid.asn1.ASN1Element;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import com.unboundid.asn1.ASN1Enumerated;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import com.unboundid.asn1.ASN1OctetString;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import com.unboundid.asn1.ASN1Sequence;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import com.unboundid.asn1.ASN1Set;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import com.unboundid.ldap.sdk.Control;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import com.unboundid.ldap.sdk.Filter;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import com.unboundid.ldap.sdk.LDAPException;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import com.unboundid.ldap.sdk.ResultCode;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import com.unboundid.util.CryptoHelper;<a name="line.56"></a>
 <span class="sourceLineNo">057</span>import com.unboundid.util.Debug;<a name="line.57"></a>
 <span class="sourceLineNo">058</span>import com.unboundid.util.NotMutable;<a name="line.58"></a>
 <span class="sourceLineNo">059</span>import com.unboundid.util.NotNull;<a name="line.59"></a>
@@ -466,7 +466,7 @@
 <span class="sourceLineNo">458</span>         throws LDAPException<a name="line.458"></a>
 <span class="sourceLineNo">459</span>  {<a name="line.459"></a>
 <span class="sourceLineNo">460</span>    this((uniquenessID == null<a name="line.460"></a>
-<span class="sourceLineNo">461</span>              ? UUID.randomUUID().toString()<a name="line.461"></a>
+<span class="sourceLineNo">461</span>              ? CryptoHelper.getRandomUUID().toString()<a name="line.461"></a>
 <span class="sourceLineNo">462</span>              : uniquenessID),<a name="line.462"></a>
 <span class="sourceLineNo">463</span>         properties, isCritical);<a name="line.463"></a>
 <span class="sourceLineNo">464</span>  }<a name="line.464"></a>

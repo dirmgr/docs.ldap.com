@@ -40,7 +40,8 @@ Available options include:
         The path to the file containing the password to use to access the key
         store contents.
     --sourceKeyStoreFormat {format}
-        The format (e.g., jks, jceks, pkcs12, etc.) for the key store file.
+        The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the key store
+        file.
     --sourceTrustStorePath {path}
         The path to the file to use as trust store when determining whether to
         trust a certificate presented by the directory server.
@@ -50,7 +51,8 @@ Available options include:
         The path to the file containing the password to use to access the trust
         store contents.
     --sourceTrustStoreFormat {format}
-        The format (e.g., jks, jceks, pkcs12, etc.) for the trust store file.
+        The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the trust store
+        file.
     --sourceCertNickname {nickname}
         The nickname (alias) of the client certificate in the key store to
         present to the directory server for SSL client authentication.
@@ -92,7 +94,8 @@ Available options include:
         The path to the file containing the password to use to access the key
         store contents.
     --targetKeyStoreFormat {format}
-        The format (e.g., jks, jceks, pkcs12, etc.) for the key store file.
+        The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the key store
+        file.
     --targetTrustStorePath {path}
         The path to the file to use as trust store when determining whether to
         trust a certificate presented by the directory server.
@@ -102,7 +105,8 @@ Available options include:
         The path to the file containing the password to use to access the trust
         store contents.
     --targetTrustStoreFormat {format}
-        The format (e.g., jks, jceks, pkcs12, etc.) for the trust store file.
+        The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the trust store
+        file.
     --targetCertNickname {nickname}
         The nickname (alias) of the client certificate in the key store to
         present to the directory server for SSL client authentication.

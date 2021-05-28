@@ -91,7 +91,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--keyStoreFormat <i>{format}</i></tt> &mdash; The format (e.g., jks, jceks, pkcs12, etc.) for the key store file.
+        <tt>--keyStoreFormat <i>{format}</i></tt> &mdash; The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the key store file.
         <br><br>
       </li>
       <li>
@@ -115,7 +115,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--trustStoreFormat <i>{format}</i></tt> &mdash; The format (e.g., jks, jceks, pkcs12, etc.) for the trust store file.
+        <tt>--trustStoreFormat <i>{format}</i></tt> &mdash; The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the trust store file.
         <br><br>
       </li>
       <li>
@@ -403,10 +403,10 @@
         If the <tt>--useAdministrativeSession</tt> argument is provided, then the <tt>--useRemoteServer</tt> argument must also be provided.
       </li>
       <li>
-        If the <tt>--proxyToServerAddress</tt> argument is provided, then the <tt>--proxyToServerPort</tt> argument must also be provided.
+        If the <tt>--proxyToServerPort</tt> argument is provided, then the <tt>--proxyToServerAddress</tt> argument must also be provided.
       </li>
       <li>
-        If the <tt>--proxyToServerPort</tt> argument is provided, then the <tt>--proxyToServerAddress</tt> argument must also be provided.
+        If the <tt>--proxyToServerAddress</tt> argument is provided, then the <tt>--proxyToServerPort</tt> argument must also be provided.
       </li>
       <li>
         If the <tt>--proxyToServerAddress</tt> argument is provided, then the <tt>--useRemoteServer</tt> argument must also be provided.
@@ -427,13 +427,7 @@
         If the <tt>--promptForKeyStorePassword</tt> argument is provided, then the <tt>--useRemoteServer</tt> argument must also be provided.
       </li>
       <li>
-        If the <tt>--keyStoreFormat</tt> argument is provided, then the <tt>--useRemoteServer</tt> argument must also be provided.
-      </li>
-      <li>
         If the <tt>--promptForTrustStorePassword</tt> argument is provided, then the <tt>--useRemoteServer</tt> argument must also be provided.
-      </li>
-      <li>
-        If the <tt>--trustStoreFormat</tt> argument is provided, then the <tt>--useRemoteServer</tt> argument must also be provided.
       </li>
       <li>
         If the <tt>--enableSSLDebugging</tt> argument is provided, then the <tt>--useRemoteServer</tt> argument must also be provided.
@@ -511,7 +505,7 @@
       <li>Decrypts an encrypted support data archive using a passphrase read from the specified file.</li>
     </ul>
     <blockquote><pre>    collect-support-data \
-         --decrypt support-data-ds-inst1-20210323155601.200Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20210528161547.064Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt</pre></blockquote>
   </body>
 </html>

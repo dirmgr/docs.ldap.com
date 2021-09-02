@@ -231,26 +231,26 @@ Available options include:
         this tool.  Allowed values are 'LDIF' (LDAP Data Interchange Format,
         which is the standard string representation for LDAP data), 'JSON'
         (JavaScript Object Notation, which is a popular format used by web
-        services), 'CSV' (comma-separated values, which is a commonly-used
+        services), 'CSV' (comma-separated values, which is a commonly used
         format for text processing, with only a single value per attribute),
         'multi-valued-csv' (comma-separated values with a vertical bar between
-        values of multivalued attributes), 'tab-delimited' (another
-        commonly-used general text format, with only a single value per
-        attribute), 'multi-valued-tab-delimited' (tab-delimited text with a
-        vertical bar between values of multivalued attributes), 'dsn-only' (in
-        which only the DN of each matching entry will be written on a line by
-        itself with no information about the entry's attributes), and
-        'values-only' (in which each value returned will be written on a line
-        by itself with no attribute names, entry DNs, or delimiters between
-        entries).  If either the 'CSV' or 'tab-delimited' format is selected,
-        the set of requested attributes must be provided with the
-        '--requestedAttribute' argument, the order in which the attributes are
-        provided on the command line specifies the order in which they will be
-        listed in the output, and if any of those attributes has multiple
-        values then only the first value will be used.  Further, the 'CSV' and
-        'tab-delimited' formats cannot be used in conjunction with the
-        '--ldapURLFile' argument.  If no output format is specified, a default
-        of 'LDIF' will be used.
+        values of multivalued attributes), 'tab-delimited' (another commonly
+        used general text format, with only a single value per attribute),
+        'multi-valued-tab-delimited' (tab-delimited text with a vertical bar
+        between values of multivalued attributes), 'dns-only' (in which only
+        the DN of each matching entry will be written on a line by itself with
+        no information about the entry's attributes), and 'values-only' (in
+        which each value returned will be written on a line by itself with no
+        attribute names, entry DNs, or delimiters between entries).  If either
+        the 'CSV' or 'tab-delimited' format is selected (or one of their
+        multivalued variants), the set of requested attributes must be provided
+        with the '--requestedAttribute' argument, the order in which the
+        attributes are provided on the command line specifies the order in
+        which they will be listed in the output, and if any of those attributes
+        has multiple values then only the first value will be used.  Further,
+        the 'CSV' and 'tab-delimited' formats cannot be used in conjunction
+        with the '--ldapURLFile' argument.  If no output format is specified, a
+        default of 'LDIF' will be used.
     --requireMatch
         Indicates that ldapsearch should exit with a nonzero result code, 94
         (no results returned), if the search completes successfully but does
@@ -433,8 +433,8 @@ Available options include:
         times to specify multiple matched values filters.
     --matchingEntryCountControl
     {examineCount=NNN[:alwaysExamine][:allowUnindexed][:skipResolvingExplodedIn
-    dexes][:fastShortCircuitThreshold=NNN][:slowShortCircuitThreshold=NNN][:deb
-    ug]}
+    dexes][:fastShortCircuitThreshold=NNN][:slowShortCircuitThreshold=NNN][:ext
+    endedResponseData][:debug]}
         Indicates that all search requests should include the
         UnboundID-proprietary matching entry count request control, which
         indicates that the server should return information about the number of
@@ -446,8 +446,9 @@ Available options include:
         would actually be returned to the client in a search.  If
         allowUnindexed is specified, then the count will be allowed to be
         processed even if the search is unindexed (and may take a very long
-        time to complete).  If debug is specified, then additional debug
-        information may be included in the output.
+        time to complete).  If extended is specified, then the client will
+        request extended response data from the server.  If debug is specified,
+        then additional debug information may be included in the output.
     --operationPurpose {purpose}
         Indicates that all search requests should include the
         UnboundID-proprietary operation purpose request control to provide the

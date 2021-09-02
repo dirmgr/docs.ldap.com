@@ -27,6 +27,107 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.1</h3>
+
+              <p>
+                The following changes were made between the 6.0.0 and 6.0.1 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added a new ldap-diff command-line tool that can be used to compare the contents
+                  of two LDAPv3 servers to identify any differences between them.  Any differences
+                  will be written as LDIF change records to a specified output file, and the
+                  changes in that file can be applied to the source server (using a tool like
+                  ldapmodify or parallel-update) to bring it in sync with the target server.  It
+                  can also use multiple passes when examining differences to avoid potential false
+                  positives that result from delays in replication or changes that are made while
+                  the tool is running.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldifsearch tool to add support for using alternative output formats.
+                  ldifsearch now supports the same output formats as ldapsearch, including LDIF,
+                  JSON, CSV, tab-delimited text, DNs only, and values only.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF reader to make it possible to override the default 10MB size
+                  limit that will be imposed when reading an attribute value from a file
+                  referenced by a URL.  The 10MB size limit will continue to be enforced by
+                  default, but the com.unboundid.ldif.LDIFReader.maxURLFileSizeBytes system
+                  property can now be used to specify an alternative limit if desired.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added support for a new "com.unboundid.ldap.sdk.debug.file" property that can be
+                  used to indicate that LDAP SDK debug log messages should be written to a
+                  specified file.  This is intended to be used in conjunction with other
+                  debugging-related properties that can enable and configure debug logging without
+                  a code change in the underlying application.  Previously, the output was always
+                  written to the JVM's standard error stream, but this property will cause it to
+                  be written to a file instead.
+                  <br><br>
+                </li>
+
+                <li>
+                  Lowered the debug level for exception messages that may be logged as a result of
+                  a SocketTimeoutException caught internally in the course of trying whether to
+                  determine whether a pooled connection operating in synchronous mode is still
+                  valid.  If the connection pool is configured to attempt a synchronous read as
+                  part of each connection during health checking (which is the default), then we
+                  expect a timeout for that read attempt if the connection is still valid.
+                  Previously, a debug message created in response to that timeout was logged at a
+                  WARNING level, which is not appropriate for an expected condition when
+                  everything is operating normally, and it could make it harder to see debug
+                  messages for legitimate problems.  The debug message is now logged at the FINEST
+                  level so that it will only appear if debugging is enabled at the highest level of
+                  verbosity.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the LDAP SDK's wrapper for the Ping Identity Directory
+                  Server's collect-support-data command-line tool that prevents it from passing
+                  the keyStoreFormat and trustStoreFormat arguments to the server tool.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP SDK's support for the Ping Identity Directory Server's generate
+                  profile administrative task to clarify that all provided include paths must be
+                  relative rather than absolute paths, that the paths will be interpreted as
+                  relative to the server root, and that only paths to files beneath the server
+                  root will be allowed.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the Ping Identity Directory Server's matching entry count
+                  request and response controls to make it possible to request that the server
+                  return extended response data.  If this is requested, then the server may return
+                  additional information like whether the server short-circuited during index
+                  processing, whether the search is fully indexed, whether all the identified
+                  candidate entries are known to be within the scope of the search, and any
+                  remaining filter that is either unindexed or unevaluated during search
+                  processing.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated to the latest revision of draft-coretta-x660-ldap in the set of
+                  LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.0</h3>
 
               <p>

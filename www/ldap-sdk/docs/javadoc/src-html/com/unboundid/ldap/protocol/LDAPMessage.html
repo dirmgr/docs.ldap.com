@@ -1211,173 +1211,178 @@
 <span class="sourceLineNo">1203</span>    }<a name="line.1203"></a>
 <span class="sourceLineNo">1204</span>    catch (final IOException ioe)<a name="line.1204"></a>
 <span class="sourceLineNo">1205</span>    {<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>      if (! ((ioe instanceof SocketTimeoutException) ||<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>             (ioe instanceof InterruptedIOException)))<a name="line.1207"></a>
+<span class="sourceLineNo">1206</span>      final ResultCode resultCode;<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>      if (ioe instanceof SocketTimeoutException)<a name="line.1207"></a>
 <span class="sourceLineNo">1208</span>      {<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>        Debug.debugException(ioe);<a name="line.1209"></a>
+<span class="sourceLineNo">1209</span>        resultCode = ResultCode.TIMEOUT;<a name="line.1209"></a>
 <span class="sourceLineNo">1210</span>      }<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span><a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>      throw new LDAPException(ResultCode.SERVER_DOWN,<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>           ERR_MESSAGE_IO_ERROR.get(StaticUtils.getExceptionMessage(ioe)), ioe);<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>    }<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>    catch (final Exception e)<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>    {<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>      Debug.debugException(e);<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span><a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>           ERR_MESSAGE_CANNOT_DECODE.get(StaticUtils.getExceptionMessage(e)),<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>           e);<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>    }<a name="line.1222"></a>
+<span class="sourceLineNo">1211</span>      else<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>      {<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>        Debug.debugException(ioe);<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>        resultCode = ResultCode.SERVER_DOWN;<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>      }<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span><a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>      throw new LDAPException(resultCode,<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>           ERR_MESSAGE_IO_ERROR.get(StaticUtils.getExceptionMessage(ioe)), ioe);<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>    }<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>    catch (final Exception e)<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>    {<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>      Debug.debugException(e);<a name="line.1222"></a>
 <span class="sourceLineNo">1223</span><a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>    try<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>    {<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>      reader.setIgnoreSocketTimeout(ignoreSocketTimeout, ignoreSocketTimeout);<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>      final int messageID = reader.readInteger();<a name="line.1227"></a>
+<span class="sourceLineNo">1224</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>           ERR_MESSAGE_CANNOT_DECODE.get(StaticUtils.getExceptionMessage(e)),<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>           e);<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>    }<a name="line.1227"></a>
 <span class="sourceLineNo">1228</span><a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>      final byte protocolOpType = (byte) reader.peek();<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>      switch (protocolOpType)<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span>      {<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>        case PROTOCOL_OP_TYPE_ADD_RESPONSE:<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>        case PROTOCOL_OP_TYPE_DELETE_RESPONSE:<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>        case PROTOCOL_OP_TYPE_MODIFY_RESPONSE:<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>        case PROTOCOL_OP_TYPE_MODIFY_DN_RESPONSE:<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>          return InternalSDKHelper.readLDAPResultFrom(messageID,<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>                      messageSequence, reader);<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span><a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>        case PROTOCOL_OP_TYPE_BIND_RESPONSE:<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>          return InternalSDKHelper.readBindResultFrom(messageID,<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>                      messageSequence, reader);<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span><a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>        case PROTOCOL_OP_TYPE_COMPARE_RESPONSE:<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>          return InternalSDKHelper.readCompareResultFrom(messageID,<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>                      messageSequence, reader);<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span><a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>        case PROTOCOL_OP_TYPE_EXTENDED_RESPONSE:<a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>          return InternalSDKHelper.readExtendedResultFrom(messageID,<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>                      messageSequence, reader);<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span><a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>        case PROTOCOL_OP_TYPE_SEARCH_RESULT_ENTRY:<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>          return InternalSDKHelper.readSearchResultEntryFrom(messageID,<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>                      messageSequence, reader, schema);<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span><a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>        case PROTOCOL_OP_TYPE_SEARCH_RESULT_REFERENCE:<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>          return InternalSDKHelper.readSearchResultReferenceFrom(messageID,<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>                      messageSequence, reader);<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span><a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>        case PROTOCOL_OP_TYPE_SEARCH_RESULT_DONE:<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span>          return InternalSDKHelper.readSearchResultFrom(messageID,<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>                      messageSequence, reader);<a name="line.1261"></a>
-<span class="sourceLineNo">1262</span><a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>        case PROTOCOL_OP_TYPE_INTERMEDIATE_RESPONSE:<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span>          return InternalSDKHelper.readIntermediateResponseFrom(messageID,<a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>                      messageSequence, reader);<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span><a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>        case PROTOCOL_OP_TYPE_ABANDON_REQUEST:<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>        case PROTOCOL_OP_TYPE_ADD_REQUEST:<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>        case PROTOCOL_OP_TYPE_BIND_REQUEST:<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>        case PROTOCOL_OP_TYPE_COMPARE_REQUEST:<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span>        case PROTOCOL_OP_TYPE_DELETE_REQUEST:<a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>        case PROTOCOL_OP_TYPE_EXTENDED_REQUEST:<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>        case PROTOCOL_OP_TYPE_MODIFY_REQUEST:<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>        case PROTOCOL_OP_TYPE_MODIFY_DN_REQUEST:<a name="line.1274"></a>
-<span class="sourceLineNo">1275</span>        case PROTOCOL_OP_TYPE_SEARCH_REQUEST:<a name="line.1275"></a>
-<span class="sourceLineNo">1276</span>        case PROTOCOL_OP_TYPE_UNBIND_REQUEST:<a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>               ERR_MESSAGE_PROTOCOL_OP_TYPE_NOT_RESPONSE.get(<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>                    StaticUtils.toHex(protocolOpType)));<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span><a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>        default:<a name="line.1281"></a>
+<span class="sourceLineNo">1229</span>    try<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>    {<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>      reader.setIgnoreSocketTimeout(ignoreSocketTimeout, ignoreSocketTimeout);<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>      final int messageID = reader.readInteger();<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span><a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>      final byte protocolOpType = (byte) reader.peek();<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>      switch (protocolOpType)<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>      {<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>        case PROTOCOL_OP_TYPE_ADD_RESPONSE:<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>        case PROTOCOL_OP_TYPE_DELETE_RESPONSE:<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>        case PROTOCOL_OP_TYPE_MODIFY_RESPONSE:<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>        case PROTOCOL_OP_TYPE_MODIFY_DN_RESPONSE:<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>          return InternalSDKHelper.readLDAPResultFrom(messageID,<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>                      messageSequence, reader);<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span><a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>        case PROTOCOL_OP_TYPE_BIND_RESPONSE:<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>          return InternalSDKHelper.readBindResultFrom(messageID,<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>                      messageSequence, reader);<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span><a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>        case PROTOCOL_OP_TYPE_COMPARE_RESPONSE:<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>          return InternalSDKHelper.readCompareResultFrom(messageID,<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>                      messageSequence, reader);<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span><a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>        case PROTOCOL_OP_TYPE_EXTENDED_RESPONSE:<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>          return InternalSDKHelper.readExtendedResultFrom(messageID,<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>                      messageSequence, reader);<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span><a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>        case PROTOCOL_OP_TYPE_SEARCH_RESULT_ENTRY:<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>          return InternalSDKHelper.readSearchResultEntryFrom(messageID,<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>                      messageSequence, reader, schema);<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span><a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>        case PROTOCOL_OP_TYPE_SEARCH_RESULT_REFERENCE:<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>          return InternalSDKHelper.readSearchResultReferenceFrom(messageID,<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>                      messageSequence, reader);<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span><a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>        case PROTOCOL_OP_TYPE_SEARCH_RESULT_DONE:<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>          return InternalSDKHelper.readSearchResultFrom(messageID,<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>                      messageSequence, reader);<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span><a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>        case PROTOCOL_OP_TYPE_INTERMEDIATE_RESPONSE:<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span>          return InternalSDKHelper.readIntermediateResponseFrom(messageID,<a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>                      messageSequence, reader);<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span><a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>        case PROTOCOL_OP_TYPE_ABANDON_REQUEST:<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>        case PROTOCOL_OP_TYPE_ADD_REQUEST:<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>        case PROTOCOL_OP_TYPE_BIND_REQUEST:<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>        case PROTOCOL_OP_TYPE_COMPARE_REQUEST:<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>        case PROTOCOL_OP_TYPE_DELETE_REQUEST:<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>        case PROTOCOL_OP_TYPE_EXTENDED_REQUEST:<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>        case PROTOCOL_OP_TYPE_MODIFY_REQUEST:<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>        case PROTOCOL_OP_TYPE_MODIFY_DN_REQUEST:<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>        case PROTOCOL_OP_TYPE_SEARCH_REQUEST:<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>        case PROTOCOL_OP_TYPE_UNBIND_REQUEST:<a name="line.1281"></a>
 <span class="sourceLineNo">1282</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span>               ERR_MESSAGE_INVALID_PROTOCOL_OP_TYPE.get(<a name="line.1283"></a>
+<span class="sourceLineNo">1283</span>               ERR_MESSAGE_PROTOCOL_OP_TYPE_NOT_RESPONSE.get(<a name="line.1283"></a>
 <span class="sourceLineNo">1284</span>                    StaticUtils.toHex(protocolOpType)));<a name="line.1284"></a>
-<span class="sourceLineNo">1285</span>      }<a name="line.1285"></a>
-<span class="sourceLineNo">1286</span>    }<a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>    catch (final LDAPException le)<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>    {<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span>      Debug.debugException(le);<a name="line.1289"></a>
-<span class="sourceLineNo">1290</span>      throw le;<a name="line.1290"></a>
+<span class="sourceLineNo">1285</span><a name="line.1285"></a>
+<span class="sourceLineNo">1286</span>        default:<a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>          throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span>               ERR_MESSAGE_INVALID_PROTOCOL_OP_TYPE.get(<a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>                    StaticUtils.toHex(protocolOpType)));<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>      }<a name="line.1290"></a>
 <span class="sourceLineNo">1291</span>    }<a name="line.1291"></a>
-<span class="sourceLineNo">1292</span>    catch (final IOException ioe)<a name="line.1292"></a>
+<span class="sourceLineNo">1292</span>    catch (final LDAPException le)<a name="line.1292"></a>
 <span class="sourceLineNo">1293</span>    {<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>      Debug.debugException(ioe);<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span><a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>      if ((ioe instanceof SocketTimeoutException) ||<a name="line.1296"></a>
-<span class="sourceLineNo">1297</span>          (ioe instanceof InterruptedIOException))<a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>      {<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>        // We don't want to provide this exception as the cause because we want<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>        // to ensure that a failure in the middle of the response causes the<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>        // connection to be terminated.<a name="line.1301"></a>
-<span class="sourceLineNo">1302</span>        throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>             ERR_MESSAGE_CANNOT_DECODE.get(<a name="line.1303"></a>
-<span class="sourceLineNo">1304</span>                  StaticUtils.getExceptionMessage(ioe)));<a name="line.1304"></a>
-<span class="sourceLineNo">1305</span>      }<a name="line.1305"></a>
-<span class="sourceLineNo">1306</span>      else<a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>      {<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span>        throw new LDAPException(ResultCode.SERVER_DOWN,<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>             ERR_MESSAGE_IO_ERROR.get(StaticUtils.getExceptionMessage(ioe)),<a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>             ioe);<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>      }<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>    }<a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>    catch (final Exception e)<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>    {<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span>      Debug.debugException(e);<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span><a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>           ERR_MESSAGE_CANNOT_DECODE.get(StaticUtils.getExceptionMessage(e)),<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>           e);<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span>    }<a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>  }<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span><a name="line.1322"></a>
-<span class="sourceLineNo">1323</span><a name="line.1323"></a>
-<span class="sourceLineNo">1324</span><a name="line.1324"></a>
-<span class="sourceLineNo">1325</span>  /**<a name="line.1325"></a>
-<span class="sourceLineNo">1326</span>   * Retrieves a string representation of this LDAP message.<a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>   *<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>   * @return  A string representation of this LDAP message.<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>   */<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>  @Override()<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>  @NotNull()<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>  public String toString()<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>  {<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>    toString(buffer);<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>    return buffer.toString();<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>  }<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span><a name="line.1338"></a>
-<span class="sourceLineNo">1339</span><a name="line.1339"></a>
-<span class="sourceLineNo">1340</span><a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>  /**<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span>   * Appends a string representation of this LDAP message to the provided<a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>   * buffer.<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>   *<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span>   *                 appended.<a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>   */<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span>  {<a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>    buffer.append("LDAPMessage(msgID=");<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>    buffer.append(messageID);<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>    buffer.append(", protocolOp=");<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span>    protocolOp.toString(buffer);<a name="line.1353"></a>
-<span class="sourceLineNo">1354</span><a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>    if (! controls.isEmpty())<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>    {<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span>      buffer.append(", controls={");<a name="line.1357"></a>
-<span class="sourceLineNo">1358</span>      final Iterator&lt;Control&gt; iterator = controls.iterator();<a name="line.1358"></a>
-<span class="sourceLineNo">1359</span>      while (iterator.hasNext())<a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>      {<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>        iterator.next().toString(buffer);<a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>        if (iterator.hasNext())<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>        {<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>          buffer.append(',');<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span>        }<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>      }<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>      buffer.append('}');<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>    }<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span><a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>    buffer.append(')');<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>  }<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span>}<a name="line.1372"></a>
+<span class="sourceLineNo">1294</span>      Debug.debugException(le);<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>      throw le;<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>    }<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>    catch (final IOException ioe)<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span>    {<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>      Debug.debugException(ioe);<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span><a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>      if ((ioe instanceof SocketTimeoutException) ||<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>          (ioe instanceof InterruptedIOException))<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>      {<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>        // We don't want to provide this exception as the cause because we want<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>        // to ensure that a failure in the middle of the response causes the<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span>        // connection to be terminated.<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>        throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>             ERR_MESSAGE_CANNOT_DECODE.get(<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span>                  StaticUtils.getExceptionMessage(ioe)));<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>      }<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span>      else<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>      {<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>        throw new LDAPException(ResultCode.SERVER_DOWN,<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>             ERR_MESSAGE_IO_ERROR.get(StaticUtils.getExceptionMessage(ioe)),<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>             ioe);<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>      }<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span>    }<a name="line.1317"></a>
+<span class="sourceLineNo">1318</span>    catch (final Exception e)<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>    {<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>      Debug.debugException(e);<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span><a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>      throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>           ERR_MESSAGE_CANNOT_DECODE.get(StaticUtils.getExceptionMessage(e)),<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>           e);<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>    }<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>  }<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span><a name="line.1327"></a>
+<span class="sourceLineNo">1328</span><a name="line.1328"></a>
+<span class="sourceLineNo">1329</span><a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>  /**<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span>   * Retrieves a string representation of this LDAP message.<a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>   *<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>   * @return  A string representation of this LDAP message.<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>   */<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>  @Override()<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>  @NotNull()<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>  public String toString()<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>  {<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>    toString(buffer);<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>    return buffer.toString();<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>  }<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span><a name="line.1343"></a>
+<span class="sourceLineNo">1344</span><a name="line.1344"></a>
+<span class="sourceLineNo">1345</span><a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>  /**<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span>   * Appends a string representation of this LDAP message to the provided<a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>   * buffer.<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>   *<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span>   *                 appended.<a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>   */<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>  {<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>    buffer.append("LDAPMessage(msgID=");<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>    buffer.append(messageID);<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>    buffer.append(", protocolOp=");<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>    protocolOp.toString(buffer);<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span><a name="line.1359"></a>
+<span class="sourceLineNo">1360</span>    if (! controls.isEmpty())<a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>    {<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>      buffer.append(", controls={");<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>      final Iterator&lt;Control&gt; iterator = controls.iterator();<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>      while (iterator.hasNext())<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>      {<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>        iterator.next().toString(buffer);<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>        if (iterator.hasNext())<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>        {<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>          buffer.append(',');<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>        }<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>      }<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>      buffer.append('}');<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>    }<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span><a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>    buffer.append(')');<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>  }<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>}<a name="line.1377"></a>
 
 
 

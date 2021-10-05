@@ -27,6 +27,68 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.2</h3>
+
+              <p>
+                The following changes were made between the 6.0.1 and 6.0.2 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue that could prevent the JVM-default trust manager from properly
+                  trusting a certificate chain that relies on a cross-signed certificate, which
+                  may include those signed by the Let's Encrypt service.  Previously, the trust
+                  manager would only check for a cross-signed certificate if the current time was
+                  outside the validity window for one or more of the certificates in the presented
+                  chain, but that could prevent a chain from being properly trusted if all of its
+                  certificates were within their respective validity windows, but still could not
+                  be directly trusted using certificates in the JVM's default trust store (for
+                  example, if they are using a new root that is not itself in the default trust
+                  store).  The trust manager will now fall back to checking for cross-signed
+                  certificates if the chain cannot be validated as provided, even if all
+                  certificates in the provided chain are within their validity window.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added the ability to use the tls-server-end-point channel binding type when
+                  using GSSAPI authentication.  This feature is dependent on support from the
+                  underlying JVM and will likely require running on Java 13 or later.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in the in-memory directory server in which it would only return
+                  search result references for smart referral entries within the scope of the
+                  search if those entries matched the search filter.  It will now correctly return
+                  the reference regardless of whether the smart referral entry matches the filter.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAP command-line tool framework to add a --defaultTrust argument
+                  that can be used to use a default set of non-interactive trust managers
+                  (including at least the JVM's default trust store, and potentially other
+                  mechanisms for tools included with the Ping Identity Directory Server) when
+                  determining whether to trust a certificate chain presented during TLS
+                  negotiation.  This uses the same logic that the tool would employ when it is
+                  invoked without any trust-related arguments, except that it will not
+                  interactively prompt about whether to trust the certificate chain if it is not
+                  trusted by any of the default mechanisms.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest version of
+                  draft-ietf-kitten-password-storage in the set of LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.1</h3>
 
               <p>

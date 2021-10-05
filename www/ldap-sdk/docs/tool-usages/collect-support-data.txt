@@ -44,6 +44,13 @@ Available options include:
         Use SSL when communicating with the directory server.
     -q, --useStartTLS
         Use StartTLS when communicating with the directory server.
+    --defaultTrust
+        Use the JVM's default trust store, and optionally an additional trust
+        store specified using the --trustStorePath argument, to
+        non-interactively determine whether to trust any certificate chain
+        presented during TLS negotiation.  If the chain cannot be trusted based
+        on any of those sources, then negotiation will fail without prompting
+        about whether to trust it.
     -X, --trustAll
         Trust any certificate presented by the directory server.
     -K, --keyStorePath {path}
@@ -309,5 +316,5 @@ Examples
   specified file.
 
     collect-support-data \
-         --decrypt support-data-ds-inst1-20210902140049.175Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20211005152344.502Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt

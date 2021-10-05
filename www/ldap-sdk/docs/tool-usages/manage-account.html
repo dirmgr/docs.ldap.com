@@ -67,6 +67,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--defaultTrust</tt> &mdash; Use the JVM's default trust store, and optionally an additional trust store specified using the --trustStorePath argument, to non-interactively determine whether to trust any certificate chain presented during TLS negotiation.  If the chain cannot be trusted based on any of those sources, then negotiation will fail without prompting about whether to trust it.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-X</tt> / <tt>--trustAll</tt> &mdash; Trust any certificate presented by the directory server.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -353,6 +359,9 @@
         If the <tt>--trustStorePath</tt> argument is provided, then at least one of the following arguments must also be provided:  <tt>--useSSL</tt>, <tt>--useStartTLS</tt>
       </li>
       <li>
+        If the <tt>--defaultTrust</tt> argument is provided, then at least one of the following arguments must also be provided:  <tt>--useSSL</tt>, <tt>--useStartTLS</tt>
+      </li>
+      <li>
         If the <tt>--trustAll</tt> argument is provided, then at least one of the following arguments must also be provided:  <tt>--useSSL</tt>, <tt>--useStartTLS</tt>
       </li>
       <li>
@@ -384,6 +393,9 @@
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--trustStorePassword</tt>, <tt>--trustStorePasswordFile</tt>, <tt>--promptForTrustStorePassword</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--defaultTrust</tt>, <tt>--trustAll</tt>
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--trustAll</tt>, <tt>--trustStorePath</tt>
@@ -902,13 +914,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20210902140049.222Z'.</li>
+      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-changed-time set-password-changed-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordChangedTime 20210902140049.222Z</pre></blockquote>
+         --passwordChangedTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1000,13 +1012,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20210902140049.222Z'.</li>
+      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-activation-time set-account-activation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountActivationTime 20210902140049.222Z</pre></blockquote>
+         --accountActivationTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1078,13 +1090,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20210902140049.222Z'.</li>
+      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-expiration-time set-account-expiration-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountExpirationTime 20210902140049.222Z</pre></blockquote>
+         --accountExpirationTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1156,14 +1168,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20210902140049.222Z'.</li>
+      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-expiration-warned-time \
          set-password-expiration-warned-time --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordExpirationWarnedTime 20210902140049.222Z</pre></blockquote>
+         --passwordExpirationWarnedTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1350,15 +1362,15 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20210902140036.878Z' and '20210902140049.222Z'.</li>
+      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20211005152332.198Z' and '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-authentication-failure-times \
          set-authentication-failure-times --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --authenticationFailureTime 20210902140036.878Z \
-         --authenticationFailureTime 20210902140049.222Z</pre></blockquote>
+         --authenticationFailureTime 20211005152332.198Z \
+         --authenticationFailureTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1547,13 +1559,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20210902140049.222Z'.</li>
+      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-login-time set-last-login-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --lastLoginTime 20210902140049.222Z</pre></blockquote>
+         --lastLoginTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1665,14 +1677,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20210902140036.878Z' and '20210902140049.222Z'.</li>
+      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20211005152332.198Z' and '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-grace-login-use-times set-grace-login-use-times \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --graceLoginUseTime 20210902140036.878Z \
-         --graceLoginUseTime 20210902140049.222Z</pre></blockquote>
+         --graceLoginUseTime 20211005152332.198Z \
+         --graceLoginUseTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -2126,14 +2138,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Updates the password policy state for user 'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last invoked password validators during a bind at time '20210902140049.222Z'.</li>
+      <li>Updates the password policy state for user 'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last invoked password validators during a bind at time '20211005152344.543Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-bind-password-validation-time \
          set-last-bind-password-validation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --validationTime 20210902140049.222Z</pre></blockquote>
+         --validationTime 20211005152344.543Z</pre></blockquote>
 
     <p>&nbsp;</p>
 

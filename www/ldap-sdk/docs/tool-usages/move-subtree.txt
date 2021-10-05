@@ -29,6 +29,13 @@ Available options include:
         Use SSL when communicating with the directory server.
     --sourceUseStartTLS
         Use StartTLS when communicating with the directory server.
+    --sourceDefaultTrust
+        Use the JVM's default trust store, and optionally an additional trust
+        store specified using the --trustStorePath argument, to
+        non-interactively determine whether to trust any certificate chain
+        presented during TLS negotiation.  If the chain cannot be trusted based
+        on any of those sources, then negotiation will fail without prompting
+        about whether to trust it.
     --sourceTrustAll
         Trust any certificate presented by the directory server.
     --sourceKeyStorePath {path}
@@ -83,6 +90,13 @@ Available options include:
         Use SSL when communicating with the directory server.
     --targetUseStartTLS
         Use StartTLS when communicating with the directory server.
+    --targetDefaultTrust
+        Use the JVM's default trust store, and optionally an additional trust
+        store specified using the --trustStorePath argument, to
+        non-interactively determine whether to trust any certificate chain
+        presented during TLS negotiation.  If the chain cannot be trusted based
+        on any of those sources, then negotiation will fail without prompting
+        about whether to trust it.
     --targetTrustAll
         Trust any certificate presented by the directory server.
     --targetKeyStorePath {path}

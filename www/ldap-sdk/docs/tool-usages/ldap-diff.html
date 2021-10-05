@@ -68,6 +68,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--sourceDefaultTrust</tt> &mdash; Use the JVM's default trust store, and optionally an additional trust store specified using the --trustStorePath argument, to non-interactively determine whether to trust any certificate chain presented during TLS negotiation.  If the chain cannot be trusted based on any of those sources, then negotiation will fail without prompting about whether to trust it.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>--sourceTrustAll</tt> &mdash; Trust any certificate presented by the directory server.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -154,6 +160,12 @@
       </li>
       <li>
         <tt>--targetUseStartTLS</tt> &mdash; Use StartTLS when communicating with the directory server.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--targetDefaultTrust</tt> &mdash; Use the JVM's default trust store, and optionally an additional trust store specified using the --trustStorePath argument, to non-interactively determine whether to trust any certificate chain presented during TLS negotiation.  If the chain cannot be trusted based on any of those sources, then negotiation will fail without prompting about whether to trust it.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -448,6 +460,9 @@
         The following arguments cannot be used together:  <tt>--sourceTrustAll</tt>, <tt>--sourceTrustStorePath</tt>
       </li>
       <li>
+        The following arguments cannot be used together:  <tt>--sourceTrustAll</tt>, <tt>--sourceDefaultTrust</tt>
+      </li>
+      <li>
         The following arguments cannot be used together:  <tt>--targetUseSSL</tt>, <tt>--targetUseStartTLS</tt>
       </li>
       <li>
@@ -461,6 +476,9 @@
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--targetTrustAll</tt>, <tt>--targetTrustStorePath</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--targetTrustAll</tt>, <tt>--targetDefaultTrust</tt>
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--sourceHostname</tt>, <tt>-h</tt>

@@ -27,6 +27,115 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.3</h3>
+
+              <p>
+                The following changes were made between the 6.0.2 and 6.0.3 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue with the round-robin server set that could arise if any of the
+                  servers in the set became temporarily unavailable.  In such cases, the server
+                  set could have connected to some of the remaining available servers with a
+                  higher frequency than others instead of balancing requests evenly across
+                  those servers.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed a potential race condition that could leave a background Timer thread
+                  running when a connection was closed while waiting for a response to one or more
+                  asynchronous operations.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in the in-memory directory server that could cause it to include
+                  a matched DN in certain bind response messages.  Bind responses should not
+                  include a matched DN, as that may disclose information about the presence or
+                  absence of the target entry.  Further, there were cases in which the server
+                  could have included a matched DN even in cases where the target entry existed
+                  but the bind failed for some other reason (for example, because of a wrong
+                  password).
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved support for SSL/TLS debugging for SSLUtil operations.  If the
+                  javax.net.debug system property is set to "all" or "ssl" (which causes the JVM
+                  to write a lot of SSL-related debugging output to the JVM's standard error
+                  stream), then many SSLUtil methods will now also write debug information to
+                  standard error.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that could cause the manage-account tool to fail if it receives a
+                  response with an unrecognized password policy state operation type.  This is
+                  most likely to occur when the version of the manage-account tool does not align
+                  with the version of the Ping Identity Directory Server instance from which the
+                  response was retrieved.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for four new extended operations meant to help manage
+                  listener and inter-server certificates in the Ping Identity Directory Server and
+                  other related Ping Identity server products.  The new operations provide the
+                  ability to replace a listener certificate, replace an inter-server certificate,
+                  purge expired listener certificates, and purge retired inter-server
+                  certificates.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the JSONLDAPResultWriter class to add static methods for encoding
+                  entries, search result references, and LDAP results to JSON objects.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the Authentication Failure Reason class (used to classify authentication
+                  failures in the Ping Identity Directory Server) to add constant values to be
+                  used in response to a problem in pass-through authentication processing.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a CryptoHelper.inferKeyStoreType method that attempts to determine the key
+                  store type for a specified file that is expected to represent a key store.  This
+                  method supports JKS, PKCS #12, and BCFKS key store types.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the TaskManager class to add support for using LDAPInterface objects as
+                  an alternative to LDAPConnection objects for interacting with the directory
+                  server.  This makes it easier to interact with tasks from a connection pool or
+                  other types of LDAP interfaces.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added StaticUtils convenience methods that can be used to generate random bytes,
+                  integers, and strings, optionally using a cryptographically secure random number
+                  generator.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to add draft-melnikov-scram-bis and to update
+                  draft-melnikov-scram-sha-512 and draft-melnikov-scram-sha3-512 in the set of
+                  LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.2</h3>
 
               <p>

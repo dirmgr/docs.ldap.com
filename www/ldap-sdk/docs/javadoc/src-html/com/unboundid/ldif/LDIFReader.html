@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2007-2021 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2007-2022 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2007-2021 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2007-2022 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2007-2021 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2007-2022 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -2870,7 +2870,7 @@
 <span class="sourceLineNo">2862</span>      {<a name="line.2862"></a>
 <span class="sourceLineNo">2863</span>        final Modification[] mods = parseModifications(dn,<a name="line.2863"></a>
 <span class="sourceLineNo">2864</span>             unparsedRecord.getTrailingSpaceBehavior(), ldifLines, iterator,<a name="line.2864"></a>
-<span class="sourceLineNo">2865</span>             firstLineNumber, schema);<a name="line.2865"></a>
+<span class="sourceLineNo">2865</span>             relativeBasePath, firstLineNumber, schema);<a name="line.2865"></a>
 <span class="sourceLineNo">2866</span>        return new LDIFModifyChangeRecord(dn, mods, controls);<a name="line.2866"></a>
 <span class="sourceLineNo">2867</span>      }<a name="line.2867"></a>
 <span class="sourceLineNo">2868</span>      else<a name="line.2868"></a>
@@ -3677,1000 +3677,1031 @@
 <span class="sourceLineNo">3669</span>   *                                parsed.<a name="line.3669"></a>
 <span class="sourceLineNo">3670</span>   * @param  iterator               The iterator to use to access the<a name="line.3670"></a>
 <span class="sourceLineNo">3671</span>   *                                modification data.<a name="line.3671"></a>
-<span class="sourceLineNo">3672</span>   * @param  firstLineNumber        The line number for the start of the record.<a name="line.3672"></a>
-<span class="sourceLineNo">3673</span>   * @param  schema                 The schema to use in processing.<a name="line.3673"></a>
-<span class="sourceLineNo">3674</span>   *<a name="line.3674"></a>
-<span class="sourceLineNo">3675</span>   * @return  An array containing the modifications that were read.<a name="line.3675"></a>
-<span class="sourceLineNo">3676</span>   *<a name="line.3676"></a>
-<span class="sourceLineNo">3677</span>   * @throws  LDIFException  If the provided LDIF data cannot be decoded as a<a name="line.3677"></a>
-<span class="sourceLineNo">3678</span>   *                         set of modifications.<a name="line.3678"></a>
-<span class="sourceLineNo">3679</span>   */<a name="line.3679"></a>
-<span class="sourceLineNo">3680</span>  @NotNull()<a name="line.3680"></a>
-<span class="sourceLineNo">3681</span>  private static Modification[] parseModifications(@NotNull final String dn,<a name="line.3681"></a>
-<span class="sourceLineNo">3682</span>               @NotNull final TrailingSpaceBehavior trailingSpaceBehavior,<a name="line.3682"></a>
-<span class="sourceLineNo">3683</span>               @NotNull final ArrayList&lt;StringBuilder&gt; ldifLines,<a name="line.3683"></a>
-<span class="sourceLineNo">3684</span>               @NotNull final Iterator&lt;StringBuilder&gt; iterator,<a name="line.3684"></a>
-<span class="sourceLineNo">3685</span>               final long firstLineNumber, @Nullable final Schema schema)<a name="line.3685"></a>
-<span class="sourceLineNo">3686</span>          throws LDIFException<a name="line.3686"></a>
-<span class="sourceLineNo">3687</span>  {<a name="line.3687"></a>
-<span class="sourceLineNo">3688</span>    final ArrayList&lt;Modification&gt; modList = new ArrayList&lt;&gt;(ldifLines.size());<a name="line.3688"></a>
-<span class="sourceLineNo">3689</span><a name="line.3689"></a>
-<span class="sourceLineNo">3690</span>    while (iterator.hasNext())<a name="line.3690"></a>
-<span class="sourceLineNo">3691</span>    {<a name="line.3691"></a>
-<span class="sourceLineNo">3692</span>      // The first line must start with "add:", "delete:", "replace:", or<a name="line.3692"></a>
-<span class="sourceLineNo">3693</span>      // "increment:" followed by an attribute name.<a name="line.3693"></a>
-<span class="sourceLineNo">3694</span>      StringBuilder line = iterator.next();<a name="line.3694"></a>
-<span class="sourceLineNo">3695</span>      handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.3695"></a>
-<span class="sourceLineNo">3696</span>      int colonPos = line.indexOf(":");<a name="line.3696"></a>
-<span class="sourceLineNo">3697</span>      if (colonPos &lt; 0)<a name="line.3697"></a>
-<span class="sourceLineNo">3698</span>      {<a name="line.3698"></a>
-<span class="sourceLineNo">3699</span>        throw new LDIFException(ERR_READ_MOD_CR_NO_MODTYPE.get(firstLineNumber),<a name="line.3699"></a>
-<span class="sourceLineNo">3700</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3700"></a>
-<span class="sourceLineNo">3701</span>      }<a name="line.3701"></a>
-<span class="sourceLineNo">3702</span><a name="line.3702"></a>
-<span class="sourceLineNo">3703</span>      final ModificationType modType;<a name="line.3703"></a>
-<span class="sourceLineNo">3704</span>      final String modTypeStr =<a name="line.3704"></a>
-<span class="sourceLineNo">3705</span>           StaticUtils.toLowerCase(line.substring(0, colonPos));<a name="line.3705"></a>
-<span class="sourceLineNo">3706</span>      if (modTypeStr.equals("add"))<a name="line.3706"></a>
-<span class="sourceLineNo">3707</span>      {<a name="line.3707"></a>
-<span class="sourceLineNo">3708</span>        modType = ModificationType.ADD;<a name="line.3708"></a>
-<span class="sourceLineNo">3709</span>      }<a name="line.3709"></a>
-<span class="sourceLineNo">3710</span>      else if (modTypeStr.equals("delete"))<a name="line.3710"></a>
+<span class="sourceLineNo">3672</span>   * @param  relativeBasePath       The base path that will be prepended to<a name="line.3672"></a>
+<span class="sourceLineNo">3673</span>   *                                relative paths in order to obtain an<a name="line.3673"></a>
+<span class="sourceLineNo">3674</span>   *                                absolute path.<a name="line.3674"></a>
+<span class="sourceLineNo">3675</span>   * @param  firstLineNumber        The line number for the start of the record.<a name="line.3675"></a>
+<span class="sourceLineNo">3676</span>   * @param  schema                 The schema to use in processing.<a name="line.3676"></a>
+<span class="sourceLineNo">3677</span>   *<a name="line.3677"></a>
+<span class="sourceLineNo">3678</span>   * @return  An array containing the modifications that were read.<a name="line.3678"></a>
+<span class="sourceLineNo">3679</span>   *<a name="line.3679"></a>
+<span class="sourceLineNo">3680</span>   * @throws  LDIFException  If the provided LDIF data cannot be decoded as a<a name="line.3680"></a>
+<span class="sourceLineNo">3681</span>   *                         set of modifications.<a name="line.3681"></a>
+<span class="sourceLineNo">3682</span>   */<a name="line.3682"></a>
+<span class="sourceLineNo">3683</span>  @NotNull()<a name="line.3683"></a>
+<span class="sourceLineNo">3684</span>  private static Modification[] parseModifications(@NotNull final String dn,<a name="line.3684"></a>
+<span class="sourceLineNo">3685</span>               @NotNull final TrailingSpaceBehavior trailingSpaceBehavior,<a name="line.3685"></a>
+<span class="sourceLineNo">3686</span>               @NotNull final ArrayList&lt;StringBuilder&gt; ldifLines,<a name="line.3686"></a>
+<span class="sourceLineNo">3687</span>               @NotNull final Iterator&lt;StringBuilder&gt; iterator,<a name="line.3687"></a>
+<span class="sourceLineNo">3688</span>               @NotNull final String relativeBasePath,<a name="line.3688"></a>
+<span class="sourceLineNo">3689</span>               final long firstLineNumber, @Nullable final Schema schema)<a name="line.3689"></a>
+<span class="sourceLineNo">3690</span>          throws LDIFException<a name="line.3690"></a>
+<span class="sourceLineNo">3691</span>  {<a name="line.3691"></a>
+<span class="sourceLineNo">3692</span>    final ArrayList&lt;Modification&gt; modList = new ArrayList&lt;&gt;(ldifLines.size());<a name="line.3692"></a>
+<span class="sourceLineNo">3693</span><a name="line.3693"></a>
+<span class="sourceLineNo">3694</span>    while (iterator.hasNext())<a name="line.3694"></a>
+<span class="sourceLineNo">3695</span>    {<a name="line.3695"></a>
+<span class="sourceLineNo">3696</span>      // The first line must start with "add:", "delete:", "replace:", or<a name="line.3696"></a>
+<span class="sourceLineNo">3697</span>      // "increment:" followed by an attribute name.<a name="line.3697"></a>
+<span class="sourceLineNo">3698</span>      StringBuilder line = iterator.next();<a name="line.3698"></a>
+<span class="sourceLineNo">3699</span>      handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.3699"></a>
+<span class="sourceLineNo">3700</span>      int colonPos = line.indexOf(":");<a name="line.3700"></a>
+<span class="sourceLineNo">3701</span>      if (colonPos &lt; 0)<a name="line.3701"></a>
+<span class="sourceLineNo">3702</span>      {<a name="line.3702"></a>
+<span class="sourceLineNo">3703</span>        throw new LDIFException(ERR_READ_MOD_CR_NO_MODTYPE.get(firstLineNumber),<a name="line.3703"></a>
+<span class="sourceLineNo">3704</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3704"></a>
+<span class="sourceLineNo">3705</span>      }<a name="line.3705"></a>
+<span class="sourceLineNo">3706</span><a name="line.3706"></a>
+<span class="sourceLineNo">3707</span>      final ModificationType modType;<a name="line.3707"></a>
+<span class="sourceLineNo">3708</span>      final String modTypeStr =<a name="line.3708"></a>
+<span class="sourceLineNo">3709</span>           StaticUtils.toLowerCase(line.substring(0, colonPos));<a name="line.3709"></a>
+<span class="sourceLineNo">3710</span>      if (modTypeStr.equals("add"))<a name="line.3710"></a>
 <span class="sourceLineNo">3711</span>      {<a name="line.3711"></a>
-<span class="sourceLineNo">3712</span>        modType = ModificationType.DELETE;<a name="line.3712"></a>
+<span class="sourceLineNo">3712</span>        modType = ModificationType.ADD;<a name="line.3712"></a>
 <span class="sourceLineNo">3713</span>      }<a name="line.3713"></a>
-<span class="sourceLineNo">3714</span>      else if (modTypeStr.equals("replace"))<a name="line.3714"></a>
+<span class="sourceLineNo">3714</span>      else if (modTypeStr.equals("delete"))<a name="line.3714"></a>
 <span class="sourceLineNo">3715</span>      {<a name="line.3715"></a>
-<span class="sourceLineNo">3716</span>        modType = ModificationType.REPLACE;<a name="line.3716"></a>
+<span class="sourceLineNo">3716</span>        modType = ModificationType.DELETE;<a name="line.3716"></a>
 <span class="sourceLineNo">3717</span>      }<a name="line.3717"></a>
-<span class="sourceLineNo">3718</span>      else if (modTypeStr.equals("increment"))<a name="line.3718"></a>
+<span class="sourceLineNo">3718</span>      else if (modTypeStr.equals("replace"))<a name="line.3718"></a>
 <span class="sourceLineNo">3719</span>      {<a name="line.3719"></a>
-<span class="sourceLineNo">3720</span>        modType = ModificationType.INCREMENT;<a name="line.3720"></a>
+<span class="sourceLineNo">3720</span>        modType = ModificationType.REPLACE;<a name="line.3720"></a>
 <span class="sourceLineNo">3721</span>      }<a name="line.3721"></a>
-<span class="sourceLineNo">3722</span>      else<a name="line.3722"></a>
+<span class="sourceLineNo">3722</span>      else if (modTypeStr.equals("increment"))<a name="line.3722"></a>
 <span class="sourceLineNo">3723</span>      {<a name="line.3723"></a>
-<span class="sourceLineNo">3724</span>        throw new LDIFException(ERR_READ_MOD_CR_INVALID_MODTYPE.get(modTypeStr,<a name="line.3724"></a>
-<span class="sourceLineNo">3725</span>                                     firstLineNumber),<a name="line.3725"></a>
-<span class="sourceLineNo">3726</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3726"></a>
-<span class="sourceLineNo">3727</span>      }<a name="line.3727"></a>
-<span class="sourceLineNo">3728</span><a name="line.3728"></a>
-<span class="sourceLineNo">3729</span>      String attributeName;<a name="line.3729"></a>
-<span class="sourceLineNo">3730</span>      int length = line.length();<a name="line.3730"></a>
-<span class="sourceLineNo">3731</span>      if (length == (colonPos+1))<a name="line.3731"></a>
-<span class="sourceLineNo">3732</span>      {<a name="line.3732"></a>
-<span class="sourceLineNo">3733</span>        // The colon was the last character on the line.  This is not<a name="line.3733"></a>
-<span class="sourceLineNo">3734</span>        // acceptable.<a name="line.3734"></a>
-<span class="sourceLineNo">3735</span>        throw new LDIFException(ERR_READ_MOD_CR_MODTYPE_NO_ATTR.get(<a name="line.3735"></a>
-<span class="sourceLineNo">3736</span>                                     firstLineNumber),<a name="line.3736"></a>
-<span class="sourceLineNo">3737</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3737"></a>
-<span class="sourceLineNo">3738</span>      }<a name="line.3738"></a>
-<span class="sourceLineNo">3739</span>      else if (line.charAt(colonPos+1) == ':')<a name="line.3739"></a>
-<span class="sourceLineNo">3740</span>      {<a name="line.3740"></a>
-<span class="sourceLineNo">3741</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.3741"></a>
-<span class="sourceLineNo">3742</span>        // the string is the base64-encoded attribute name.<a name="line.3742"></a>
-<span class="sourceLineNo">3743</span>        int pos = colonPos+2;<a name="line.3743"></a>
-<span class="sourceLineNo">3744</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3744"></a>
-<span class="sourceLineNo">3745</span>        {<a name="line.3745"></a>
-<span class="sourceLineNo">3746</span>          pos++;<a name="line.3746"></a>
-<span class="sourceLineNo">3747</span>        }<a name="line.3747"></a>
-<span class="sourceLineNo">3748</span><a name="line.3748"></a>
-<span class="sourceLineNo">3749</span>        try<a name="line.3749"></a>
-<span class="sourceLineNo">3750</span>        {<a name="line.3750"></a>
-<span class="sourceLineNo">3751</span>          final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.3751"></a>
-<span class="sourceLineNo">3752</span>          attributeName = StaticUtils.toUTF8String(dnBytes);<a name="line.3752"></a>
-<span class="sourceLineNo">3753</span>        }<a name="line.3753"></a>
-<span class="sourceLineNo">3754</span>        catch (final ParseException pe)<a name="line.3754"></a>
-<span class="sourceLineNo">3755</span>        {<a name="line.3755"></a>
-<span class="sourceLineNo">3756</span>          Debug.debugException(pe);<a name="line.3756"></a>
-<span class="sourceLineNo">3757</span>          throw new LDIFException(<a name="line.3757"></a>
-<span class="sourceLineNo">3758</span>               ERR_READ_MOD_CR_MODTYPE_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3758"></a>
-<span class="sourceLineNo">3759</span>                    firstLineNumber, pe.getMessage()),<a name="line.3759"></a>
-<span class="sourceLineNo">3760</span>               firstLineNumber, true, ldifLines, pe);<a name="line.3760"></a>
-<span class="sourceLineNo">3761</span>        }<a name="line.3761"></a>
-<span class="sourceLineNo">3762</span>        catch (final Exception e)<a name="line.3762"></a>
-<span class="sourceLineNo">3763</span>        {<a name="line.3763"></a>
-<span class="sourceLineNo">3764</span>          Debug.debugException(e);<a name="line.3764"></a>
-<span class="sourceLineNo">3765</span>          throw new LDIFException(<a name="line.3765"></a>
-<span class="sourceLineNo">3766</span>               ERR_READ_MOD_CR_MODTYPE_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3766"></a>
-<span class="sourceLineNo">3767</span>                    firstLineNumber, e),<a name="line.3767"></a>
-<span class="sourceLineNo">3768</span>               firstLineNumber, true, ldifLines, e);<a name="line.3768"></a>
-<span class="sourceLineNo">3769</span>        }<a name="line.3769"></a>
-<span class="sourceLineNo">3770</span>      }<a name="line.3770"></a>
-<span class="sourceLineNo">3771</span>      else<a name="line.3771"></a>
-<span class="sourceLineNo">3772</span>      {<a name="line.3772"></a>
-<span class="sourceLineNo">3773</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.3773"></a>
-<span class="sourceLineNo">3774</span>        // the string is the attribute name.<a name="line.3774"></a>
-<span class="sourceLineNo">3775</span>        int pos = colonPos+1;<a name="line.3775"></a>
-<span class="sourceLineNo">3776</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3776"></a>
-<span class="sourceLineNo">3777</span>        {<a name="line.3777"></a>
-<span class="sourceLineNo">3778</span>          pos++;<a name="line.3778"></a>
-<span class="sourceLineNo">3779</span>        }<a name="line.3779"></a>
-<span class="sourceLineNo">3780</span><a name="line.3780"></a>
-<span class="sourceLineNo">3781</span>        attributeName = line.substring(pos);<a name="line.3781"></a>
-<span class="sourceLineNo">3782</span>      }<a name="line.3782"></a>
-<span class="sourceLineNo">3783</span><a name="line.3783"></a>
-<span class="sourceLineNo">3784</span>      if (attributeName.isEmpty())<a name="line.3784"></a>
-<span class="sourceLineNo">3785</span>      {<a name="line.3785"></a>
-<span class="sourceLineNo">3786</span>        throw new LDIFException(ERR_READ_MOD_CR_MODTYPE_NO_ATTR.get(<a name="line.3786"></a>
-<span class="sourceLineNo">3787</span>                                     firstLineNumber),<a name="line.3787"></a>
-<span class="sourceLineNo">3788</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3788"></a>
-<span class="sourceLineNo">3789</span>      }<a name="line.3789"></a>
-<span class="sourceLineNo">3790</span><a name="line.3790"></a>
-<span class="sourceLineNo">3791</span><a name="line.3791"></a>
-<span class="sourceLineNo">3792</span>      // The next zero or more lines may be the set of attribute values.  Keep<a name="line.3792"></a>
-<span class="sourceLineNo">3793</span>      // reading until we reach the end of the iterator or until we find a line<a name="line.3793"></a>
-<span class="sourceLineNo">3794</span>      // with just a "-".<a name="line.3794"></a>
-<span class="sourceLineNo">3795</span>      final ArrayList&lt;ASN1OctetString&gt; valueList =<a name="line.3795"></a>
-<span class="sourceLineNo">3796</span>           new ArrayList&lt;&gt;(ldifLines.size());<a name="line.3796"></a>
-<span class="sourceLineNo">3797</span>      while (iterator.hasNext())<a name="line.3797"></a>
-<span class="sourceLineNo">3798</span>      {<a name="line.3798"></a>
-<span class="sourceLineNo">3799</span>        line = iterator.next();<a name="line.3799"></a>
-<span class="sourceLineNo">3800</span>        handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.3800"></a>
-<span class="sourceLineNo">3801</span>        if (line.toString().equals("-"))<a name="line.3801"></a>
-<span class="sourceLineNo">3802</span>        {<a name="line.3802"></a>
-<span class="sourceLineNo">3803</span>          break;<a name="line.3803"></a>
-<span class="sourceLineNo">3804</span>        }<a name="line.3804"></a>
-<span class="sourceLineNo">3805</span><a name="line.3805"></a>
-<span class="sourceLineNo">3806</span>        colonPos = line.indexOf(":");<a name="line.3806"></a>
-<span class="sourceLineNo">3807</span>        if (colonPos &lt; 0)<a name="line.3807"></a>
-<span class="sourceLineNo">3808</span>        {<a name="line.3808"></a>
-<span class="sourceLineNo">3809</span>          throw new LDIFException(ERR_READ_NO_ATTR_COLON.get(firstLineNumber),<a name="line.3809"></a>
-<span class="sourceLineNo">3810</span>                                  firstLineNumber, true, ldifLines, null);<a name="line.3810"></a>
-<span class="sourceLineNo">3811</span>        }<a name="line.3811"></a>
-<span class="sourceLineNo">3812</span>        else if (! line.substring(0, colonPos).equalsIgnoreCase(attributeName))<a name="line.3812"></a>
-<span class="sourceLineNo">3813</span>        {<a name="line.3813"></a>
-<span class="sourceLineNo">3814</span>          // There are a couple of cases in which this might be acceptable:<a name="line.3814"></a>
-<span class="sourceLineNo">3815</span>          // - If the two names are logically equivalent, but have an alternate<a name="line.3815"></a>
-<span class="sourceLineNo">3816</span>          //   name (or OID) for the target attribute type, or if there are<a name="line.3816"></a>
-<span class="sourceLineNo">3817</span>          //   attribute options and the options are just in a different order.<a name="line.3817"></a>
-<span class="sourceLineNo">3818</span>          // - If this is the first value for the target attribute and the<a name="line.3818"></a>
-<span class="sourceLineNo">3819</span>          //   alternate name includes a "binary" option that the original<a name="line.3819"></a>
-<span class="sourceLineNo">3820</span>          //   attribute name did not have.  In this case, all subsequent values<a name="line.3820"></a>
-<span class="sourceLineNo">3821</span>          //   will also be required to have the binary option.<a name="line.3821"></a>
-<span class="sourceLineNo">3822</span>          final String alternateName = line.substring(0, colonPos);<a name="line.3822"></a>
-<span class="sourceLineNo">3823</span><a name="line.3823"></a>
-<span class="sourceLineNo">3824</span><a name="line.3824"></a>
-<span class="sourceLineNo">3825</span>          // Check to see if the base names are equivalent.<a name="line.3825"></a>
-<span class="sourceLineNo">3826</span>          boolean baseNameEquivalent = false;<a name="line.3826"></a>
-<span class="sourceLineNo">3827</span>          final String expectedBaseName = Attribute.getBaseName(attributeName);<a name="line.3827"></a>
-<span class="sourceLineNo">3828</span>          final String alternateBaseName = Attribute.getBaseName(alternateName);<a name="line.3828"></a>
-<span class="sourceLineNo">3829</span>          if (alternateBaseName.equalsIgnoreCase(expectedBaseName))<a name="line.3829"></a>
-<span class="sourceLineNo">3830</span>          {<a name="line.3830"></a>
-<span class="sourceLineNo">3831</span>            baseNameEquivalent = true;<a name="line.3831"></a>
-<span class="sourceLineNo">3832</span>          }<a name="line.3832"></a>
-<span class="sourceLineNo">3833</span>          else<a name="line.3833"></a>
+<span class="sourceLineNo">3724</span>        modType = ModificationType.INCREMENT;<a name="line.3724"></a>
+<span class="sourceLineNo">3725</span>      }<a name="line.3725"></a>
+<span class="sourceLineNo">3726</span>      else<a name="line.3726"></a>
+<span class="sourceLineNo">3727</span>      {<a name="line.3727"></a>
+<span class="sourceLineNo">3728</span>        throw new LDIFException(ERR_READ_MOD_CR_INVALID_MODTYPE.get(modTypeStr,<a name="line.3728"></a>
+<span class="sourceLineNo">3729</span>                                     firstLineNumber),<a name="line.3729"></a>
+<span class="sourceLineNo">3730</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3730"></a>
+<span class="sourceLineNo">3731</span>      }<a name="line.3731"></a>
+<span class="sourceLineNo">3732</span><a name="line.3732"></a>
+<span class="sourceLineNo">3733</span>      String attributeName;<a name="line.3733"></a>
+<span class="sourceLineNo">3734</span>      int length = line.length();<a name="line.3734"></a>
+<span class="sourceLineNo">3735</span>      if (length == (colonPos+1))<a name="line.3735"></a>
+<span class="sourceLineNo">3736</span>      {<a name="line.3736"></a>
+<span class="sourceLineNo">3737</span>        // The colon was the last character on the line.  This is not<a name="line.3737"></a>
+<span class="sourceLineNo">3738</span>        // acceptable.<a name="line.3738"></a>
+<span class="sourceLineNo">3739</span>        throw new LDIFException(ERR_READ_MOD_CR_MODTYPE_NO_ATTR.get(<a name="line.3739"></a>
+<span class="sourceLineNo">3740</span>                                     firstLineNumber),<a name="line.3740"></a>
+<span class="sourceLineNo">3741</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3741"></a>
+<span class="sourceLineNo">3742</span>      }<a name="line.3742"></a>
+<span class="sourceLineNo">3743</span>      else if (line.charAt(colonPos+1) == ':')<a name="line.3743"></a>
+<span class="sourceLineNo">3744</span>      {<a name="line.3744"></a>
+<span class="sourceLineNo">3745</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.3745"></a>
+<span class="sourceLineNo">3746</span>        // the string is the base64-encoded attribute name.<a name="line.3746"></a>
+<span class="sourceLineNo">3747</span>        int pos = colonPos+2;<a name="line.3747"></a>
+<span class="sourceLineNo">3748</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3748"></a>
+<span class="sourceLineNo">3749</span>        {<a name="line.3749"></a>
+<span class="sourceLineNo">3750</span>          pos++;<a name="line.3750"></a>
+<span class="sourceLineNo">3751</span>        }<a name="line.3751"></a>
+<span class="sourceLineNo">3752</span><a name="line.3752"></a>
+<span class="sourceLineNo">3753</span>        try<a name="line.3753"></a>
+<span class="sourceLineNo">3754</span>        {<a name="line.3754"></a>
+<span class="sourceLineNo">3755</span>          final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.3755"></a>
+<span class="sourceLineNo">3756</span>          attributeName = StaticUtils.toUTF8String(dnBytes);<a name="line.3756"></a>
+<span class="sourceLineNo">3757</span>        }<a name="line.3757"></a>
+<span class="sourceLineNo">3758</span>        catch (final ParseException pe)<a name="line.3758"></a>
+<span class="sourceLineNo">3759</span>        {<a name="line.3759"></a>
+<span class="sourceLineNo">3760</span>          Debug.debugException(pe);<a name="line.3760"></a>
+<span class="sourceLineNo">3761</span>          throw new LDIFException(<a name="line.3761"></a>
+<span class="sourceLineNo">3762</span>               ERR_READ_MOD_CR_MODTYPE_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3762"></a>
+<span class="sourceLineNo">3763</span>                    firstLineNumber, pe.getMessage()),<a name="line.3763"></a>
+<span class="sourceLineNo">3764</span>               firstLineNumber, true, ldifLines, pe);<a name="line.3764"></a>
+<span class="sourceLineNo">3765</span>        }<a name="line.3765"></a>
+<span class="sourceLineNo">3766</span>        catch (final Exception e)<a name="line.3766"></a>
+<span class="sourceLineNo">3767</span>        {<a name="line.3767"></a>
+<span class="sourceLineNo">3768</span>          Debug.debugException(e);<a name="line.3768"></a>
+<span class="sourceLineNo">3769</span>          throw new LDIFException(<a name="line.3769"></a>
+<span class="sourceLineNo">3770</span>               ERR_READ_MOD_CR_MODTYPE_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3770"></a>
+<span class="sourceLineNo">3771</span>                    firstLineNumber, e),<a name="line.3771"></a>
+<span class="sourceLineNo">3772</span>               firstLineNumber, true, ldifLines, e);<a name="line.3772"></a>
+<span class="sourceLineNo">3773</span>        }<a name="line.3773"></a>
+<span class="sourceLineNo">3774</span>      }<a name="line.3774"></a>
+<span class="sourceLineNo">3775</span>      else<a name="line.3775"></a>
+<span class="sourceLineNo">3776</span>      {<a name="line.3776"></a>
+<span class="sourceLineNo">3777</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.3777"></a>
+<span class="sourceLineNo">3778</span>        // the string is the attribute name.<a name="line.3778"></a>
+<span class="sourceLineNo">3779</span>        int pos = colonPos+1;<a name="line.3779"></a>
+<span class="sourceLineNo">3780</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3780"></a>
+<span class="sourceLineNo">3781</span>        {<a name="line.3781"></a>
+<span class="sourceLineNo">3782</span>          pos++;<a name="line.3782"></a>
+<span class="sourceLineNo">3783</span>        }<a name="line.3783"></a>
+<span class="sourceLineNo">3784</span><a name="line.3784"></a>
+<span class="sourceLineNo">3785</span>        attributeName = line.substring(pos);<a name="line.3785"></a>
+<span class="sourceLineNo">3786</span>      }<a name="line.3786"></a>
+<span class="sourceLineNo">3787</span><a name="line.3787"></a>
+<span class="sourceLineNo">3788</span>      if (attributeName.isEmpty())<a name="line.3788"></a>
+<span class="sourceLineNo">3789</span>      {<a name="line.3789"></a>
+<span class="sourceLineNo">3790</span>        throw new LDIFException(ERR_READ_MOD_CR_MODTYPE_NO_ATTR.get(<a name="line.3790"></a>
+<span class="sourceLineNo">3791</span>                                     firstLineNumber),<a name="line.3791"></a>
+<span class="sourceLineNo">3792</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3792"></a>
+<span class="sourceLineNo">3793</span>      }<a name="line.3793"></a>
+<span class="sourceLineNo">3794</span><a name="line.3794"></a>
+<span class="sourceLineNo">3795</span><a name="line.3795"></a>
+<span class="sourceLineNo">3796</span>      // The next zero or more lines may be the set of attribute values.  Keep<a name="line.3796"></a>
+<span class="sourceLineNo">3797</span>      // reading until we reach the end of the iterator or until we find a line<a name="line.3797"></a>
+<span class="sourceLineNo">3798</span>      // with just a "-".<a name="line.3798"></a>
+<span class="sourceLineNo">3799</span>      final ArrayList&lt;ASN1OctetString&gt; valueList =<a name="line.3799"></a>
+<span class="sourceLineNo">3800</span>           new ArrayList&lt;&gt;(ldifLines.size());<a name="line.3800"></a>
+<span class="sourceLineNo">3801</span>      while (iterator.hasNext())<a name="line.3801"></a>
+<span class="sourceLineNo">3802</span>      {<a name="line.3802"></a>
+<span class="sourceLineNo">3803</span>        line = iterator.next();<a name="line.3803"></a>
+<span class="sourceLineNo">3804</span>        handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.3804"></a>
+<span class="sourceLineNo">3805</span>        if (line.toString().equals("-"))<a name="line.3805"></a>
+<span class="sourceLineNo">3806</span>        {<a name="line.3806"></a>
+<span class="sourceLineNo">3807</span>          break;<a name="line.3807"></a>
+<span class="sourceLineNo">3808</span>        }<a name="line.3808"></a>
+<span class="sourceLineNo">3809</span><a name="line.3809"></a>
+<span class="sourceLineNo">3810</span>        colonPos = line.indexOf(":");<a name="line.3810"></a>
+<span class="sourceLineNo">3811</span>        if (colonPos &lt; 0)<a name="line.3811"></a>
+<span class="sourceLineNo">3812</span>        {<a name="line.3812"></a>
+<span class="sourceLineNo">3813</span>          throw new LDIFException(ERR_READ_NO_ATTR_COLON.get(firstLineNumber),<a name="line.3813"></a>
+<span class="sourceLineNo">3814</span>                                  firstLineNumber, true, ldifLines, null);<a name="line.3814"></a>
+<span class="sourceLineNo">3815</span>        }<a name="line.3815"></a>
+<span class="sourceLineNo">3816</span>        else if (! line.substring(0, colonPos).equalsIgnoreCase(attributeName))<a name="line.3816"></a>
+<span class="sourceLineNo">3817</span>        {<a name="line.3817"></a>
+<span class="sourceLineNo">3818</span>          // There are a couple of cases in which this might be acceptable:<a name="line.3818"></a>
+<span class="sourceLineNo">3819</span>          // - If the two names are logically equivalent, but have an alternate<a name="line.3819"></a>
+<span class="sourceLineNo">3820</span>          //   name (or OID) for the target attribute type, or if there are<a name="line.3820"></a>
+<span class="sourceLineNo">3821</span>          //   attribute options and the options are just in a different order.<a name="line.3821"></a>
+<span class="sourceLineNo">3822</span>          // - If this is the first value for the target attribute and the<a name="line.3822"></a>
+<span class="sourceLineNo">3823</span>          //   alternate name includes a "binary" option that the original<a name="line.3823"></a>
+<span class="sourceLineNo">3824</span>          //   attribute name did not have.  In this case, all subsequent values<a name="line.3824"></a>
+<span class="sourceLineNo">3825</span>          //   will also be required to have the binary option.<a name="line.3825"></a>
+<span class="sourceLineNo">3826</span>          final String alternateName = line.substring(0, colonPos);<a name="line.3826"></a>
+<span class="sourceLineNo">3827</span><a name="line.3827"></a>
+<span class="sourceLineNo">3828</span><a name="line.3828"></a>
+<span class="sourceLineNo">3829</span>          // Check to see if the base names are equivalent.<a name="line.3829"></a>
+<span class="sourceLineNo">3830</span>          boolean baseNameEquivalent = false;<a name="line.3830"></a>
+<span class="sourceLineNo">3831</span>          final String expectedBaseName = Attribute.getBaseName(attributeName);<a name="line.3831"></a>
+<span class="sourceLineNo">3832</span>          final String alternateBaseName = Attribute.getBaseName(alternateName);<a name="line.3832"></a>
+<span class="sourceLineNo">3833</span>          if (alternateBaseName.equalsIgnoreCase(expectedBaseName))<a name="line.3833"></a>
 <span class="sourceLineNo">3834</span>          {<a name="line.3834"></a>
-<span class="sourceLineNo">3835</span>            if (schema != null)<a name="line.3835"></a>
-<span class="sourceLineNo">3836</span>            {<a name="line.3836"></a>
-<span class="sourceLineNo">3837</span>              final AttributeTypeDefinition expectedAT =<a name="line.3837"></a>
-<span class="sourceLineNo">3838</span>                   schema.getAttributeType(expectedBaseName);<a name="line.3838"></a>
-<span class="sourceLineNo">3839</span>              final AttributeTypeDefinition alternateAT =<a name="line.3839"></a>
-<span class="sourceLineNo">3840</span>                   schema.getAttributeType(alternateBaseName);<a name="line.3840"></a>
-<span class="sourceLineNo">3841</span>              if ((expectedAT != null) &amp;&amp; (alternateAT != null) &amp;&amp;<a name="line.3841"></a>
-<span class="sourceLineNo">3842</span>                  expectedAT.equals(alternateAT))<a name="line.3842"></a>
-<span class="sourceLineNo">3843</span>              {<a name="line.3843"></a>
-<span class="sourceLineNo">3844</span>                baseNameEquivalent = true;<a name="line.3844"></a>
-<span class="sourceLineNo">3845</span>              }<a name="line.3845"></a>
-<span class="sourceLineNo">3846</span>            }<a name="line.3846"></a>
-<span class="sourceLineNo">3847</span>          }<a name="line.3847"></a>
-<span class="sourceLineNo">3848</span><a name="line.3848"></a>
-<span class="sourceLineNo">3849</span><a name="line.3849"></a>
-<span class="sourceLineNo">3850</span>          // Check to see if the attribute options are equivalent.<a name="line.3850"></a>
-<span class="sourceLineNo">3851</span>          final Set&lt;String&gt; expectedOptions =<a name="line.3851"></a>
-<span class="sourceLineNo">3852</span>               Attribute.getOptions(attributeName);<a name="line.3852"></a>
-<span class="sourceLineNo">3853</span>          final Set&lt;String&gt; lowerExpectedOptions = new HashSet&lt;&gt;(<a name="line.3853"></a>
-<span class="sourceLineNo">3854</span>               StaticUtils.computeMapCapacity(expectedOptions.size()));<a name="line.3854"></a>
-<span class="sourceLineNo">3855</span>          for (final String s : expectedOptions)<a name="line.3855"></a>
-<span class="sourceLineNo">3856</span>          {<a name="line.3856"></a>
-<span class="sourceLineNo">3857</span>            lowerExpectedOptions.add(StaticUtils.toLowerCase(s));<a name="line.3857"></a>
-<span class="sourceLineNo">3858</span>          }<a name="line.3858"></a>
-<span class="sourceLineNo">3859</span><a name="line.3859"></a>
-<span class="sourceLineNo">3860</span>          final Set&lt;String&gt; alternateOptions =<a name="line.3860"></a>
-<span class="sourceLineNo">3861</span>               Attribute.getOptions(alternateName);<a name="line.3861"></a>
-<span class="sourceLineNo">3862</span>          final Set&lt;String&gt; lowerAlternateOptions = new HashSet&lt;&gt;(<a name="line.3862"></a>
-<span class="sourceLineNo">3863</span>               StaticUtils.computeMapCapacity(alternateOptions.size()));<a name="line.3863"></a>
-<span class="sourceLineNo">3864</span>          for (final String s : alternateOptions)<a name="line.3864"></a>
-<span class="sourceLineNo">3865</span>          {<a name="line.3865"></a>
-<span class="sourceLineNo">3866</span>            lowerAlternateOptions.add(StaticUtils.toLowerCase(s));<a name="line.3866"></a>
-<span class="sourceLineNo">3867</span>          }<a name="line.3867"></a>
-<span class="sourceLineNo">3868</span><a name="line.3868"></a>
-<span class="sourceLineNo">3869</span>          final boolean optionsEquivalent =<a name="line.3869"></a>
-<span class="sourceLineNo">3870</span>               lowerAlternateOptions.equals(lowerExpectedOptions);<a name="line.3870"></a>
-<span class="sourceLineNo">3871</span><a name="line.3871"></a>
+<span class="sourceLineNo">3835</span>            baseNameEquivalent = true;<a name="line.3835"></a>
+<span class="sourceLineNo">3836</span>          }<a name="line.3836"></a>
+<span class="sourceLineNo">3837</span>          else<a name="line.3837"></a>
+<span class="sourceLineNo">3838</span>          {<a name="line.3838"></a>
+<span class="sourceLineNo">3839</span>            if (schema != null)<a name="line.3839"></a>
+<span class="sourceLineNo">3840</span>            {<a name="line.3840"></a>
+<span class="sourceLineNo">3841</span>              final AttributeTypeDefinition expectedAT =<a name="line.3841"></a>
+<span class="sourceLineNo">3842</span>                   schema.getAttributeType(expectedBaseName);<a name="line.3842"></a>
+<span class="sourceLineNo">3843</span>              final AttributeTypeDefinition alternateAT =<a name="line.3843"></a>
+<span class="sourceLineNo">3844</span>                   schema.getAttributeType(alternateBaseName);<a name="line.3844"></a>
+<span class="sourceLineNo">3845</span>              if ((expectedAT != null) &amp;&amp; (alternateAT != null) &amp;&amp;<a name="line.3845"></a>
+<span class="sourceLineNo">3846</span>                  expectedAT.equals(alternateAT))<a name="line.3846"></a>
+<span class="sourceLineNo">3847</span>              {<a name="line.3847"></a>
+<span class="sourceLineNo">3848</span>                baseNameEquivalent = true;<a name="line.3848"></a>
+<span class="sourceLineNo">3849</span>              }<a name="line.3849"></a>
+<span class="sourceLineNo">3850</span>            }<a name="line.3850"></a>
+<span class="sourceLineNo">3851</span>          }<a name="line.3851"></a>
+<span class="sourceLineNo">3852</span><a name="line.3852"></a>
+<span class="sourceLineNo">3853</span><a name="line.3853"></a>
+<span class="sourceLineNo">3854</span>          // Check to see if the attribute options are equivalent.<a name="line.3854"></a>
+<span class="sourceLineNo">3855</span>          final Set&lt;String&gt; expectedOptions =<a name="line.3855"></a>
+<span class="sourceLineNo">3856</span>               Attribute.getOptions(attributeName);<a name="line.3856"></a>
+<span class="sourceLineNo">3857</span>          final Set&lt;String&gt; lowerExpectedOptions = new HashSet&lt;&gt;(<a name="line.3857"></a>
+<span class="sourceLineNo">3858</span>               StaticUtils.computeMapCapacity(expectedOptions.size()));<a name="line.3858"></a>
+<span class="sourceLineNo">3859</span>          for (final String s : expectedOptions)<a name="line.3859"></a>
+<span class="sourceLineNo">3860</span>          {<a name="line.3860"></a>
+<span class="sourceLineNo">3861</span>            lowerExpectedOptions.add(StaticUtils.toLowerCase(s));<a name="line.3861"></a>
+<span class="sourceLineNo">3862</span>          }<a name="line.3862"></a>
+<span class="sourceLineNo">3863</span><a name="line.3863"></a>
+<span class="sourceLineNo">3864</span>          final Set&lt;String&gt; alternateOptions =<a name="line.3864"></a>
+<span class="sourceLineNo">3865</span>               Attribute.getOptions(alternateName);<a name="line.3865"></a>
+<span class="sourceLineNo">3866</span>          final Set&lt;String&gt; lowerAlternateOptions = new HashSet&lt;&gt;(<a name="line.3866"></a>
+<span class="sourceLineNo">3867</span>               StaticUtils.computeMapCapacity(alternateOptions.size()));<a name="line.3867"></a>
+<span class="sourceLineNo">3868</span>          for (final String s : alternateOptions)<a name="line.3868"></a>
+<span class="sourceLineNo">3869</span>          {<a name="line.3869"></a>
+<span class="sourceLineNo">3870</span>            lowerAlternateOptions.add(StaticUtils.toLowerCase(s));<a name="line.3870"></a>
+<span class="sourceLineNo">3871</span>          }<a name="line.3871"></a>
 <span class="sourceLineNo">3872</span><a name="line.3872"></a>
-<span class="sourceLineNo">3873</span>          if (baseNameEquivalent &amp;&amp; optionsEquivalent)<a name="line.3873"></a>
-<span class="sourceLineNo">3874</span>          {<a name="line.3874"></a>
-<span class="sourceLineNo">3875</span>            // This is fine.  The two attribute descriptions are logically<a name="line.3875"></a>
-<span class="sourceLineNo">3876</span>            // equivalent.  We'll continue using the attribute description that<a name="line.3876"></a>
-<span class="sourceLineNo">3877</span>            // was provided first.<a name="line.3877"></a>
-<span class="sourceLineNo">3878</span>          }<a name="line.3878"></a>
-<span class="sourceLineNo">3879</span>          else if (valueList.isEmpty() &amp;&amp; baseNameEquivalent &amp;&amp;<a name="line.3879"></a>
-<span class="sourceLineNo">3880</span>                   lowerAlternateOptions.remove("binary") &amp;&amp;<a name="line.3880"></a>
-<span class="sourceLineNo">3881</span>                   lowerAlternateOptions.equals(lowerExpectedOptions))<a name="line.3881"></a>
-<span class="sourceLineNo">3882</span>          {<a name="line.3882"></a>
-<span class="sourceLineNo">3883</span>            // This means that the provided value is the first value for the<a name="line.3883"></a>
-<span class="sourceLineNo">3884</span>            // attribute, and that the only significant difference is that the<a name="line.3884"></a>
-<span class="sourceLineNo">3885</span>            // provided attribute description included an unexpected "binary"<a name="line.3885"></a>
-<span class="sourceLineNo">3886</span>            // option.  We'll accept this, but will require any additional<a name="line.3886"></a>
-<span class="sourceLineNo">3887</span>            // values for this modification to also include the binary option,<a name="line.3887"></a>
-<span class="sourceLineNo">3888</span>            // and we'll use the binary option in the attribute that is<a name="line.3888"></a>
-<span class="sourceLineNo">3889</span>            // eventually created.<a name="line.3889"></a>
-<span class="sourceLineNo">3890</span>            attributeName = alternateName;<a name="line.3890"></a>
-<span class="sourceLineNo">3891</span>          }<a name="line.3891"></a>
-<span class="sourceLineNo">3892</span>          else<a name="line.3892"></a>
-<span class="sourceLineNo">3893</span>          {<a name="line.3893"></a>
-<span class="sourceLineNo">3894</span>            // This means that either the base names are different or the sets<a name="line.3894"></a>
-<span class="sourceLineNo">3895</span>            // of options are incompatible.  This is not acceptable.<a name="line.3895"></a>
-<span class="sourceLineNo">3896</span>            throw new LDIFException(ERR_READ_MOD_CR_ATTR_MISMATCH.get(<a name="line.3896"></a>
-<span class="sourceLineNo">3897</span>                                         firstLineNumber,<a name="line.3897"></a>
-<span class="sourceLineNo">3898</span>                                         line.substring(0, colonPos),<a name="line.3898"></a>
-<span class="sourceLineNo">3899</span>                                         attributeName),<a name="line.3899"></a>
-<span class="sourceLineNo">3900</span>                                    firstLineNumber, true, ldifLines, null);<a name="line.3900"></a>
-<span class="sourceLineNo">3901</span>          }<a name="line.3901"></a>
-<span class="sourceLineNo">3902</span>        }<a name="line.3902"></a>
-<span class="sourceLineNo">3903</span><a name="line.3903"></a>
-<span class="sourceLineNo">3904</span>        length = line.length();<a name="line.3904"></a>
-<span class="sourceLineNo">3905</span>        final ASN1OctetString value;<a name="line.3905"></a>
-<span class="sourceLineNo">3906</span>        if (length == (colonPos+1))<a name="line.3906"></a>
-<span class="sourceLineNo">3907</span>        {<a name="line.3907"></a>
-<span class="sourceLineNo">3908</span>          // The colon was the last character on the line.  This is fine.<a name="line.3908"></a>
-<span class="sourceLineNo">3909</span>          value = new ASN1OctetString();<a name="line.3909"></a>
-<span class="sourceLineNo">3910</span>        }<a name="line.3910"></a>
-<span class="sourceLineNo">3911</span>        else if (line.charAt(colonPos+1) == ':')<a name="line.3911"></a>
-<span class="sourceLineNo">3912</span>        {<a name="line.3912"></a>
-<span class="sourceLineNo">3913</span>          // Skip over any spaces leading up to the value, and then the rest of<a name="line.3913"></a>
-<span class="sourceLineNo">3914</span>          // the string is the base64-encoded value.  This is unusual and<a name="line.3914"></a>
-<span class="sourceLineNo">3915</span>          // unnecessary, but is nevertheless acceptable.<a name="line.3915"></a>
-<span class="sourceLineNo">3916</span>          int pos = colonPos+2;<a name="line.3916"></a>
-<span class="sourceLineNo">3917</span>          while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3917"></a>
-<span class="sourceLineNo">3918</span>          {<a name="line.3918"></a>
-<span class="sourceLineNo">3919</span>            pos++;<a name="line.3919"></a>
-<span class="sourceLineNo">3920</span>          }<a name="line.3920"></a>
-<span class="sourceLineNo">3921</span><a name="line.3921"></a>
-<span class="sourceLineNo">3922</span>          try<a name="line.3922"></a>
-<span class="sourceLineNo">3923</span>          {<a name="line.3923"></a>
-<span class="sourceLineNo">3924</span>            value = new ASN1OctetString(Base64.decode(line.substring(pos)));<a name="line.3924"></a>
-<span class="sourceLineNo">3925</span>          }<a name="line.3925"></a>
-<span class="sourceLineNo">3926</span>          catch (final ParseException pe)<a name="line.3926"></a>
+<span class="sourceLineNo">3873</span>          final boolean optionsEquivalent =<a name="line.3873"></a>
+<span class="sourceLineNo">3874</span>               lowerAlternateOptions.equals(lowerExpectedOptions);<a name="line.3874"></a>
+<span class="sourceLineNo">3875</span><a name="line.3875"></a>
+<span class="sourceLineNo">3876</span><a name="line.3876"></a>
+<span class="sourceLineNo">3877</span>          if (baseNameEquivalent &amp;&amp; optionsEquivalent)<a name="line.3877"></a>
+<span class="sourceLineNo">3878</span>          {<a name="line.3878"></a>
+<span class="sourceLineNo">3879</span>            // This is fine.  The two attribute descriptions are logically<a name="line.3879"></a>
+<span class="sourceLineNo">3880</span>            // equivalent.  We'll continue using the attribute description that<a name="line.3880"></a>
+<span class="sourceLineNo">3881</span>            // was provided first.<a name="line.3881"></a>
+<span class="sourceLineNo">3882</span>          }<a name="line.3882"></a>
+<span class="sourceLineNo">3883</span>          else if (valueList.isEmpty() &amp;&amp; baseNameEquivalent &amp;&amp;<a name="line.3883"></a>
+<span class="sourceLineNo">3884</span>                   lowerAlternateOptions.remove("binary") &amp;&amp;<a name="line.3884"></a>
+<span class="sourceLineNo">3885</span>                   lowerAlternateOptions.equals(lowerExpectedOptions))<a name="line.3885"></a>
+<span class="sourceLineNo">3886</span>          {<a name="line.3886"></a>
+<span class="sourceLineNo">3887</span>            // This means that the provided value is the first value for the<a name="line.3887"></a>
+<span class="sourceLineNo">3888</span>            // attribute, and that the only significant difference is that the<a name="line.3888"></a>
+<span class="sourceLineNo">3889</span>            // provided attribute description included an unexpected "binary"<a name="line.3889"></a>
+<span class="sourceLineNo">3890</span>            // option.  We'll accept this, but will require any additional<a name="line.3890"></a>
+<span class="sourceLineNo">3891</span>            // values for this modification to also include the binary option,<a name="line.3891"></a>
+<span class="sourceLineNo">3892</span>            // and we'll use the binary option in the attribute that is<a name="line.3892"></a>
+<span class="sourceLineNo">3893</span>            // eventually created.<a name="line.3893"></a>
+<span class="sourceLineNo">3894</span>            attributeName = alternateName;<a name="line.3894"></a>
+<span class="sourceLineNo">3895</span>          }<a name="line.3895"></a>
+<span class="sourceLineNo">3896</span>          else<a name="line.3896"></a>
+<span class="sourceLineNo">3897</span>          {<a name="line.3897"></a>
+<span class="sourceLineNo">3898</span>            // This means that either the base names are different or the sets<a name="line.3898"></a>
+<span class="sourceLineNo">3899</span>            // of options are incompatible.  This is not acceptable.<a name="line.3899"></a>
+<span class="sourceLineNo">3900</span>            throw new LDIFException(ERR_READ_MOD_CR_ATTR_MISMATCH.get(<a name="line.3900"></a>
+<span class="sourceLineNo">3901</span>                                         firstLineNumber,<a name="line.3901"></a>
+<span class="sourceLineNo">3902</span>                                         line.substring(0, colonPos),<a name="line.3902"></a>
+<span class="sourceLineNo">3903</span>                                         attributeName),<a name="line.3903"></a>
+<span class="sourceLineNo">3904</span>                                    firstLineNumber, true, ldifLines, null);<a name="line.3904"></a>
+<span class="sourceLineNo">3905</span>          }<a name="line.3905"></a>
+<span class="sourceLineNo">3906</span>        }<a name="line.3906"></a>
+<span class="sourceLineNo">3907</span><a name="line.3907"></a>
+<span class="sourceLineNo">3908</span>        length = line.length();<a name="line.3908"></a>
+<span class="sourceLineNo">3909</span>        final ASN1OctetString value;<a name="line.3909"></a>
+<span class="sourceLineNo">3910</span>        if (length == (colonPos+1))<a name="line.3910"></a>
+<span class="sourceLineNo">3911</span>        {<a name="line.3911"></a>
+<span class="sourceLineNo">3912</span>          // The colon was the last character on the line.  This is fine.<a name="line.3912"></a>
+<span class="sourceLineNo">3913</span>          value = new ASN1OctetString();<a name="line.3913"></a>
+<span class="sourceLineNo">3914</span>        }<a name="line.3914"></a>
+<span class="sourceLineNo">3915</span>        else if (line.charAt(colonPos+1) == ':')<a name="line.3915"></a>
+<span class="sourceLineNo">3916</span>        {<a name="line.3916"></a>
+<span class="sourceLineNo">3917</span>          // Skip over any spaces leading up to the value, and then the rest of<a name="line.3917"></a>
+<span class="sourceLineNo">3918</span>          // the string is the base64-encoded value.  This is unusual and<a name="line.3918"></a>
+<span class="sourceLineNo">3919</span>          // unnecessary, but is nevertheless acceptable.<a name="line.3919"></a>
+<span class="sourceLineNo">3920</span>          int pos = colonPos+2;<a name="line.3920"></a>
+<span class="sourceLineNo">3921</span>          while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3921"></a>
+<span class="sourceLineNo">3922</span>          {<a name="line.3922"></a>
+<span class="sourceLineNo">3923</span>            pos++;<a name="line.3923"></a>
+<span class="sourceLineNo">3924</span>          }<a name="line.3924"></a>
+<span class="sourceLineNo">3925</span><a name="line.3925"></a>
+<span class="sourceLineNo">3926</span>          try<a name="line.3926"></a>
 <span class="sourceLineNo">3927</span>          {<a name="line.3927"></a>
-<span class="sourceLineNo">3928</span>            Debug.debugException(pe);<a name="line.3928"></a>
-<span class="sourceLineNo">3929</span>            throw new LDIFException(ERR_READ_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3929"></a>
-<span class="sourceLineNo">3930</span>                 attributeName, firstLineNumber, pe.getMessage()),<a name="line.3930"></a>
-<span class="sourceLineNo">3931</span>                 firstLineNumber, true, ldifLines, pe);<a name="line.3931"></a>
-<span class="sourceLineNo">3932</span>          }<a name="line.3932"></a>
-<span class="sourceLineNo">3933</span>          catch (final Exception e)<a name="line.3933"></a>
-<span class="sourceLineNo">3934</span>          {<a name="line.3934"></a>
-<span class="sourceLineNo">3935</span>            Debug.debugException(e);<a name="line.3935"></a>
-<span class="sourceLineNo">3936</span>            throw new LDIFException(ERR_READ_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3936"></a>
-<span class="sourceLineNo">3937</span>                                         firstLineNumber, e),<a name="line.3937"></a>
-<span class="sourceLineNo">3938</span>                                    firstLineNumber, true, ldifLines, e);<a name="line.3938"></a>
-<span class="sourceLineNo">3939</span>          }<a name="line.3939"></a>
-<span class="sourceLineNo">3940</span>        }<a name="line.3940"></a>
-<span class="sourceLineNo">3941</span>        else<a name="line.3941"></a>
-<span class="sourceLineNo">3942</span>        {<a name="line.3942"></a>
-<span class="sourceLineNo">3943</span>          // Skip over any spaces leading up to the value, and then the rest of<a name="line.3943"></a>
-<span class="sourceLineNo">3944</span>          // the string is the value.<a name="line.3944"></a>
-<span class="sourceLineNo">3945</span>          int pos = colonPos+1;<a name="line.3945"></a>
-<span class="sourceLineNo">3946</span>          while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3946"></a>
-<span class="sourceLineNo">3947</span>          {<a name="line.3947"></a>
-<span class="sourceLineNo">3948</span>            pos++;<a name="line.3948"></a>
-<span class="sourceLineNo">3949</span>          }<a name="line.3949"></a>
-<span class="sourceLineNo">3950</span><a name="line.3950"></a>
-<span class="sourceLineNo">3951</span>          value = new ASN1OctetString(line.substring(pos));<a name="line.3951"></a>
-<span class="sourceLineNo">3952</span>        }<a name="line.3952"></a>
-<span class="sourceLineNo">3953</span><a name="line.3953"></a>
-<span class="sourceLineNo">3954</span>        valueList.add(value);<a name="line.3954"></a>
-<span class="sourceLineNo">3955</span>      }<a name="line.3955"></a>
-<span class="sourceLineNo">3956</span><a name="line.3956"></a>
-<span class="sourceLineNo">3957</span>      final ASN1OctetString[] values = new ASN1OctetString[valueList.size()];<a name="line.3957"></a>
-<span class="sourceLineNo">3958</span>      valueList.toArray(values);<a name="line.3958"></a>
-<span class="sourceLineNo">3959</span><a name="line.3959"></a>
-<span class="sourceLineNo">3960</span>      // If it's an add modification type, then there must be at least one<a name="line.3960"></a>
-<span class="sourceLineNo">3961</span>      // value.<a name="line.3961"></a>
-<span class="sourceLineNo">3962</span>      if ((modType.intValue() == ModificationType.ADD.intValue()) &amp;&amp;<a name="line.3962"></a>
-<span class="sourceLineNo">3963</span>          (values.length == 0))<a name="line.3963"></a>
-<span class="sourceLineNo">3964</span>      {<a name="line.3964"></a>
-<span class="sourceLineNo">3965</span>        throw new LDIFException(ERR_READ_MOD_CR_NO_ADD_VALUES.get(attributeName,<a name="line.3965"></a>
-<span class="sourceLineNo">3966</span>                                     firstLineNumber),<a name="line.3966"></a>
-<span class="sourceLineNo">3967</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3967"></a>
-<span class="sourceLineNo">3968</span>      }<a name="line.3968"></a>
-<span class="sourceLineNo">3969</span><a name="line.3969"></a>
-<span class="sourceLineNo">3970</span>      // If it's an increment modification type, then there must be exactly one<a name="line.3970"></a>
-<span class="sourceLineNo">3971</span>      // value.<a name="line.3971"></a>
-<span class="sourceLineNo">3972</span>      if ((modType.intValue() == ModificationType.INCREMENT.intValue()) &amp;&amp;<a name="line.3972"></a>
-<span class="sourceLineNo">3973</span>          (values.length != 1))<a name="line.3973"></a>
-<span class="sourceLineNo">3974</span>      {<a name="line.3974"></a>
-<span class="sourceLineNo">3975</span>        throw new LDIFException(ERR_READ_MOD_CR_INVALID_INCR_VALUE_COUNT.get(<a name="line.3975"></a>
-<span class="sourceLineNo">3976</span>                                     firstLineNumber, attributeName),<a name="line.3976"></a>
-<span class="sourceLineNo">3977</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3977"></a>
-<span class="sourceLineNo">3978</span>      }<a name="line.3978"></a>
-<span class="sourceLineNo">3979</span><a name="line.3979"></a>
-<span class="sourceLineNo">3980</span>      modList.add(new Modification(modType, attributeName, values));<a name="line.3980"></a>
-<span class="sourceLineNo">3981</span>    }<a name="line.3981"></a>
-<span class="sourceLineNo">3982</span><a name="line.3982"></a>
-<span class="sourceLineNo">3983</span>    final Modification[] mods = new Modification[modList.size()];<a name="line.3983"></a>
-<span class="sourceLineNo">3984</span>    modList.toArray(mods);<a name="line.3984"></a>
-<span class="sourceLineNo">3985</span>    return mods;<a name="line.3985"></a>
-<span class="sourceLineNo">3986</span>  }<a name="line.3986"></a>
+<span class="sourceLineNo">3928</span>            value = new ASN1OctetString(Base64.decode(line.substring(pos)));<a name="line.3928"></a>
+<span class="sourceLineNo">3929</span>          }<a name="line.3929"></a>
+<span class="sourceLineNo">3930</span>          catch (final ParseException pe)<a name="line.3930"></a>
+<span class="sourceLineNo">3931</span>          {<a name="line.3931"></a>
+<span class="sourceLineNo">3932</span>            Debug.debugException(pe);<a name="line.3932"></a>
+<span class="sourceLineNo">3933</span>            throw new LDIFException(ERR_READ_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3933"></a>
+<span class="sourceLineNo">3934</span>                 attributeName, firstLineNumber, pe.getMessage()),<a name="line.3934"></a>
+<span class="sourceLineNo">3935</span>                 firstLineNumber, true, ldifLines, pe);<a name="line.3935"></a>
+<span class="sourceLineNo">3936</span>          }<a name="line.3936"></a>
+<span class="sourceLineNo">3937</span>          catch (final Exception e)<a name="line.3937"></a>
+<span class="sourceLineNo">3938</span>          {<a name="line.3938"></a>
+<span class="sourceLineNo">3939</span>            Debug.debugException(e);<a name="line.3939"></a>
+<span class="sourceLineNo">3940</span>            throw new LDIFException(ERR_READ_CANNOT_BASE64_DECODE_ATTR.get(<a name="line.3940"></a>
+<span class="sourceLineNo">3941</span>                                         firstLineNumber, e),<a name="line.3941"></a>
+<span class="sourceLineNo">3942</span>                                    firstLineNumber, true, ldifLines, e);<a name="line.3942"></a>
+<span class="sourceLineNo">3943</span>          }<a name="line.3943"></a>
+<span class="sourceLineNo">3944</span>        }<a name="line.3944"></a>
+<span class="sourceLineNo">3945</span>        else if (line.charAt(colonPos+1) == '&lt;')<a name="line.3945"></a>
+<span class="sourceLineNo">3946</span>        {<a name="line.3946"></a>
+<span class="sourceLineNo">3947</span>          // Skip over any spaces leading up to the value, and then the rest of<a name="line.3947"></a>
+<span class="sourceLineNo">3948</span>          // the string is a URL that indicates where to get the real content.<a name="line.3948"></a>
+<span class="sourceLineNo">3949</span>          // At the present time, we'll only support the file URLs.<a name="line.3949"></a>
+<span class="sourceLineNo">3950</span>          int pos = colonPos+2;<a name="line.3950"></a>
+<span class="sourceLineNo">3951</span>          while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3951"></a>
+<span class="sourceLineNo">3952</span>          {<a name="line.3952"></a>
+<span class="sourceLineNo">3953</span>            pos++;<a name="line.3953"></a>
+<span class="sourceLineNo">3954</span>          }<a name="line.3954"></a>
+<span class="sourceLineNo">3955</span><a name="line.3955"></a>
+<span class="sourceLineNo">3956</span>          final String urlString = line.substring(pos);<a name="line.3956"></a>
+<span class="sourceLineNo">3957</span>          try<a name="line.3957"></a>
+<span class="sourceLineNo">3958</span>          {<a name="line.3958"></a>
+<span class="sourceLineNo">3959</span>            final byte[] urlBytes =<a name="line.3959"></a>
+<span class="sourceLineNo">3960</span>                 retrieveURLBytes(urlString, relativeBasePath, firstLineNumber);<a name="line.3960"></a>
+<span class="sourceLineNo">3961</span>            value = new ASN1OctetString(urlBytes);<a name="line.3961"></a>
+<span class="sourceLineNo">3962</span>          }<a name="line.3962"></a>
+<span class="sourceLineNo">3963</span>          catch (final Exception e)<a name="line.3963"></a>
+<span class="sourceLineNo">3964</span>          {<a name="line.3964"></a>
+<span class="sourceLineNo">3965</span>            Debug.debugException(e);<a name="line.3965"></a>
+<span class="sourceLineNo">3966</span>            throw new LDIFException(<a name="line.3966"></a>
+<span class="sourceLineNo">3967</span>                 ERR_READ_URL_EXCEPTION.get(attributeName, urlString,<a name="line.3967"></a>
+<span class="sourceLineNo">3968</span>                      firstLineNumber, e),<a name="line.3968"></a>
+<span class="sourceLineNo">3969</span>                 firstLineNumber, true, ldifLines, e);<a name="line.3969"></a>
+<span class="sourceLineNo">3970</span>          }<a name="line.3970"></a>
+<span class="sourceLineNo">3971</span>        }<a name="line.3971"></a>
+<span class="sourceLineNo">3972</span>        else<a name="line.3972"></a>
+<span class="sourceLineNo">3973</span>        {<a name="line.3973"></a>
+<span class="sourceLineNo">3974</span>          // Skip over any spaces leading up to the value, and then the rest of<a name="line.3974"></a>
+<span class="sourceLineNo">3975</span>          // the string is the value.<a name="line.3975"></a>
+<span class="sourceLineNo">3976</span>          int pos = colonPos+1;<a name="line.3976"></a>
+<span class="sourceLineNo">3977</span>          while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.3977"></a>
+<span class="sourceLineNo">3978</span>          {<a name="line.3978"></a>
+<span class="sourceLineNo">3979</span>            pos++;<a name="line.3979"></a>
+<span class="sourceLineNo">3980</span>          }<a name="line.3980"></a>
+<span class="sourceLineNo">3981</span><a name="line.3981"></a>
+<span class="sourceLineNo">3982</span>          value = new ASN1OctetString(line.substring(pos));<a name="line.3982"></a>
+<span class="sourceLineNo">3983</span>        }<a name="line.3983"></a>
+<span class="sourceLineNo">3984</span><a name="line.3984"></a>
+<span class="sourceLineNo">3985</span>        valueList.add(value);<a name="line.3985"></a>
+<span class="sourceLineNo">3986</span>      }<a name="line.3986"></a>
 <span class="sourceLineNo">3987</span><a name="line.3987"></a>
-<span class="sourceLineNo">3988</span><a name="line.3988"></a>
-<span class="sourceLineNo">3989</span><a name="line.3989"></a>
-<span class="sourceLineNo">3990</span>  /**<a name="line.3990"></a>
-<span class="sourceLineNo">3991</span>   * Parses the data available through the provided iterator as the body of a<a name="line.3991"></a>
-<span class="sourceLineNo">3992</span>   * modify DN change record (i.e., the newrdn, deleteoldrdn, and optional<a name="line.3992"></a>
-<span class="sourceLineNo">3993</span>   * newsuperior lines).<a name="line.3993"></a>
-<span class="sourceLineNo">3994</span>   *<a name="line.3994"></a>
-<span class="sourceLineNo">3995</span>   * @param  ldifLines              The lines that comprise the LDIF<a name="line.3995"></a>
-<span class="sourceLineNo">3996</span>   *                                representation of the full record being<a name="line.3996"></a>
-<span class="sourceLineNo">3997</span>   *                                parsed.<a name="line.3997"></a>
-<span class="sourceLineNo">3998</span>   * @param  iterator               The iterator to use to access the modify DN<a name="line.3998"></a>
-<span class="sourceLineNo">3999</span>   *                                data.<a name="line.3999"></a>
-<span class="sourceLineNo">4000</span>   * @param  dn                     The current DN of the entry.<a name="line.4000"></a>
-<span class="sourceLineNo">4001</span>   * @param  controls               The set of controls to include in the change<a name="line.4001"></a>
-<span class="sourceLineNo">4002</span>   *                                record.<a name="line.4002"></a>
-<span class="sourceLineNo">4003</span>   * @param  trailingSpaceBehavior  The behavior that should be exhibited when<a name="line.4003"></a>
-<span class="sourceLineNo">4004</span>   *                                encountering attribute values which are not<a name="line.4004"></a>
-<span class="sourceLineNo">4005</span>   *                                base64-encoded but contain trailing spaces.<a name="line.4005"></a>
-<span class="sourceLineNo">4006</span>   * @param  firstLineNumber        The line number for the start of the record.<a name="line.4006"></a>
-<span class="sourceLineNo">4007</span>   *<a name="line.4007"></a>
-<span class="sourceLineNo">4008</span>   * @return  The decoded modify DN change record.<a name="line.4008"></a>
-<span class="sourceLineNo">4009</span>   *<a name="line.4009"></a>
-<span class="sourceLineNo">4010</span>   * @throws  LDIFException  If the provided LDIF data cannot be decoded as a<a name="line.4010"></a>
-<span class="sourceLineNo">4011</span>   *                         modify DN change record.<a name="line.4011"></a>
-<span class="sourceLineNo">4012</span>   */<a name="line.4012"></a>
-<span class="sourceLineNo">4013</span>  @NotNull()<a name="line.4013"></a>
-<span class="sourceLineNo">4014</span>  private static LDIFModifyDNChangeRecord parseModifyDNChangeRecord(<a name="line.4014"></a>
-<span class="sourceLineNo">4015</span>               @NotNull final ArrayList&lt;StringBuilder&gt; ldifLines,<a name="line.4015"></a>
-<span class="sourceLineNo">4016</span>               @NotNull final Iterator&lt;StringBuilder&gt; iterator,<a name="line.4016"></a>
-<span class="sourceLineNo">4017</span>               @NotNull final String dn,<a name="line.4017"></a>
-<span class="sourceLineNo">4018</span>               @Nullable final List&lt;Control&gt; controls,<a name="line.4018"></a>
-<span class="sourceLineNo">4019</span>               @NotNull final TrailingSpaceBehavior trailingSpaceBehavior,<a name="line.4019"></a>
-<span class="sourceLineNo">4020</span>               final long firstLineNumber)<a name="line.4020"></a>
-<span class="sourceLineNo">4021</span>          throws LDIFException<a name="line.4021"></a>
-<span class="sourceLineNo">4022</span>  {<a name="line.4022"></a>
-<span class="sourceLineNo">4023</span>    // The next line must be the new RDN, and it must start with "newrdn:".<a name="line.4023"></a>
-<span class="sourceLineNo">4024</span>    StringBuilder line = iterator.next();<a name="line.4024"></a>
-<span class="sourceLineNo">4025</span>    handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.4025"></a>
-<span class="sourceLineNo">4026</span>    int colonPos = line.indexOf(":");<a name="line.4026"></a>
-<span class="sourceLineNo">4027</span>    if ((colonPos &lt; 0) ||<a name="line.4027"></a>
-<span class="sourceLineNo">4028</span>        (! line.substring(0, colonPos).equalsIgnoreCase("newrdn")))<a name="line.4028"></a>
-<span class="sourceLineNo">4029</span>    {<a name="line.4029"></a>
-<span class="sourceLineNo">4030</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWRDN_COLON.get(<a name="line.4030"></a>
-<span class="sourceLineNo">4031</span>                                   firstLineNumber),<a name="line.4031"></a>
-<span class="sourceLineNo">4032</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4032"></a>
-<span class="sourceLineNo">4033</span>    }<a name="line.4033"></a>
-<span class="sourceLineNo">4034</span><a name="line.4034"></a>
-<span class="sourceLineNo">4035</span>    final String newRDN;<a name="line.4035"></a>
-<span class="sourceLineNo">4036</span>    int length = line.length();<a name="line.4036"></a>
-<span class="sourceLineNo">4037</span>    if (length == (colonPos+1))<a name="line.4037"></a>
-<span class="sourceLineNo">4038</span>    {<a name="line.4038"></a>
-<span class="sourceLineNo">4039</span>      // The colon was the last character on the line.  This is not acceptable.<a name="line.4039"></a>
-<span class="sourceLineNo">4040</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWRDN_VALUE.get(<a name="line.4040"></a>
-<span class="sourceLineNo">4041</span>                                   firstLineNumber),<a name="line.4041"></a>
-<span class="sourceLineNo">4042</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4042"></a>
-<span class="sourceLineNo">4043</span>    }<a name="line.4043"></a>
-<span class="sourceLineNo">4044</span>    else if (line.charAt(colonPos+1) == ':')<a name="line.4044"></a>
-<span class="sourceLineNo">4045</span>    {<a name="line.4045"></a>
-<span class="sourceLineNo">4046</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4046"></a>
-<span class="sourceLineNo">4047</span>      // string is the base64-encoded new RDN.<a name="line.4047"></a>
-<span class="sourceLineNo">4048</span>      int pos = colonPos+2;<a name="line.4048"></a>
-<span class="sourceLineNo">4049</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4049"></a>
-<span class="sourceLineNo">4050</span>      {<a name="line.4050"></a>
-<span class="sourceLineNo">4051</span>        pos++;<a name="line.4051"></a>
-<span class="sourceLineNo">4052</span>      }<a name="line.4052"></a>
-<span class="sourceLineNo">4053</span><a name="line.4053"></a>
-<span class="sourceLineNo">4054</span>      try<a name="line.4054"></a>
-<span class="sourceLineNo">4055</span>      {<a name="line.4055"></a>
-<span class="sourceLineNo">4056</span>        final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.4056"></a>
-<span class="sourceLineNo">4057</span>        newRDN = StaticUtils.toUTF8String(dnBytes);<a name="line.4057"></a>
-<span class="sourceLineNo">4058</span>      }<a name="line.4058"></a>
-<span class="sourceLineNo">4059</span>      catch (final ParseException pe)<a name="line.4059"></a>
-<span class="sourceLineNo">4060</span>      {<a name="line.4060"></a>
-<span class="sourceLineNo">4061</span>        Debug.debugException(pe);<a name="line.4061"></a>
-<span class="sourceLineNo">4062</span>        throw new LDIFException(<a name="line.4062"></a>
-<span class="sourceLineNo">4063</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWRDN.get(firstLineNumber,<a name="line.4063"></a>
-<span class="sourceLineNo">4064</span>                                                               pe.getMessage()),<a name="line.4064"></a>
-<span class="sourceLineNo">4065</span>             firstLineNumber, true, ldifLines, pe);<a name="line.4065"></a>
-<span class="sourceLineNo">4066</span>      }<a name="line.4066"></a>
-<span class="sourceLineNo">4067</span>      catch (final Exception e)<a name="line.4067"></a>
-<span class="sourceLineNo">4068</span>      {<a name="line.4068"></a>
-<span class="sourceLineNo">4069</span>        Debug.debugException(e);<a name="line.4069"></a>
-<span class="sourceLineNo">4070</span>        throw new LDIFException(<a name="line.4070"></a>
-<span class="sourceLineNo">4071</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWRDN.get(firstLineNumber,<a name="line.4071"></a>
-<span class="sourceLineNo">4072</span>                                                               e),<a name="line.4072"></a>
-<span class="sourceLineNo">4073</span>             firstLineNumber, true, ldifLines, e);<a name="line.4073"></a>
-<span class="sourceLineNo">4074</span>      }<a name="line.4074"></a>
-<span class="sourceLineNo">4075</span>    }<a name="line.4075"></a>
-<span class="sourceLineNo">4076</span>    else<a name="line.4076"></a>
-<span class="sourceLineNo">4077</span>    {<a name="line.4077"></a>
-<span class="sourceLineNo">4078</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4078"></a>
-<span class="sourceLineNo">4079</span>      // string is the new RDN.<a name="line.4079"></a>
-<span class="sourceLineNo">4080</span>      int pos = colonPos+1;<a name="line.4080"></a>
-<span class="sourceLineNo">4081</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4081"></a>
-<span class="sourceLineNo">4082</span>      {<a name="line.4082"></a>
-<span class="sourceLineNo">4083</span>        pos++;<a name="line.4083"></a>
-<span class="sourceLineNo">4084</span>      }<a name="line.4084"></a>
-<span class="sourceLineNo">4085</span><a name="line.4085"></a>
-<span class="sourceLineNo">4086</span>      newRDN = line.substring(pos);<a name="line.4086"></a>
-<span class="sourceLineNo">4087</span>    }<a name="line.4087"></a>
-<span class="sourceLineNo">4088</span><a name="line.4088"></a>
-<span class="sourceLineNo">4089</span>    if (newRDN.isEmpty())<a name="line.4089"></a>
-<span class="sourceLineNo">4090</span>    {<a name="line.4090"></a>
-<span class="sourceLineNo">4091</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWRDN_VALUE.get(<a name="line.4091"></a>
-<span class="sourceLineNo">4092</span>                                   firstLineNumber),<a name="line.4092"></a>
-<span class="sourceLineNo">4093</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4093"></a>
-<span class="sourceLineNo">4094</span>    }<a name="line.4094"></a>
-<span class="sourceLineNo">4095</span><a name="line.4095"></a>
-<span class="sourceLineNo">4096</span><a name="line.4096"></a>
-<span class="sourceLineNo">4097</span>    // The next line must be the deleteOldRDN flag, and it must start with<a name="line.4097"></a>
-<span class="sourceLineNo">4098</span>    // 'deleteoldrdn:'.<a name="line.4098"></a>
-<span class="sourceLineNo">4099</span>    if (! iterator.hasNext())<a name="line.4099"></a>
-<span class="sourceLineNo">4100</span>    {<a name="line.4100"></a>
-<span class="sourceLineNo">4101</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_DELOLDRDN_COLON.get(<a name="line.4101"></a>
-<span class="sourceLineNo">4102</span>                                   firstLineNumber),<a name="line.4102"></a>
-<span class="sourceLineNo">4103</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4103"></a>
-<span class="sourceLineNo">4104</span>    }<a name="line.4104"></a>
-<span class="sourceLineNo">4105</span><a name="line.4105"></a>
-<span class="sourceLineNo">4106</span>    line = iterator.next();<a name="line.4106"></a>
-<span class="sourceLineNo">4107</span>    handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.4107"></a>
-<span class="sourceLineNo">4108</span>    colonPos = line.indexOf(":");<a name="line.4108"></a>
-<span class="sourceLineNo">4109</span>    if ((colonPos &lt; 0) ||<a name="line.4109"></a>
-<span class="sourceLineNo">4110</span>        (! line.substring(0, colonPos).equalsIgnoreCase("deleteoldrdn")))<a name="line.4110"></a>
-<span class="sourceLineNo">4111</span>    {<a name="line.4111"></a>
-<span class="sourceLineNo">4112</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_DELOLDRDN_COLON.get(<a name="line.4112"></a>
-<span class="sourceLineNo">4113</span>                                   firstLineNumber),<a name="line.4113"></a>
-<span class="sourceLineNo">4114</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4114"></a>
-<span class="sourceLineNo">4115</span>    }<a name="line.4115"></a>
+<span class="sourceLineNo">3988</span>      final ASN1OctetString[] values = new ASN1OctetString[valueList.size()];<a name="line.3988"></a>
+<span class="sourceLineNo">3989</span>      valueList.toArray(values);<a name="line.3989"></a>
+<span class="sourceLineNo">3990</span><a name="line.3990"></a>
+<span class="sourceLineNo">3991</span>      // If it's an add modification type, then there must be at least one<a name="line.3991"></a>
+<span class="sourceLineNo">3992</span>      // value.<a name="line.3992"></a>
+<span class="sourceLineNo">3993</span>      if ((modType.intValue() == ModificationType.ADD.intValue()) &amp;&amp;<a name="line.3993"></a>
+<span class="sourceLineNo">3994</span>          (values.length == 0))<a name="line.3994"></a>
+<span class="sourceLineNo">3995</span>      {<a name="line.3995"></a>
+<span class="sourceLineNo">3996</span>        throw new LDIFException(ERR_READ_MOD_CR_NO_ADD_VALUES.get(attributeName,<a name="line.3996"></a>
+<span class="sourceLineNo">3997</span>                                     firstLineNumber),<a name="line.3997"></a>
+<span class="sourceLineNo">3998</span>                                firstLineNumber, true, ldifLines, null);<a name="line.3998"></a>
+<span class="sourceLineNo">3999</span>      }<a name="line.3999"></a>
+<span class="sourceLineNo">4000</span><a name="line.4000"></a>
+<span class="sourceLineNo">4001</span>      // If it's an increment modification type, then there must be exactly one<a name="line.4001"></a>
+<span class="sourceLineNo">4002</span>      // value.<a name="line.4002"></a>
+<span class="sourceLineNo">4003</span>      if ((modType.intValue() == ModificationType.INCREMENT.intValue()) &amp;&amp;<a name="line.4003"></a>
+<span class="sourceLineNo">4004</span>          (values.length != 1))<a name="line.4004"></a>
+<span class="sourceLineNo">4005</span>      {<a name="line.4005"></a>
+<span class="sourceLineNo">4006</span>        throw new LDIFException(ERR_READ_MOD_CR_INVALID_INCR_VALUE_COUNT.get(<a name="line.4006"></a>
+<span class="sourceLineNo">4007</span>                                     firstLineNumber, attributeName),<a name="line.4007"></a>
+<span class="sourceLineNo">4008</span>                                firstLineNumber, true, ldifLines, null);<a name="line.4008"></a>
+<span class="sourceLineNo">4009</span>      }<a name="line.4009"></a>
+<span class="sourceLineNo">4010</span><a name="line.4010"></a>
+<span class="sourceLineNo">4011</span>      modList.add(new Modification(modType, attributeName, values));<a name="line.4011"></a>
+<span class="sourceLineNo">4012</span>    }<a name="line.4012"></a>
+<span class="sourceLineNo">4013</span><a name="line.4013"></a>
+<span class="sourceLineNo">4014</span>    final Modification[] mods = new Modification[modList.size()];<a name="line.4014"></a>
+<span class="sourceLineNo">4015</span>    modList.toArray(mods);<a name="line.4015"></a>
+<span class="sourceLineNo">4016</span>    return mods;<a name="line.4016"></a>
+<span class="sourceLineNo">4017</span>  }<a name="line.4017"></a>
+<span class="sourceLineNo">4018</span><a name="line.4018"></a>
+<span class="sourceLineNo">4019</span><a name="line.4019"></a>
+<span class="sourceLineNo">4020</span><a name="line.4020"></a>
+<span class="sourceLineNo">4021</span>  /**<a name="line.4021"></a>
+<span class="sourceLineNo">4022</span>   * Parses the data available through the provided iterator as the body of a<a name="line.4022"></a>
+<span class="sourceLineNo">4023</span>   * modify DN change record (i.e., the newrdn, deleteoldrdn, and optional<a name="line.4023"></a>
+<span class="sourceLineNo">4024</span>   * newsuperior lines).<a name="line.4024"></a>
+<span class="sourceLineNo">4025</span>   *<a name="line.4025"></a>
+<span class="sourceLineNo">4026</span>   * @param  ldifLines              The lines that comprise the LDIF<a name="line.4026"></a>
+<span class="sourceLineNo">4027</span>   *                                representation of the full record being<a name="line.4027"></a>
+<span class="sourceLineNo">4028</span>   *                                parsed.<a name="line.4028"></a>
+<span class="sourceLineNo">4029</span>   * @param  iterator               The iterator to use to access the modify DN<a name="line.4029"></a>
+<span class="sourceLineNo">4030</span>   *                                data.<a name="line.4030"></a>
+<span class="sourceLineNo">4031</span>   * @param  dn                     The current DN of the entry.<a name="line.4031"></a>
+<span class="sourceLineNo">4032</span>   * @param  controls               The set of controls to include in the change<a name="line.4032"></a>
+<span class="sourceLineNo">4033</span>   *                                record.<a name="line.4033"></a>
+<span class="sourceLineNo">4034</span>   * @param  trailingSpaceBehavior  The behavior that should be exhibited when<a name="line.4034"></a>
+<span class="sourceLineNo">4035</span>   *                                encountering attribute values which are not<a name="line.4035"></a>
+<span class="sourceLineNo">4036</span>   *                                base64-encoded but contain trailing spaces.<a name="line.4036"></a>
+<span class="sourceLineNo">4037</span>   * @param  firstLineNumber        The line number for the start of the record.<a name="line.4037"></a>
+<span class="sourceLineNo">4038</span>   *<a name="line.4038"></a>
+<span class="sourceLineNo">4039</span>   * @return  The decoded modify DN change record.<a name="line.4039"></a>
+<span class="sourceLineNo">4040</span>   *<a name="line.4040"></a>
+<span class="sourceLineNo">4041</span>   * @throws  LDIFException  If the provided LDIF data cannot be decoded as a<a name="line.4041"></a>
+<span class="sourceLineNo">4042</span>   *                         modify DN change record.<a name="line.4042"></a>
+<span class="sourceLineNo">4043</span>   */<a name="line.4043"></a>
+<span class="sourceLineNo">4044</span>  @NotNull()<a name="line.4044"></a>
+<span class="sourceLineNo">4045</span>  private static LDIFModifyDNChangeRecord parseModifyDNChangeRecord(<a name="line.4045"></a>
+<span class="sourceLineNo">4046</span>               @NotNull final ArrayList&lt;StringBuilder&gt; ldifLines,<a name="line.4046"></a>
+<span class="sourceLineNo">4047</span>               @NotNull final Iterator&lt;StringBuilder&gt; iterator,<a name="line.4047"></a>
+<span class="sourceLineNo">4048</span>               @NotNull final String dn,<a name="line.4048"></a>
+<span class="sourceLineNo">4049</span>               @Nullable final List&lt;Control&gt; controls,<a name="line.4049"></a>
+<span class="sourceLineNo">4050</span>               @NotNull final TrailingSpaceBehavior trailingSpaceBehavior,<a name="line.4050"></a>
+<span class="sourceLineNo">4051</span>               final long firstLineNumber)<a name="line.4051"></a>
+<span class="sourceLineNo">4052</span>          throws LDIFException<a name="line.4052"></a>
+<span class="sourceLineNo">4053</span>  {<a name="line.4053"></a>
+<span class="sourceLineNo">4054</span>    // The next line must be the new RDN, and it must start with "newrdn:".<a name="line.4054"></a>
+<span class="sourceLineNo">4055</span>    StringBuilder line = iterator.next();<a name="line.4055"></a>
+<span class="sourceLineNo">4056</span>    handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.4056"></a>
+<span class="sourceLineNo">4057</span>    int colonPos = line.indexOf(":");<a name="line.4057"></a>
+<span class="sourceLineNo">4058</span>    if ((colonPos &lt; 0) ||<a name="line.4058"></a>
+<span class="sourceLineNo">4059</span>        (! line.substring(0, colonPos).equalsIgnoreCase("newrdn")))<a name="line.4059"></a>
+<span class="sourceLineNo">4060</span>    {<a name="line.4060"></a>
+<span class="sourceLineNo">4061</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWRDN_COLON.get(<a name="line.4061"></a>
+<span class="sourceLineNo">4062</span>                                   firstLineNumber),<a name="line.4062"></a>
+<span class="sourceLineNo">4063</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4063"></a>
+<span class="sourceLineNo">4064</span>    }<a name="line.4064"></a>
+<span class="sourceLineNo">4065</span><a name="line.4065"></a>
+<span class="sourceLineNo">4066</span>    final String newRDN;<a name="line.4066"></a>
+<span class="sourceLineNo">4067</span>    int length = line.length();<a name="line.4067"></a>
+<span class="sourceLineNo">4068</span>    if (length == (colonPos+1))<a name="line.4068"></a>
+<span class="sourceLineNo">4069</span>    {<a name="line.4069"></a>
+<span class="sourceLineNo">4070</span>      // The colon was the last character on the line.  This is not acceptable.<a name="line.4070"></a>
+<span class="sourceLineNo">4071</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWRDN_VALUE.get(<a name="line.4071"></a>
+<span class="sourceLineNo">4072</span>                                   firstLineNumber),<a name="line.4072"></a>
+<span class="sourceLineNo">4073</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4073"></a>
+<span class="sourceLineNo">4074</span>    }<a name="line.4074"></a>
+<span class="sourceLineNo">4075</span>    else if (line.charAt(colonPos+1) == ':')<a name="line.4075"></a>
+<span class="sourceLineNo">4076</span>    {<a name="line.4076"></a>
+<span class="sourceLineNo">4077</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4077"></a>
+<span class="sourceLineNo">4078</span>      // string is the base64-encoded new RDN.<a name="line.4078"></a>
+<span class="sourceLineNo">4079</span>      int pos = colonPos+2;<a name="line.4079"></a>
+<span class="sourceLineNo">4080</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4080"></a>
+<span class="sourceLineNo">4081</span>      {<a name="line.4081"></a>
+<span class="sourceLineNo">4082</span>        pos++;<a name="line.4082"></a>
+<span class="sourceLineNo">4083</span>      }<a name="line.4083"></a>
+<span class="sourceLineNo">4084</span><a name="line.4084"></a>
+<span class="sourceLineNo">4085</span>      try<a name="line.4085"></a>
+<span class="sourceLineNo">4086</span>      {<a name="line.4086"></a>
+<span class="sourceLineNo">4087</span>        final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.4087"></a>
+<span class="sourceLineNo">4088</span>        newRDN = StaticUtils.toUTF8String(dnBytes);<a name="line.4088"></a>
+<span class="sourceLineNo">4089</span>      }<a name="line.4089"></a>
+<span class="sourceLineNo">4090</span>      catch (final ParseException pe)<a name="line.4090"></a>
+<span class="sourceLineNo">4091</span>      {<a name="line.4091"></a>
+<span class="sourceLineNo">4092</span>        Debug.debugException(pe);<a name="line.4092"></a>
+<span class="sourceLineNo">4093</span>        throw new LDIFException(<a name="line.4093"></a>
+<span class="sourceLineNo">4094</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWRDN.get(firstLineNumber,<a name="line.4094"></a>
+<span class="sourceLineNo">4095</span>                                                               pe.getMessage()),<a name="line.4095"></a>
+<span class="sourceLineNo">4096</span>             firstLineNumber, true, ldifLines, pe);<a name="line.4096"></a>
+<span class="sourceLineNo">4097</span>      }<a name="line.4097"></a>
+<span class="sourceLineNo">4098</span>      catch (final Exception e)<a name="line.4098"></a>
+<span class="sourceLineNo">4099</span>      {<a name="line.4099"></a>
+<span class="sourceLineNo">4100</span>        Debug.debugException(e);<a name="line.4100"></a>
+<span class="sourceLineNo">4101</span>        throw new LDIFException(<a name="line.4101"></a>
+<span class="sourceLineNo">4102</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWRDN.get(firstLineNumber,<a name="line.4102"></a>
+<span class="sourceLineNo">4103</span>                                                               e),<a name="line.4103"></a>
+<span class="sourceLineNo">4104</span>             firstLineNumber, true, ldifLines, e);<a name="line.4104"></a>
+<span class="sourceLineNo">4105</span>      }<a name="line.4105"></a>
+<span class="sourceLineNo">4106</span>    }<a name="line.4106"></a>
+<span class="sourceLineNo">4107</span>    else<a name="line.4107"></a>
+<span class="sourceLineNo">4108</span>    {<a name="line.4108"></a>
+<span class="sourceLineNo">4109</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4109"></a>
+<span class="sourceLineNo">4110</span>      // string is the new RDN.<a name="line.4110"></a>
+<span class="sourceLineNo">4111</span>      int pos = colonPos+1;<a name="line.4111"></a>
+<span class="sourceLineNo">4112</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4112"></a>
+<span class="sourceLineNo">4113</span>      {<a name="line.4113"></a>
+<span class="sourceLineNo">4114</span>        pos++;<a name="line.4114"></a>
+<span class="sourceLineNo">4115</span>      }<a name="line.4115"></a>
 <span class="sourceLineNo">4116</span><a name="line.4116"></a>
-<span class="sourceLineNo">4117</span>    final String deleteOldRDNStr;<a name="line.4117"></a>
-<span class="sourceLineNo">4118</span>    length = line.length();<a name="line.4118"></a>
-<span class="sourceLineNo">4119</span>    if (length == (colonPos+1))<a name="line.4119"></a>
-<span class="sourceLineNo">4120</span>    {<a name="line.4120"></a>
-<span class="sourceLineNo">4121</span>      // The colon was the last character on the line.  This is not acceptable.<a name="line.4121"></a>
-<span class="sourceLineNo">4122</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_DELOLDRDN_VALUE.get(<a name="line.4122"></a>
+<span class="sourceLineNo">4117</span>      newRDN = line.substring(pos);<a name="line.4117"></a>
+<span class="sourceLineNo">4118</span>    }<a name="line.4118"></a>
+<span class="sourceLineNo">4119</span><a name="line.4119"></a>
+<span class="sourceLineNo">4120</span>    if (newRDN.isEmpty())<a name="line.4120"></a>
+<span class="sourceLineNo">4121</span>    {<a name="line.4121"></a>
+<span class="sourceLineNo">4122</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWRDN_VALUE.get(<a name="line.4122"></a>
 <span class="sourceLineNo">4123</span>                                   firstLineNumber),<a name="line.4123"></a>
 <span class="sourceLineNo">4124</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4124"></a>
 <span class="sourceLineNo">4125</span>    }<a name="line.4125"></a>
-<span class="sourceLineNo">4126</span>    else if (line.charAt(colonPos+1) == ':')<a name="line.4126"></a>
-<span class="sourceLineNo">4127</span>    {<a name="line.4127"></a>
-<span class="sourceLineNo">4128</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4128"></a>
-<span class="sourceLineNo">4129</span>      // string is the base64-encoded value.  This is unusual and<a name="line.4129"></a>
-<span class="sourceLineNo">4130</span>      // unnecessary, but is nevertheless acceptable.<a name="line.4130"></a>
-<span class="sourceLineNo">4131</span>      int pos = colonPos+2;<a name="line.4131"></a>
-<span class="sourceLineNo">4132</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4132"></a>
-<span class="sourceLineNo">4133</span>      {<a name="line.4133"></a>
-<span class="sourceLineNo">4134</span>        pos++;<a name="line.4134"></a>
-<span class="sourceLineNo">4135</span>      }<a name="line.4135"></a>
+<span class="sourceLineNo">4126</span><a name="line.4126"></a>
+<span class="sourceLineNo">4127</span><a name="line.4127"></a>
+<span class="sourceLineNo">4128</span>    // The next line must be the deleteOldRDN flag, and it must start with<a name="line.4128"></a>
+<span class="sourceLineNo">4129</span>    // 'deleteoldrdn:'.<a name="line.4129"></a>
+<span class="sourceLineNo">4130</span>    if (! iterator.hasNext())<a name="line.4130"></a>
+<span class="sourceLineNo">4131</span>    {<a name="line.4131"></a>
+<span class="sourceLineNo">4132</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_DELOLDRDN_COLON.get(<a name="line.4132"></a>
+<span class="sourceLineNo">4133</span>                                   firstLineNumber),<a name="line.4133"></a>
+<span class="sourceLineNo">4134</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4134"></a>
+<span class="sourceLineNo">4135</span>    }<a name="line.4135"></a>
 <span class="sourceLineNo">4136</span><a name="line.4136"></a>
-<span class="sourceLineNo">4137</span>      try<a name="line.4137"></a>
-<span class="sourceLineNo">4138</span>      {<a name="line.4138"></a>
-<span class="sourceLineNo">4139</span>        final byte[] changeTypeBytes = Base64.decode(line.substring(pos));<a name="line.4139"></a>
-<span class="sourceLineNo">4140</span>        deleteOldRDNStr = StaticUtils.toUTF8String(changeTypeBytes);<a name="line.4140"></a>
-<span class="sourceLineNo">4141</span>      }<a name="line.4141"></a>
-<span class="sourceLineNo">4142</span>      catch (final ParseException pe)<a name="line.4142"></a>
-<span class="sourceLineNo">4143</span>      {<a name="line.4143"></a>
-<span class="sourceLineNo">4144</span>        Debug.debugException(pe);<a name="line.4144"></a>
-<span class="sourceLineNo">4145</span>        throw new LDIFException(<a name="line.4145"></a>
-<span class="sourceLineNo">4146</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_DELOLDRDN.get(<a name="line.4146"></a>
-<span class="sourceLineNo">4147</span>                  firstLineNumber, pe.getMessage()),<a name="line.4147"></a>
-<span class="sourceLineNo">4148</span>             firstLineNumber, true, ldifLines, pe);<a name="line.4148"></a>
-<span class="sourceLineNo">4149</span>      }<a name="line.4149"></a>
-<span class="sourceLineNo">4150</span>      catch (final Exception e)<a name="line.4150"></a>
-<span class="sourceLineNo">4151</span>      {<a name="line.4151"></a>
-<span class="sourceLineNo">4152</span>        Debug.debugException(e);<a name="line.4152"></a>
-<span class="sourceLineNo">4153</span>        throw new LDIFException(<a name="line.4153"></a>
-<span class="sourceLineNo">4154</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_DELOLDRDN.get(<a name="line.4154"></a>
-<span class="sourceLineNo">4155</span>                  firstLineNumber, e),<a name="line.4155"></a>
-<span class="sourceLineNo">4156</span>             firstLineNumber, true, ldifLines, e);<a name="line.4156"></a>
-<span class="sourceLineNo">4157</span>      }<a name="line.4157"></a>
-<span class="sourceLineNo">4158</span>    }<a name="line.4158"></a>
-<span class="sourceLineNo">4159</span>    else<a name="line.4159"></a>
-<span class="sourceLineNo">4160</span>    {<a name="line.4160"></a>
-<span class="sourceLineNo">4161</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4161"></a>
-<span class="sourceLineNo">4162</span>      // string is the value.<a name="line.4162"></a>
-<span class="sourceLineNo">4163</span>      int pos = colonPos+1;<a name="line.4163"></a>
-<span class="sourceLineNo">4164</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4164"></a>
-<span class="sourceLineNo">4165</span>      {<a name="line.4165"></a>
-<span class="sourceLineNo">4166</span>        pos++;<a name="line.4166"></a>
-<span class="sourceLineNo">4167</span>      }<a name="line.4167"></a>
-<span class="sourceLineNo">4168</span><a name="line.4168"></a>
-<span class="sourceLineNo">4169</span>      deleteOldRDNStr = line.substring(pos);<a name="line.4169"></a>
-<span class="sourceLineNo">4170</span>    }<a name="line.4170"></a>
-<span class="sourceLineNo">4171</span><a name="line.4171"></a>
-<span class="sourceLineNo">4172</span>    final boolean deleteOldRDN;<a name="line.4172"></a>
-<span class="sourceLineNo">4173</span>    if (deleteOldRDNStr.equals("0"))<a name="line.4173"></a>
-<span class="sourceLineNo">4174</span>    {<a name="line.4174"></a>
-<span class="sourceLineNo">4175</span>      deleteOldRDN = false;<a name="line.4175"></a>
-<span class="sourceLineNo">4176</span>    }<a name="line.4176"></a>
-<span class="sourceLineNo">4177</span>    else if (deleteOldRDNStr.equals("1"))<a name="line.4177"></a>
-<span class="sourceLineNo">4178</span>    {<a name="line.4178"></a>
-<span class="sourceLineNo">4179</span>      deleteOldRDN = true;<a name="line.4179"></a>
-<span class="sourceLineNo">4180</span>    }<a name="line.4180"></a>
-<span class="sourceLineNo">4181</span>    else if (deleteOldRDNStr.equalsIgnoreCase("false") ||<a name="line.4181"></a>
-<span class="sourceLineNo">4182</span>             deleteOldRDNStr.equalsIgnoreCase("no"))<a name="line.4182"></a>
-<span class="sourceLineNo">4183</span>    {<a name="line.4183"></a>
-<span class="sourceLineNo">4184</span>      // This is technically illegal, but we'll allow it.<a name="line.4184"></a>
-<span class="sourceLineNo">4185</span>      deleteOldRDN = false;<a name="line.4185"></a>
-<span class="sourceLineNo">4186</span>    }<a name="line.4186"></a>
-<span class="sourceLineNo">4187</span>    else if (deleteOldRDNStr.equalsIgnoreCase("true") ||<a name="line.4187"></a>
-<span class="sourceLineNo">4188</span>             deleteOldRDNStr.equalsIgnoreCase("yes"))<a name="line.4188"></a>
-<span class="sourceLineNo">4189</span>    {<a name="line.4189"></a>
-<span class="sourceLineNo">4190</span>      // This is also technically illegal, but we'll allow it.<a name="line.4190"></a>
-<span class="sourceLineNo">4191</span>      deleteOldRDN = false;<a name="line.4191"></a>
-<span class="sourceLineNo">4192</span>    }<a name="line.4192"></a>
-<span class="sourceLineNo">4193</span>    else<a name="line.4193"></a>
-<span class="sourceLineNo">4194</span>    {<a name="line.4194"></a>
-<span class="sourceLineNo">4195</span>      throw new LDIFException(ERR_READ_MODDN_CR_INVALID_DELOLDRDN.get(<a name="line.4195"></a>
-<span class="sourceLineNo">4196</span>                                   deleteOldRDNStr, firstLineNumber),<a name="line.4196"></a>
-<span class="sourceLineNo">4197</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4197"></a>
-<span class="sourceLineNo">4198</span>    }<a name="line.4198"></a>
+<span class="sourceLineNo">4137</span>    line = iterator.next();<a name="line.4137"></a>
+<span class="sourceLineNo">4138</span>    handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.4138"></a>
+<span class="sourceLineNo">4139</span>    colonPos = line.indexOf(":");<a name="line.4139"></a>
+<span class="sourceLineNo">4140</span>    if ((colonPos &lt; 0) ||<a name="line.4140"></a>
+<span class="sourceLineNo">4141</span>        (! line.substring(0, colonPos).equalsIgnoreCase("deleteoldrdn")))<a name="line.4141"></a>
+<span class="sourceLineNo">4142</span>    {<a name="line.4142"></a>
+<span class="sourceLineNo">4143</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_DELOLDRDN_COLON.get(<a name="line.4143"></a>
+<span class="sourceLineNo">4144</span>                                   firstLineNumber),<a name="line.4144"></a>
+<span class="sourceLineNo">4145</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4145"></a>
+<span class="sourceLineNo">4146</span>    }<a name="line.4146"></a>
+<span class="sourceLineNo">4147</span><a name="line.4147"></a>
+<span class="sourceLineNo">4148</span>    final String deleteOldRDNStr;<a name="line.4148"></a>
+<span class="sourceLineNo">4149</span>    length = line.length();<a name="line.4149"></a>
+<span class="sourceLineNo">4150</span>    if (length == (colonPos+1))<a name="line.4150"></a>
+<span class="sourceLineNo">4151</span>    {<a name="line.4151"></a>
+<span class="sourceLineNo">4152</span>      // The colon was the last character on the line.  This is not acceptable.<a name="line.4152"></a>
+<span class="sourceLineNo">4153</span>      throw new LDIFException(ERR_READ_MODDN_CR_NO_DELOLDRDN_VALUE.get(<a name="line.4153"></a>
+<span class="sourceLineNo">4154</span>                                   firstLineNumber),<a name="line.4154"></a>
+<span class="sourceLineNo">4155</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4155"></a>
+<span class="sourceLineNo">4156</span>    }<a name="line.4156"></a>
+<span class="sourceLineNo">4157</span>    else if (line.charAt(colonPos+1) == ':')<a name="line.4157"></a>
+<span class="sourceLineNo">4158</span>    {<a name="line.4158"></a>
+<span class="sourceLineNo">4159</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4159"></a>
+<span class="sourceLineNo">4160</span>      // string is the base64-encoded value.  This is unusual and<a name="line.4160"></a>
+<span class="sourceLineNo">4161</span>      // unnecessary, but is nevertheless acceptable.<a name="line.4161"></a>
+<span class="sourceLineNo">4162</span>      int pos = colonPos+2;<a name="line.4162"></a>
+<span class="sourceLineNo">4163</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4163"></a>
+<span class="sourceLineNo">4164</span>      {<a name="line.4164"></a>
+<span class="sourceLineNo">4165</span>        pos++;<a name="line.4165"></a>
+<span class="sourceLineNo">4166</span>      }<a name="line.4166"></a>
+<span class="sourceLineNo">4167</span><a name="line.4167"></a>
+<span class="sourceLineNo">4168</span>      try<a name="line.4168"></a>
+<span class="sourceLineNo">4169</span>      {<a name="line.4169"></a>
+<span class="sourceLineNo">4170</span>        final byte[] changeTypeBytes = Base64.decode(line.substring(pos));<a name="line.4170"></a>
+<span class="sourceLineNo">4171</span>        deleteOldRDNStr = StaticUtils.toUTF8String(changeTypeBytes);<a name="line.4171"></a>
+<span class="sourceLineNo">4172</span>      }<a name="line.4172"></a>
+<span class="sourceLineNo">4173</span>      catch (final ParseException pe)<a name="line.4173"></a>
+<span class="sourceLineNo">4174</span>      {<a name="line.4174"></a>
+<span class="sourceLineNo">4175</span>        Debug.debugException(pe);<a name="line.4175"></a>
+<span class="sourceLineNo">4176</span>        throw new LDIFException(<a name="line.4176"></a>
+<span class="sourceLineNo">4177</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_DELOLDRDN.get(<a name="line.4177"></a>
+<span class="sourceLineNo">4178</span>                  firstLineNumber, pe.getMessage()),<a name="line.4178"></a>
+<span class="sourceLineNo">4179</span>             firstLineNumber, true, ldifLines, pe);<a name="line.4179"></a>
+<span class="sourceLineNo">4180</span>      }<a name="line.4180"></a>
+<span class="sourceLineNo">4181</span>      catch (final Exception e)<a name="line.4181"></a>
+<span class="sourceLineNo">4182</span>      {<a name="line.4182"></a>
+<span class="sourceLineNo">4183</span>        Debug.debugException(e);<a name="line.4183"></a>
+<span class="sourceLineNo">4184</span>        throw new LDIFException(<a name="line.4184"></a>
+<span class="sourceLineNo">4185</span>             ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_DELOLDRDN.get(<a name="line.4185"></a>
+<span class="sourceLineNo">4186</span>                  firstLineNumber, e),<a name="line.4186"></a>
+<span class="sourceLineNo">4187</span>             firstLineNumber, true, ldifLines, e);<a name="line.4187"></a>
+<span class="sourceLineNo">4188</span>      }<a name="line.4188"></a>
+<span class="sourceLineNo">4189</span>    }<a name="line.4189"></a>
+<span class="sourceLineNo">4190</span>    else<a name="line.4190"></a>
+<span class="sourceLineNo">4191</span>    {<a name="line.4191"></a>
+<span class="sourceLineNo">4192</span>      // Skip over any spaces leading up to the value, and then the rest of the<a name="line.4192"></a>
+<span class="sourceLineNo">4193</span>      // string is the value.<a name="line.4193"></a>
+<span class="sourceLineNo">4194</span>      int pos = colonPos+1;<a name="line.4194"></a>
+<span class="sourceLineNo">4195</span>      while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4195"></a>
+<span class="sourceLineNo">4196</span>      {<a name="line.4196"></a>
+<span class="sourceLineNo">4197</span>        pos++;<a name="line.4197"></a>
+<span class="sourceLineNo">4198</span>      }<a name="line.4198"></a>
 <span class="sourceLineNo">4199</span><a name="line.4199"></a>
-<span class="sourceLineNo">4200</span><a name="line.4200"></a>
-<span class="sourceLineNo">4201</span>    // If there is another line, then it must be the new superior DN and it must<a name="line.4201"></a>
-<span class="sourceLineNo">4202</span>    // start with "newsuperior:".  If this is absent, then it's fine.<a name="line.4202"></a>
-<span class="sourceLineNo">4203</span>    final String newSuperiorDN;<a name="line.4203"></a>
-<span class="sourceLineNo">4204</span>    if (iterator.hasNext())<a name="line.4204"></a>
+<span class="sourceLineNo">4200</span>      deleteOldRDNStr = line.substring(pos);<a name="line.4200"></a>
+<span class="sourceLineNo">4201</span>    }<a name="line.4201"></a>
+<span class="sourceLineNo">4202</span><a name="line.4202"></a>
+<span class="sourceLineNo">4203</span>    final boolean deleteOldRDN;<a name="line.4203"></a>
+<span class="sourceLineNo">4204</span>    if (deleteOldRDNStr.equals("0"))<a name="line.4204"></a>
 <span class="sourceLineNo">4205</span>    {<a name="line.4205"></a>
-<span class="sourceLineNo">4206</span>      line = iterator.next();<a name="line.4206"></a>
-<span class="sourceLineNo">4207</span>      handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.4207"></a>
-<span class="sourceLineNo">4208</span>      colonPos = line.indexOf(":");<a name="line.4208"></a>
-<span class="sourceLineNo">4209</span>      if ((colonPos &lt; 0) ||<a name="line.4209"></a>
-<span class="sourceLineNo">4210</span>          (! line.substring(0, colonPos).equalsIgnoreCase("newsuperior")))<a name="line.4210"></a>
-<span class="sourceLineNo">4211</span>      {<a name="line.4211"></a>
-<span class="sourceLineNo">4212</span>        throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWSUPERIOR_COLON.get(<a name="line.4212"></a>
-<span class="sourceLineNo">4213</span>                                     firstLineNumber),<a name="line.4213"></a>
-<span class="sourceLineNo">4214</span>                                firstLineNumber, true, ldifLines, null);<a name="line.4214"></a>
-<span class="sourceLineNo">4215</span>      }<a name="line.4215"></a>
-<span class="sourceLineNo">4216</span><a name="line.4216"></a>
-<span class="sourceLineNo">4217</span>      length = line.length();<a name="line.4217"></a>
-<span class="sourceLineNo">4218</span>      if (length == (colonPos+1))<a name="line.4218"></a>
-<span class="sourceLineNo">4219</span>      {<a name="line.4219"></a>
-<span class="sourceLineNo">4220</span>        // The colon was the last character on the line.  This is fine.<a name="line.4220"></a>
-<span class="sourceLineNo">4221</span>        newSuperiorDN = "";<a name="line.4221"></a>
-<span class="sourceLineNo">4222</span>      }<a name="line.4222"></a>
-<span class="sourceLineNo">4223</span>      else if (line.charAt(colonPos+1) == ':')<a name="line.4223"></a>
-<span class="sourceLineNo">4224</span>      {<a name="line.4224"></a>
-<span class="sourceLineNo">4225</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.4225"></a>
-<span class="sourceLineNo">4226</span>        // the string is the base64-encoded new superior DN.<a name="line.4226"></a>
-<span class="sourceLineNo">4227</span>        int pos = colonPos+2;<a name="line.4227"></a>
-<span class="sourceLineNo">4228</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4228"></a>
-<span class="sourceLineNo">4229</span>        {<a name="line.4229"></a>
-<span class="sourceLineNo">4230</span>          pos++;<a name="line.4230"></a>
-<span class="sourceLineNo">4231</span>        }<a name="line.4231"></a>
-<span class="sourceLineNo">4232</span><a name="line.4232"></a>
-<span class="sourceLineNo">4233</span>        try<a name="line.4233"></a>
-<span class="sourceLineNo">4234</span>        {<a name="line.4234"></a>
-<span class="sourceLineNo">4235</span>          final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.4235"></a>
-<span class="sourceLineNo">4236</span>          newSuperiorDN = StaticUtils.toUTF8String(dnBytes);<a name="line.4236"></a>
-<span class="sourceLineNo">4237</span>        }<a name="line.4237"></a>
-<span class="sourceLineNo">4238</span>        catch (final ParseException pe)<a name="line.4238"></a>
-<span class="sourceLineNo">4239</span>        {<a name="line.4239"></a>
-<span class="sourceLineNo">4240</span>          Debug.debugException(pe);<a name="line.4240"></a>
-<span class="sourceLineNo">4241</span>          throw new LDIFException(<a name="line.4241"></a>
-<span class="sourceLineNo">4242</span>               ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWSUPERIOR.get(<a name="line.4242"></a>
-<span class="sourceLineNo">4243</span>                    firstLineNumber, pe.getMessage()),<a name="line.4243"></a>
-<span class="sourceLineNo">4244</span>               firstLineNumber, true, ldifLines, pe);<a name="line.4244"></a>
-<span class="sourceLineNo">4245</span>        }<a name="line.4245"></a>
-<span class="sourceLineNo">4246</span>        catch (final Exception e)<a name="line.4246"></a>
-<span class="sourceLineNo">4247</span>        {<a name="line.4247"></a>
-<span class="sourceLineNo">4248</span>          Debug.debugException(e);<a name="line.4248"></a>
-<span class="sourceLineNo">4249</span>          throw new LDIFException(<a name="line.4249"></a>
-<span class="sourceLineNo">4250</span>               ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWSUPERIOR.get(<a name="line.4250"></a>
-<span class="sourceLineNo">4251</span>                    firstLineNumber, e),<a name="line.4251"></a>
-<span class="sourceLineNo">4252</span>               firstLineNumber, true, ldifLines, e);<a name="line.4252"></a>
-<span class="sourceLineNo">4253</span>        }<a name="line.4253"></a>
-<span class="sourceLineNo">4254</span>      }<a name="line.4254"></a>
-<span class="sourceLineNo">4255</span>      else<a name="line.4255"></a>
-<span class="sourceLineNo">4256</span>      {<a name="line.4256"></a>
-<span class="sourceLineNo">4257</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.4257"></a>
-<span class="sourceLineNo">4258</span>        // the string is the new superior DN.<a name="line.4258"></a>
-<span class="sourceLineNo">4259</span>        int pos = colonPos+1;<a name="line.4259"></a>
-<span class="sourceLineNo">4260</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4260"></a>
-<span class="sourceLineNo">4261</span>        {<a name="line.4261"></a>
-<span class="sourceLineNo">4262</span>          pos++;<a name="line.4262"></a>
-<span class="sourceLineNo">4263</span>        }<a name="line.4263"></a>
-<span class="sourceLineNo">4264</span><a name="line.4264"></a>
-<span class="sourceLineNo">4265</span>        newSuperiorDN = line.substring(pos);<a name="line.4265"></a>
-<span class="sourceLineNo">4266</span>      }<a name="line.4266"></a>
-<span class="sourceLineNo">4267</span>    }<a name="line.4267"></a>
-<span class="sourceLineNo">4268</span>    else<a name="line.4268"></a>
-<span class="sourceLineNo">4269</span>    {<a name="line.4269"></a>
-<span class="sourceLineNo">4270</span>      newSuperiorDN = null;<a name="line.4270"></a>
-<span class="sourceLineNo">4271</span>    }<a name="line.4271"></a>
-<span class="sourceLineNo">4272</span><a name="line.4272"></a>
-<span class="sourceLineNo">4273</span><a name="line.4273"></a>
-<span class="sourceLineNo">4274</span>    // There must not be any more lines.<a name="line.4274"></a>
-<span class="sourceLineNo">4275</span>    if (iterator.hasNext())<a name="line.4275"></a>
-<span class="sourceLineNo">4276</span>    {<a name="line.4276"></a>
-<span class="sourceLineNo">4277</span>      throw new LDIFException(ERR_READ_CR_EXTRA_MODDN_DATA.get(firstLineNumber),<a name="line.4277"></a>
-<span class="sourceLineNo">4278</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4278"></a>
-<span class="sourceLineNo">4279</span>    }<a name="line.4279"></a>
-<span class="sourceLineNo">4280</span><a name="line.4280"></a>
-<span class="sourceLineNo">4281</span>    return new LDIFModifyDNChangeRecord(dn, newRDN, deleteOldRDN,<a name="line.4281"></a>
-<span class="sourceLineNo">4282</span>         newSuperiorDN, controls);<a name="line.4282"></a>
-<span class="sourceLineNo">4283</span>  }<a name="line.4283"></a>
-<span class="sourceLineNo">4284</span><a name="line.4284"></a>
-<span class="sourceLineNo">4285</span><a name="line.4285"></a>
-<span class="sourceLineNo">4286</span><a name="line.4286"></a>
-<span class="sourceLineNo">4287</span>  /**<a name="line.4287"></a>
-<span class="sourceLineNo">4288</span>   * Examines the line contained in the provided buffer to determine whether it<a name="line.4288"></a>
-<span class="sourceLineNo">4289</span>   * may contain one or more illegal trailing spaces.  If it does, then those<a name="line.4289"></a>
-<span class="sourceLineNo">4290</span>   * spaces will either be stripped out or an exception will be thrown to<a name="line.4290"></a>
-<span class="sourceLineNo">4291</span>   * indicate that they are illegal.<a name="line.4291"></a>
-<span class="sourceLineNo">4292</span>   *<a name="line.4292"></a>
-<span class="sourceLineNo">4293</span>   * @param  buffer                 The buffer to be examined.<a name="line.4293"></a>
-<span class="sourceLineNo">4294</span>   * @param  dn                     The DN of the LDIF record being parsed.  It<a name="line.4294"></a>
-<span class="sourceLineNo">4295</span>   *                                may be {@code null} if the DN is not yet<a name="line.4295"></a>
-<span class="sourceLineNo">4296</span>   *                                known (e.g., because the provided line is<a name="line.4296"></a>
-<span class="sourceLineNo">4297</span>   *                                expected to contain that DN).<a name="line.4297"></a>
-<span class="sourceLineNo">4298</span>   * @param  firstLineNumber        The approximate line number in the LDIF<a name="line.4298"></a>
-<span class="sourceLineNo">4299</span>   *                                source on which the LDIF record begins.<a name="line.4299"></a>
-<span class="sourceLineNo">4300</span>   * @param  trailingSpaceBehavior  The behavior that should be exhibited when<a name="line.4300"></a>
-<span class="sourceLineNo">4301</span>   *                                encountering attribute values which are not<a name="line.4301"></a>
-<span class="sourceLineNo">4302</span>   *                                base64-encoded but contain trailing spaces.<a name="line.4302"></a>
-<span class="sourceLineNo">4303</span>   *<a name="line.4303"></a>
-<span class="sourceLineNo">4304</span>   * @throws  LDIFException  If the line contained in the provided buffer ends<a name="line.4304"></a>
-<span class="sourceLineNo">4305</span>   *                         with one or more illegal trailing spaces and<a name="line.4305"></a>
-<span class="sourceLineNo">4306</span>   *                         {@code stripTrailingSpaces} was provided with a<a name="line.4306"></a>
-<span class="sourceLineNo">4307</span>   *                         value of {@code false}.<a name="line.4307"></a>
-<span class="sourceLineNo">4308</span>   */<a name="line.4308"></a>
-<span class="sourceLineNo">4309</span>  private static void handleTrailingSpaces(@NotNull final StringBuilder buffer,<a name="line.4309"></a>
-<span class="sourceLineNo">4310</span>               @Nullable final String dn, final long firstLineNumber,<a name="line.4310"></a>
-<span class="sourceLineNo">4311</span>               @NotNull final TrailingSpaceBehavior trailingSpaceBehavior)<a name="line.4311"></a>
-<span class="sourceLineNo">4312</span>          throws LDIFException<a name="line.4312"></a>
-<span class="sourceLineNo">4313</span>  {<a name="line.4313"></a>
-<span class="sourceLineNo">4314</span>    int pos = buffer.length() - 1;<a name="line.4314"></a>
-<span class="sourceLineNo">4315</span>    boolean trailingFound = false;<a name="line.4315"></a>
-<span class="sourceLineNo">4316</span>    while ((pos &gt;= 0) &amp;&amp; (buffer.charAt(pos) == ' '))<a name="line.4316"></a>
-<span class="sourceLineNo">4317</span>    {<a name="line.4317"></a>
-<span class="sourceLineNo">4318</span>      trailingFound = true;<a name="line.4318"></a>
-<span class="sourceLineNo">4319</span>      pos--;<a name="line.4319"></a>
-<span class="sourceLineNo">4320</span>    }<a name="line.4320"></a>
-<span class="sourceLineNo">4321</span><a name="line.4321"></a>
-<span class="sourceLineNo">4322</span>    if (trailingFound &amp;&amp; (buffer.charAt(pos) != ':'))<a name="line.4322"></a>
-<span class="sourceLineNo">4323</span>    {<a name="line.4323"></a>
-<span class="sourceLineNo">4324</span>      switch (trailingSpaceBehavior)<a name="line.4324"></a>
-<span class="sourceLineNo">4325</span>      {<a name="line.4325"></a>
-<span class="sourceLineNo">4326</span>        case STRIP:<a name="line.4326"></a>
-<span class="sourceLineNo">4327</span>          buffer.setLength(pos+1);<a name="line.4327"></a>
-<span class="sourceLineNo">4328</span>          break;<a name="line.4328"></a>
-<span class="sourceLineNo">4329</span><a name="line.4329"></a>
-<span class="sourceLineNo">4330</span>        case REJECT:<a name="line.4330"></a>
-<span class="sourceLineNo">4331</span>          if (dn == null)<a name="line.4331"></a>
-<span class="sourceLineNo">4332</span>          {<a name="line.4332"></a>
-<span class="sourceLineNo">4333</span>            throw new LDIFException(<a name="line.4333"></a>
-<span class="sourceLineNo">4334</span>                 ERR_READ_ILLEGAL_TRAILING_SPACE_WITHOUT_DN.get(firstLineNumber,<a name="line.4334"></a>
-<span class="sourceLineNo">4335</span>                      buffer.toString()),<a name="line.4335"></a>
-<span class="sourceLineNo">4336</span>                 firstLineNumber, true);<a name="line.4336"></a>
-<span class="sourceLineNo">4337</span>          }<a name="line.4337"></a>
-<span class="sourceLineNo">4338</span>          else<a name="line.4338"></a>
-<span class="sourceLineNo">4339</span>          {<a name="line.4339"></a>
-<span class="sourceLineNo">4340</span>            throw new LDIFException(<a name="line.4340"></a>
-<span class="sourceLineNo">4341</span>                 ERR_READ_ILLEGAL_TRAILING_SPACE_WITH_DN.get(dn,<a name="line.4341"></a>
-<span class="sourceLineNo">4342</span>                      firstLineNumber, buffer.toString()),<a name="line.4342"></a>
-<span class="sourceLineNo">4343</span>                 firstLineNumber, true);<a name="line.4343"></a>
-<span class="sourceLineNo">4344</span>          }<a name="line.4344"></a>
-<span class="sourceLineNo">4345</span><a name="line.4345"></a>
-<span class="sourceLineNo">4346</span>        case RETAIN:<a name="line.4346"></a>
-<span class="sourceLineNo">4347</span>        default:<a name="line.4347"></a>
-<span class="sourceLineNo">4348</span>          // No action will be taken.<a name="line.4348"></a>
-<span class="sourceLineNo">4349</span>          break;<a name="line.4349"></a>
-<span class="sourceLineNo">4350</span>      }<a name="line.4350"></a>
+<span class="sourceLineNo">4206</span>      deleteOldRDN = false;<a name="line.4206"></a>
+<span class="sourceLineNo">4207</span>    }<a name="line.4207"></a>
+<span class="sourceLineNo">4208</span>    else if (deleteOldRDNStr.equals("1"))<a name="line.4208"></a>
+<span class="sourceLineNo">4209</span>    {<a name="line.4209"></a>
+<span class="sourceLineNo">4210</span>      deleteOldRDN = true;<a name="line.4210"></a>
+<span class="sourceLineNo">4211</span>    }<a name="line.4211"></a>
+<span class="sourceLineNo">4212</span>    else if (deleteOldRDNStr.equalsIgnoreCase("false") ||<a name="line.4212"></a>
+<span class="sourceLineNo">4213</span>             deleteOldRDNStr.equalsIgnoreCase("no"))<a name="line.4213"></a>
+<span class="sourceLineNo">4214</span>    {<a name="line.4214"></a>
+<span class="sourceLineNo">4215</span>      // This is technically illegal, but we'll allow it.<a name="line.4215"></a>
+<span class="sourceLineNo">4216</span>      deleteOldRDN = false;<a name="line.4216"></a>
+<span class="sourceLineNo">4217</span>    }<a name="line.4217"></a>
+<span class="sourceLineNo">4218</span>    else if (deleteOldRDNStr.equalsIgnoreCase("true") ||<a name="line.4218"></a>
+<span class="sourceLineNo">4219</span>             deleteOldRDNStr.equalsIgnoreCase("yes"))<a name="line.4219"></a>
+<span class="sourceLineNo">4220</span>    {<a name="line.4220"></a>
+<span class="sourceLineNo">4221</span>      // This is also technically illegal, but we'll allow it.<a name="line.4221"></a>
+<span class="sourceLineNo">4222</span>      deleteOldRDN = false;<a name="line.4222"></a>
+<span class="sourceLineNo">4223</span>    }<a name="line.4223"></a>
+<span class="sourceLineNo">4224</span>    else<a name="line.4224"></a>
+<span class="sourceLineNo">4225</span>    {<a name="line.4225"></a>
+<span class="sourceLineNo">4226</span>      throw new LDIFException(ERR_READ_MODDN_CR_INVALID_DELOLDRDN.get(<a name="line.4226"></a>
+<span class="sourceLineNo">4227</span>                                   deleteOldRDNStr, firstLineNumber),<a name="line.4227"></a>
+<span class="sourceLineNo">4228</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4228"></a>
+<span class="sourceLineNo">4229</span>    }<a name="line.4229"></a>
+<span class="sourceLineNo">4230</span><a name="line.4230"></a>
+<span class="sourceLineNo">4231</span><a name="line.4231"></a>
+<span class="sourceLineNo">4232</span>    // If there is another line, then it must be the new superior DN and it must<a name="line.4232"></a>
+<span class="sourceLineNo">4233</span>    // start with "newsuperior:".  If this is absent, then it's fine.<a name="line.4233"></a>
+<span class="sourceLineNo">4234</span>    final String newSuperiorDN;<a name="line.4234"></a>
+<span class="sourceLineNo">4235</span>    if (iterator.hasNext())<a name="line.4235"></a>
+<span class="sourceLineNo">4236</span>    {<a name="line.4236"></a>
+<span class="sourceLineNo">4237</span>      line = iterator.next();<a name="line.4237"></a>
+<span class="sourceLineNo">4238</span>      handleTrailingSpaces(line, dn, firstLineNumber, trailingSpaceBehavior);<a name="line.4238"></a>
+<span class="sourceLineNo">4239</span>      colonPos = line.indexOf(":");<a name="line.4239"></a>
+<span class="sourceLineNo">4240</span>      if ((colonPos &lt; 0) ||<a name="line.4240"></a>
+<span class="sourceLineNo">4241</span>          (! line.substring(0, colonPos).equalsIgnoreCase("newsuperior")))<a name="line.4241"></a>
+<span class="sourceLineNo">4242</span>      {<a name="line.4242"></a>
+<span class="sourceLineNo">4243</span>        throw new LDIFException(ERR_READ_MODDN_CR_NO_NEWSUPERIOR_COLON.get(<a name="line.4243"></a>
+<span class="sourceLineNo">4244</span>                                     firstLineNumber),<a name="line.4244"></a>
+<span class="sourceLineNo">4245</span>                                firstLineNumber, true, ldifLines, null);<a name="line.4245"></a>
+<span class="sourceLineNo">4246</span>      }<a name="line.4246"></a>
+<span class="sourceLineNo">4247</span><a name="line.4247"></a>
+<span class="sourceLineNo">4248</span>      length = line.length();<a name="line.4248"></a>
+<span class="sourceLineNo">4249</span>      if (length == (colonPos+1))<a name="line.4249"></a>
+<span class="sourceLineNo">4250</span>      {<a name="line.4250"></a>
+<span class="sourceLineNo">4251</span>        // The colon was the last character on the line.  This is fine.<a name="line.4251"></a>
+<span class="sourceLineNo">4252</span>        newSuperiorDN = "";<a name="line.4252"></a>
+<span class="sourceLineNo">4253</span>      }<a name="line.4253"></a>
+<span class="sourceLineNo">4254</span>      else if (line.charAt(colonPos+1) == ':')<a name="line.4254"></a>
+<span class="sourceLineNo">4255</span>      {<a name="line.4255"></a>
+<span class="sourceLineNo">4256</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.4256"></a>
+<span class="sourceLineNo">4257</span>        // the string is the base64-encoded new superior DN.<a name="line.4257"></a>
+<span class="sourceLineNo">4258</span>        int pos = colonPos+2;<a name="line.4258"></a>
+<span class="sourceLineNo">4259</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4259"></a>
+<span class="sourceLineNo">4260</span>        {<a name="line.4260"></a>
+<span class="sourceLineNo">4261</span>          pos++;<a name="line.4261"></a>
+<span class="sourceLineNo">4262</span>        }<a name="line.4262"></a>
+<span class="sourceLineNo">4263</span><a name="line.4263"></a>
+<span class="sourceLineNo">4264</span>        try<a name="line.4264"></a>
+<span class="sourceLineNo">4265</span>        {<a name="line.4265"></a>
+<span class="sourceLineNo">4266</span>          final byte[] dnBytes = Base64.decode(line.substring(pos));<a name="line.4266"></a>
+<span class="sourceLineNo">4267</span>          newSuperiorDN = StaticUtils.toUTF8String(dnBytes);<a name="line.4267"></a>
+<span class="sourceLineNo">4268</span>        }<a name="line.4268"></a>
+<span class="sourceLineNo">4269</span>        catch (final ParseException pe)<a name="line.4269"></a>
+<span class="sourceLineNo">4270</span>        {<a name="line.4270"></a>
+<span class="sourceLineNo">4271</span>          Debug.debugException(pe);<a name="line.4271"></a>
+<span class="sourceLineNo">4272</span>          throw new LDIFException(<a name="line.4272"></a>
+<span class="sourceLineNo">4273</span>               ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWSUPERIOR.get(<a name="line.4273"></a>
+<span class="sourceLineNo">4274</span>                    firstLineNumber, pe.getMessage()),<a name="line.4274"></a>
+<span class="sourceLineNo">4275</span>               firstLineNumber, true, ldifLines, pe);<a name="line.4275"></a>
+<span class="sourceLineNo">4276</span>        }<a name="line.4276"></a>
+<span class="sourceLineNo">4277</span>        catch (final Exception e)<a name="line.4277"></a>
+<span class="sourceLineNo">4278</span>        {<a name="line.4278"></a>
+<span class="sourceLineNo">4279</span>          Debug.debugException(e);<a name="line.4279"></a>
+<span class="sourceLineNo">4280</span>          throw new LDIFException(<a name="line.4280"></a>
+<span class="sourceLineNo">4281</span>               ERR_READ_MODDN_CR_CANNOT_BASE64_DECODE_NEWSUPERIOR.get(<a name="line.4281"></a>
+<span class="sourceLineNo">4282</span>                    firstLineNumber, e),<a name="line.4282"></a>
+<span class="sourceLineNo">4283</span>               firstLineNumber, true, ldifLines, e);<a name="line.4283"></a>
+<span class="sourceLineNo">4284</span>        }<a name="line.4284"></a>
+<span class="sourceLineNo">4285</span>      }<a name="line.4285"></a>
+<span class="sourceLineNo">4286</span>      else<a name="line.4286"></a>
+<span class="sourceLineNo">4287</span>      {<a name="line.4287"></a>
+<span class="sourceLineNo">4288</span>        // Skip over any spaces leading up to the value, and then the rest of<a name="line.4288"></a>
+<span class="sourceLineNo">4289</span>        // the string is the new superior DN.<a name="line.4289"></a>
+<span class="sourceLineNo">4290</span>        int pos = colonPos+1;<a name="line.4290"></a>
+<span class="sourceLineNo">4291</span>        while ((pos &lt; length) &amp;&amp; (line.charAt(pos) == ' '))<a name="line.4291"></a>
+<span class="sourceLineNo">4292</span>        {<a name="line.4292"></a>
+<span class="sourceLineNo">4293</span>          pos++;<a name="line.4293"></a>
+<span class="sourceLineNo">4294</span>        }<a name="line.4294"></a>
+<span class="sourceLineNo">4295</span><a name="line.4295"></a>
+<span class="sourceLineNo">4296</span>        newSuperiorDN = line.substring(pos);<a name="line.4296"></a>
+<span class="sourceLineNo">4297</span>      }<a name="line.4297"></a>
+<span class="sourceLineNo">4298</span>    }<a name="line.4298"></a>
+<span class="sourceLineNo">4299</span>    else<a name="line.4299"></a>
+<span class="sourceLineNo">4300</span>    {<a name="line.4300"></a>
+<span class="sourceLineNo">4301</span>      newSuperiorDN = null;<a name="line.4301"></a>
+<span class="sourceLineNo">4302</span>    }<a name="line.4302"></a>
+<span class="sourceLineNo">4303</span><a name="line.4303"></a>
+<span class="sourceLineNo">4304</span><a name="line.4304"></a>
+<span class="sourceLineNo">4305</span>    // There must not be any more lines.<a name="line.4305"></a>
+<span class="sourceLineNo">4306</span>    if (iterator.hasNext())<a name="line.4306"></a>
+<span class="sourceLineNo">4307</span>    {<a name="line.4307"></a>
+<span class="sourceLineNo">4308</span>      throw new LDIFException(ERR_READ_CR_EXTRA_MODDN_DATA.get(firstLineNumber),<a name="line.4308"></a>
+<span class="sourceLineNo">4309</span>                              firstLineNumber, true, ldifLines, null);<a name="line.4309"></a>
+<span class="sourceLineNo">4310</span>    }<a name="line.4310"></a>
+<span class="sourceLineNo">4311</span><a name="line.4311"></a>
+<span class="sourceLineNo">4312</span>    return new LDIFModifyDNChangeRecord(dn, newRDN, deleteOldRDN,<a name="line.4312"></a>
+<span class="sourceLineNo">4313</span>         newSuperiorDN, controls);<a name="line.4313"></a>
+<span class="sourceLineNo">4314</span>  }<a name="line.4314"></a>
+<span class="sourceLineNo">4315</span><a name="line.4315"></a>
+<span class="sourceLineNo">4316</span><a name="line.4316"></a>
+<span class="sourceLineNo">4317</span><a name="line.4317"></a>
+<span class="sourceLineNo">4318</span>  /**<a name="line.4318"></a>
+<span class="sourceLineNo">4319</span>   * Examines the line contained in the provided buffer to determine whether it<a name="line.4319"></a>
+<span class="sourceLineNo">4320</span>   * may contain one or more illegal trailing spaces.  If it does, then those<a name="line.4320"></a>
+<span class="sourceLineNo">4321</span>   * spaces will either be stripped out or an exception will be thrown to<a name="line.4321"></a>
+<span class="sourceLineNo">4322</span>   * indicate that they are illegal.<a name="line.4322"></a>
+<span class="sourceLineNo">4323</span>   *<a name="line.4323"></a>
+<span class="sourceLineNo">4324</span>   * @param  buffer                 The buffer to be examined.<a name="line.4324"></a>
+<span class="sourceLineNo">4325</span>   * @param  dn                     The DN of the LDIF record being parsed.  It<a name="line.4325"></a>
+<span class="sourceLineNo">4326</span>   *                                may be {@code null} if the DN is not yet<a name="line.4326"></a>
+<span class="sourceLineNo">4327</span>   *                                known (e.g., because the provided line is<a name="line.4327"></a>
+<span class="sourceLineNo">4328</span>   *                                expected to contain that DN).<a name="line.4328"></a>
+<span class="sourceLineNo">4329</span>   * @param  firstLineNumber        The approximate line number in the LDIF<a name="line.4329"></a>
+<span class="sourceLineNo">4330</span>   *                                source on which the LDIF record begins.<a name="line.4330"></a>
+<span class="sourceLineNo">4331</span>   * @param  trailingSpaceBehavior  The behavior that should be exhibited when<a name="line.4331"></a>
+<span class="sourceLineNo">4332</span>   *                                encountering attribute values which are not<a name="line.4332"></a>
+<span class="sourceLineNo">4333</span>   *                                base64-encoded but contain trailing spaces.<a name="line.4333"></a>
+<span class="sourceLineNo">4334</span>   *<a name="line.4334"></a>
+<span class="sourceLineNo">4335</span>   * @throws  LDIFException  If the line contained in the provided buffer ends<a name="line.4335"></a>
+<span class="sourceLineNo">4336</span>   *                         with one or more illegal trailing spaces and<a name="line.4336"></a>
+<span class="sourceLineNo">4337</span>   *                         {@code stripTrailingSpaces} was provided with a<a name="line.4337"></a>
+<span class="sourceLineNo">4338</span>   *                         value of {@code false}.<a name="line.4338"></a>
+<span class="sourceLineNo">4339</span>   */<a name="line.4339"></a>
+<span class="sourceLineNo">4340</span>  private static void handleTrailingSpaces(@NotNull final StringBuilder buffer,<a name="line.4340"></a>
+<span class="sourceLineNo">4341</span>               @Nullable final String dn, final long firstLineNumber,<a name="line.4341"></a>
+<span class="sourceLineNo">4342</span>               @NotNull final TrailingSpaceBehavior trailingSpaceBehavior)<a name="line.4342"></a>
+<span class="sourceLineNo">4343</span>          throws LDIFException<a name="line.4343"></a>
+<span class="sourceLineNo">4344</span>  {<a name="line.4344"></a>
+<span class="sourceLineNo">4345</span>    int pos = buffer.length() - 1;<a name="line.4345"></a>
+<span class="sourceLineNo">4346</span>    boolean trailingFound = false;<a name="line.4346"></a>
+<span class="sourceLineNo">4347</span>    while ((pos &gt;= 0) &amp;&amp; (buffer.charAt(pos) == ' '))<a name="line.4347"></a>
+<span class="sourceLineNo">4348</span>    {<a name="line.4348"></a>
+<span class="sourceLineNo">4349</span>      trailingFound = true;<a name="line.4349"></a>
+<span class="sourceLineNo">4350</span>      pos--;<a name="line.4350"></a>
 <span class="sourceLineNo">4351</span>    }<a name="line.4351"></a>
-<span class="sourceLineNo">4352</span>  }<a name="line.4352"></a>
-<span class="sourceLineNo">4353</span><a name="line.4353"></a>
-<span class="sourceLineNo">4354</span><a name="line.4354"></a>
-<span class="sourceLineNo">4355</span><a name="line.4355"></a>
-<span class="sourceLineNo">4356</span>  /**<a name="line.4356"></a>
-<span class="sourceLineNo">4357</span>   * This represents an unparsed LDIFRecord.  It stores the line number of the<a name="line.4357"></a>
-<span class="sourceLineNo">4358</span>   * first line of the record and each line of the record.<a name="line.4358"></a>
-<span class="sourceLineNo">4359</span>   */<a name="line.4359"></a>
-<span class="sourceLineNo">4360</span>  private static final class UnparsedLDIFRecord<a name="line.4360"></a>
-<span class="sourceLineNo">4361</span>  {<a name="line.4361"></a>
-<span class="sourceLineNo">4362</span>    // The list of lines contained in this record.<a name="line.4362"></a>
-<span class="sourceLineNo">4363</span>    @Nullable private final ArrayList&lt;StringBuilder&gt; lineList;<a name="line.4363"></a>
-<span class="sourceLineNo">4364</span><a name="line.4364"></a>
-<span class="sourceLineNo">4365</span>    // The first line number for the LDIF record.<a name="line.4365"></a>
-<span class="sourceLineNo">4366</span>    private final long firstLineNumber;<a name="line.4366"></a>
-<span class="sourceLineNo">4367</span><a name="line.4367"></a>
-<span class="sourceLineNo">4368</span>    // The exception thrown while reading from the input.<a name="line.4368"></a>
-<span class="sourceLineNo">4369</span>    @Nullable private final Exception failureCause;<a name="line.4369"></a>
-<span class="sourceLineNo">4370</span><a name="line.4370"></a>
-<span class="sourceLineNo">4371</span>    // Indicates whether the end of the input has been reached.<a name="line.4371"></a>
-<span class="sourceLineNo">4372</span>    private final boolean isEOF;<a name="line.4372"></a>
-<span class="sourceLineNo">4373</span><a name="line.4373"></a>
-<span class="sourceLineNo">4374</span>    // The duplicate value behavior to use when parsing the record.<a name="line.4374"></a>
-<span class="sourceLineNo">4375</span>    @NotNull private final DuplicateValueBehavior duplicateValueBehavior;<a name="line.4375"></a>
+<span class="sourceLineNo">4352</span><a name="line.4352"></a>
+<span class="sourceLineNo">4353</span>    if (trailingFound &amp;&amp; (buffer.charAt(pos) != ':'))<a name="line.4353"></a>
+<span class="sourceLineNo">4354</span>    {<a name="line.4354"></a>
+<span class="sourceLineNo">4355</span>      switch (trailingSpaceBehavior)<a name="line.4355"></a>
+<span class="sourceLineNo">4356</span>      {<a name="line.4356"></a>
+<span class="sourceLineNo">4357</span>        case STRIP:<a name="line.4357"></a>
+<span class="sourceLineNo">4358</span>          buffer.setLength(pos+1);<a name="line.4358"></a>
+<span class="sourceLineNo">4359</span>          break;<a name="line.4359"></a>
+<span class="sourceLineNo">4360</span><a name="line.4360"></a>
+<span class="sourceLineNo">4361</span>        case REJECT:<a name="line.4361"></a>
+<span class="sourceLineNo">4362</span>          if (dn == null)<a name="line.4362"></a>
+<span class="sourceLineNo">4363</span>          {<a name="line.4363"></a>
+<span class="sourceLineNo">4364</span>            throw new LDIFException(<a name="line.4364"></a>
+<span class="sourceLineNo">4365</span>                 ERR_READ_ILLEGAL_TRAILING_SPACE_WITHOUT_DN.get(firstLineNumber,<a name="line.4365"></a>
+<span class="sourceLineNo">4366</span>                      buffer.toString()),<a name="line.4366"></a>
+<span class="sourceLineNo">4367</span>                 firstLineNumber, true);<a name="line.4367"></a>
+<span class="sourceLineNo">4368</span>          }<a name="line.4368"></a>
+<span class="sourceLineNo">4369</span>          else<a name="line.4369"></a>
+<span class="sourceLineNo">4370</span>          {<a name="line.4370"></a>
+<span class="sourceLineNo">4371</span>            throw new LDIFException(<a name="line.4371"></a>
+<span class="sourceLineNo">4372</span>                 ERR_READ_ILLEGAL_TRAILING_SPACE_WITH_DN.get(dn,<a name="line.4372"></a>
+<span class="sourceLineNo">4373</span>                      firstLineNumber, buffer.toString()),<a name="line.4373"></a>
+<span class="sourceLineNo">4374</span>                 firstLineNumber, true);<a name="line.4374"></a>
+<span class="sourceLineNo">4375</span>          }<a name="line.4375"></a>
 <span class="sourceLineNo">4376</span><a name="line.4376"></a>
-<span class="sourceLineNo">4377</span>    // The schema to use when parsing the record.<a name="line.4377"></a>
-<span class="sourceLineNo">4378</span>    @Nullable private final Schema schema;<a name="line.4378"></a>
-<span class="sourceLineNo">4379</span><a name="line.4379"></a>
-<span class="sourceLineNo">4380</span>    // The trailing space behavior to use when parsing the record.<a name="line.4380"></a>
-<span class="sourceLineNo">4381</span>    @NotNull private final TrailingSpaceBehavior trailingSpaceBehavior;<a name="line.4381"></a>
-<span class="sourceLineNo">4382</span><a name="line.4382"></a>
-<span class="sourceLineNo">4383</span><a name="line.4383"></a>
+<span class="sourceLineNo">4377</span>        case RETAIN:<a name="line.4377"></a>
+<span class="sourceLineNo">4378</span>        default:<a name="line.4378"></a>
+<span class="sourceLineNo">4379</span>          // No action will be taken.<a name="line.4379"></a>
+<span class="sourceLineNo">4380</span>          break;<a name="line.4380"></a>
+<span class="sourceLineNo">4381</span>      }<a name="line.4381"></a>
+<span class="sourceLineNo">4382</span>    }<a name="line.4382"></a>
+<span class="sourceLineNo">4383</span>  }<a name="line.4383"></a>
 <span class="sourceLineNo">4384</span><a name="line.4384"></a>
-<span class="sourceLineNo">4385</span>    /**<a name="line.4385"></a>
-<span class="sourceLineNo">4386</span>     * Creates a new instance of this record.<a name="line.4386"></a>
-<span class="sourceLineNo">4387</span>     *<a name="line.4387"></a>
-<span class="sourceLineNo">4388</span>     * @param  lineList                The lines that comprise the LDIF record.<a name="line.4388"></a>
-<span class="sourceLineNo">4389</span>     * @param  duplicateValueBehavior  The behavior to exhibit if the entry<a name="line.4389"></a>
-<span class="sourceLineNo">4390</span>     *                                 contains duplicate attribute values.<a name="line.4390"></a>
-<span class="sourceLineNo">4391</span>     * @param  trailingSpaceBehavior   Specifies the behavior to exhibit when<a name="line.4391"></a>
-<span class="sourceLineNo">4392</span>     *                                 encountering trailing spaces in<a name="line.4392"></a>
-<span class="sourceLineNo">4393</span>     *                                 non-base64-encoded attribute values.<a name="line.4393"></a>
-<span class="sourceLineNo">4394</span>     * @param  schema                  The schema to use when parsing, if<a name="line.4394"></a>
-<span class="sourceLineNo">4395</span>     *                                 applicable.<a name="line.4395"></a>
-<span class="sourceLineNo">4396</span>     * @param  firstLineNumber         The first line number of the LDIF record.<a name="line.4396"></a>
-<span class="sourceLineNo">4397</span>     */<a name="line.4397"></a>
-<span class="sourceLineNo">4398</span>    private UnparsedLDIFRecord(@NotNull final ArrayList&lt;StringBuilder&gt; lineList,<a name="line.4398"></a>
-<span class="sourceLineNo">4399</span>                 @NotNull final DuplicateValueBehavior duplicateValueBehavior,<a name="line.4399"></a>
-<span class="sourceLineNo">4400</span>                 @NotNull final TrailingSpaceBehavior trailingSpaceBehavior,<a name="line.4400"></a>
-<span class="sourceLineNo">4401</span>                 @Nullable final Schema schema, final long firstLineNumber)<a name="line.4401"></a>
-<span class="sourceLineNo">4402</span>    {<a name="line.4402"></a>
-<span class="sourceLineNo">4403</span>      this.lineList               = lineList;<a name="line.4403"></a>
-<span class="sourceLineNo">4404</span>      this.firstLineNumber        = firstLineNumber;<a name="line.4404"></a>
-<span class="sourceLineNo">4405</span>      this.duplicateValueBehavior = duplicateValueBehavior;<a name="line.4405"></a>
-<span class="sourceLineNo">4406</span>      this.trailingSpaceBehavior  = trailingSpaceBehavior;<a name="line.4406"></a>
-<span class="sourceLineNo">4407</span>      this.schema                 = schema;<a name="line.4407"></a>
-<span class="sourceLineNo">4408</span><a name="line.4408"></a>
-<span class="sourceLineNo">4409</span>      failureCause = null;<a name="line.4409"></a>
-<span class="sourceLineNo">4410</span>      isEOF =<a name="line.4410"></a>
-<span class="sourceLineNo">4411</span>           (firstLineNumber &lt; 0) || ((lineList != null) &amp;&amp; lineList.isEmpty());<a name="line.4411"></a>
-<span class="sourceLineNo">4412</span>    }<a name="line.4412"></a>
+<span class="sourceLineNo">4385</span><a name="line.4385"></a>
+<span class="sourceLineNo">4386</span><a name="line.4386"></a>
+<span class="sourceLineNo">4387</span>  /**<a name="line.4387"></a>
+<span class="sourceLineNo">4388</span>   * This represents an unparsed LDIFRecord.  It stores the line number of the<a name="line.4388"></a>
+<span class="sourceLineNo">4389</span>   * first line of the record and each line of the record.<a name="line.4389"></a>
+<span class="sourceLineNo">4390</span>   */<a name="line.4390"></a>
+<span class="sourceLineNo">4391</span>  private static final class UnparsedLDIFRecord<a name="line.4391"></a>
+<span class="sourceLineNo">4392</span>  {<a name="line.4392"></a>
+<span class="sourceLineNo">4393</span>    // The list of lines contained in this record.<a name="line.4393"></a>
+<span class="sourceLineNo">4394</span>    @Nullable private final ArrayList&lt;StringBuilder&gt; lineList;<a name="line.4394"></a>
+<span class="sourceLineNo">4395</span><a name="line.4395"></a>
+<span class="sourceLineNo">4396</span>    // The first line number for the LDIF record.<a name="line.4396"></a>
+<span class="sourceLineNo">4397</span>    private final long firstLineNumber;<a name="line.4397"></a>
+<span class="sourceLineNo">4398</span><a name="line.4398"></a>
+<span class="sourceLineNo">4399</span>    // The exception thrown while reading from the input.<a name="line.4399"></a>
+<span class="sourceLineNo">4400</span>    @Nullable private final Exception failureCause;<a name="line.4400"></a>
+<span class="sourceLineNo">4401</span><a name="line.4401"></a>
+<span class="sourceLineNo">4402</span>    // Indicates whether the end of the input has been reached.<a name="line.4402"></a>
+<span class="sourceLineNo">4403</span>    private final boolean isEOF;<a name="line.4403"></a>
+<span class="sourceLineNo">4404</span><a name="line.4404"></a>
+<span class="sourceLineNo">4405</span>    // The duplicate value behavior to use when parsing the record.<a name="line.4405"></a>
+<span class="sourceLineNo">4406</span>    @NotNull private final DuplicateValueBehavior duplicateValueBehavior;<a name="line.4406"></a>
+<span class="sourceLineNo">4407</span><a name="line.4407"></a>
+<span class="sourceLineNo">4408</span>    // The schema to use when parsing the record.<a name="line.4408"></a>
+<span class="sourceLineNo">4409</span>    @Nullable private final Schema schema;<a name="line.4409"></a>
+<span class="sourceLineNo">4410</span><a name="line.4410"></a>
+<span class="sourceLineNo">4411</span>    // The trailing space behavior to use when parsing the record.<a name="line.4411"></a>
+<span class="sourceLineNo">4412</span>    @NotNull private final TrailingSpaceBehavior trailingSpaceBehavior;<a name="line.4412"></a>
 <span class="sourceLineNo">4413</span><a name="line.4413"></a>
 <span class="sourceLineNo">4414</span><a name="line.4414"></a>
 <span class="sourceLineNo">4415</span><a name="line.4415"></a>
 <span class="sourceLineNo">4416</span>    /**<a name="line.4416"></a>
 <span class="sourceLineNo">4417</span>     * Creates a new instance of this record.<a name="line.4417"></a>
 <span class="sourceLineNo">4418</span>     *<a name="line.4418"></a>
-<span class="sourceLineNo">4419</span>     * @param failureCause  The Exception thrown when reading from the input.<a name="line.4419"></a>
-<span class="sourceLineNo">4420</span>     */<a name="line.4420"></a>
-<span class="sourceLineNo">4421</span>    private UnparsedLDIFRecord(@NotNull final Exception failureCause)<a name="line.4421"></a>
-<span class="sourceLineNo">4422</span>    {<a name="line.4422"></a>
-<span class="sourceLineNo">4423</span>      this.failureCause = failureCause;<a name="line.4423"></a>
-<span class="sourceLineNo">4424</span><a name="line.4424"></a>
-<span class="sourceLineNo">4425</span>      lineList               = null;<a name="line.4425"></a>
-<span class="sourceLineNo">4426</span>      firstLineNumber        = 0;<a name="line.4426"></a>
-<span class="sourceLineNo">4427</span>      duplicateValueBehavior = DuplicateValueBehavior.REJECT;<a name="line.4427"></a>
-<span class="sourceLineNo">4428</span>      trailingSpaceBehavior  = TrailingSpaceBehavior.REJECT;<a name="line.4428"></a>
-<span class="sourceLineNo">4429</span>      schema                 = null;<a name="line.4429"></a>
-<span class="sourceLineNo">4430</span>      isEOF                  = false;<a name="line.4430"></a>
-<span class="sourceLineNo">4431</span>    }<a name="line.4431"></a>
-<span class="sourceLineNo">4432</span><a name="line.4432"></a>
-<span class="sourceLineNo">4433</span><a name="line.4433"></a>
-<span class="sourceLineNo">4434</span><a name="line.4434"></a>
-<span class="sourceLineNo">4435</span>    /**<a name="line.4435"></a>
-<span class="sourceLineNo">4436</span>     * Return the lines that comprise the LDIF record.<a name="line.4436"></a>
-<span class="sourceLineNo">4437</span>     *<a name="line.4437"></a>
-<span class="sourceLineNo">4438</span>     * @return  The lines that comprise the LDIF record, or {@code null} if this<a name="line.4438"></a>
-<span class="sourceLineNo">4439</span>     *          is a failure record.<a name="line.4439"></a>
-<span class="sourceLineNo">4440</span>     */<a name="line.4440"></a>
-<span class="sourceLineNo">4441</span>    @Nullable()<a name="line.4441"></a>
-<span class="sourceLineNo">4442</span>    private ArrayList&lt;StringBuilder&gt; getLineList()<a name="line.4442"></a>
-<span class="sourceLineNo">4443</span>    {<a name="line.4443"></a>
-<span class="sourceLineNo">4444</span>      return lineList;<a name="line.4444"></a>
-<span class="sourceLineNo">4445</span>    }<a name="line.4445"></a>
+<span class="sourceLineNo">4419</span>     * @param  lineList                The lines that comprise the LDIF record.<a name="line.4419"></a>
+<span class="sourceLineNo">4420</span>     * @param  duplicateValueBehavior  The behavior to exhibit if the entry<a name="line.4420"></a>
+<span class="sourceLineNo">4421</span>     *                                 contains duplicate attribute values.<a name="line.4421"></a>
+<span class="sourceLineNo">4422</span>     * @param  trailingSpaceBehavior   Specifies the behavior to exhibit when<a name="line.4422"></a>
+<span class="sourceLineNo">4423</span>     *                                 encountering trailing spaces in<a name="line.4423"></a>
+<span class="sourceLineNo">4424</span>     *                                 non-base64-encoded attribute values.<a name="line.4424"></a>
+<span class="sourceLineNo">4425</span>     * @param  schema                  The schema to use when parsing, if<a name="line.4425"></a>
+<span class="sourceLineNo">4426</span>     *                                 applicable.<a name="line.4426"></a>
+<span class="sourceLineNo">4427</span>     * @param  firstLineNumber         The first line number of the LDIF record.<a name="line.4427"></a>
+<span class="sourceLineNo">4428</span>     */<a name="line.4428"></a>
+<span class="sourceLineNo">4429</span>    private UnparsedLDIFRecord(@NotNull final ArrayList&lt;StringBuilder&gt; lineList,<a name="line.4429"></a>
+<span class="sourceLineNo">4430</span>                 @NotNull final DuplicateValueBehavior duplicateValueBehavior,<a name="line.4430"></a>
+<span class="sourceLineNo">4431</span>                 @NotNull final TrailingSpaceBehavior trailingSpaceBehavior,<a name="line.4431"></a>
+<span class="sourceLineNo">4432</span>                 @Nullable final Schema schema, final long firstLineNumber)<a name="line.4432"></a>
+<span class="sourceLineNo">4433</span>    {<a name="line.4433"></a>
+<span class="sourceLineNo">4434</span>      this.lineList               = lineList;<a name="line.4434"></a>
+<span class="sourceLineNo">4435</span>      this.firstLineNumber        = firstLineNumber;<a name="line.4435"></a>
+<span class="sourceLineNo">4436</span>      this.duplicateValueBehavior = duplicateValueBehavior;<a name="line.4436"></a>
+<span class="sourceLineNo">4437</span>      this.trailingSpaceBehavior  = trailingSpaceBehavior;<a name="line.4437"></a>
+<span class="sourceLineNo">4438</span>      this.schema                 = schema;<a name="line.4438"></a>
+<span class="sourceLineNo">4439</span><a name="line.4439"></a>
+<span class="sourceLineNo">4440</span>      failureCause = null;<a name="line.4440"></a>
+<span class="sourceLineNo">4441</span>      isEOF =<a name="line.4441"></a>
+<span class="sourceLineNo">4442</span>           (firstLineNumber &lt; 0) || ((lineList != null) &amp;&amp; lineList.isEmpty());<a name="line.4442"></a>
+<span class="sourceLineNo">4443</span>    }<a name="line.4443"></a>
+<span class="sourceLineNo">4444</span><a name="line.4444"></a>
+<span class="sourceLineNo">4445</span><a name="line.4445"></a>
 <span class="sourceLineNo">4446</span><a name="line.4446"></a>
-<span class="sourceLineNo">4447</span><a name="line.4447"></a>
-<span class="sourceLineNo">4448</span><a name="line.4448"></a>
-<span class="sourceLineNo">4449</span>    /**<a name="line.4449"></a>
-<span class="sourceLineNo">4450</span>     * Retrieves the behavior to exhibit when encountering duplicate attribute<a name="line.4450"></a>
-<span class="sourceLineNo">4451</span>     * values.<a name="line.4451"></a>
-<span class="sourceLineNo">4452</span>     *<a name="line.4452"></a>
-<span class="sourceLineNo">4453</span>     * @return  The behavior to exhibit when encountering duplicate attribute<a name="line.4453"></a>
-<span class="sourceLineNo">4454</span>     *          values.<a name="line.4454"></a>
-<span class="sourceLineNo">4455</span>     */<a name="line.4455"></a>
-<span class="sourceLineNo">4456</span>    @NotNull()<a name="line.4456"></a>
-<span class="sourceLineNo">4457</span>    private DuplicateValueBehavior getDuplicateValueBehavior()<a name="line.4457"></a>
-<span class="sourceLineNo">4458</span>    {<a name="line.4458"></a>
-<span class="sourceLineNo">4459</span>      return duplicateValueBehavior;<a name="line.4459"></a>
-<span class="sourceLineNo">4460</span>    }<a name="line.4460"></a>
-<span class="sourceLineNo">4461</span><a name="line.4461"></a>
-<span class="sourceLineNo">4462</span><a name="line.4462"></a>
+<span class="sourceLineNo">4447</span>    /**<a name="line.4447"></a>
+<span class="sourceLineNo">4448</span>     * Creates a new instance of this record.<a name="line.4448"></a>
+<span class="sourceLineNo">4449</span>     *<a name="line.4449"></a>
+<span class="sourceLineNo">4450</span>     * @param failureCause  The Exception thrown when reading from the input.<a name="line.4450"></a>
+<span class="sourceLineNo">4451</span>     */<a name="line.4451"></a>
+<span class="sourceLineNo">4452</span>    private UnparsedLDIFRecord(@NotNull final Exception failureCause)<a name="line.4452"></a>
+<span class="sourceLineNo">4453</span>    {<a name="line.4453"></a>
+<span class="sourceLineNo">4454</span>      this.failureCause = failureCause;<a name="line.4454"></a>
+<span class="sourceLineNo">4455</span><a name="line.4455"></a>
+<span class="sourceLineNo">4456</span>      lineList               = null;<a name="line.4456"></a>
+<span class="sourceLineNo">4457</span>      firstLineNumber        = 0;<a name="line.4457"></a>
+<span class="sourceLineNo">4458</span>      duplicateValueBehavior = DuplicateValueBehavior.REJECT;<a name="line.4458"></a>
+<span class="sourceLineNo">4459</span>      trailingSpaceBehavior  = TrailingSpaceBehavior.REJECT;<a name="line.4459"></a>
+<span class="sourceLineNo">4460</span>      schema                 = null;<a name="line.4460"></a>
+<span class="sourceLineNo">4461</span>      isEOF                  = false;<a name="line.4461"></a>
+<span class="sourceLineNo">4462</span>    }<a name="line.4462"></a>
 <span class="sourceLineNo">4463</span><a name="line.4463"></a>
-<span class="sourceLineNo">4464</span>    /**<a name="line.4464"></a>
-<span class="sourceLineNo">4465</span>     * Retrieves the behavior that should be exhibited when encountering<a name="line.4465"></a>
-<span class="sourceLineNo">4466</span>     * attribute values which are not base64-encoded but contain trailing<a name="line.4466"></a>
-<span class="sourceLineNo">4467</span>     * spaces.  The LDIF specification strongly recommends that any value which<a name="line.4467"></a>
-<span class="sourceLineNo">4468</span>     * legitimately contains trailing spaces be base64-encoded, but the LDAP SDK<a name="line.4468"></a>
-<span class="sourceLineNo">4469</span>     * LDIF parser may be configured to automatically strip these spaces, to<a name="line.4469"></a>
-<span class="sourceLineNo">4470</span>     * preserve them, or to reject any entry or change record containing them.<a name="line.4470"></a>
-<span class="sourceLineNo">4471</span>     *<a name="line.4471"></a>
-<span class="sourceLineNo">4472</span>     * @return  The behavior that should be exhibited when encountering<a name="line.4472"></a>
-<span class="sourceLineNo">4473</span>     *          attribute values which are not base64-encoded but contain<a name="line.4473"></a>
-<span class="sourceLineNo">4474</span>     *          trailing spaces.<a name="line.4474"></a>
-<span class="sourceLineNo">4475</span>     */<a name="line.4475"></a>
-<span class="sourceLineNo">4476</span>    @NotNull()<a name="line.4476"></a>
-<span class="sourceLineNo">4477</span>    private TrailingSpaceBehavior getTrailingSpaceBehavior()<a name="line.4477"></a>
-<span class="sourceLineNo">4478</span>    {<a name="line.4478"></a>
-<span class="sourceLineNo">4479</span>      return trailingSpaceBehavior;<a name="line.4479"></a>
-<span class="sourceLineNo">4480</span>    }<a name="line.4480"></a>
-<span class="sourceLineNo">4481</span><a name="line.4481"></a>
-<span class="sourceLineNo">4482</span><a name="line.4482"></a>
-<span class="sourceLineNo">4483</span><a name="line.4483"></a>
-<span class="sourceLineNo">4484</span>    /**<a name="line.4484"></a>
-<span class="sourceLineNo">4485</span>     * Retrieves the schema that should be used when parsing the record, if<a name="line.4485"></a>
-<span class="sourceLineNo">4486</span>     * applicable.<a name="line.4486"></a>
-<span class="sourceLineNo">4487</span>     *<a name="line.4487"></a>
-<span class="sourceLineNo">4488</span>     * @return  The schema that should be used when parsing the record, or<a name="line.4488"></a>
-<span class="sourceLineNo">4489</span>     *          {@code null} if none should be used.<a name="line.4489"></a>
-<span class="sourceLineNo">4490</span>     */<a name="line.4490"></a>
-<span class="sourceLineNo">4491</span>    @Nullable()<a name="line.4491"></a>
-<span class="sourceLineNo">4492</span>    private Schema getSchema()<a name="line.4492"></a>
-<span class="sourceLineNo">4493</span>    {<a name="line.4493"></a>
-<span class="sourceLineNo">4494</span>      return schema;<a name="line.4494"></a>
-<span class="sourceLineNo">4495</span>    }<a name="line.4495"></a>
-<span class="sourceLineNo">4496</span><a name="line.4496"></a>
-<span class="sourceLineNo">4497</span><a name="line.4497"></a>
-<span class="sourceLineNo">4498</span><a name="line.4498"></a>
-<span class="sourceLineNo">4499</span>    /**<a name="line.4499"></a>
-<span class="sourceLineNo">4500</span>     * Return the first line number of the LDIF record.<a name="line.4500"></a>
-<span class="sourceLineNo">4501</span>     *<a name="line.4501"></a>
-<span class="sourceLineNo">4502</span>     * @return  The first line number of the LDIF record.<a name="line.4502"></a>
-<span class="sourceLineNo">4503</span>     */<a name="line.4503"></a>
-<span class="sourceLineNo">4504</span>    private long getFirstLineNumber()<a name="line.4504"></a>
-<span class="sourceLineNo">4505</span>    {<a name="line.4505"></a>
-<span class="sourceLineNo">4506</span>      return firstLineNumber;<a name="line.4506"></a>
-<span class="sourceLineNo">4507</span>    }<a name="line.4507"></a>
-<span class="sourceLineNo">4508</span><a name="line.4508"></a>
-<span class="sourceLineNo">4509</span><a name="line.4509"></a>
-<span class="sourceLineNo">4510</span><a name="line.4510"></a>
-<span class="sourceLineNo">4511</span>    /**<a name="line.4511"></a>
-<span class="sourceLineNo">4512</span>     * Return {@code true} iff the end of the input was reached.<a name="line.4512"></a>
-<span class="sourceLineNo">4513</span>     *<a name="line.4513"></a>
-<span class="sourceLineNo">4514</span>     * @return  {@code true} iff the end of the input was reached.<a name="line.4514"></a>
-<span class="sourceLineNo">4515</span>     */<a name="line.4515"></a>
-<span class="sourceLineNo">4516</span>    private boolean isEOF()<a name="line.4516"></a>
-<span class="sourceLineNo">4517</span>    {<a name="line.4517"></a>
-<span class="sourceLineNo">4518</span>      return isEOF;<a name="line.4518"></a>
-<span class="sourceLineNo">4519</span>    }<a name="line.4519"></a>
-<span class="sourceLineNo">4520</span><a name="line.4520"></a>
-<span class="sourceLineNo">4521</span><a name="line.4521"></a>
-<span class="sourceLineNo">4522</span><a name="line.4522"></a>
-<span class="sourceLineNo">4523</span>    /**<a name="line.4523"></a>
-<span class="sourceLineNo">4524</span>     * Returns the reason that reading the record lines failed.  This normally<a name="line.4524"></a>
-<span class="sourceLineNo">4525</span>     * is only non-null if something bad happened to the input stream (like<a name="line.4525"></a>
-<span class="sourceLineNo">4526</span>     * a disk read error).<a name="line.4526"></a>
-<span class="sourceLineNo">4527</span>     *<a name="line.4527"></a>
-<span class="sourceLineNo">4528</span>     * @return  The reason that reading the record lines failed.<a name="line.4528"></a>
-<span class="sourceLineNo">4529</span>     */<a name="line.4529"></a>
-<span class="sourceLineNo">4530</span>    @Nullable()<a name="line.4530"></a>
-<span class="sourceLineNo">4531</span>    private Exception getFailureCause()<a name="line.4531"></a>
-<span class="sourceLineNo">4532</span>    {<a name="line.4532"></a>
-<span class="sourceLineNo">4533</span>      return failureCause;<a name="line.4533"></a>
-<span class="sourceLineNo">4534</span>    }<a name="line.4534"></a>
-<span class="sourceLineNo">4535</span>  }<a name="line.4535"></a>
-<span class="sourceLineNo">4536</span><a name="line.4536"></a>
-<span class="sourceLineNo">4537</span><a name="line.4537"></a>
-<span class="sourceLineNo">4538</span>  /**<a name="line.4538"></a>
-<span class="sourceLineNo">4539</span>   * When processing in asynchronous mode, this thread is responsible for<a name="line.4539"></a>
-<span class="sourceLineNo">4540</span>   * reading the raw unparsed records from the input and submitting them for<a name="line.4540"></a>
-<span class="sourceLineNo">4541</span>   * processing.<a name="line.4541"></a>
-<span class="sourceLineNo">4542</span>   */<a name="line.4542"></a>
-<span class="sourceLineNo">4543</span>  private final class LineReaderThread<a name="line.4543"></a>
-<span class="sourceLineNo">4544</span>       extends Thread<a name="line.4544"></a>
-<span class="sourceLineNo">4545</span>  {<a name="line.4545"></a>
-<span class="sourceLineNo">4546</span>    /**<a name="line.4546"></a>
-<span class="sourceLineNo">4547</span>     * Creates a new instance of this thread.<a name="line.4547"></a>
-<span class="sourceLineNo">4548</span>     */<a name="line.4548"></a>
-<span class="sourceLineNo">4549</span>    private LineReaderThread()<a name="line.4549"></a>
-<span class="sourceLineNo">4550</span>    {<a name="line.4550"></a>
-<span class="sourceLineNo">4551</span>      super("Asynchronous LDIF line reader");<a name="line.4551"></a>
-<span class="sourceLineNo">4552</span>      setDaemon(true);<a name="line.4552"></a>
-<span class="sourceLineNo">4553</span>    }<a name="line.4553"></a>
-<span class="sourceLineNo">4554</span><a name="line.4554"></a>
-<span class="sourceLineNo">4555</span><a name="line.4555"></a>
-<span class="sourceLineNo">4556</span><a name="line.4556"></a>
-<span class="sourceLineNo">4557</span>    /**<a name="line.4557"></a>
-<span class="sourceLineNo">4558</span>     * Reads raw, unparsed records from the input and submits them for<a name="line.4558"></a>
-<span class="sourceLineNo">4559</span>     * processing until the input is finished or closed.<a name="line.4559"></a>
+<span class="sourceLineNo">4464</span><a name="line.4464"></a>
+<span class="sourceLineNo">4465</span><a name="line.4465"></a>
+<span class="sourceLineNo">4466</span>    /**<a name="line.4466"></a>
+<span class="sourceLineNo">4467</span>     * Return the lines that comprise the LDIF record.<a name="line.4467"></a>
+<span class="sourceLineNo">4468</span>     *<a name="line.4468"></a>
+<span class="sourceLineNo">4469</span>     * @return  The lines that comprise the LDIF record, or {@code null} if this<a name="line.4469"></a>
+<span class="sourceLineNo">4470</span>     *          is a failure record.<a name="line.4470"></a>
+<span class="sourceLineNo">4471</span>     */<a name="line.4471"></a>
+<span class="sourceLineNo">4472</span>    @Nullable()<a name="line.4472"></a>
+<span class="sourceLineNo">4473</span>    private ArrayList&lt;StringBuilder&gt; getLineList()<a name="line.4473"></a>
+<span class="sourceLineNo">4474</span>    {<a name="line.4474"></a>
+<span class="sourceLineNo">4475</span>      return lineList;<a name="line.4475"></a>
+<span class="sourceLineNo">4476</span>    }<a name="line.4476"></a>
+<span class="sourceLineNo">4477</span><a name="line.4477"></a>
+<span class="sourceLineNo">4478</span><a name="line.4478"></a>
+<span class="sourceLineNo">4479</span><a name="line.4479"></a>
+<span class="sourceLineNo">4480</span>    /**<a name="line.4480"></a>
+<span class="sourceLineNo">4481</span>     * Retrieves the behavior to exhibit when encountering duplicate attribute<a name="line.4481"></a>
+<span class="sourceLineNo">4482</span>     * values.<a name="line.4482"></a>
+<span class="sourceLineNo">4483</span>     *<a name="line.4483"></a>
+<span class="sourceLineNo">4484</span>     * @return  The behavior to exhibit when encountering duplicate attribute<a name="line.4484"></a>
+<span class="sourceLineNo">4485</span>     *          values.<a name="line.4485"></a>
+<span class="sourceLineNo">4486</span>     */<a name="line.4486"></a>
+<span class="sourceLineNo">4487</span>    @NotNull()<a name="line.4487"></a>
+<span class="sourceLineNo">4488</span>    private DuplicateValueBehavior getDuplicateValueBehavior()<a name="line.4488"></a>
+<span class="sourceLineNo">4489</span>    {<a name="line.4489"></a>
+<span class="sourceLineNo">4490</span>      return duplicateValueBehavior;<a name="line.4490"></a>
+<span class="sourceLineNo">4491</span>    }<a name="line.4491"></a>
+<span class="sourceLineNo">4492</span><a name="line.4492"></a>
+<span class="sourceLineNo">4493</span><a name="line.4493"></a>
+<span class="sourceLineNo">4494</span><a name="line.4494"></a>
+<span class="sourceLineNo">4495</span>    /**<a name="line.4495"></a>
+<span class="sourceLineNo">4496</span>     * Retrieves the behavior that should be exhibited when encountering<a name="line.4496"></a>
+<span class="sourceLineNo">4497</span>     * attribute values which are not base64-encoded but contain trailing<a name="line.4497"></a>
+<span class="sourceLineNo">4498</span>     * spaces.  The LDIF specification strongly recommends that any value which<a name="line.4498"></a>
+<span class="sourceLineNo">4499</span>     * legitimately contains trailing spaces be base64-encoded, but the LDAP SDK<a name="line.4499"></a>
+<span class="sourceLineNo">4500</span>     * LDIF parser may be configured to automatically strip these spaces, to<a name="line.4500"></a>
+<span class="sourceLineNo">4501</span>     * preserve them, or to reject any entry or change record containing them.<a name="line.4501"></a>
+<span class="sourceLineNo">4502</span>     *<a name="line.4502"></a>
+<span class="sourceLineNo">4503</span>     * @return  The behavior that should be exhibited when encountering<a name="line.4503"></a>
+<span class="sourceLineNo">4504</span>     *          attribute values which are not base64-encoded but contain<a name="line.4504"></a>
+<span class="sourceLineNo">4505</span>     *          trailing spaces.<a name="line.4505"></a>
+<span class="sourceLineNo">4506</span>     */<a name="line.4506"></a>
+<span class="sourceLineNo">4507</span>    @NotNull()<a name="line.4507"></a>
+<span class="sourceLineNo">4508</span>    private TrailingSpaceBehavior getTrailingSpaceBehavior()<a name="line.4508"></a>
+<span class="sourceLineNo">4509</span>    {<a name="line.4509"></a>
+<span class="sourceLineNo">4510</span>      return trailingSpaceBehavior;<a name="line.4510"></a>
+<span class="sourceLineNo">4511</span>    }<a name="line.4511"></a>
+<span class="sourceLineNo">4512</span><a name="line.4512"></a>
+<span class="sourceLineNo">4513</span><a name="line.4513"></a>
+<span class="sourceLineNo">4514</span><a name="line.4514"></a>
+<span class="sourceLineNo">4515</span>    /**<a name="line.4515"></a>
+<span class="sourceLineNo">4516</span>     * Retrieves the schema that should be used when parsing the record, if<a name="line.4516"></a>
+<span class="sourceLineNo">4517</span>     * applicable.<a name="line.4517"></a>
+<span class="sourceLineNo">4518</span>     *<a name="line.4518"></a>
+<span class="sourceLineNo">4519</span>     * @return  The schema that should be used when parsing the record, or<a name="line.4519"></a>
+<span class="sourceLineNo">4520</span>     *          {@code null} if none should be used.<a name="line.4520"></a>
+<span class="sourceLineNo">4521</span>     */<a name="line.4521"></a>
+<span class="sourceLineNo">4522</span>    @Nullable()<a name="line.4522"></a>
+<span class="sourceLineNo">4523</span>    private Schema getSchema()<a name="line.4523"></a>
+<span class="sourceLineNo">4524</span>    {<a name="line.4524"></a>
+<span class="sourceLineNo">4525</span>      return schema;<a name="line.4525"></a>
+<span class="sourceLineNo">4526</span>    }<a name="line.4526"></a>
+<span class="sourceLineNo">4527</span><a name="line.4527"></a>
+<span class="sourceLineNo">4528</span><a name="line.4528"></a>
+<span class="sourceLineNo">4529</span><a name="line.4529"></a>
+<span class="sourceLineNo">4530</span>    /**<a name="line.4530"></a>
+<span class="sourceLineNo">4531</span>     * Return the first line number of the LDIF record.<a name="line.4531"></a>
+<span class="sourceLineNo">4532</span>     *<a name="line.4532"></a>
+<span class="sourceLineNo">4533</span>     * @return  The first line number of the LDIF record.<a name="line.4533"></a>
+<span class="sourceLineNo">4534</span>     */<a name="line.4534"></a>
+<span class="sourceLineNo">4535</span>    private long getFirstLineNumber()<a name="line.4535"></a>
+<span class="sourceLineNo">4536</span>    {<a name="line.4536"></a>
+<span class="sourceLineNo">4537</span>      return firstLineNumber;<a name="line.4537"></a>
+<span class="sourceLineNo">4538</span>    }<a name="line.4538"></a>
+<span class="sourceLineNo">4539</span><a name="line.4539"></a>
+<span class="sourceLineNo">4540</span><a name="line.4540"></a>
+<span class="sourceLineNo">4541</span><a name="line.4541"></a>
+<span class="sourceLineNo">4542</span>    /**<a name="line.4542"></a>
+<span class="sourceLineNo">4543</span>     * Return {@code true} iff the end of the input was reached.<a name="line.4543"></a>
+<span class="sourceLineNo">4544</span>     *<a name="line.4544"></a>
+<span class="sourceLineNo">4545</span>     * @return  {@code true} iff the end of the input was reached.<a name="line.4545"></a>
+<span class="sourceLineNo">4546</span>     */<a name="line.4546"></a>
+<span class="sourceLineNo">4547</span>    private boolean isEOF()<a name="line.4547"></a>
+<span class="sourceLineNo">4548</span>    {<a name="line.4548"></a>
+<span class="sourceLineNo">4549</span>      return isEOF;<a name="line.4549"></a>
+<span class="sourceLineNo">4550</span>    }<a name="line.4550"></a>
+<span class="sourceLineNo">4551</span><a name="line.4551"></a>
+<span class="sourceLineNo">4552</span><a name="line.4552"></a>
+<span class="sourceLineNo">4553</span><a name="line.4553"></a>
+<span class="sourceLineNo">4554</span>    /**<a name="line.4554"></a>
+<span class="sourceLineNo">4555</span>     * Returns the reason that reading the record lines failed.  This normally<a name="line.4555"></a>
+<span class="sourceLineNo">4556</span>     * is only non-null if something bad happened to the input stream (like<a name="line.4556"></a>
+<span class="sourceLineNo">4557</span>     * a disk read error).<a name="line.4557"></a>
+<span class="sourceLineNo">4558</span>     *<a name="line.4558"></a>
+<span class="sourceLineNo">4559</span>     * @return  The reason that reading the record lines failed.<a name="line.4559"></a>
 <span class="sourceLineNo">4560</span>     */<a name="line.4560"></a>
-<span class="sourceLineNo">4561</span>    @Override()<a name="line.4561"></a>
-<span class="sourceLineNo">4562</span>    public void run()<a name="line.4562"></a>
+<span class="sourceLineNo">4561</span>    @Nullable()<a name="line.4561"></a>
+<span class="sourceLineNo">4562</span>    private Exception getFailureCause()<a name="line.4562"></a>
 <span class="sourceLineNo">4563</span>    {<a name="line.4563"></a>
-<span class="sourceLineNo">4564</span>      try<a name="line.4564"></a>
-<span class="sourceLineNo">4565</span>      {<a name="line.4565"></a>
-<span class="sourceLineNo">4566</span>        boolean stopProcessing = false;<a name="line.4566"></a>
-<span class="sourceLineNo">4567</span>        while (!stopProcessing)<a name="line.4567"></a>
-<span class="sourceLineNo">4568</span>        {<a name="line.4568"></a>
-<span class="sourceLineNo">4569</span>          UnparsedLDIFRecord unparsedRecord;<a name="line.4569"></a>
-<span class="sourceLineNo">4570</span>          try<a name="line.4570"></a>
-<span class="sourceLineNo">4571</span>          {<a name="line.4571"></a>
-<span class="sourceLineNo">4572</span>            unparsedRecord = readUnparsedRecord();<a name="line.4572"></a>
-<span class="sourceLineNo">4573</span>          }<a name="line.4573"></a>
-<span class="sourceLineNo">4574</span>          catch (final IOException e)<a name="line.4574"></a>
-<span class="sourceLineNo">4575</span>          {<a name="line.4575"></a>
-<span class="sourceLineNo">4576</span>            Debug.debugException(e);<a name="line.4576"></a>
-<span class="sourceLineNo">4577</span>            unparsedRecord = new UnparsedLDIFRecord(e);<a name="line.4577"></a>
-<span class="sourceLineNo">4578</span>            stopProcessing = true;<a name="line.4578"></a>
-<span class="sourceLineNo">4579</span>          }<a name="line.4579"></a>
-<span class="sourceLineNo">4580</span>          catch (final Exception e)<a name="line.4580"></a>
-<span class="sourceLineNo">4581</span>          {<a name="line.4581"></a>
-<span class="sourceLineNo">4582</span>            Debug.debugException(e);<a name="line.4582"></a>
-<span class="sourceLineNo">4583</span>            unparsedRecord = new UnparsedLDIFRecord(e);<a name="line.4583"></a>
-<span class="sourceLineNo">4584</span>          }<a name="line.4584"></a>
+<span class="sourceLineNo">4564</span>      return failureCause;<a name="line.4564"></a>
+<span class="sourceLineNo">4565</span>    }<a name="line.4565"></a>
+<span class="sourceLineNo">4566</span>  }<a name="line.4566"></a>
+<span class="sourceLineNo">4567</span><a name="line.4567"></a>
+<span class="sourceLineNo">4568</span><a name="line.4568"></a>
+<span class="sourceLineNo">4569</span>  /**<a name="line.4569"></a>
+<span class="sourceLineNo">4570</span>   * When processing in asynchronous mode, this thread is responsible for<a name="line.4570"></a>
+<span class="sourceLineNo">4571</span>   * reading the raw unparsed records from the input and submitting them for<a name="line.4571"></a>
+<span class="sourceLineNo">4572</span>   * processing.<a name="line.4572"></a>
+<span class="sourceLineNo">4573</span>   */<a name="line.4573"></a>
+<span class="sourceLineNo">4574</span>  private final class LineReaderThread<a name="line.4574"></a>
+<span class="sourceLineNo">4575</span>       extends Thread<a name="line.4575"></a>
+<span class="sourceLineNo">4576</span>  {<a name="line.4576"></a>
+<span class="sourceLineNo">4577</span>    /**<a name="line.4577"></a>
+<span class="sourceLineNo">4578</span>     * Creates a new instance of this thread.<a name="line.4578"></a>
+<span class="sourceLineNo">4579</span>     */<a name="line.4579"></a>
+<span class="sourceLineNo">4580</span>    private LineReaderThread()<a name="line.4580"></a>
+<span class="sourceLineNo">4581</span>    {<a name="line.4581"></a>
+<span class="sourceLineNo">4582</span>      super("Asynchronous LDIF line reader");<a name="line.4582"></a>
+<span class="sourceLineNo">4583</span>      setDaemon(true);<a name="line.4583"></a>
+<span class="sourceLineNo">4584</span>    }<a name="line.4584"></a>
 <span class="sourceLineNo">4585</span><a name="line.4585"></a>
-<span class="sourceLineNo">4586</span>          try<a name="line.4586"></a>
-<span class="sourceLineNo">4587</span>          {<a name="line.4587"></a>
-<span class="sourceLineNo">4588</span>            asyncParser.submit(unparsedRecord);<a name="line.4588"></a>
-<span class="sourceLineNo">4589</span>          }<a name="line.4589"></a>
-<span class="sourceLineNo">4590</span>          catch (final InterruptedException e)<a name="line.4590"></a>
-<span class="sourceLineNo">4591</span>          {<a name="line.4591"></a>
-<span class="sourceLineNo">4592</span>            Debug.debugException(e);<a name="line.4592"></a>
-<span class="sourceLineNo">4593</span>            // If this thread is interrupted, then someone wants us to stop<a name="line.4593"></a>
-<span class="sourceLineNo">4594</span>            // processing, so that's what we'll do.<a name="line.4594"></a>
-<span class="sourceLineNo">4595</span>            Thread.currentThread().interrupt();<a name="line.4595"></a>
-<span class="sourceLineNo">4596</span>            stopProcessing = true;<a name="line.4596"></a>
-<span class="sourceLineNo">4597</span>          }<a name="line.4597"></a>
-<span class="sourceLineNo">4598</span><a name="line.4598"></a>
-<span class="sourceLineNo">4599</span>          if ((unparsedRecord == null) || unparsedRecord.isEOF())<a name="line.4599"></a>
-<span class="sourceLineNo">4600</span>          {<a name="line.4600"></a>
-<span class="sourceLineNo">4601</span>            stopProcessing = true;<a name="line.4601"></a>
-<span class="sourceLineNo">4602</span>          }<a name="line.4602"></a>
-<span class="sourceLineNo">4603</span>        }<a name="line.4603"></a>
-<span class="sourceLineNo">4604</span>      }<a name="line.4604"></a>
-<span class="sourceLineNo">4605</span>      finally<a name="line.4605"></a>
-<span class="sourceLineNo">4606</span>      {<a name="line.4606"></a>
-<span class="sourceLineNo">4607</span>        try<a name="line.4607"></a>
-<span class="sourceLineNo">4608</span>        {<a name="line.4608"></a>
-<span class="sourceLineNo">4609</span>          asyncParser.shutdown();<a name="line.4609"></a>
-<span class="sourceLineNo">4610</span>        }<a name="line.4610"></a>
-<span class="sourceLineNo">4611</span>        catch (final InterruptedException e)<a name="line.4611"></a>
-<span class="sourceLineNo">4612</span>        {<a name="line.4612"></a>
-<span class="sourceLineNo">4613</span>          Debug.debugException(e);<a name="line.4613"></a>
-<span class="sourceLineNo">4614</span>          Thread.currentThread().interrupt();<a name="line.4614"></a>
-<span class="sourceLineNo">4615</span>        }<a name="line.4615"></a>
-<span class="sourceLineNo">4616</span>        finally<a name="line.4616"></a>
-<span class="sourceLineNo">4617</span>        {<a name="line.4617"></a>
-<span class="sourceLineNo">4618</span>          asyncParsingComplete.set(true);<a name="line.4618"></a>
-<span class="sourceLineNo">4619</span>        }<a name="line.4619"></a>
-<span class="sourceLineNo">4620</span>      }<a name="line.4620"></a>
-<span class="sourceLineNo">4621</span>    }<a name="line.4621"></a>
-<span class="sourceLineNo">4622</span>  }<a name="line.4622"></a>
-<span class="sourceLineNo">4623</span><a name="line.4623"></a>
-<span class="sourceLineNo">4624</span><a name="line.4624"></a>
-<span class="sourceLineNo">4625</span><a name="line.4625"></a>
-<span class="sourceLineNo">4626</span>  /**<a name="line.4626"></a>
-<span class="sourceLineNo">4627</span>   * Used to parse Records asynchronously.<a name="line.4627"></a>
-<span class="sourceLineNo">4628</span>   */<a name="line.4628"></a>
-<span class="sourceLineNo">4629</span>  private final class RecordParser implements Processor&lt;UnparsedLDIFRecord,<a name="line.4629"></a>
-<span class="sourceLineNo">4630</span>                                                        LDIFRecord&gt;<a name="line.4630"></a>
-<span class="sourceLineNo">4631</span>  {<a name="line.4631"></a>
-<span class="sourceLineNo">4632</span>    /**<a name="line.4632"></a>
-<span class="sourceLineNo">4633</span>     * {@inheritDoc}<a name="line.4633"></a>
-<span class="sourceLineNo">4634</span>     */<a name="line.4634"></a>
-<span class="sourceLineNo">4635</span>    @Override()<a name="line.4635"></a>
-<span class="sourceLineNo">4636</span>    public LDIFRecord process(@NotNull final UnparsedLDIFRecord input)<a name="line.4636"></a>
-<span class="sourceLineNo">4637</span>           throws LDIFException<a name="line.4637"></a>
-<span class="sourceLineNo">4638</span>    {<a name="line.4638"></a>
-<span class="sourceLineNo">4639</span>      LDIFRecord record = decodeRecord(input, relativeBasePath, schema);<a name="line.4639"></a>
-<span class="sourceLineNo">4640</span><a name="line.4640"></a>
-<span class="sourceLineNo">4641</span>      if ((record instanceof Entry) &amp;&amp; (entryTranslator != null))<a name="line.4641"></a>
-<span class="sourceLineNo">4642</span>      {<a name="line.4642"></a>
-<span class="sourceLineNo">4643</span>        record = entryTranslator.translate((Entry) record,<a name="line.4643"></a>
-<span class="sourceLineNo">4644</span>             input.getFirstLineNumber());<a name="line.4644"></a>
-<span class="sourceLineNo">4645</span><a name="line.4645"></a>
-<span class="sourceLineNo">4646</span>        if (record == null)<a name="line.4646"></a>
-<span class="sourceLineNo">4647</span>        {<a name="line.4647"></a>
-<span class="sourceLineNo">4648</span>          record = SKIP_ENTRY;<a name="line.4648"></a>
-<span class="sourceLineNo">4649</span>        }<a name="line.4649"></a>
-<span class="sourceLineNo">4650</span>      }<a name="line.4650"></a>
-<span class="sourceLineNo">4651</span>      if ((record instanceof LDIFChangeRecord) &amp;&amp;<a name="line.4651"></a>
-<span class="sourceLineNo">4652</span>          (changeRecordTranslator != null))<a name="line.4652"></a>
-<span class="sourceLineNo">4653</span>      {<a name="line.4653"></a>
-<span class="sourceLineNo">4654</span>        record = changeRecordTranslator.translate((LDIFChangeRecord) record,<a name="line.4654"></a>
-<span class="sourceLineNo">4655</span>             input.getFirstLineNumber());<a name="line.4655"></a>
+<span class="sourceLineNo">4586</span><a name="line.4586"></a>
+<span class="sourceLineNo">4587</span><a name="line.4587"></a>
+<span class="sourceLineNo">4588</span>    /**<a name="line.4588"></a>
+<span class="sourceLineNo">4589</span>     * Reads raw, unparsed records from the input and submits them for<a name="line.4589"></a>
+<span class="sourceLineNo">4590</span>     * processing until the input is finished or closed.<a name="line.4590"></a>
+<span class="sourceLineNo">4591</span>     */<a name="line.4591"></a>
+<span class="sourceLineNo">4592</span>    @Override()<a name="line.4592"></a>
+<span class="sourceLineNo">4593</span>    public void run()<a name="line.4593"></a>
+<span class="sourceLineNo">4594</span>    {<a name="line.4594"></a>
+<span class="sourceLineNo">4595</span>      try<a name="line.4595"></a>
+<span class="sourceLineNo">4596</span>      {<a name="line.4596"></a>
+<span class="sourceLineNo">4597</span>        boolean stopProcessing = false;<a name="line.4597"></a>
+<span class="sourceLineNo">4598</span>        while (!stopProcessing)<a name="line.4598"></a>
+<span class="sourceLineNo">4599</span>        {<a name="line.4599"></a>
+<span class="sourceLineNo">4600</span>          UnparsedLDIFRecord unparsedRecord;<a name="line.4600"></a>
+<span class="sourceLineNo">4601</span>          try<a name="line.4601"></a>
+<span class="sourceLineNo">4602</span>          {<a name="line.4602"></a>
+<span class="sourceLineNo">4603</span>            unparsedRecord = readUnparsedRecord();<a name="line.4603"></a>
+<span class="sourceLineNo">4604</span>          }<a name="line.4604"></a>
+<span class="sourceLineNo">4605</span>          catch (final IOException e)<a name="line.4605"></a>
+<span class="sourceLineNo">4606</span>          {<a name="line.4606"></a>
+<span class="sourceLineNo">4607</span>            Debug.debugException(e);<a name="line.4607"></a>
+<span class="sourceLineNo">4608</span>            unparsedRecord = new UnparsedLDIFRecord(e);<a name="line.4608"></a>
+<span class="sourceLineNo">4609</span>            stopProcessing = true;<a name="line.4609"></a>
+<span class="sourceLineNo">4610</span>          }<a name="line.4610"></a>
+<span class="sourceLineNo">4611</span>          catch (final Exception e)<a name="line.4611"></a>
+<span class="sourceLineNo">4612</span>          {<a name="line.4612"></a>
+<span class="sourceLineNo">4613</span>            Debug.debugException(e);<a name="line.4613"></a>
+<span class="sourceLineNo">4614</span>            unparsedRecord = new UnparsedLDIFRecord(e);<a name="line.4614"></a>
+<span class="sourceLineNo">4615</span>          }<a name="line.4615"></a>
+<span class="sourceLineNo">4616</span><a name="line.4616"></a>
+<span class="sourceLineNo">4617</span>          try<a name="line.4617"></a>
+<span class="sourceLineNo">4618</span>          {<a name="line.4618"></a>
+<span class="sourceLineNo">4619</span>            asyncParser.submit(unparsedRecord);<a name="line.4619"></a>
+<span class="sourceLineNo">4620</span>          }<a name="line.4620"></a>
+<span class="sourceLineNo">4621</span>          catch (final InterruptedException e)<a name="line.4621"></a>
+<span class="sourceLineNo">4622</span>          {<a name="line.4622"></a>
+<span class="sourceLineNo">4623</span>            Debug.debugException(e);<a name="line.4623"></a>
+<span class="sourceLineNo">4624</span>            // If this thread is interrupted, then someone wants us to stop<a name="line.4624"></a>
+<span class="sourceLineNo">4625</span>            // processing, so that's what we'll do.<a name="line.4625"></a>
+<span class="sourceLineNo">4626</span>            Thread.currentThread().interrupt();<a name="line.4626"></a>
+<span class="sourceLineNo">4627</span>            stopProcessing = true;<a name="line.4627"></a>
+<span class="sourceLineNo">4628</span>          }<a name="line.4628"></a>
+<span class="sourceLineNo">4629</span><a name="line.4629"></a>
+<span class="sourceLineNo">4630</span>          if ((unparsedRecord == null) || unparsedRecord.isEOF())<a name="line.4630"></a>
+<span class="sourceLineNo">4631</span>          {<a name="line.4631"></a>
+<span class="sourceLineNo">4632</span>            stopProcessing = true;<a name="line.4632"></a>
+<span class="sourceLineNo">4633</span>          }<a name="line.4633"></a>
+<span class="sourceLineNo">4634</span>        }<a name="line.4634"></a>
+<span class="sourceLineNo">4635</span>      }<a name="line.4635"></a>
+<span class="sourceLineNo">4636</span>      finally<a name="line.4636"></a>
+<span class="sourceLineNo">4637</span>      {<a name="line.4637"></a>
+<span class="sourceLineNo">4638</span>        try<a name="line.4638"></a>
+<span class="sourceLineNo">4639</span>        {<a name="line.4639"></a>
+<span class="sourceLineNo">4640</span>          asyncParser.shutdown();<a name="line.4640"></a>
+<span class="sourceLineNo">4641</span>        }<a name="line.4641"></a>
+<span class="sourceLineNo">4642</span>        catch (final InterruptedException e)<a name="line.4642"></a>
+<span class="sourceLineNo">4643</span>        {<a name="line.4643"></a>
+<span class="sourceLineNo">4644</span>          Debug.debugException(e);<a name="line.4644"></a>
+<span class="sourceLineNo">4645</span>          Thread.currentThread().interrupt();<a name="line.4645"></a>
+<span class="sourceLineNo">4646</span>        }<a name="line.4646"></a>
+<span class="sourceLineNo">4647</span>        finally<a name="line.4647"></a>
+<span class="sourceLineNo">4648</span>        {<a name="line.4648"></a>
+<span class="sourceLineNo">4649</span>          asyncParsingComplete.set(true);<a name="line.4649"></a>
+<span class="sourceLineNo">4650</span>        }<a name="line.4650"></a>
+<span class="sourceLineNo">4651</span>      }<a name="line.4651"></a>
+<span class="sourceLineNo">4652</span>    }<a name="line.4652"></a>
+<span class="sourceLineNo">4653</span>  }<a name="line.4653"></a>
+<span class="sourceLineNo">4654</span><a name="line.4654"></a>
+<span class="sourceLineNo">4655</span><a name="line.4655"></a>
 <span class="sourceLineNo">4656</span><a name="line.4656"></a>
-<span class="sourceLineNo">4657</span>        if (record == null)<a name="line.4657"></a>
-<span class="sourceLineNo">4658</span>        {<a name="line.4658"></a>
-<span class="sourceLineNo">4659</span>          record = SKIP_ENTRY;<a name="line.4659"></a>
-<span class="sourceLineNo">4660</span>        }<a name="line.4660"></a>
-<span class="sourceLineNo">4661</span>      }<a name="line.4661"></a>
-<span class="sourceLineNo">4662</span>      return record;<a name="line.4662"></a>
-<span class="sourceLineNo">4663</span>    }<a name="line.4663"></a>
-<span class="sourceLineNo">4664</span>  }<a name="line.4664"></a>
-<span class="sourceLineNo">4665</span>}<a name="line.4665"></a>
+<span class="sourceLineNo">4657</span>  /**<a name="line.4657"></a>
+<span class="sourceLineNo">4658</span>   * Used to parse Records asynchronously.<a name="line.4658"></a>
+<span class="sourceLineNo">4659</span>   */<a name="line.4659"></a>
+<span class="sourceLineNo">4660</span>  private final class RecordParser implements Processor&lt;UnparsedLDIFRecord,<a name="line.4660"></a>
+<span class="sourceLineNo">4661</span>                                                        LDIFRecord&gt;<a name="line.4661"></a>
+<span class="sourceLineNo">4662</span>  {<a name="line.4662"></a>
+<span class="sourceLineNo">4663</span>    /**<a name="line.4663"></a>
+<span class="sourceLineNo">4664</span>     * {@inheritDoc}<a name="line.4664"></a>
+<span class="sourceLineNo">4665</span>     */<a name="line.4665"></a>
+<span class="sourceLineNo">4666</span>    @Override()<a name="line.4666"></a>
+<span class="sourceLineNo">4667</span>    public LDIFRecord process(@NotNull final UnparsedLDIFRecord input)<a name="line.4667"></a>
+<span class="sourceLineNo">4668</span>           throws LDIFException<a name="line.4668"></a>
+<span class="sourceLineNo">4669</span>    {<a name="line.4669"></a>
+<span class="sourceLineNo">4670</span>      LDIFRecord record = decodeRecord(input, relativeBasePath, schema);<a name="line.4670"></a>
+<span class="sourceLineNo">4671</span><a name="line.4671"></a>
+<span class="sourceLineNo">4672</span>      if ((record instanceof Entry) &amp;&amp; (entryTranslator != null))<a name="line.4672"></a>
+<span class="sourceLineNo">4673</span>      {<a name="line.4673"></a>
+<span class="sourceLineNo">4674</span>        record = entryTranslator.translate((Entry) record,<a name="line.4674"></a>
+<span class="sourceLineNo">4675</span>             input.getFirstLineNumber());<a name="line.4675"></a>
+<span class="sourceLineNo">4676</span><a name="line.4676"></a>
+<span class="sourceLineNo">4677</span>        if (record == null)<a name="line.4677"></a>
+<span class="sourceLineNo">4678</span>        {<a name="line.4678"></a>
+<span class="sourceLineNo">4679</span>          record = SKIP_ENTRY;<a name="line.4679"></a>
+<span class="sourceLineNo">4680</span>        }<a name="line.4680"></a>
+<span class="sourceLineNo">4681</span>      }<a name="line.4681"></a>
+<span class="sourceLineNo">4682</span>      if ((record instanceof LDIFChangeRecord) &amp;&amp;<a name="line.4682"></a>
+<span class="sourceLineNo">4683</span>          (changeRecordTranslator != null))<a name="line.4683"></a>
+<span class="sourceLineNo">4684</span>      {<a name="line.4684"></a>
+<span class="sourceLineNo">4685</span>        record = changeRecordTranslator.translate((LDIFChangeRecord) record,<a name="line.4685"></a>
+<span class="sourceLineNo">4686</span>             input.getFirstLineNumber());<a name="line.4686"></a>
+<span class="sourceLineNo">4687</span><a name="line.4687"></a>
+<span class="sourceLineNo">4688</span>        if (record == null)<a name="line.4688"></a>
+<span class="sourceLineNo">4689</span>        {<a name="line.4689"></a>
+<span class="sourceLineNo">4690</span>          record = SKIP_ENTRY;<a name="line.4690"></a>
+<span class="sourceLineNo">4691</span>        }<a name="line.4691"></a>
+<span class="sourceLineNo">4692</span>      }<a name="line.4692"></a>
+<span class="sourceLineNo">4693</span>      return record;<a name="line.4693"></a>
+<span class="sourceLineNo">4694</span>    }<a name="line.4694"></a>
+<span class="sourceLineNo">4695</span>  }<a name="line.4695"></a>
+<span class="sourceLineNo">4696</span>}<a name="line.4696"></a>
 
 
 

@@ -7,6 +7,9 @@ operations processed within the server.
 Usage:  summarize-access-log {options} {path}
 
 Available options include:
+--json
+    Indicates that the log file contains JSON-formatted log messages rather
+    than text-formatted messages.
 --encryptionPassphraseFile {path}
     Indicates that the log file is encrypted and that the encryption passphrase
     is contained in the specified file.  If the log data is encrypted and this

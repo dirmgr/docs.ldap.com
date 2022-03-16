@@ -27,6 +27,115 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.4</h3>
+
+              <p>
+                The following changes were made between the 6.0.3 and 6.0.4 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue in the Filter.matchesEntry method that could cause it to throw an
+                  exception rather than an appropriate Boolean response when evaluating an AND or
+                  an OR filter in which one of the nested components is not valid (for example, if
+                  the assertion value does not conform to the syntax for the associated attribute
+                  type).  This could cause problems for other LDAP SDK components that may rely on
+                  filter matching, like the in-memory directory server or the ldifsearch
+                  command-line tool.
+                  <br><br>
+                </li>
+
+                <li>
+                  Addressed a potential conflict in the way that decodeable controls are
+                  registered with the LDAP SDK that may have caused issues when trying to
+                  instantiate a control.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in the JVM-default trust manager implementation in which it did
+                  not properly look for a trust store file named "jssecacerts" in accordance with
+                  the JSSE specification.  It had previously only looked for a file named
+                  "cacerts".
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the logic used to select the default set of supported cipher suites to
+                  no longer exclude suites starting with "SSL_" by default on JVMs with a vendor
+                  string that includes "IBM".  IBM JVMs appear to use the "SSL_" prefix for some
+                  or all cipher suites, including those that are not associated with a legacy SSL
+                  protocol.  Also, added a TLSCipherSuiteSelector.setAllowSSLPrefixedSuites
+                  method that can be used to override the default behavior as needed.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF reader to support reading modifications with values read files
+                  referenced by URL.  This was previously supported when reading LDIF entries or
+                  add change records, but support for reading modification values from files had
+                  been overlooked.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDIF writer so that it no longer generates comments attempting to
+                  clarify the contents of base64-encoded values for values that are larger than
+                  1,000 bytes.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new version of an API that can be used for parsing access log messages
+                  from the Ping Identity Directory Server and other related server products.  The
+                  initial version of the logging API only supports text-formatted log messages in
+                  the default "name=value" format, but the new API supports both those
+                  text-formatted message and messages formatted as JSON objects.  A common API can
+                  be used to parse log messages of either type, although there may be slight
+                  differences where the different log formats represent information in somewhat
+                  different ways.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the summarize-access-log tool (which can be used to perform basic
+                  analysis of Ping Identity Directory Server access logs) to support
+                  JSON-formatted log files.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for the refresh certificate monitor administrative
+                  task in the Ping Identity Directory Server and related products.  The server
+                  will automatically refresh any cached certificate monitor data once a minute,
+                  but this task can cause a refresh to happen immediately.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added support for retrieving and parsing X.509 certificate monitor entries as
+                  provided by the Ping Identity Directory Server and other related server
+                  products.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added draft-ietf-kitten-scram-2fa-00 to the set of LDAP-related specifications.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the set of LDAP specifications to include the latest versions of
+                  draft-behera-ldap-password-policy, draft-coretta-x660-ldap, and
+                  draft-ietf-kitten-scram-2fa.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.3</h3>
 
               <p>
@@ -8868,6 +8977,6 @@
               </p>
 
 
-    <div class="copyright-footer">Copyright &copy; 2010-2021 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2022 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

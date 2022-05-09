@@ -562,6 +562,12 @@
         A provided value must be a string representation of a valid LDAP control in the form {oid}[:{criticality}[:{stringValue}|::{base64Value}]].
         <br><br>
       </li>
+      <li>
+        <tt>--useJSONFormattedRequestControls</tt> &mdash; Indicates that any request controls should be encapsulated in a JSON-formatted request control.  Even if there wouldn't otherwise be any request controls, an empty JSON-formatted request control will be included to indicate that the server should encapsulate any response controls in a JSON-formatted response control.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
     </ul>
     <h3>Additional Arguments</h3>
     <ul>

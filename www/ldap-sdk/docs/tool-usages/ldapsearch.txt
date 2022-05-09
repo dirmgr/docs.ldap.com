@@ -571,6 +571,12 @@ Available options include:
         '0:99:smith' indicates that the server should the first 100 entries in
         the result set for which the primary sort attribute has a value that is
         greater than or equal to 'smith'.
+    --useJSONFormattedRequestControls
+        Indicates that any request controls should be encapsulated in a
+        JSON-formatted request control.  Even if there wouldn't otherwise be
+        any request controls, an empty JSON-formatted request control will be
+        included to indicate that the server should encapsulate any response
+        controls in a JSON-formatted response control.
 
   Entry Transformation Arguments
 

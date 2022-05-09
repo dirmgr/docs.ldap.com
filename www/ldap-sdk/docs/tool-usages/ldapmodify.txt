@@ -515,6 +515,12 @@ Available options include:
     --modifyDNControl {oid}[:{criticality}[:{stringValue}|::{base64Value}]]
         Specifies a control that should be included in all modify DN requests
         sent to the server.
+    --useJSONFormattedRequestControls
+        Indicates that any request controls should be encapsulated in a
+        JSON-formatted request control.  Even if there wouldn't otherwise be
+        any request controls, an empty JSON-formatted request control will be
+        included to indicate that the server should encapsulate any response
+        controls in a JSON-formatted response control.
 
   Usage Arguments
 

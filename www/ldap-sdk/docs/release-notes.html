@@ -27,7 +27,126 @@
 
               <h2>Release Notes</h2>
 
-              <h3>Version 6.0.4</h3>
+              <h3>Version 6.0.5</h3>
+
+              <p>
+                The following changes were made between the 6.0.4 and 6.0.5 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed a bug in which the ldapcompare tool did not properly close its output file
+                  if one was configured.  This is primarily an issue if the tool is invoked
+                  programmatically rather than running it from the command line (or a shell script
+                  or batch file).
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved support for validating and comparing values using the telephone number
+                  syntax.  Previously, telephone number matching always used a loose
+                  interpretation of the specification, which would consider any valid printable
+                  string (including strings without any digits) to be a valid telephone number,
+                  and it would only ignore spaces and hyphens when comparing values.  It still
+                  uses the same validation policy by default, but it can now be configured to
+                  either at least require at least one digit, or to require strict adherence to
+                  the X.520 specification (which will require values to start with a plus sign and
+                  a country code, followed by only digits, spaces, and hyphens).  The default
+                  comparison policy has also been updated to ignore all non-digit characters
+                  (except the leading plus sign), but it can still be configured to use the
+                  former default behavior.  The default validation and comparison behaviors can be
+                  set either programmatically or using system properties.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue that could occasionally cause the LDAP SDK to hide the cause of a
+                  StartTLS failure with a second, less useful exception.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in which the --generatePropertiesFile option provided by some
+                  command-line tools did not properly escape backslashes, carriage return,
+                  newline, or form feed characters.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in the ldifsearch tool in which it could display a malformed
+                  message when invoking the tool in which the first unnamed trailing argument was
+                  expected to be the search filter but could not be parsed as a valid filter.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added support for encoding controls to JSON objects, and for decoding JSON
+                  objects as controls.  There is a generic JSON representation that works for all
+                  controls (in which the JSON object includes just an OID, criticality, and a
+                  base64-encoded representation of the raw value, if there is a value), but most
+                  controls that take a value have a more user-friendly encoding with the value
+                  expressed as a JSON object with fields for each of the elements of the control
+                  value.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a new JSON-formatted request control that can be
+                  used to send request controls to a server encoded as JSON objects rather than
+                  using their native LDAP encodings.  Also, added client-side support for a new
+                  JSON-formatted response control that can be used to receive JSON-encoded
+                  response controls from the server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapsearch and ldapmodify command-line tools to add support for
+                  JSON-formatted request and response controls.  If the
+                  --useJSONFormattedRequestControls argument is provided, requests sent to the
+                  server will include a JSON-formatted request control with appropriate encodings
+                  for any other request controls to be included in the request.  Any
+                  JSON-formatted response control received from the server will automatically have
+                  its embedded controls extracted and processed as if they had been returned with
+                  their regular LDAP encodings.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the way the parallel-update tool created assured replication
+                  request controls when an explicit local or remote assurance level was specified.
+                  Previously, it would only specify a minimum assurance level without specifying a
+                  maximum level.  If the server was already configured to use assured replication
+                  with a higher assurance level than the client requested, then the server's
+                  higher level would have overridden the level requested by the client.  The tool
+                  will now specify both minimum and maximum levels to ensure that the requested
+                  assurance level is used, regardless of the server configuration.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the topology registry trust manager to allow trusting a certificate
+                  chain if either the peer certificate or any of its issuers is found in the
+                  server's topology registry.  Previously, it would only trust certificate chains
+                  in which the peer certificate itself was found in the topology registry, and
+                  having an issuer certificate present in the topology registry was not sufficient
+                  to allow certificates signed by that issuer to be trusted.  The former behavior
+                  is still available via a configuration option.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the topology registry trust manager to make it possible to ignore the
+                  certificate validity window for peer and issuer certificates.  The certificate
+                  validity window is still respected by default, but if the trust manager is
+                  configured to ignore that window, then a certificate chain may be trusted even
+                  if the peer or an issuer certificate is expired or not yet valid.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
 
               <p>
                 The following changes were made between the 6.0.3 and 6.0.4 releases:

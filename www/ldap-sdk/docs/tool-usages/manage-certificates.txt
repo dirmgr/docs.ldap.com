@@ -817,30 +817,29 @@ Available options include:
     of 'JKS' will be used for newly-created key stores.
 * --alias {alias}
     The alias (also called a nickname) to use for the newly-generated
-    certificate.  If the --replace-existing-certificate argument is provided,
-    then this must be the alias of the private key for which to replace the
+    certificate.  If the --use-existing-key-pair argument is provided, then
+    this must be the alias of the private key for which to replace the
     certificate chain with the self-signed certificate.  If the
-    --replace-existing-certificate argument is not provided, then the alias
-    must not already exist in the key store.
---replace-existing-certificate
+    --use-existing-key-pair argument is not provided, then the alias must not
+    already exist in the key store.
+--use-existing-key-pair
     Indicates that the new self-signed certificate should replace the
     certificate chain associated with an existing private key that is
     identified by the --alias argument, reusing the existing key pair.  If this
     argument is not provided, then a new key pair will be generated.
 --subject-dn {dn}
-    The subject DN for the new certificate.  This must be provided unless then
-    --replace-existing-certificate argument is given.  If the
-    --replace-existing-certificate argument is provided, then the --subject-dn
-    argument may be omitted if you want to reuse the same subject as the
-    existing certificate.  A subject DN typically includes at least a 'CN'
-    attribute (which in a server certificate should be the hostname that
-    clients are expected to use when connecting to the server, and in other
-    certificates indicates the purpose of that certificate), and may also
-    include additional attributes like 'OU' (the associated department or
-    organizational unit name), 'O' (the company or organization name), 'L' (the
-    city or locality name), 'ST' (the full name -- NOT the two-letter
-    abbreviation -- of the state or province), 'C' (the two-letter country code
-    -- NOT the full country name).  For example:
+    The subject DN for the new certificate.  This must be provided unless the
+    --use-existing-key-pair argument is given.  If the --use-existing-key-pair
+    argument is provided, then the --subject-dn argument may be omitted if you
+    want to reuse the same subject as the existing certificate.  A subject DN
+    typically includes at least a 'CN' attribute (which in a server certificate
+    should be the hostname that clients are expected to use when connecting to
+    the server, and in other certificates indicates the purpose of that
+    certificate), and may also include additional attributes like 'OU' (the
+    associated department or organizational unit name), 'O' (the company or
+    organization name), 'L' (the city or locality name), 'ST' (the full name --
+    NOT the two-letter abbreviation -- of the state or province), 'C' (the
+    two-letter country code -- NOT the full country name).  For example:
     'CN=ldap.example.com,OU=Directory Services,O=Example
     Corporation,L=Austin,ST=Texas,C=US'.
 --days-valid {value}
@@ -856,34 +855,32 @@ Available options include:
 --key-algorithm {name}
     The name of the key algorithm to use to generate the key pair.  If present,
     the value will typically be 'RSA' or 'EC' (for elliptic curve).  This
-    argument must not be provided if the --replace-existing-certificate
-    argument is used.  If neither this argument nor the
-    --replace-existing-certificate argument is provided, then a default key
-    algorithm of 'RSA' will be used.
+    argument must not be provided if the --use-existing-key-pair argument is
+    used.  If neither this argument nor the --use-existing-key-pair argument is
+    provided, then a default key algorithm of 'RSA' will be used.
 --key-size-bits {bits}
     The size of the key to generate, in bits.  This argument must not be
-    provided if the --replace-existing-certificate argument is used.  This
-    argument must be provided if the --key-algorithm argument is used to
-    specify an algorithm other than 'RSA'.  If neither this argument nor the
-    --replace-existing-certificate argument is provided, then a default key
-    size of 2048 bits will be used.
+    provided if the --use-existing-key-pair argument is used.  This argument
+    must be provided if the --key-algorithm argument is used to specify an
+    algorithm other than 'RSA'.  If neither this argument nor the
+    --use-existing-key-pair argument is provided, then a default key size of
+    2048 bits will be used.
 --signature-algorithm {name}
     The name of the algorithm to use to sign the certificate.  This argument
-    must not be provided if the --replace-existing-certificate argument is
-    used.  This argument must be provided if the --key-algorithm argument is
-    used to specify an algorithm other than 'RSA'.  If neither this argument
-    nor the --replace-existing-certificate argument is provided, then a default
-    signature algorithm of 'SHA256withRSA' will be used.
+    must not be provided if the --use-existing-key-pair argument is used.  This
+    argument must be provided if the --key-algorithm argument is used to
+    specify an algorithm other than 'RSA'.  If neither this argument nor the
+    --use-existing-key-pair argument is provided, then a default signature
+    algorithm of 'SHA256withRSA' will be used.
 --inherit-extensions
     This argument can only be used in conjunction with the
-    --replace-existing-certificate argument, and it indicates that the new
-    certificate should inherit all of the same extension values as the
-    certificate being replaced (although extensions known to apply to the
-    certificate's issuer, like authority key identifier and issuer alternative
-    name, may be excluded).  If the --replace-existing-certificate argument is
-    provided without the --inherit-extensions argument, then the new
-    certificate will only have the extensions that are explicitly specified
-    using other arguments.
+    --use-existing-key-pair argument, and it indicates that the new certificate
+    should inherit all of the same extension values as the certificate being
+    replaced (although extensions known to apply to the certificate's issuer,
+    like authority key identifier and issuer alternative name, may be
+    excluded).  If the --use-existing-key-pair argument is provided without the
+    --inherit-extensions argument, then the new certificate will only have the
+    extensions that are explicitly specified using other arguments.
 --subject-alternative-name-dns {name}
     Indicates that the certificate should include a subject alternative name
     extension with the specified DNS hostname.  This can be used to help
@@ -985,14 +982,15 @@ Examples
          --subject-dn "CN=ldap.example.com,O=Example Corp,C=US"
 
   Generates a self-signed certificate to replace the existing certificate with
-  the 'server-cert' alias.  The new certificate will include the same subject,
-  key and signature algorithms, and set of extensions as the existing
-  certificate, and it will have a validity of 365 days, starting immediately.
+  the 'server-cert' alias.  The new certificate will reuse the existing
+  certificate's key pair, will include the same subject, key and signature
+  algorithms, and set of extensions as the existing certificate, and it will
+  have a validity of 365 days, starting immediately.
 
     manage-certificates generate-self-signed-certificate \
          generate-self-signed-certificate --keystore config/keystore \
          --keystore-password-file config/keystore.pin --alias server-cert \
-         --replace-existing-certificate --inherit-extensions
+         --use-existing-key-pair --inherit-extensions
 
   Generates a self-signed server certificate with an alias of 'server-cert', a
   subject DN of 'CN=ldap.example.com,O=Example Corp,C=US', a 4096-bit RSA key,
@@ -1125,11 +1123,11 @@ Available options include:
     of 'JKS' will be used for newly-created key stores.
 * --alias {alias}
     The alias (also called a nickname) of the private key to use to generate
-    the certificate signing request.  If the --replace-existing-certificate
-    argument is provided, then this must be the alias of an existing private
-    key.  If the --replace-existing-certificate argument is not provided, then
-    the alias must not already exist in the key store, and a corresponding key
-    pair will be created in that alias.
+    the certificate signing request.  If the --use-existing-key-pair argument
+    is provided, then this must be the alias of an existing private key.  If
+    the --use-existing-key-pair argument is not provided, then the alias must
+    not already exist in the key store, and a corresponding key pair will be
+    created in that alias.
 --use-existing-key-pair
     Indicates that the certificate signing request should use an existing key
     pair in the key store, identified by the specified alias.  If this argument
@@ -1137,8 +1135,8 @@ Available options include:
     signing request and stored in the key store.
 --subject-dn {dn}
     The subject DN for the certificate signing request.  This must be provided
-    unless then --replace-existing-certificate argument is given.  If the
-    --replace-existing-certificate argument is provided, then the --subject-dn
+    unless then --use-existing-key-pair argument is given.  If the
+    --use-existing-key-pair argument is provided, then the --subject-dn
     argument may be omitted if you want to reuse the same subject as the
     existing certificate.  A subject DN typically includes at least a 'CN'
     attribute (which in a server certificate should be the hostname that
@@ -1153,34 +1151,32 @@ Available options include:
 --key-algorithm {name}
     The name of the key algorithm to use to generate the key pair.  If present,
     the value will typically be 'RSA' or 'EC' (for elliptic curve).  This
-    argument must not be provided if the --replace-existing-certificate
-    argument is used.  If neither this argument nor the
-    --replace-existing-certificate argument is provided, then a default key
-    algorithm of 'RSA' will be used.
+    argument must not be provided if the --use-existing-key-pair argument is
+    used.  If neither this argument nor the --use-existing-key-pair argument is
+    provided, then a default key algorithm of 'RSA' will be used.
 --key-size-bits {bits}
     The size of the key to generate, in bits.  This argument must not be
-    provided if the --replace-existing-certificate argument is used.  This
-    argument must be provided if the --key-algorithm argument is used to
-    specify an algorithm other than 'RSA'.  If neither this argument nor the
-    --replace-existing-certificate argument is provided, then a default key
-    size of 2048 bits will be used.
+    provided if the --use-existing-key-pair argument is used.  This argument
+    must be provided if the --key-algorithm argument is used to specify an
+    algorithm other than 'RSA'.  If neither this argument nor the
+    --use-existing-key-pair argument is provided, then a default key size of
+    2048 bits will be used.
 --signature-algorithm {name}
     The name of the algorithm to use to sign the certificate.  This argument
-    must not be provided if the --replace-existing-certificate argument is
-    used.  This argument must be provided if the --key-algorithm argument is
-    used to specify an algorithm other than 'RSA'.  If neither this argument
-    nor the --replace-existing-certificate argument is provided, then a default
-    signature algorithm of 'SHA256withRSA' will be used.
+    must not be provided if the --use-existing-key-pair argument is used.  This
+    argument must be provided if the --key-algorithm argument is used to
+    specify an algorithm other than 'RSA'.  If neither this argument nor the
+    --use-existing-key-pair argument is provided, then a default signature
+    algorithm of 'SHA256withRSA' will be used.
 --inherit-extensions
     This argument can only be used in conjunction with the
-    --replace-existing-certificate argument, and it indicates that the
-    requested certificate should inherit all of the same extension values as
-    the certificate being replaced (although extensions known to apply to the
-    certificate's issuer, like authority key identifier and issuer alternative
-    name, may be excluded).  If the --replace-existing-certificate argument is
-    provided without the --inherit-extensions argument, then the new
-    certificate will only have the extensions that are explicitly specified
-    using other arguments.
+    --use-existing-key-pair argument, and it indicates that the requested
+    certificate should inherit all of the same extension values as the existing
+    certificate (although extensions known to apply to the certificate's
+    issuer, like authority key identifier and issuer alternative name, may be
+    excluded).  If the --use-existing-key-pair argument is provided without the
+    --inherit-extensions argument, then the new certificate will only have the
+    extensions that are explicitly specified using other arguments.
 --subject-alternative-name-dns {name}
     Indicates that the certificate signing request should include a subject
     alternative name extension with the specified DNS hostname.  This can be
@@ -1275,10 +1271,10 @@ Examples
          --subject-dn "CN=ldap.example.com,O=Example Corp,C=US"
 
   Generates a certificate signing request to replace the existing certificate
-  with the 'server-cert' alias.  The new certificate will include the same
-  subject, key and signature algorithms, and set of extensions as the existing
-  certificate, and the request will be written to the server-cert.csr output
-  file.
+  with the 'server-cert' alias.  The new certificate will use the same key pair
+  as the existing certificate, will include the same subject, key and signature
+  algorithms, and set of extensions as the existing certificate, and the
+  request will be written to the server-cert.csr output file.
 
     manage-certificates generate-certificate-signing-request \
          generate-certificate-signing-request --keystore config/keystore \

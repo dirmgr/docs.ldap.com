@@ -128,6 +128,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--verifyCertificateHostnames</tt> &mdash; Indicates that the tool should verify that the hostname or IP addressed used to establish connections ot the LDAP server matches an address for which the server's TLS certificate was issued.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-N <i>{nickname}</i></tt> / <tt>--certNickname <i>{nickname}</i></tt> &mdash; The nickname (alias) of the client certificate in the key store to present to the directory server for SSL client authentication.
         <br><br>
       </li>

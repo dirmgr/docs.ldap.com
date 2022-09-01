@@ -471,112 +471,132 @@
 <span class="sourceLineNo">463</span>    {<a name="line.463"></a>
 <span class="sourceLineNo">464</span>      final String component =<a name="line.464"></a>
 <span class="sourceLineNo">465</span>           nameWithoutTrailingPeriod.substring(startPos, periodPos);<a name="line.465"></a>
-<span class="sourceLineNo">466</span>      if (component.length() &gt; 63)<a name="line.466"></a>
-<span class="sourceLineNo">467</span>      {<a name="line.467"></a>
-<span class="sourceLineNo">468</span>        throw new ArgumentException(<a name="line.468"></a>
-<span class="sourceLineNo">469</span>             ERR_DNS_NAME_VALIDATOR_COMPONENT_TOO_LONG.get(<a name="line.469"></a>
-<span class="sourceLineNo">470</span>                  component, component.length()));<a name="line.470"></a>
-<span class="sourceLineNo">471</span>      }<a name="line.471"></a>
-<span class="sourceLineNo">472</span><a name="line.472"></a>
-<span class="sourceLineNo">473</span>      if (component.charAt(0) == '-')<a name="line.473"></a>
-<span class="sourceLineNo">474</span>      {<a name="line.474"></a>
-<span class="sourceLineNo">475</span>        throw new ArgumentException(<a name="line.475"></a>
-<span class="sourceLineNo">476</span>             ERR_DNS_NAME_VALIDATOR_COMPONENT_STARTS_WITH_HYPHEN.get(<a name="line.476"></a>
-<span class="sourceLineNo">477</span>                  component));<a name="line.477"></a>
-<span class="sourceLineNo">478</span>      }<a name="line.478"></a>
-<span class="sourceLineNo">479</span><a name="line.479"></a>
-<span class="sourceLineNo">480</span>      for (int i=0; i &lt; component.length(); i++)<a name="line.480"></a>
-<span class="sourceLineNo">481</span>      {<a name="line.481"></a>
-<span class="sourceLineNo">482</span>        final char c = component.charAt(i);<a name="line.482"></a>
-<span class="sourceLineNo">483</span>        if (! isLetterDigitOrDash(c))<a name="line.483"></a>
-<span class="sourceLineNo">484</span>        {<a name="line.484"></a>
-<span class="sourceLineNo">485</span>          if (c &lt;= 127)<a name="line.485"></a>
-<span class="sourceLineNo">486</span>          {<a name="line.486"></a>
-<span class="sourceLineNo">487</span>            throw new ArgumentException(<a name="line.487"></a>
-<span class="sourceLineNo">488</span>                 ERR_DNS_NAME_VALIDATOR_COMPONENT_ILLEGAL_ASCII_CHARACTER. get(<a name="line.488"></a>
-<span class="sourceLineNo">489</span>                      component, (i+1)));<a name="line.489"></a>
-<span class="sourceLineNo">490</span>          }<a name="line.490"></a>
-<span class="sourceLineNo">491</span>          else<a name="line.491"></a>
-<span class="sourceLineNo">492</span>          {<a name="line.492"></a>
-<span class="sourceLineNo">493</span>            throw new ArgumentException(<a name="line.493"></a>
-<span class="sourceLineNo">494</span>                 ERR_DNS_NAME_VALIDATOR_COMPONENT_NON_ASCII_CHARACTER.get(<a name="line.494"></a>
-<span class="sourceLineNo">495</span>                      component, (i+1)));<a name="line.495"></a>
-<span class="sourceLineNo">496</span>          }<a name="line.496"></a>
-<span class="sourceLineNo">497</span>        }<a name="line.497"></a>
-<span class="sourceLineNo">498</span>      }<a name="line.498"></a>
-<span class="sourceLineNo">499</span><a name="line.499"></a>
-<span class="sourceLineNo">500</span>      startPos = periodPos+1;<a name="line.500"></a>
-<span class="sourceLineNo">501</span>      periodPos = nameWithoutTrailingPeriod.indexOf('.', startPos);<a name="line.501"></a>
+<span class="sourceLineNo">466</span>      validateDNSHostNameComponentSyntax(component);<a name="line.466"></a>
+<span class="sourceLineNo">467</span><a name="line.467"></a>
+<span class="sourceLineNo">468</span>      startPos = periodPos+1;<a name="line.468"></a>
+<span class="sourceLineNo">469</span>      periodPos = nameWithoutTrailingPeriod.indexOf('.', startPos);<a name="line.469"></a>
+<span class="sourceLineNo">470</span>    }<a name="line.470"></a>
+<span class="sourceLineNo">471</span><a name="line.471"></a>
+<span class="sourceLineNo">472</span>    final String lastComponent = nameWithoutTrailingPeriod.substring(startPos);<a name="line.472"></a>
+<span class="sourceLineNo">473</span>    validateDNSHostNameComponentSyntax(lastComponent);<a name="line.473"></a>
+<span class="sourceLineNo">474</span>  }<a name="line.474"></a>
+<span class="sourceLineNo">475</span><a name="line.475"></a>
+<span class="sourceLineNo">476</span><a name="line.476"></a>
+<span class="sourceLineNo">477</span><a name="line.477"></a>
+<span class="sourceLineNo">478</span>  /**<a name="line.478"></a>
+<span class="sourceLineNo">479</span>   * Validates the provided name component to ensure that it conforms to the<a name="line.479"></a>
+<span class="sourceLineNo">480</span>   * expected syntax.<a name="line.480"></a>
+<span class="sourceLineNo">481</span>   *<a name="line.481"></a>
+<span class="sourceLineNo">482</span>   * @param  component  The name component to validate.<a name="line.482"></a>
+<span class="sourceLineNo">483</span>   *<a name="line.483"></a>
+<span class="sourceLineNo">484</span>   * @throws  ArgumentException  If the provided name is not considered valid.<a name="line.484"></a>
+<span class="sourceLineNo">485</span>   */<a name="line.485"></a>
+<span class="sourceLineNo">486</span>  private static void validateDNSHostNameComponentSyntax(<a name="line.486"></a>
+<span class="sourceLineNo">487</span>               @NotNull final String component)<a name="line.487"></a>
+<span class="sourceLineNo">488</span>          throws ArgumentException<a name="line.488"></a>
+<span class="sourceLineNo">489</span>  {<a name="line.489"></a>
+<span class="sourceLineNo">490</span>    if (component.length() &gt; 63)<a name="line.490"></a>
+<span class="sourceLineNo">491</span>    {<a name="line.491"></a>
+<span class="sourceLineNo">492</span>      throw new ArgumentException(<a name="line.492"></a>
+<span class="sourceLineNo">493</span>           ERR_DNS_NAME_VALIDATOR_COMPONENT_TOO_LONG.get(<a name="line.493"></a>
+<span class="sourceLineNo">494</span>                component, component.length()));<a name="line.494"></a>
+<span class="sourceLineNo">495</span>    }<a name="line.495"></a>
+<span class="sourceLineNo">496</span><a name="line.496"></a>
+<span class="sourceLineNo">497</span>    if (component.charAt(0) == '-')<a name="line.497"></a>
+<span class="sourceLineNo">498</span>    {<a name="line.498"></a>
+<span class="sourceLineNo">499</span>      throw new ArgumentException(<a name="line.499"></a>
+<span class="sourceLineNo">500</span>           ERR_DNS_NAME_VALIDATOR_COMPONENT_STARTS_WITH_HYPHEN.get(<a name="line.500"></a>
+<span class="sourceLineNo">501</span>                component));<a name="line.501"></a>
 <span class="sourceLineNo">502</span>    }<a name="line.502"></a>
-<span class="sourceLineNo">503</span>  }<a name="line.503"></a>
-<span class="sourceLineNo">504</span><a name="line.504"></a>
-<span class="sourceLineNo">505</span><a name="line.505"></a>
-<span class="sourceLineNo">506</span><a name="line.506"></a>
-<span class="sourceLineNo">507</span>  /**<a name="line.507"></a>
-<span class="sourceLineNo">508</span>   * Indicates whether the provided character is an ASCII letter, digit, or<a name="line.508"></a>
-<span class="sourceLineNo">509</span>   * dash.<a name="line.509"></a>
-<span class="sourceLineNo">510</span>   *<a name="line.510"></a>
-<span class="sourceLineNo">511</span>   * @param  c  The character for which to make the determination.<a name="line.511"></a>
-<span class="sourceLineNo">512</span>   *<a name="line.512"></a>
-<span class="sourceLineNo">513</span>   * @return  {@code true} if the provided character is an ASCII letter, digit,<a name="line.513"></a>
-<span class="sourceLineNo">514</span>   *          or dash, or {@code false} if not.<a name="line.514"></a>
-<span class="sourceLineNo">515</span>   */<a name="line.515"></a>
-<span class="sourceLineNo">516</span>  private static boolean isLetterDigitOrDash(final char c)<a name="line.516"></a>
-<span class="sourceLineNo">517</span>  {<a name="line.517"></a>
-<span class="sourceLineNo">518</span>    if ((c &gt;= 'a') &amp;&amp; (c &lt;= 'z'))<a name="line.518"></a>
-<span class="sourceLineNo">519</span>    {<a name="line.519"></a>
-<span class="sourceLineNo">520</span>      return true;<a name="line.520"></a>
-<span class="sourceLineNo">521</span>    }<a name="line.521"></a>
-<span class="sourceLineNo">522</span><a name="line.522"></a>
-<span class="sourceLineNo">523</span>    if ((c &gt;= 'A') &amp;&amp; (c &lt;= 'Z'))<a name="line.523"></a>
-<span class="sourceLineNo">524</span>    {<a name="line.524"></a>
-<span class="sourceLineNo">525</span>      return true;<a name="line.525"></a>
-<span class="sourceLineNo">526</span>    }<a name="line.526"></a>
-<span class="sourceLineNo">527</span><a name="line.527"></a>
-<span class="sourceLineNo">528</span>    if ((c &gt;= '0') &amp;&amp; (c &lt;= '9'))<a name="line.528"></a>
-<span class="sourceLineNo">529</span>    {<a name="line.529"></a>
-<span class="sourceLineNo">530</span>      return true;<a name="line.530"></a>
-<span class="sourceLineNo">531</span>    }<a name="line.531"></a>
-<span class="sourceLineNo">532</span><a name="line.532"></a>
-<span class="sourceLineNo">533</span>    return (c == '-');<a name="line.533"></a>
-<span class="sourceLineNo">534</span>  }<a name="line.534"></a>
-<span class="sourceLineNo">535</span><a name="line.535"></a>
-<span class="sourceLineNo">536</span><a name="line.536"></a>
-<span class="sourceLineNo">537</span><a name="line.537"></a>
-<span class="sourceLineNo">538</span>  /**<a name="line.538"></a>
-<span class="sourceLineNo">539</span>   * Retrieves a string representation of this argument value validator.<a name="line.539"></a>
-<span class="sourceLineNo">540</span>   *<a name="line.540"></a>
-<span class="sourceLineNo">541</span>   * @return  A string representation of this argument value validator.<a name="line.541"></a>
-<span class="sourceLineNo">542</span>   */<a name="line.542"></a>
-<span class="sourceLineNo">543</span>  @Override()<a name="line.543"></a>
-<span class="sourceLineNo">544</span>  @NotNull()<a name="line.544"></a>
-<span class="sourceLineNo">545</span>  public String toString()<a name="line.545"></a>
-<span class="sourceLineNo">546</span>  {<a name="line.546"></a>
-<span class="sourceLineNo">547</span>    final StringBuilder buffer = new StringBuilder();<a name="line.547"></a>
-<span class="sourceLineNo">548</span>    toString(buffer);<a name="line.548"></a>
-<span class="sourceLineNo">549</span>    return buffer.toString();<a name="line.549"></a>
-<span class="sourceLineNo">550</span>  }<a name="line.550"></a>
-<span class="sourceLineNo">551</span><a name="line.551"></a>
+<span class="sourceLineNo">503</span><a name="line.503"></a>
+<span class="sourceLineNo">504</span>    for (int i=0; i &lt; component.length(); i++)<a name="line.504"></a>
+<span class="sourceLineNo">505</span>    {<a name="line.505"></a>
+<span class="sourceLineNo">506</span>      final char c = component.charAt(i);<a name="line.506"></a>
+<span class="sourceLineNo">507</span>      if (! isLetterDigitOrDash(c))<a name="line.507"></a>
+<span class="sourceLineNo">508</span>      {<a name="line.508"></a>
+<span class="sourceLineNo">509</span>        if (c &lt;= 127)<a name="line.509"></a>
+<span class="sourceLineNo">510</span>        {<a name="line.510"></a>
+<span class="sourceLineNo">511</span>          throw new ArgumentException(<a name="line.511"></a>
+<span class="sourceLineNo">512</span>               ERR_DNS_NAME_VALIDATOR_COMPONENT_ILLEGAL_ASCII_CHARACTER. get(<a name="line.512"></a>
+<span class="sourceLineNo">513</span>                    component, (i+1)));<a name="line.513"></a>
+<span class="sourceLineNo">514</span>        }<a name="line.514"></a>
+<span class="sourceLineNo">515</span>        else<a name="line.515"></a>
+<span class="sourceLineNo">516</span>        {<a name="line.516"></a>
+<span class="sourceLineNo">517</span>          throw new ArgumentException(<a name="line.517"></a>
+<span class="sourceLineNo">518</span>               ERR_DNS_NAME_VALIDATOR_COMPONENT_NON_ASCII_CHARACTER.get(<a name="line.518"></a>
+<span class="sourceLineNo">519</span>                    component, (i+1)));<a name="line.519"></a>
+<span class="sourceLineNo">520</span>        }<a name="line.520"></a>
+<span class="sourceLineNo">521</span>      }<a name="line.521"></a>
+<span class="sourceLineNo">522</span>    }<a name="line.522"></a>
+<span class="sourceLineNo">523</span>  }<a name="line.523"></a>
+<span class="sourceLineNo">524</span><a name="line.524"></a>
+<span class="sourceLineNo">525</span><a name="line.525"></a>
+<span class="sourceLineNo">526</span><a name="line.526"></a>
+<span class="sourceLineNo">527</span>  /**<a name="line.527"></a>
+<span class="sourceLineNo">528</span>   * Indicates whether the provided character is an ASCII letter, digit, or<a name="line.528"></a>
+<span class="sourceLineNo">529</span>   * dash.<a name="line.529"></a>
+<span class="sourceLineNo">530</span>   *<a name="line.530"></a>
+<span class="sourceLineNo">531</span>   * @param  c  The character for which to make the determination.<a name="line.531"></a>
+<span class="sourceLineNo">532</span>   *<a name="line.532"></a>
+<span class="sourceLineNo">533</span>   * @return  {@code true} if the provided character is an ASCII letter, digit,<a name="line.533"></a>
+<span class="sourceLineNo">534</span>   *          or dash, or {@code false} if not.<a name="line.534"></a>
+<span class="sourceLineNo">535</span>   */<a name="line.535"></a>
+<span class="sourceLineNo">536</span>  private static boolean isLetterDigitOrDash(final char c)<a name="line.536"></a>
+<span class="sourceLineNo">537</span>  {<a name="line.537"></a>
+<span class="sourceLineNo">538</span>    if ((c &gt;= 'a') &amp;&amp; (c &lt;= 'z'))<a name="line.538"></a>
+<span class="sourceLineNo">539</span>    {<a name="line.539"></a>
+<span class="sourceLineNo">540</span>      return true;<a name="line.540"></a>
+<span class="sourceLineNo">541</span>    }<a name="line.541"></a>
+<span class="sourceLineNo">542</span><a name="line.542"></a>
+<span class="sourceLineNo">543</span>    if ((c &gt;= 'A') &amp;&amp; (c &lt;= 'Z'))<a name="line.543"></a>
+<span class="sourceLineNo">544</span>    {<a name="line.544"></a>
+<span class="sourceLineNo">545</span>      return true;<a name="line.545"></a>
+<span class="sourceLineNo">546</span>    }<a name="line.546"></a>
+<span class="sourceLineNo">547</span><a name="line.547"></a>
+<span class="sourceLineNo">548</span>    if ((c &gt;= '0') &amp;&amp; (c &lt;= '9'))<a name="line.548"></a>
+<span class="sourceLineNo">549</span>    {<a name="line.549"></a>
+<span class="sourceLineNo">550</span>      return true;<a name="line.550"></a>
+<span class="sourceLineNo">551</span>    }<a name="line.551"></a>
 <span class="sourceLineNo">552</span><a name="line.552"></a>
-<span class="sourceLineNo">553</span><a name="line.553"></a>
-<span class="sourceLineNo">554</span>  /**<a name="line.554"></a>
-<span class="sourceLineNo">555</span>   * Appends a string representation of this argument value validator to the<a name="line.555"></a>
-<span class="sourceLineNo">556</span>   * provided buffer.<a name="line.556"></a>
-<span class="sourceLineNo">557</span>   *<a name="line.557"></a>
-<span class="sourceLineNo">558</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.558"></a>
-<span class="sourceLineNo">559</span>   *                 appended.<a name="line.559"></a>
-<span class="sourceLineNo">560</span>   */<a name="line.560"></a>
-<span class="sourceLineNo">561</span>  public void toString(@NotNull  final StringBuilder buffer)<a name="line.561"></a>
-<span class="sourceLineNo">562</span>  {<a name="line.562"></a>
-<span class="sourceLineNo">563</span>    buffer.append("DNSHostNameArgumentValueValidator(allowIPAddresses=");<a name="line.563"></a>
-<span class="sourceLineNo">564</span>    buffer.append(allowIPAddresses);<a name="line.564"></a>
-<span class="sourceLineNo">565</span>    buffer.append(", allowUnqualifiedNames=");<a name="line.565"></a>
-<span class="sourceLineNo">566</span>    buffer.append(allowUnqualifiedNames);<a name="line.566"></a>
-<span class="sourceLineNo">567</span>    buffer.append(", allowUnresolvableNames=");<a name="line.567"></a>
-<span class="sourceLineNo">568</span>    buffer.append(allowUnresolvableNames);<a name="line.568"></a>
-<span class="sourceLineNo">569</span>    buffer.append(')');<a name="line.569"></a>
+<span class="sourceLineNo">553</span>    return (c == '-');<a name="line.553"></a>
+<span class="sourceLineNo">554</span>  }<a name="line.554"></a>
+<span class="sourceLineNo">555</span><a name="line.555"></a>
+<span class="sourceLineNo">556</span><a name="line.556"></a>
+<span class="sourceLineNo">557</span><a name="line.557"></a>
+<span class="sourceLineNo">558</span>  /**<a name="line.558"></a>
+<span class="sourceLineNo">559</span>   * Retrieves a string representation of this argument value validator.<a name="line.559"></a>
+<span class="sourceLineNo">560</span>   *<a name="line.560"></a>
+<span class="sourceLineNo">561</span>   * @return  A string representation of this argument value validator.<a name="line.561"></a>
+<span class="sourceLineNo">562</span>   */<a name="line.562"></a>
+<span class="sourceLineNo">563</span>  @Override()<a name="line.563"></a>
+<span class="sourceLineNo">564</span>  @NotNull()<a name="line.564"></a>
+<span class="sourceLineNo">565</span>  public String toString()<a name="line.565"></a>
+<span class="sourceLineNo">566</span>  {<a name="line.566"></a>
+<span class="sourceLineNo">567</span>    final StringBuilder buffer = new StringBuilder();<a name="line.567"></a>
+<span class="sourceLineNo">568</span>    toString(buffer);<a name="line.568"></a>
+<span class="sourceLineNo">569</span>    return buffer.toString();<a name="line.569"></a>
 <span class="sourceLineNo">570</span>  }<a name="line.570"></a>
-<span class="sourceLineNo">571</span>}<a name="line.571"></a>
+<span class="sourceLineNo">571</span><a name="line.571"></a>
+<span class="sourceLineNo">572</span><a name="line.572"></a>
+<span class="sourceLineNo">573</span><a name="line.573"></a>
+<span class="sourceLineNo">574</span>  /**<a name="line.574"></a>
+<span class="sourceLineNo">575</span>   * Appends a string representation of this argument value validator to the<a name="line.575"></a>
+<span class="sourceLineNo">576</span>   * provided buffer.<a name="line.576"></a>
+<span class="sourceLineNo">577</span>   *<a name="line.577"></a>
+<span class="sourceLineNo">578</span>   * @param  buffer  The buffer to which the string representation should be<a name="line.578"></a>
+<span class="sourceLineNo">579</span>   *                 appended.<a name="line.579"></a>
+<span class="sourceLineNo">580</span>   */<a name="line.580"></a>
+<span class="sourceLineNo">581</span>  public void toString(@NotNull  final StringBuilder buffer)<a name="line.581"></a>
+<span class="sourceLineNo">582</span>  {<a name="line.582"></a>
+<span class="sourceLineNo">583</span>    buffer.append("DNSHostNameArgumentValueValidator(allowIPAddresses=");<a name="line.583"></a>
+<span class="sourceLineNo">584</span>    buffer.append(allowIPAddresses);<a name="line.584"></a>
+<span class="sourceLineNo">585</span>    buffer.append(", allowUnqualifiedNames=");<a name="line.585"></a>
+<span class="sourceLineNo">586</span>    buffer.append(allowUnqualifiedNames);<a name="line.586"></a>
+<span class="sourceLineNo">587</span>    buffer.append(", allowUnresolvableNames=");<a name="line.587"></a>
+<span class="sourceLineNo">588</span>    buffer.append(allowUnresolvableNames);<a name="line.588"></a>
+<span class="sourceLineNo">589</span>    buffer.append(')');<a name="line.589"></a>
+<span class="sourceLineNo">590</span>  }<a name="line.590"></a>
+<span class="sourceLineNo">591</span>}<a name="line.591"></a>
 
 
 

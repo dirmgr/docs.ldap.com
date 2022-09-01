@@ -141,239 +141,259 @@
 <span class="sourceLineNo">133</span>   */<a name="line.133"></a>
 <span class="sourceLineNo">134</span>  public AdministrativeOperationRequestControl(@Nullable final String message)<a name="line.134"></a>
 <span class="sourceLineNo">135</span>  {<a name="line.135"></a>
-<span class="sourceLineNo">136</span>    super(ADMINISTRATIVE_OPERATION_REQUEST_OID, false, encodeValue(message));<a name="line.136"></a>
-<span class="sourceLineNo">137</span><a name="line.137"></a>
-<span class="sourceLineNo">138</span>    this.message = message;<a name="line.138"></a>
-<span class="sourceLineNo">139</span>  }<a name="line.139"></a>
+<span class="sourceLineNo">136</span>    this(false, message);<a name="line.136"></a>
+<span class="sourceLineNo">137</span>  }<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span><a name="line.139"></a>
 <span class="sourceLineNo">140</span><a name="line.140"></a>
-<span class="sourceLineNo">141</span><a name="line.141"></a>
-<span class="sourceLineNo">142</span><a name="line.142"></a>
-<span class="sourceLineNo">143</span>  /**<a name="line.143"></a>
-<span class="sourceLineNo">144</span>   * Creates a new administrative operation request control decoded from the<a name="line.144"></a>
-<span class="sourceLineNo">145</span>   * provided generic control.<a name="line.145"></a>
-<span class="sourceLineNo">146</span>   *<a name="line.146"></a>
-<span class="sourceLineNo">147</span>   * @param  control  The generic control to be decoded as an administrative<a name="line.147"></a>
-<span class="sourceLineNo">148</span>   *                  operation request control.<a name="line.148"></a>
-<span class="sourceLineNo">149</span>   */<a name="line.149"></a>
-<span class="sourceLineNo">150</span>  public AdministrativeOperationRequestControl(@NotNull final Control control)<a name="line.150"></a>
-<span class="sourceLineNo">151</span>  {<a name="line.151"></a>
-<span class="sourceLineNo">152</span>    super(control);<a name="line.152"></a>
-<span class="sourceLineNo">153</span><a name="line.153"></a>
-<span class="sourceLineNo">154</span>    if (control.hasValue())<a name="line.154"></a>
-<span class="sourceLineNo">155</span>    {<a name="line.155"></a>
-<span class="sourceLineNo">156</span>      message = control.getValue().stringValue();<a name="line.156"></a>
-<span class="sourceLineNo">157</span>    }<a name="line.157"></a>
-<span class="sourceLineNo">158</span>    else<a name="line.158"></a>
-<span class="sourceLineNo">159</span>    {<a name="line.159"></a>
-<span class="sourceLineNo">160</span>      message = null;<a name="line.160"></a>
-<span class="sourceLineNo">161</span>    }<a name="line.161"></a>
-<span class="sourceLineNo">162</span>  }<a name="line.162"></a>
-<span class="sourceLineNo">163</span><a name="line.163"></a>
-<span class="sourceLineNo">164</span><a name="line.164"></a>
-<span class="sourceLineNo">165</span><a name="line.165"></a>
-<span class="sourceLineNo">166</span>  /**<a name="line.166"></a>
-<span class="sourceLineNo">167</span>   * Generates an appropriately-encoded value for this control with the provided<a name="line.167"></a>
-<span class="sourceLineNo">168</span>   * message.<a name="line.168"></a>
-<span class="sourceLineNo">169</span>   *<a name="line.169"></a>
-<span class="sourceLineNo">170</span>   * @param  message  A message with additional information about the purpose of<a name="line.170"></a>
-<span class="sourceLineNo">171</span>   *                  the associated operation.  It may be {@code null} if no<a name="line.171"></a>
-<span class="sourceLineNo">172</span>   *                  additional message should be provided.<a name="line.172"></a>
-<span class="sourceLineNo">173</span>   *<a name="line.173"></a>
-<span class="sourceLineNo">174</span>   * @return  An appropriately-encoded value for this control, or {@code null}<a name="line.174"></a>
-<span class="sourceLineNo">175</span>   *          if no value is needed.<a name="line.175"></a>
-<span class="sourceLineNo">176</span>   */<a name="line.176"></a>
-<span class="sourceLineNo">177</span>  @Nullable()<a name="line.177"></a>
-<span class="sourceLineNo">178</span>  private static ASN1OctetString encodeValue(@Nullable final String message)<a name="line.178"></a>
-<span class="sourceLineNo">179</span>  {<a name="line.179"></a>
-<span class="sourceLineNo">180</span>    if (message == null)<a name="line.180"></a>
-<span class="sourceLineNo">181</span>    {<a name="line.181"></a>
-<span class="sourceLineNo">182</span>      return null;<a name="line.182"></a>
-<span class="sourceLineNo">183</span>    }<a name="line.183"></a>
-<span class="sourceLineNo">184</span>    else<a name="line.184"></a>
-<span class="sourceLineNo">185</span>    {<a name="line.185"></a>
-<span class="sourceLineNo">186</span>      return new ASN1OctetString(message);<a name="line.186"></a>
-<span class="sourceLineNo">187</span>    }<a name="line.187"></a>
-<span class="sourceLineNo">188</span>  }<a name="line.188"></a>
-<span class="sourceLineNo">189</span><a name="line.189"></a>
-<span class="sourceLineNo">190</span><a name="line.190"></a>
-<span class="sourceLineNo">191</span><a name="line.191"></a>
-<span class="sourceLineNo">192</span>  /**<a name="line.192"></a>
-<span class="sourceLineNo">193</span>   * Retrieves the informational message for this control, if defined.<a name="line.193"></a>
-<span class="sourceLineNo">194</span>   *<a name="line.194"></a>
-<span class="sourceLineNo">195</span>   * @return  The informational message for this control, or {@code null} if<a name="line.195"></a>
-<span class="sourceLineNo">196</span>   *          none was provided.<a name="line.196"></a>
-<span class="sourceLineNo">197</span>   */<a name="line.197"></a>
-<span class="sourceLineNo">198</span>  @Nullable()<a name="line.198"></a>
-<span class="sourceLineNo">199</span>  public String getMessage()<a name="line.199"></a>
-<span class="sourceLineNo">200</span>  {<a name="line.200"></a>
-<span class="sourceLineNo">201</span>    return message;<a name="line.201"></a>
-<span class="sourceLineNo">202</span>  }<a name="line.202"></a>
-<span class="sourceLineNo">203</span><a name="line.203"></a>
-<span class="sourceLineNo">204</span><a name="line.204"></a>
-<span class="sourceLineNo">205</span><a name="line.205"></a>
-<span class="sourceLineNo">206</span>  /**<a name="line.206"></a>
-<span class="sourceLineNo">207</span>   * {@inheritDoc}<a name="line.207"></a>
-<span class="sourceLineNo">208</span>   */<a name="line.208"></a>
-<span class="sourceLineNo">209</span>  @Override()<a name="line.209"></a>
-<span class="sourceLineNo">210</span>  @NotNull()<a name="line.210"></a>
-<span class="sourceLineNo">211</span>  public String getControlName()<a name="line.211"></a>
-<span class="sourceLineNo">212</span>  {<a name="line.212"></a>
-<span class="sourceLineNo">213</span>    return INFO_CONTROL_NAME_ADMINISTRATIVE_OPERATION_REQUEST.get();<a name="line.213"></a>
-<span class="sourceLineNo">214</span>  }<a name="line.214"></a>
-<span class="sourceLineNo">215</span><a name="line.215"></a>
-<span class="sourceLineNo">216</span><a name="line.216"></a>
-<span class="sourceLineNo">217</span><a name="line.217"></a>
-<span class="sourceLineNo">218</span>  /**<a name="line.218"></a>
-<span class="sourceLineNo">219</span>   * Retrieves a representation of this administrative operation request control<a name="line.219"></a>
-<span class="sourceLineNo">220</span>   * as a JSON object.  The JSON object uses the following fields:<a name="line.220"></a>
-<span class="sourceLineNo">221</span>   * &lt;UL&gt;<a name="line.221"></a>
-<span class="sourceLineNo">222</span>   *   &lt;LI&gt;<a name="line.222"></a>
-<span class="sourceLineNo">223</span>   *     {@code oid} -- A mandatory string field whose value is the object<a name="line.223"></a>
-<span class="sourceLineNo">224</span>   *     identifier for this control.  For the administrative operation request<a name="line.224"></a>
-<span class="sourceLineNo">225</span>   *     control, the OID is "1.3.6.1.4.1.30221.2.5.11".<a name="line.225"></a>
-<span class="sourceLineNo">226</span>   *   &lt;/LI&gt;<a name="line.226"></a>
-<span class="sourceLineNo">227</span>   *   &lt;LI&gt;<a name="line.227"></a>
-<span class="sourceLineNo">228</span>   *     {@code control-name} -- An optional string field whose value is a<a name="line.228"></a>
-<span class="sourceLineNo">229</span>   *     human-readable name for this control.  This field is only intended for<a name="line.229"></a>
-<span class="sourceLineNo">230</span>   *     descriptive purposes, and when decoding a control, the {@code oid}<a name="line.230"></a>
-<span class="sourceLineNo">231</span>   *     field should be used to identify the type of control.<a name="line.231"></a>
-<span class="sourceLineNo">232</span>   *   &lt;/LI&gt;<a name="line.232"></a>
-<span class="sourceLineNo">233</span>   *   &lt;LI&gt;<a name="line.233"></a>
-<span class="sourceLineNo">234</span>   *     {@code criticality} -- A mandatory Boolean field used to indicate<a name="line.234"></a>
-<span class="sourceLineNo">235</span>   *     whether this control is considered critical.<a name="line.235"></a>
-<span class="sourceLineNo">236</span>   *   &lt;/LI&gt;<a name="line.236"></a>
-<span class="sourceLineNo">237</span>   *   &lt;LI&gt;<a name="line.237"></a>
-<span class="sourceLineNo">238</span>   *     {@code value-base64} -- An optional string field whose value is a<a name="line.238"></a>
-<span class="sourceLineNo">239</span>   *     base64-encoded representation of the raw value for this administrative<a name="line.239"></a>
-<span class="sourceLineNo">240</span>   *     operation request control.  At most one of the {@code value-base64} and<a name="line.240"></a>
-<span class="sourceLineNo">241</span>   *     {@code value-json} fields may be present.<a name="line.241"></a>
-<span class="sourceLineNo">242</span>   *   &lt;/LI&gt;<a name="line.242"></a>
-<span class="sourceLineNo">243</span>   *   &lt;LI&gt;<a name="line.243"></a>
-<span class="sourceLineNo">244</span>   *     {@code value-json} -- An optional JSON object field whose value is a<a name="line.244"></a>
-<span class="sourceLineNo">245</span>   *     user-friendly representation of the value for this administrative<a name="line.245"></a>
-<span class="sourceLineNo">246</span>   *     operation request control.  At most one of the {@code value-base64} and<a name="line.246"></a>
-<span class="sourceLineNo">247</span>   *     {@code value-json} fields may be present, and if the {@code value-json}<a name="line.247"></a>
-<span class="sourceLineNo">248</span>   *     field is used, then it will use the following fields:<a name="line.248"></a>
-<span class="sourceLineNo">249</span>   *     &lt;UL&gt;<a name="line.249"></a>
-<span class="sourceLineNo">250</span>   *       &lt;LI&gt;<a name="line.250"></a>
-<span class="sourceLineNo">251</span>   *         {@code message} -- An optional string field whose value is a<a name="line.251"></a>
-<span class="sourceLineNo">252</span>   *         message that may be used to describe the purpose of the operation.<a name="line.252"></a>
-<span class="sourceLineNo">253</span>   *       &lt;/LI&gt;<a name="line.253"></a>
-<span class="sourceLineNo">254</span>   *     &lt;/UL&gt;<a name="line.254"></a>
+<span class="sourceLineNo">141</span>  /**<a name="line.141"></a>
+<span class="sourceLineNo">142</span>   * Creates a new administrative operation request control with the provided<a name="line.142"></a>
+<span class="sourceLineNo">143</span>   * informational message.<a name="line.143"></a>
+<span class="sourceLineNo">144</span>   *<a name="line.144"></a>
+<span class="sourceLineNo">145</span>   * @param  isCritical  Indicates whether this control should be considered<a name="line.145"></a>
+<span class="sourceLineNo">146</span>   *                     critical.<a name="line.146"></a>
+<span class="sourceLineNo">147</span>   * @param  message     A message with additional information about the purpose<a name="line.147"></a>
+<span class="sourceLineNo">148</span>   *                     of the associated operation.  It may be {@code null} if<a name="line.148"></a>
+<span class="sourceLineNo">149</span>   *                     no additional message should be provided.<a name="line.149"></a>
+<span class="sourceLineNo">150</span>   */<a name="line.150"></a>
+<span class="sourceLineNo">151</span>  public AdministrativeOperationRequestControl(final boolean isCritical,<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                                               @Nullable final String message)<a name="line.152"></a>
+<span class="sourceLineNo">153</span>  {<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    super(ADMINISTRATIVE_OPERATION_REQUEST_OID, isCritical,<a name="line.154"></a>
+<span class="sourceLineNo">155</span>         encodeValue(message));<a name="line.155"></a>
+<span class="sourceLineNo">156</span><a name="line.156"></a>
+<span class="sourceLineNo">157</span>    this.message = message;<a name="line.157"></a>
+<span class="sourceLineNo">158</span>  }<a name="line.158"></a>
+<span class="sourceLineNo">159</span><a name="line.159"></a>
+<span class="sourceLineNo">160</span><a name="line.160"></a>
+<span class="sourceLineNo">161</span><a name="line.161"></a>
+<span class="sourceLineNo">162</span>  /**<a name="line.162"></a>
+<span class="sourceLineNo">163</span>   * Creates a new administrative operation request control decoded from the<a name="line.163"></a>
+<span class="sourceLineNo">164</span>   * provided generic control.<a name="line.164"></a>
+<span class="sourceLineNo">165</span>   *<a name="line.165"></a>
+<span class="sourceLineNo">166</span>   * @param  control  The generic control to be decoded as an administrative<a name="line.166"></a>
+<span class="sourceLineNo">167</span>   *                  operation request control.<a name="line.167"></a>
+<span class="sourceLineNo">168</span>   */<a name="line.168"></a>
+<span class="sourceLineNo">169</span>  public AdministrativeOperationRequestControl(@NotNull final Control control)<a name="line.169"></a>
+<span class="sourceLineNo">170</span>  {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>    super(control);<a name="line.171"></a>
+<span class="sourceLineNo">172</span><a name="line.172"></a>
+<span class="sourceLineNo">173</span>    if (control.hasValue())<a name="line.173"></a>
+<span class="sourceLineNo">174</span>    {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>      message = control.getValue().stringValue();<a name="line.175"></a>
+<span class="sourceLineNo">176</span>    }<a name="line.176"></a>
+<span class="sourceLineNo">177</span>    else<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    {<a name="line.178"></a>
+<span class="sourceLineNo">179</span>      message = null;<a name="line.179"></a>
+<span class="sourceLineNo">180</span>    }<a name="line.180"></a>
+<span class="sourceLineNo">181</span>  }<a name="line.181"></a>
+<span class="sourceLineNo">182</span><a name="line.182"></a>
+<span class="sourceLineNo">183</span><a name="line.183"></a>
+<span class="sourceLineNo">184</span><a name="line.184"></a>
+<span class="sourceLineNo">185</span>  /**<a name="line.185"></a>
+<span class="sourceLineNo">186</span>   * Generates an appropriately-encoded value for this control with the provided<a name="line.186"></a>
+<span class="sourceLineNo">187</span>   * message.<a name="line.187"></a>
+<span class="sourceLineNo">188</span>   *<a name="line.188"></a>
+<span class="sourceLineNo">189</span>   * @param  message  A message with additional information about the purpose of<a name="line.189"></a>
+<span class="sourceLineNo">190</span>   *                  the associated operation.  It may be {@code null} if no<a name="line.190"></a>
+<span class="sourceLineNo">191</span>   *                  additional message should be provided.<a name="line.191"></a>
+<span class="sourceLineNo">192</span>   *<a name="line.192"></a>
+<span class="sourceLineNo">193</span>   * @return  An appropriately-encoded value for this control, or {@code null}<a name="line.193"></a>
+<span class="sourceLineNo">194</span>   *          if no value is needed.<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   */<a name="line.195"></a>
+<span class="sourceLineNo">196</span>  @Nullable()<a name="line.196"></a>
+<span class="sourceLineNo">197</span>  private static ASN1OctetString encodeValue(@Nullable final String message)<a name="line.197"></a>
+<span class="sourceLineNo">198</span>  {<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    if (message == null)<a name="line.199"></a>
+<span class="sourceLineNo">200</span>    {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>      return null;<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    }<a name="line.202"></a>
+<span class="sourceLineNo">203</span>    else<a name="line.203"></a>
+<span class="sourceLineNo">204</span>    {<a name="line.204"></a>
+<span class="sourceLineNo">205</span>      return new ASN1OctetString(message);<a name="line.205"></a>
+<span class="sourceLineNo">206</span>    }<a name="line.206"></a>
+<span class="sourceLineNo">207</span>  }<a name="line.207"></a>
+<span class="sourceLineNo">208</span><a name="line.208"></a>
+<span class="sourceLineNo">209</span><a name="line.209"></a>
+<span class="sourceLineNo">210</span><a name="line.210"></a>
+<span class="sourceLineNo">211</span>  /**<a name="line.211"></a>
+<span class="sourceLineNo">212</span>   * Retrieves the informational message for this control, if defined.<a name="line.212"></a>
+<span class="sourceLineNo">213</span>   *<a name="line.213"></a>
+<span class="sourceLineNo">214</span>   * @return  The informational message for this control, or {@code null} if<a name="line.214"></a>
+<span class="sourceLineNo">215</span>   *          none was provided.<a name="line.215"></a>
+<span class="sourceLineNo">216</span>   */<a name="line.216"></a>
+<span class="sourceLineNo">217</span>  @Nullable()<a name="line.217"></a>
+<span class="sourceLineNo">218</span>  public String getMessage()<a name="line.218"></a>
+<span class="sourceLineNo">219</span>  {<a name="line.219"></a>
+<span class="sourceLineNo">220</span>    return message;<a name="line.220"></a>
+<span class="sourceLineNo">221</span>  }<a name="line.221"></a>
+<span class="sourceLineNo">222</span><a name="line.222"></a>
+<span class="sourceLineNo">223</span><a name="line.223"></a>
+<span class="sourceLineNo">224</span><a name="line.224"></a>
+<span class="sourceLineNo">225</span>  /**<a name="line.225"></a>
+<span class="sourceLineNo">226</span>   * {@inheritDoc}<a name="line.226"></a>
+<span class="sourceLineNo">227</span>   */<a name="line.227"></a>
+<span class="sourceLineNo">228</span>  @Override()<a name="line.228"></a>
+<span class="sourceLineNo">229</span>  @NotNull()<a name="line.229"></a>
+<span class="sourceLineNo">230</span>  public String getControlName()<a name="line.230"></a>
+<span class="sourceLineNo">231</span>  {<a name="line.231"></a>
+<span class="sourceLineNo">232</span>    return INFO_CONTROL_NAME_ADMINISTRATIVE_OPERATION_REQUEST.get();<a name="line.232"></a>
+<span class="sourceLineNo">233</span>  }<a name="line.233"></a>
+<span class="sourceLineNo">234</span><a name="line.234"></a>
+<span class="sourceLineNo">235</span><a name="line.235"></a>
+<span class="sourceLineNo">236</span><a name="line.236"></a>
+<span class="sourceLineNo">237</span>  /**<a name="line.237"></a>
+<span class="sourceLineNo">238</span>   * Retrieves a representation of this administrative operation request control<a name="line.238"></a>
+<span class="sourceLineNo">239</span>   * as a JSON object.  The JSON object uses the following fields:<a name="line.239"></a>
+<span class="sourceLineNo">240</span>   * &lt;UL&gt;<a name="line.240"></a>
+<span class="sourceLineNo">241</span>   *   &lt;LI&gt;<a name="line.241"></a>
+<span class="sourceLineNo">242</span>   *     {@code oid} -- A mandatory string field whose value is the object<a name="line.242"></a>
+<span class="sourceLineNo">243</span>   *     identifier for this control.  For the administrative operation request<a name="line.243"></a>
+<span class="sourceLineNo">244</span>   *     control, the OID is "1.3.6.1.4.1.30221.2.5.11".<a name="line.244"></a>
+<span class="sourceLineNo">245</span>   *   &lt;/LI&gt;<a name="line.245"></a>
+<span class="sourceLineNo">246</span>   *   &lt;LI&gt;<a name="line.246"></a>
+<span class="sourceLineNo">247</span>   *     {@code control-name} -- An optional string field whose value is a<a name="line.247"></a>
+<span class="sourceLineNo">248</span>   *     human-readable name for this control.  This field is only intended for<a name="line.248"></a>
+<span class="sourceLineNo">249</span>   *     descriptive purposes, and when decoding a control, the {@code oid}<a name="line.249"></a>
+<span class="sourceLineNo">250</span>   *     field should be used to identify the type of control.<a name="line.250"></a>
+<span class="sourceLineNo">251</span>   *   &lt;/LI&gt;<a name="line.251"></a>
+<span class="sourceLineNo">252</span>   *   &lt;LI&gt;<a name="line.252"></a>
+<span class="sourceLineNo">253</span>   *     {@code criticality} -- A mandatory Boolean field used to indicate<a name="line.253"></a>
+<span class="sourceLineNo">254</span>   *     whether this control is considered critical.<a name="line.254"></a>
 <span class="sourceLineNo">255</span>   *   &lt;/LI&gt;<a name="line.255"></a>
-<span class="sourceLineNo">256</span>   * &lt;/UL&gt;<a name="line.256"></a>
-<span class="sourceLineNo">257</span>   *<a name="line.257"></a>
-<span class="sourceLineNo">258</span>   * @return  A JSON object that contains a representation of this control.<a name="line.258"></a>
-<span class="sourceLineNo">259</span>   */<a name="line.259"></a>
-<span class="sourceLineNo">260</span>  @Override()<a name="line.260"></a>
-<span class="sourceLineNo">261</span>  @NotNull()<a name="line.261"></a>
-<span class="sourceLineNo">262</span>  public JSONObject toJSONControl()<a name="line.262"></a>
-<span class="sourceLineNo">263</span>  {<a name="line.263"></a>
-<span class="sourceLineNo">264</span>    final JSONObject valueObject;<a name="line.264"></a>
-<span class="sourceLineNo">265</span>    if (message == null)<a name="line.265"></a>
-<span class="sourceLineNo">266</span>    {<a name="line.266"></a>
-<span class="sourceLineNo">267</span>      valueObject = JSONObject.EMPTY_OBJECT;<a name="line.267"></a>
-<span class="sourceLineNo">268</span>    }<a name="line.268"></a>
-<span class="sourceLineNo">269</span>    else<a name="line.269"></a>
-<span class="sourceLineNo">270</span>    {<a name="line.270"></a>
-<span class="sourceLineNo">271</span>      valueObject = new JSONObject(new JSONField(JSON_FIELD_MESSAGE, message));<a name="line.271"></a>
-<span class="sourceLineNo">272</span>    }<a name="line.272"></a>
-<span class="sourceLineNo">273</span><a name="line.273"></a>
-<span class="sourceLineNo">274</span>    return new JSONObject(<a name="line.274"></a>
-<span class="sourceLineNo">275</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_OID,<a name="line.275"></a>
-<span class="sourceLineNo">276</span>              ADMINISTRATIVE_OPERATION_REQUEST_OID),<a name="line.276"></a>
-<span class="sourceLineNo">277</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_CONTROL_NAME,<a name="line.277"></a>
-<span class="sourceLineNo">278</span>              INFO_CONTROL_NAME_ADMINISTRATIVE_OPERATION_REQUEST.get()),<a name="line.278"></a>
-<span class="sourceLineNo">279</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_CRITICALITY,<a name="line.279"></a>
-<span class="sourceLineNo">280</span>              isCritical()),<a name="line.280"></a>
-<span class="sourceLineNo">281</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_VALUE_JSON,<a name="line.281"></a>
-<span class="sourceLineNo">282</span>              valueObject));<a name="line.282"></a>
-<span class="sourceLineNo">283</span>  }<a name="line.283"></a>
-<span class="sourceLineNo">284</span><a name="line.284"></a>
-<span class="sourceLineNo">285</span><a name="line.285"></a>
-<span class="sourceLineNo">286</span><a name="line.286"></a>
-<span class="sourceLineNo">287</span>  /**<a name="line.287"></a>
-<span class="sourceLineNo">288</span>   * Attempts to decode the provided object as a JSON representation of an<a name="line.288"></a>
-<span class="sourceLineNo">289</span>   * administrative operation request control.<a name="line.289"></a>
-<span class="sourceLineNo">290</span>   *<a name="line.290"></a>
-<span class="sourceLineNo">291</span>   * @param  controlObject  The JSON object to be decoded.  It must not be<a name="line.291"></a>
-<span class="sourceLineNo">292</span>   *                        {@code null}.<a name="line.292"></a>
-<span class="sourceLineNo">293</span>   * @param  strict         Indicates whether to use strict mode when decoding<a name="line.293"></a>
-<span class="sourceLineNo">294</span>   *                        the provided JSON object.  If this is {@code true},<a name="line.294"></a>
-<span class="sourceLineNo">295</span>   *                        then this method will throw an exception if the<a name="line.295"></a>
-<span class="sourceLineNo">296</span>   *                        provided JSON object contains any unrecognized<a name="line.296"></a>
-<span class="sourceLineNo">297</span>   *                        fields.  If this is {@code false}, then unrecognized<a name="line.297"></a>
-<span class="sourceLineNo">298</span>   *                        fields will be ignored.<a name="line.298"></a>
-<span class="sourceLineNo">299</span>   *<a name="line.299"></a>
-<span class="sourceLineNo">300</span>   * @return  The administrative operation request control that was decoded from<a name="line.300"></a>
-<span class="sourceLineNo">301</span>   *          the provided JSON object.<a name="line.301"></a>
-<span class="sourceLineNo">302</span>   *<a name="line.302"></a>
-<span class="sourceLineNo">303</span>   * @throws  LDAPException  If the provided JSON object cannot be parsed as a<a name="line.303"></a>
-<span class="sourceLineNo">304</span>   *                         valid administrative operation request control.<a name="line.304"></a>
-<span class="sourceLineNo">305</span>   */<a name="line.305"></a>
-<span class="sourceLineNo">306</span>  @NotNull()<a name="line.306"></a>
-<span class="sourceLineNo">307</span>  public static AdministrativeOperationRequestControl decodeJSONControl(<a name="line.307"></a>
-<span class="sourceLineNo">308</span>              @NotNull final JSONObject controlObject,<a name="line.308"></a>
-<span class="sourceLineNo">309</span>              final boolean strict)<a name="line.309"></a>
-<span class="sourceLineNo">310</span>         throws LDAPException<a name="line.310"></a>
-<span class="sourceLineNo">311</span>  {<a name="line.311"></a>
-<span class="sourceLineNo">312</span>    final JSONControlDecodeHelper jsonControl = new JSONControlDecodeHelper(<a name="line.312"></a>
-<span class="sourceLineNo">313</span>         controlObject, strict, true, false);<a name="line.313"></a>
-<span class="sourceLineNo">314</span><a name="line.314"></a>
-<span class="sourceLineNo">315</span>    final ASN1OctetString rawValue = jsonControl.getRawValue();<a name="line.315"></a>
-<span class="sourceLineNo">316</span>    if (rawValue != null)<a name="line.316"></a>
-<span class="sourceLineNo">317</span>    {<a name="line.317"></a>
-<span class="sourceLineNo">318</span>      return new AdministrativeOperationRequestControl(new Control(<a name="line.318"></a>
-<span class="sourceLineNo">319</span>           jsonControl.getOID(), jsonControl.getCriticality(), rawValue));<a name="line.319"></a>
-<span class="sourceLineNo">320</span>    }<a name="line.320"></a>
-<span class="sourceLineNo">321</span><a name="line.321"></a>
-<span class="sourceLineNo">322</span>    final JSONObject valueObject = jsonControl.getValueObject();<a name="line.322"></a>
-<span class="sourceLineNo">323</span>    if (valueObject == null)<a name="line.323"></a>
-<span class="sourceLineNo">324</span>    {<a name="line.324"></a>
-<span class="sourceLineNo">325</span>      return new AdministrativeOperationRequestControl();<a name="line.325"></a>
-<span class="sourceLineNo">326</span>    }<a name="line.326"></a>
-<span class="sourceLineNo">327</span><a name="line.327"></a>
-<span class="sourceLineNo">328</span>    final String message = valueObject.getFieldAsString(JSON_FIELD_MESSAGE);<a name="line.328"></a>
-<span class="sourceLineNo">329</span><a name="line.329"></a>
-<span class="sourceLineNo">330</span><a name="line.330"></a>
-<span class="sourceLineNo">331</span>    if (strict)<a name="line.331"></a>
-<span class="sourceLineNo">332</span>    {<a name="line.332"></a>
-<span class="sourceLineNo">333</span>      final List&lt;String&gt; unrecognizedFields =<a name="line.333"></a>
-<span class="sourceLineNo">334</span>           JSONControlDecodeHelper.getControlObjectUnexpectedFields(<a name="line.334"></a>
-<span class="sourceLineNo">335</span>                valueObject, JSON_FIELD_MESSAGE);<a name="line.335"></a>
-<span class="sourceLineNo">336</span>      if (! unrecognizedFields.isEmpty())<a name="line.336"></a>
-<span class="sourceLineNo">337</span>      {<a name="line.337"></a>
-<span class="sourceLineNo">338</span>        throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.338"></a>
-<span class="sourceLineNo">339</span>             ERR_ADMIN_OP_REQUEST_JSON_CONTROL_UNRECOGNIZED_FIELD.get(<a name="line.339"></a>
-<span class="sourceLineNo">340</span>                  controlObject.toSingleLineString(),<a name="line.340"></a>
-<span class="sourceLineNo">341</span>                  unrecognizedFields.get(0)));<a name="line.341"></a>
-<span class="sourceLineNo">342</span>      }<a name="line.342"></a>
-<span class="sourceLineNo">343</span>    }<a name="line.343"></a>
-<span class="sourceLineNo">344</span><a name="line.344"></a>
-<span class="sourceLineNo">345</span><a name="line.345"></a>
-<span class="sourceLineNo">346</span>    return new AdministrativeOperationRequestControl(message);<a name="line.346"></a>
-<span class="sourceLineNo">347</span>  }<a name="line.347"></a>
+<span class="sourceLineNo">256</span>   *   &lt;LI&gt;<a name="line.256"></a>
+<span class="sourceLineNo">257</span>   *     {@code value-base64} -- An optional string field whose value is a<a name="line.257"></a>
+<span class="sourceLineNo">258</span>   *     base64-encoded representation of the raw value for this administrative<a name="line.258"></a>
+<span class="sourceLineNo">259</span>   *     operation request control.  At most one of the {@code value-base64} and<a name="line.259"></a>
+<span class="sourceLineNo">260</span>   *     {@code value-json} fields may be present.<a name="line.260"></a>
+<span class="sourceLineNo">261</span>   *   &lt;/LI&gt;<a name="line.261"></a>
+<span class="sourceLineNo">262</span>   *   &lt;LI&gt;<a name="line.262"></a>
+<span class="sourceLineNo">263</span>   *     {@code value-json} -- An optional JSON object field whose value is a<a name="line.263"></a>
+<span class="sourceLineNo">264</span>   *     user-friendly representation of the value for this administrative<a name="line.264"></a>
+<span class="sourceLineNo">265</span>   *     operation request control.  At most one of the {@code value-base64} and<a name="line.265"></a>
+<span class="sourceLineNo">266</span>   *     {@code value-json} fields may be present, and if the {@code value-json}<a name="line.266"></a>
+<span class="sourceLineNo">267</span>   *     field is used, then it will use the following fields:<a name="line.267"></a>
+<span class="sourceLineNo">268</span>   *     &lt;UL&gt;<a name="line.268"></a>
+<span class="sourceLineNo">269</span>   *       &lt;LI&gt;<a name="line.269"></a>
+<span class="sourceLineNo">270</span>   *         {@code message} -- An optional string field whose value is a<a name="line.270"></a>
+<span class="sourceLineNo">271</span>   *         message that may be used to describe the purpose of the operation.<a name="line.271"></a>
+<span class="sourceLineNo">272</span>   *       &lt;/LI&gt;<a name="line.272"></a>
+<span class="sourceLineNo">273</span>   *     &lt;/UL&gt;<a name="line.273"></a>
+<span class="sourceLineNo">274</span>   *   &lt;/LI&gt;<a name="line.274"></a>
+<span class="sourceLineNo">275</span>   * &lt;/UL&gt;<a name="line.275"></a>
+<span class="sourceLineNo">276</span>   *<a name="line.276"></a>
+<span class="sourceLineNo">277</span>   * @return  A JSON object that contains a representation of this control.<a name="line.277"></a>
+<span class="sourceLineNo">278</span>   */<a name="line.278"></a>
+<span class="sourceLineNo">279</span>  @Override()<a name="line.279"></a>
+<span class="sourceLineNo">280</span>  @NotNull()<a name="line.280"></a>
+<span class="sourceLineNo">281</span>  public JSONObject toJSONControl()<a name="line.281"></a>
+<span class="sourceLineNo">282</span>  {<a name="line.282"></a>
+<span class="sourceLineNo">283</span>    final JSONObject valueObject;<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    if (message == null)<a name="line.284"></a>
+<span class="sourceLineNo">285</span>    {<a name="line.285"></a>
+<span class="sourceLineNo">286</span>      valueObject = JSONObject.EMPTY_OBJECT;<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    }<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    else<a name="line.288"></a>
+<span class="sourceLineNo">289</span>    {<a name="line.289"></a>
+<span class="sourceLineNo">290</span>      valueObject = new JSONObject(new JSONField(JSON_FIELD_MESSAGE, message));<a name="line.290"></a>
+<span class="sourceLineNo">291</span>    }<a name="line.291"></a>
+<span class="sourceLineNo">292</span><a name="line.292"></a>
+<span class="sourceLineNo">293</span>    return new JSONObject(<a name="line.293"></a>
+<span class="sourceLineNo">294</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_OID,<a name="line.294"></a>
+<span class="sourceLineNo">295</span>              ADMINISTRATIVE_OPERATION_REQUEST_OID),<a name="line.295"></a>
+<span class="sourceLineNo">296</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_CONTROL_NAME,<a name="line.296"></a>
+<span class="sourceLineNo">297</span>              INFO_CONTROL_NAME_ADMINISTRATIVE_OPERATION_REQUEST.get()),<a name="line.297"></a>
+<span class="sourceLineNo">298</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_CRITICALITY,<a name="line.298"></a>
+<span class="sourceLineNo">299</span>              isCritical()),<a name="line.299"></a>
+<span class="sourceLineNo">300</span>         new JSONField(JSONControlDecodeHelper.JSON_FIELD_VALUE_JSON,<a name="line.300"></a>
+<span class="sourceLineNo">301</span>              valueObject));<a name="line.301"></a>
+<span class="sourceLineNo">302</span>  }<a name="line.302"></a>
+<span class="sourceLineNo">303</span><a name="line.303"></a>
+<span class="sourceLineNo">304</span><a name="line.304"></a>
+<span class="sourceLineNo">305</span><a name="line.305"></a>
+<span class="sourceLineNo">306</span>  /**<a name="line.306"></a>
+<span class="sourceLineNo">307</span>   * Attempts to decode the provided object as a JSON representation of an<a name="line.307"></a>
+<span class="sourceLineNo">308</span>   * administrative operation request control.<a name="line.308"></a>
+<span class="sourceLineNo">309</span>   *<a name="line.309"></a>
+<span class="sourceLineNo">310</span>   * @param  controlObject  The JSON object to be decoded.  It must not be<a name="line.310"></a>
+<span class="sourceLineNo">311</span>   *                        {@code null}.<a name="line.311"></a>
+<span class="sourceLineNo">312</span>   * @param  strict         Indicates whether to use strict mode when decoding<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   *                        the provided JSON object.  If this is {@code true},<a name="line.313"></a>
+<span class="sourceLineNo">314</span>   *                        then this method will throw an exception if the<a name="line.314"></a>
+<span class="sourceLineNo">315</span>   *                        provided JSON object contains any unrecognized<a name="line.315"></a>
+<span class="sourceLineNo">316</span>   *                        fields.  If this is {@code false}, then unrecognized<a name="line.316"></a>
+<span class="sourceLineNo">317</span>   *                        fields will be ignored.<a name="line.317"></a>
+<span class="sourceLineNo">318</span>   *<a name="line.318"></a>
+<span class="sourceLineNo">319</span>   * @return  The administrative operation request control that was decoded from<a name="line.319"></a>
+<span class="sourceLineNo">320</span>   *          the provided JSON object.<a name="line.320"></a>
+<span class="sourceLineNo">321</span>   *<a name="line.321"></a>
+<span class="sourceLineNo">322</span>   * @throws  LDAPException  If the provided JSON object cannot be parsed as a<a name="line.322"></a>
+<span class="sourceLineNo">323</span>   *                         valid administrative operation request control.<a name="line.323"></a>
+<span class="sourceLineNo">324</span>   */<a name="line.324"></a>
+<span class="sourceLineNo">325</span>  @NotNull()<a name="line.325"></a>
+<span class="sourceLineNo">326</span>  public static AdministrativeOperationRequestControl decodeJSONControl(<a name="line.326"></a>
+<span class="sourceLineNo">327</span>              @NotNull final JSONObject controlObject,<a name="line.327"></a>
+<span class="sourceLineNo">328</span>              final boolean strict)<a name="line.328"></a>
+<span class="sourceLineNo">329</span>         throws LDAPException<a name="line.329"></a>
+<span class="sourceLineNo">330</span>  {<a name="line.330"></a>
+<span class="sourceLineNo">331</span>    final JSONControlDecodeHelper jsonControl = new JSONControlDecodeHelper(<a name="line.331"></a>
+<span class="sourceLineNo">332</span>         controlObject, strict, true, false);<a name="line.332"></a>
+<span class="sourceLineNo">333</span><a name="line.333"></a>
+<span class="sourceLineNo">334</span>    final ASN1OctetString rawValue = jsonControl.getRawValue();<a name="line.334"></a>
+<span class="sourceLineNo">335</span>    if (rawValue != null)<a name="line.335"></a>
+<span class="sourceLineNo">336</span>    {<a name="line.336"></a>
+<span class="sourceLineNo">337</span>      return new AdministrativeOperationRequestControl(new Control(<a name="line.337"></a>
+<span class="sourceLineNo">338</span>           jsonControl.getOID(), jsonControl.getCriticality(), rawValue));<a name="line.338"></a>
+<span class="sourceLineNo">339</span>    }<a name="line.339"></a>
+<span class="sourceLineNo">340</span><a name="line.340"></a>
+<span class="sourceLineNo">341</span>    final JSONObject valueObject = jsonControl.getValueObject();<a name="line.341"></a>
+<span class="sourceLineNo">342</span>    if (valueObject == null)<a name="line.342"></a>
+<span class="sourceLineNo">343</span>    {<a name="line.343"></a>
+<span class="sourceLineNo">344</span>      return new AdministrativeOperationRequestControl();<a name="line.344"></a>
+<span class="sourceLineNo">345</span>    }<a name="line.345"></a>
+<span class="sourceLineNo">346</span><a name="line.346"></a>
+<span class="sourceLineNo">347</span>    final String message = valueObject.getFieldAsString(JSON_FIELD_MESSAGE);<a name="line.347"></a>
 <span class="sourceLineNo">348</span><a name="line.348"></a>
 <span class="sourceLineNo">349</span><a name="line.349"></a>
-<span class="sourceLineNo">350</span><a name="line.350"></a>
-<span class="sourceLineNo">351</span>  /**<a name="line.351"></a>
-<span class="sourceLineNo">352</span>   * {@inheritDoc}<a name="line.352"></a>
-<span class="sourceLineNo">353</span>   */<a name="line.353"></a>
-<span class="sourceLineNo">354</span>  @Override()<a name="line.354"></a>
-<span class="sourceLineNo">355</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.355"></a>
-<span class="sourceLineNo">356</span>  {<a name="line.356"></a>
-<span class="sourceLineNo">357</span>    buffer.append("AdministrativeOperationRequestControl(");<a name="line.357"></a>
-<span class="sourceLineNo">358</span><a name="line.358"></a>
-<span class="sourceLineNo">359</span>    if (message != null)<a name="line.359"></a>
-<span class="sourceLineNo">360</span>    {<a name="line.360"></a>
-<span class="sourceLineNo">361</span>      buffer.append("message='");<a name="line.361"></a>
-<span class="sourceLineNo">362</span>      buffer.append(message);<a name="line.362"></a>
-<span class="sourceLineNo">363</span>      buffer.append('\'');<a name="line.363"></a>
-<span class="sourceLineNo">364</span>    }<a name="line.364"></a>
-<span class="sourceLineNo">365</span><a name="line.365"></a>
-<span class="sourceLineNo">366</span>    buffer.append(')');<a name="line.366"></a>
+<span class="sourceLineNo">350</span>    if (strict)<a name="line.350"></a>
+<span class="sourceLineNo">351</span>    {<a name="line.351"></a>
+<span class="sourceLineNo">352</span>      final List&lt;String&gt; unrecognizedFields =<a name="line.352"></a>
+<span class="sourceLineNo">353</span>           JSONControlDecodeHelper.getControlObjectUnexpectedFields(<a name="line.353"></a>
+<span class="sourceLineNo">354</span>                valueObject, JSON_FIELD_MESSAGE);<a name="line.354"></a>
+<span class="sourceLineNo">355</span>      if (! unrecognizedFields.isEmpty())<a name="line.355"></a>
+<span class="sourceLineNo">356</span>      {<a name="line.356"></a>
+<span class="sourceLineNo">357</span>        throw new LDAPException(ResultCode.DECODING_ERROR,<a name="line.357"></a>
+<span class="sourceLineNo">358</span>             ERR_ADMIN_OP_REQUEST_JSON_CONTROL_UNRECOGNIZED_FIELD.get(<a name="line.358"></a>
+<span class="sourceLineNo">359</span>                  controlObject.toSingleLineString(),<a name="line.359"></a>
+<span class="sourceLineNo">360</span>                  unrecognizedFields.get(0)));<a name="line.360"></a>
+<span class="sourceLineNo">361</span>      }<a name="line.361"></a>
+<span class="sourceLineNo">362</span>    }<a name="line.362"></a>
+<span class="sourceLineNo">363</span><a name="line.363"></a>
+<span class="sourceLineNo">364</span><a name="line.364"></a>
+<span class="sourceLineNo">365</span>    return new AdministrativeOperationRequestControl(<a name="line.365"></a>
+<span class="sourceLineNo">366</span>         jsonControl.getCriticality(), message);<a name="line.366"></a>
 <span class="sourceLineNo">367</span>  }<a name="line.367"></a>
-<span class="sourceLineNo">368</span>}<a name="line.368"></a>
+<span class="sourceLineNo">368</span><a name="line.368"></a>
+<span class="sourceLineNo">369</span><a name="line.369"></a>
+<span class="sourceLineNo">370</span><a name="line.370"></a>
+<span class="sourceLineNo">371</span>  /**<a name="line.371"></a>
+<span class="sourceLineNo">372</span>   * {@inheritDoc}<a name="line.372"></a>
+<span class="sourceLineNo">373</span>   */<a name="line.373"></a>
+<span class="sourceLineNo">374</span>  @Override()<a name="line.374"></a>
+<span class="sourceLineNo">375</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.375"></a>
+<span class="sourceLineNo">376</span>  {<a name="line.376"></a>
+<span class="sourceLineNo">377</span>    buffer.append("AdministrativeOperationRequestControl(");<a name="line.377"></a>
+<span class="sourceLineNo">378</span><a name="line.378"></a>
+<span class="sourceLineNo">379</span>    if (message != null)<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    {<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      buffer.append("message='");<a name="line.381"></a>
+<span class="sourceLineNo">382</span>      buffer.append(message);<a name="line.382"></a>
+<span class="sourceLineNo">383</span>      buffer.append('\'');<a name="line.383"></a>
+<span class="sourceLineNo">384</span>    }<a name="line.384"></a>
+<span class="sourceLineNo">385</span><a name="line.385"></a>
+<span class="sourceLineNo">386</span>    buffer.append(')');<a name="line.386"></a>
+<span class="sourceLineNo">387</span>  }<a name="line.387"></a>
+<span class="sourceLineNo">388</span>}<a name="line.388"></a>
 
 
 

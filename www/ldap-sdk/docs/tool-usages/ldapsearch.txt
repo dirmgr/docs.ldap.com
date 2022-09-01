@@ -78,6 +78,10 @@ Available options include:
     --trustStoreFormat {format}
         The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the trust store
         file.
+    --verifyCertificateHostnames
+        Indicates that the tool should verify that the hostname or IP addressed
+        used to establish connections ot the LDAP server matches an address for
+        which the server's TLS certificate was issued.
     -N, --certNickname {nickname}
         The nickname (alias) of the client certificate in the key store to
         present to the directory server for SSL client authentication.

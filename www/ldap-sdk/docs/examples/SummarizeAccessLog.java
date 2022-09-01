@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -83,6 +84,8 @@ import com.unboundid.ldap.sdk.unboundidds.logs.v2.
 import com.unboundid.ldap.sdk.unboundidds.logs.v2.ModifyResultAccessLogMessage;
 import com.unboundid.ldap.sdk.unboundidds.logs.v2.
             OperationRequestAccessLogMessage;
+import com.unboundid.ldap.sdk.unboundidds.logs.v2.
+            OperationResultAccessLogMessage;
 import com.unboundid.ldap.sdk.unboundidds.logs.v2.SearchRequestAccessLogMessage;
 import com.unboundid.ldap.sdk.unboundidds.logs.v2.SearchResultAccessLogMessage;
 import com.unboundid.ldap.sdk.unboundidds.logs.v2.
@@ -97,6 +100,8 @@ import com.unboundid.util.Debug;
 import com.unboundid.util.NotMutable;
 import com.unboundid.util.NotNull;
 import com.unboundid.util.Nullable;
+import com.unboundid.util.OIDRegistry;
+import com.unboundid.util.OIDRegistryItem;
 import com.unboundid.util.ObjectPair;
 import com.unboundid.util.ReverseComparator;
 import com.unboundid.util.StaticUtils;
@@ -170,6 +175,13 @@ public final class SummarizeAccessLog
        implements Serializable
 {
   /**
+   * The column at which long lines should be wrapped.
+   */
+  private static final int WRAP_COLUMN = StaticUtils.TERMINAL_WIDTH_COLUMNS - 1;
+
+
+
+  /**
    * The serial version UID for this serializable class.
    */
   private static final long serialVersionUID = 7189168366509887130L;
@@ -213,6 +225,9 @@ public final class SummarizeAccessLog
   private double modifyDNProcessingDuration;
   private double searchProcessingDuration;
 
+  // A variable used for tracking total  work queue wait time.
+  private long totalWorkQueueWaitTime;
+
   // A variable used for counting the number of messages of each type.
   private long numAbandons;
   private long numAdds;
@@ -242,8 +257,13 @@ public final class SummarizeAccessLog
   private long numUnindexedFailed;
   private long numUnindexedSuccessful;
 
+  // The number of request and response controls used.
+  private long numRequestControls;
+  private long numResponseControls;
+
   // Variables used for maintaining counts for common types of information.
   @NotNull private final HashMap<Long,AtomicLong> searchEntryCounts;
+  @NotNull private final HashMap<Long,String> ipAddressesByConnectionID;
   @NotNull private final HashMap<ResultCode,AtomicLong> addResultCodes;
   @NotNull private final HashMap<ResultCode,AtomicLong> bindResultCodes;
   @NotNull private final HashMap<ResultCode,AtomicLong> compareResultCodes;
@@ -255,17 +275,26 @@ public final class SummarizeAccessLog
   @NotNull private final HashMap<SearchScope,AtomicLong> searchScopes;
   @NotNull private final HashMap<String,AtomicLong> authenticationTypes;
   @NotNull private final HashMap<String,AtomicLong> authzDNs;
-  @NotNull private final HashMap<String,AtomicLong> failedBindDNs;
+  @NotNull private final HashMap<String,AtomicLong> bindFailuresByDN;
+  @NotNull private final HashMap<String,AtomicLong> bindFailuresByIPAddress;
+  @NotNull private final HashMap<String,AtomicLong> consecutiveFailedBindsByDN;
+  @NotNull private final HashMap<String,AtomicLong> outstandingFailedBindDNs;
   @NotNull private final HashMap<String,AtomicLong> successfulBindDNs;
   @NotNull private final HashMap<String,AtomicLong> clientAddresses;
   @NotNull private final HashMap<String,AtomicLong> clientConnectionPolicies;
   @NotNull private final HashMap<String,AtomicLong> disconnectReasons;
   @NotNull private final HashMap<String,AtomicLong> extendedOperations;
+  @NotNull private final HashMap<String,AtomicLong> filterComponentCounts;
   @NotNull private final HashMap<String,AtomicLong> filterTypes;
   @NotNull private final HashMap<String,AtomicLong> mostExpensiveFilters;
   @NotNull private final HashMap<String,AtomicLong> multiEntryFilters;
   @NotNull private final HashMap<String,AtomicLong> noEntryFilters;
   @NotNull private final HashMap<String,AtomicLong> oneEntryFilters;
+  @NotNull private final HashMap<String,AtomicLong> preAuthzPrivilegesUsed;
+  @NotNull private final HashMap<String,AtomicLong> privilegesMissing;
+  @NotNull private final HashMap<String,AtomicLong> privilegesUsed;
+  @NotNull private final HashMap<String,AtomicLong> requestControlOIDs;
+  @NotNull private final HashMap<String,AtomicLong> responseControlOIDs;
   @NotNull private final HashMap<String,AtomicLong> searchBaseDNs;
   @NotNull private final HashMap<String,AtomicLong> tlsCipherSuites;
   @NotNull private final HashMap<String,AtomicLong> tlsProtocols;
@@ -280,6 +309,9 @@ public final class SummarizeAccessLog
   @NotNull private final LinkedHashMap<Long,AtomicLong> modifyProcessingTimes;
   @NotNull private final LinkedHashMap<Long,AtomicLong> modifyDNProcessingTimes;
   @NotNull private final LinkedHashMap<Long,AtomicLong> searchProcessingTimes;
+  @NotNull private final LinkedHashMap<Long,AtomicLong> workQueueWaitTimes;
+  @NotNull private final LinkedHashSet<Filter>
+       filtersRepresentingPotentialInjectionAttempt;
 
 
 
@@ -361,6 +393,8 @@ public final class SummarizeAccessLog
     modifyDNProcessingDuration = 0.0;
     searchProcessingDuration = 0.0;
 
+    totalWorkQueueWaitTime = 0L;
+
     numAbandons = 0L;
     numAdds = 0L;
     numBinds = 0L;
@@ -387,7 +421,12 @@ public final class SummarizeAccessLog
     numUnindexedFailed = 0L;
     numUnindexedSuccessful = 0L;
 
+    numRequestControls = 0L;
+    numResponseControls = 0L;
+
     searchEntryCounts = new HashMap<>(StaticUtils.computeMapCapacity(10));
+    ipAddressesByConnectionID =
+         new HashMap<>(StaticUtils.computeMapCapacity(100));
     addResultCodes = new HashMap<>(StaticUtils.computeMapCapacity(10));
     bindResultCodes = new HashMap<>(StaticUtils.computeMapCapacity(10));
     compareResultCodes = new HashMap<>(StaticUtils.computeMapCapacity(10));
@@ -399,22 +438,34 @@ public final class SummarizeAccessLog
     searchScopes = new HashMap<>(StaticUtils.computeMapCapacity(4));
     authenticationTypes = new HashMap<>(StaticUtils.computeMapCapacity(100));
     authzDNs = new HashMap<>(StaticUtils.computeMapCapacity(100));
-    failedBindDNs = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    bindFailuresByDN = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    bindFailuresByIPAddress =
+         new HashMap<>(StaticUtils.computeMapCapacity(100));
+    outstandingFailedBindDNs =
+         new HashMap<>(StaticUtils.computeMapCapacity(100));
     successfulBindDNs = new HashMap<>(StaticUtils.computeMapCapacity(100));
     clientAddresses = new HashMap<>(StaticUtils.computeMapCapacity(100));
     clientConnectionPolicies =
          new HashMap<>(StaticUtils.computeMapCapacity(100));
     disconnectReasons = new HashMap<>(StaticUtils.computeMapCapacity(100));
     extendedOperations = new HashMap<>(StaticUtils.computeMapCapacity(10));
+    filterComponentCounts = new HashMap<>(StaticUtils.computeMapCapacity(10));
     filterTypes = new HashMap<>(StaticUtils.computeMapCapacity(100));
     mostExpensiveFilters = new HashMap<>(StaticUtils.computeMapCapacity(100));
     multiEntryFilters = new HashMap<>(StaticUtils.computeMapCapacity(100));
     noEntryFilters = new HashMap<>(StaticUtils.computeMapCapacity(100));
     oneEntryFilters = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    preAuthzPrivilegesUsed = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    privilegesMissing = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    privilegesUsed = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    requestControlOIDs = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    responseControlOIDs = new HashMap<>(StaticUtils.computeMapCapacity(100));
     searchBaseDNs = new HashMap<>(StaticUtils.computeMapCapacity(100));
     tlsCipherSuites = new HashMap<>(StaticUtils.computeMapCapacity(100));
     tlsProtocols = new HashMap<>(StaticUtils.computeMapCapacity(100));
     unindexedFilters = new HashMap<>(StaticUtils.computeMapCapacity(100));
+    consecutiveFailedBindsByDN =
+         new HashMap<>(StaticUtils.computeMapCapacity(100));
     extendedOperationOIDsToNames =
          new HashMap<>(StaticUtils.computeMapCapacity(100));
     processedRequests = new HashSet<>(StaticUtils.computeMapCapacity(100));
@@ -434,6 +485,10 @@ public final class SummarizeAccessLog
          new LinkedHashMap<>(StaticUtils.computeMapCapacity(11));
     searchProcessingTimes =
          new LinkedHashMap<>(StaticUtils.computeMapCapacity(11));
+    workQueueWaitTimes =
+         new LinkedHashMap<>(StaticUtils.computeMapCapacity(11));
+    filtersRepresentingPotentialInjectionAttempt =
+         new LinkedHashSet<>(StaticUtils.computeMapCapacity(10));
 
     populateProcessingTimeMap(addProcessingTimes);
     populateProcessingTimeMap(bindProcessingTimes);
@@ -443,6 +498,7 @@ public final class SummarizeAccessLog
     populateProcessingTimeMap(modifyProcessingTimes);
     populateProcessingTimeMap(modifyDNProcessingTimes);
     populateProcessingTimeMap(searchProcessingTimes);
+    populateProcessingTimeMap(workQueueWaitTimes);
   }
 
 
@@ -960,6 +1016,24 @@ public final class SummarizeAccessLog
         Debug.debugException(e);
       }
       logDurationMillis += (stopTime - startTime);
+
+
+      // If there are any outstanding authentication failures, then update the
+      // set of consecutive failures as appropriate.
+      for (final Map.Entry<String,AtomicLong> e :
+           outstandingFailedBindDNs.entrySet())
+      {
+        final String dn = e.getKey();
+        final AtomicLong outstandingFailureCount = e.getValue();
+        final AtomicLong consecutiveFailures =
+             consecutiveFailedBindsByDN.get(dn);
+        if ((consecutiveFailures == null) ||
+           (outstandingFailureCount.get() > consecutiveFailures.get()))
+        {
+          consecutiveFailedBindsByDN.put(dn, outstandingFailureCount);
+        }
+      }
+      outstandingFailedBindDNs.clear();
     }
 
 
@@ -1003,6 +1077,8 @@ public final class SummarizeAccessLog
     final long totalOps = numAbandons + numAdds + numBinds + numCompares +
          numDeletes + numExtended + numModifies + numModifyDNs + numSearches +
          numUnbinds;
+    final long totalResults = totalOps - numAbandons - numUnbinds;
+
     if (totalOps > 0)
     {
       final double percentAbandon  = 100.0 * numAbandons / totalOps;
@@ -1135,6 +1211,15 @@ public final class SummarizeAccessLog
       printProcessingTimeHistogram("search", numSearches,
                                    searchProcessingTimes);
 
+      if (totalWorkQueueWaitTime > 0L)
+      {
+        out();
+        out("Average work queue wait time:  ",
+             decimalFormat.format(totalWorkQueueWaitTime / totalResults), "ms");
+        printHistogram("Count of operations by work queue wait time:",
+             totalResults, workQueueWaitTimes);
+      }
+
       printResultCodeCounts(addResultCodes, "add");
       printResultCodeCounts(bindResultCodes, "bind");
       printResultCodeCounts(compareResultCodes, "compare");
@@ -1144,12 +1229,29 @@ public final class SummarizeAccessLog
       printResultCodeCounts(modifyDNResultCodes, "modify DN");
       printResultCodeCounts(searchResultCodes, "search");
 
+      printCounts(preAuthzPrivilegesUsed,
+           "Most common pre-authorization privileges used:", "privilege",
+           "privileges");
+      printCounts(privilegesUsed, "Most common privileges used:", "privilege",
+           "privileges");
+      printCounts(privilegesMissing, "Most common missing privileges:",
+           "privilege", "privileges");
+
       printCounts(successfulBindDNs,
            "Most common bind DNs used in successful authentication attempts:",
            "DN", "DNs");
-      printCounts(failedBindDNs,
+      printCounts(bindFailuresByDN,
            "Most common bind DNs used in failed authentication attempts:",
            "DN", "DNs");
+      printCounts(bindFailuresByIPAddress,
+           "Most common IP addresses used in failed authentication attempts:",
+           "IP", "IPs");
+      if (doNotAnonymize.isPresent())
+      {
+        printCounts(consecutiveFailedBindsByDN,
+             "Bind DNs with the most consecutive authentication failures:",
+             "DN", "DNs");
+      }
       printCounts(authenticationTypes, "Most common authentication types:",
            "authentication type", "authentication types");
 
@@ -1168,6 +1270,102 @@ public final class SummarizeAccessLog
 
       printCounts(authzDNs, "Most common alternate authorization identity DNs:",
            "DN", "DNs");
+
+      if (! requestControlOIDs.isEmpty())
+      {
+        final List<ObjectPair<String,Long>> controlCounts = new ArrayList<>();
+        final AtomicLong skippedWithSameCount = new AtomicLong(0L);
+        final AtomicLong skippedWithLowerCount = new AtomicLong(0L);
+        getMostCommonElements(requestControlOIDs, controlCounts, displayCount,
+             skippedWithSameCount, skippedWithLowerCount);
+
+        out();
+        out("Most common request control types:");
+
+        long count = -1L;
+        for (final ObjectPair<String,Long> p : controlCounts)
+        {
+          count = p.getSecond();
+          final double percent = 100.0 * count / numRequestControls;
+
+          final String oid = p.getFirst();
+          final OIDRegistryItem item = OIDRegistry.getDefault().get(oid);
+          if (item == null)
+          {
+            out(p.getFirst(), ":  ", p.getSecond(), " (",
+                 decimalFormat.format(percent), "%)");
+          }
+          else
+          {
+            out(p.getFirst(), " (", item.getName(), "):  ", p.getSecond(), " (",
+                 decimalFormat.format(percent), "%)");
+          }
+        }
+
+        if (skippedWithSameCount.get() > 0L)
+        {
+          out("{ Skipped " + skippedWithSameCount.get() + " additional " +
+               getSingularOrPlural(skippedWithSameCount.get(), "control",
+                    "controls") +
+               " with a count of " + count + " }");
+        }
+
+        if (skippedWithLowerCount.get() > 0L)
+        {
+          out("{ Skipped " + skippedWithLowerCount.get() + " additional " +
+               getSingularOrPlural(skippedWithLowerCount.get(), "control",
+                    "controls") +
+               " with a count that is less than " + count + " }");
+        }
+      }
+
+      if (! responseControlOIDs.isEmpty())
+      {
+        final List<ObjectPair<String,Long>> controlCounts = new ArrayList<>();
+        final AtomicLong skippedWithSameCount = new AtomicLong(0L);
+        final AtomicLong skippedWithLowerCount = new AtomicLong(0L);
+        getMostCommonElements(responseControlOIDs, controlCounts, displayCount,
+             skippedWithSameCount, skippedWithLowerCount);
+
+        out();
+        out("Most common response control types:");
+
+        long count = -1L;
+        for (final ObjectPair<String,Long> p : controlCounts)
+        {
+          count = p.getSecond();
+          final double percent = 100.0 * count / numResponseControls;
+
+          final String oid = p.getFirst();
+          final OIDRegistryItem item = OIDRegistry.getDefault().get(oid);
+          if (item == null)
+          {
+            out(p.getFirst(), ":  ", p.getSecond(), " (",
+                 decimalFormat.format(percent), "%)");
+          }
+          else
+          {
+            out(p.getFirst(), " (", item.getName(), "):  ", p.getSecond(), " (",
+                 decimalFormat.format(percent), "%)");
+          }
+        }
+
+        if (skippedWithSameCount.get() > 0L)
+        {
+          out("{ Skipped " + skippedWithSameCount.get() + " additional " +
+               getSingularOrPlural(skippedWithSameCount.get(), "control",
+                    "controls") +
+               " with a count of " + count + " }");
+        }
+
+        if (skippedWithLowerCount.get() > 0L)
+        {
+          out("{ Skipped " + skippedWithLowerCount.get() + " additional " +
+               getSingularOrPlural(skippedWithLowerCount.get(), "control",
+                    "controls") +
+               " with a count that is less than " + count + " }");
+        }
+      }
 
       if (! extendedOperations.isEmpty())
       {
@@ -1313,6 +1511,26 @@ public final class SummarizeAccessLog
       printCounts(filterTypes,
            "Most common filters for searches with a non-base scope:",
            "filter", "filters");
+
+      printCounts(filterComponentCounts,
+           "Most common search filter component counts:", "filter",
+           "filters");
+
+      if (doNotAnonymize.isPresent() &&
+           (! filtersRepresentingPotentialInjectionAttempt.isEmpty()))
+      {
+        out();
+        wrapOut(0, WRAP_COLUMN,
+             "Search filters that may indicate an unsuccessful injection " +
+                  "attempt.  These include filters with an assertion value " +
+                  "that contains one or more of the following:  parentheses, " +
+                  "ampersands, pipes, single quotes, double quotes, or the " +
+                  "words 'select' and 'from':");
+        for (final Filter f : filtersRepresentingPotentialInjectionAttempt)
+        {
+          out("* " + f.toString());
+        }
+      }
 
       if (numSearches > 0L)
       {
@@ -1503,6 +1721,12 @@ public final class SummarizeAccessLog
     final String clientAddr = m.getSourceAddress();
     if (clientAddr != null)
     {
+      final Long connectionID = m.getConnectionID();
+      if (connectionID != null)
+      {
+        ipAddressesByConnectionID.put(connectionID, clientAddr);
+      }
+
       AtomicLong count = clientAddresses.get(clientAddr);
       if (count == null)
       {
@@ -1570,6 +1794,12 @@ public final class SummarizeAccessLog
   private void processDisconnect(@NotNull final DisconnectAccessLogMessage m)
   {
     numDisconnects++;
+
+    final Long connectionID = m.getConnectionID();
+    if (connectionID != null)
+    {
+      ipAddressesByConnectionID.remove(connectionID);
+    }
 
     final String reason = m.getDisconnectReason();
     if (reason != null)
@@ -1704,6 +1934,180 @@ public final class SummarizeAccessLog
         }
       }
     }
+
+    final String filterString = m.getFilter();
+    if (filterString != null)
+    {
+      try
+      {
+        final Filter filter = Filter.create(filterString);
+        if (mayRepresentInjectionAttempt(filter))
+        {
+          filtersRepresentingPotentialInjectionAttempt.add(filter);
+        }
+
+
+        final int numComponents = countComponents(filter);
+        final String label;
+        if (numComponents == 1)
+        {
+          label = "1 component";
+        }
+        else
+        {
+          label = numComponents + " components";
+        }
+
+        AtomicLong count = filterComponentCounts.get(label);
+        if (count == null)
+        {
+          count = new AtomicLong(0L);
+          filterComponentCounts.put(label, count);
+        }
+
+        count.incrementAndGet();
+      }
+      catch (final Exception e)
+      {
+        Debug.debugException(e);
+      }
+    }
+  }
+
+
+
+  /**
+   * Indicates whether the provided search filter may represent an injection
+   * attempt.  Filters that may represent injection attempts include:
+   * <UL>
+   *   <LI>Filters with assertion values that contain parentheses, ampersands,
+   *       pipes, or single or double quotes.</LI>
+   *   <LI>Filters that contain the words "select" and "from".</LI>
+   * </UL>
+   *
+   * @param  filter  The filter to examine.  It must not be {@code null}.
+   *
+   * @return  {@code true} if the provided filter may represent an injection
+   *          attempt, or {@code false} if not.
+   */
+  static boolean mayRepresentInjectionAttempt(@NotNull final Filter filter)
+  {
+    switch (filter.getFilterType())
+    {
+      case Filter.FILTER_TYPE_AND:
+      case Filter.FILTER_TYPE_OR:
+        for (final Filter f : filter.getComponents())
+        {
+          if (mayRepresentInjectionAttempt(f))
+          {
+            return true;
+          }
+        }
+        return false;
+
+      case Filter.FILTER_TYPE_NOT:
+        return mayRepresentInjectionAttempt(filter.getNOTComponent());
+
+      case Filter.FILTER_TYPE_EQUALITY:
+      case Filter.FILTER_TYPE_GREATER_OR_EQUAL:
+      case Filter.FILTER_TYPE_LESS_OR_EQUAL:
+      case Filter.FILTER_TYPE_APPROXIMATE_MATCH:
+      case Filter.FILTER_TYPE_EXTENSIBLE_MATCH:
+        return mayRepresentInjectionAttempt(filter.getAssertionValue());
+
+      case Filter.FILTER_TYPE_SUBSTRING:
+        final String[] subAnyStrings = filter.getSubAnyStrings();
+        if (subAnyStrings != null)
+        {
+          for (final String subAnyString : subAnyStrings)
+          {
+            if (mayRepresentInjectionAttempt(subAnyString))
+            {
+              return true;
+            }
+          }
+        }
+
+        return mayRepresentInjectionAttempt(filter.getSubInitialString()) ||
+             mayRepresentInjectionAttempt(filter.getSubFinalString());
+
+      case Filter.FILTER_TYPE_PRESENCE:
+      default:
+        return false;
+    }
+  }
+
+
+
+  /**
+   * Indicates whether the provided string (which should be a filter assertion
+   * value or substring component) may represent an injection attempt.
+   *
+   * @param  value  The value for which to make the determination.  It may
+   *                optionally be {@code null}.
+   *
+   * @return  {@code true} if the provided value may represent an injection
+   *          attempt, or {@code false} if not.
+   */
+  private static boolean mayRepresentInjectionAttempt(
+               @Nullable final String value)
+  {
+    if (value == null)
+    {
+      return false;
+    }
+
+    final String lowerValue = StaticUtils.toLowerCase(value);
+    return (lowerValue.contains("(") ||
+         lowerValue.contains(")") ||
+         lowerValue.contains("&") ||
+         lowerValue.contains("|") ||
+         lowerValue.contains("\"") ||
+         lowerValue.contains("'") ||
+         ((lowerValue.contains("select") && lowerValue.contains("from"))));
+  }
+
+
+
+  /**
+   * Counts the number of components in the specified filter.  Presence,
+   * equality, substring, greater-or-equal, less-or-equal, approximate-match,
+   * and extensible-match filters will all be considered a single component.
+   * AND and OR filters will be one plus the aggregate component count for each
+   * of the components they contain.  NOT filters will be one plus the component
+   * count for the filter it contains.
+   *
+   * @param  filter  The filter for which to count the number of components.  It
+   *                 must not be {@code null}.
+   *
+   * @return  The number of components in the specified filter.
+   */
+  static int countComponents(@NotNull final Filter filter)
+  {
+    switch (filter.getFilterType())
+    {
+      case Filter.FILTER_TYPE_AND:
+      case Filter.FILTER_TYPE_OR:
+        int count = 1;
+        for (final Filter f : filter.getComponents())
+        {
+          count += countComponents(f);
+        }
+        return count;
+
+      case Filter.FILTER_TYPE_NOT:
+        return 1 + countComponents(filter.getNOTComponent());
+
+      case Filter.FILTER_TYPE_PRESENCE:
+      case Filter.FILTER_TYPE_EQUALITY:
+      case Filter.FILTER_TYPE_SUBSTRING:
+      case Filter.FILTER_TYPE_GREATER_OR_EQUAL:
+      case Filter.FILTER_TYPE_LESS_OR_EQUAL:
+      case Filter.FILTER_TYPE_APPROXIMATE_MATCH:
+      case Filter.FILTER_TYPE_EXTENSIBLE_MATCH:
+      default:
+        return 1;
+    }
   }
 
 
@@ -1730,6 +2134,8 @@ public final class SummarizeAccessLog
   {
     numAdds++;
 
+    updateCommonResult(m);
+
     updateResultCodeCount(m.getResultCode(), addResultCodes);
     addProcessingDuration +=
          doubleValue(m.getProcessingTimeMillis(), addProcessingTimes);
@@ -1753,6 +2159,8 @@ public final class SummarizeAccessLog
   private void processBindResult(@NotNull final BindResultAccessLogMessage m)
   {
     numBinds++;
+
+    updateCommonResult(m);
 
     if (m.getAuthenticationType() != null)
     {
@@ -1809,6 +2217,20 @@ public final class SummarizeAccessLog
           successfulBindDNs.put(authenticationDN, l);
         }
         l.incrementAndGet();
+
+        final AtomicLong outstandingFailures =
+             outstandingFailedBindDNs.remove(authenticationDN);
+        if (outstandingFailures != null)
+        {
+          final AtomicLong consecutiveFailures =
+               consecutiveFailedBindsByDN.get(authenticationDN);
+          if ((consecutiveFailures == null) ||
+             (outstandingFailures.get() > consecutiveFailures.get()))
+          {
+            consecutiveFailedBindsByDN.put(authenticationDN,
+                 new AtomicLong(outstandingFailures.get()));
+          }
+        }
       }
 
       final String ccp = m.getClientConnectionPolicy();
@@ -1833,11 +2255,40 @@ public final class SummarizeAccessLog
 
       if (authenticationDN != null)
       {
-        AtomicLong l = failedBindDNs.get(authenticationDN);
+        AtomicLong l = bindFailuresByDN.get(authenticationDN);
         if (l == null)
         {
           l = new AtomicLong(0L);
-          failedBindDNs.put(authenticationDN, l);
+          bindFailuresByDN.put(authenticationDN, l);
+        }
+        l.incrementAndGet();
+
+        l = outstandingFailedBindDNs.get(authenticationDN);
+        if (l == null)
+        {
+          l = new AtomicLong(0L);
+          outstandingFailedBindDNs.put(authenticationDN, l);
+        }
+        l.incrementAndGet();
+      }
+
+      String ipAddress = m.getRequesterIPAddress();
+      if (ipAddress == null)
+      {
+        final Long connectionID = m.getConnectionID();
+        if (connectionID != null)
+        {
+          ipAddress = ipAddressesByConnectionID.get(connectionID);
+        }
+      }
+
+      if (ipAddress != null)
+      {
+        AtomicLong l = bindFailuresByIPAddress.get(ipAddress);
+        if (l == null)
+        {
+          l = new AtomicLong(0L);
+          bindFailuresByIPAddress.put(ipAddress, l);
         }
         l.incrementAndGet();
       }
@@ -1864,6 +2315,8 @@ public final class SummarizeAccessLog
   {
     numCompares++;
 
+    updateCommonResult(m);
+
     updateResultCodeCount(m.getResultCode(), compareResultCodes);
     compareProcessingDuration +=
          doubleValue(m.getProcessingTimeMillis(), compareProcessingTimes);
@@ -1889,6 +2342,8 @@ public final class SummarizeAccessLog
   {
     numDeletes++;
 
+    updateCommonResult(m);
+
     updateResultCodeCount(m.getResultCode(), deleteResultCodes);
     deleteProcessingDuration +=
          doubleValue(m.getProcessingTimeMillis(), deleteProcessingTimes);
@@ -1913,6 +2368,8 @@ public final class SummarizeAccessLog
                     @NotNull final ExtendedResultAccessLogMessage m)
   {
     numExtended++;
+
+    updateCommonResult(m);
 
     final String id = m.getConnectionID() + "-" + m.getOperationID();
     if (!processedRequests.remove(id))
@@ -1955,6 +2412,8 @@ public final class SummarizeAccessLog
   {
     numModifies++;
 
+    updateCommonResult(m);
+
     updateResultCodeCount(m.getResultCode(), modifyResultCodes);
     modifyProcessingDuration +=
          doubleValue(m.getProcessingTimeMillis(), modifyProcessingTimes);
@@ -1980,6 +2439,8 @@ public final class SummarizeAccessLog
   {
     numModifyDNs++;
 
+    updateCommonResult(m);
+
     updateResultCodeCount(m.getResultCode(), modifyDNResultCodes);
     modifyDNProcessingDuration +=
          doubleValue(m.getProcessingTimeMillis(), modifyDNProcessingTimes);
@@ -2004,6 +2465,8 @@ public final class SummarizeAccessLog
                     @NotNull final SearchResultAccessLogMessage m)
   {
     numSearches++;
+
+    updateCommonResult(m);
 
     final String id = m.getConnectionID() + "-" + m.getOperationID();
     if (! processedRequests.remove(id))
@@ -2109,6 +2572,75 @@ public final class SummarizeAccessLog
         }
       }
     }
+  }
+
+
+
+  /**
+   * Updates a number of statistics that are common to all types of result log
+   * messages.
+   *
+   * @param  m  The result log message to examine.
+   */
+  private void updateCommonResult(
+                    @NotNull final OperationResultAccessLogMessage m)
+  {
+    // Handle the work queue wait time.
+    totalWorkQueueWaitTime +=
+         doubleValue(m.getWorkQueueWaitTimeMillis(), workQueueWaitTimes);
+
+
+    // Handle request and response control OIDs.
+    for (final String oid : m.getRequestControlOIDs())
+    {
+      numRequestControls++;
+      updateCount(requestControlOIDs, oid);
+    }
+
+    for (final String oid : m.getResponseControlOIDs())
+    {
+      numResponseControls++;
+      updateCount(responseControlOIDs, oid);
+    }
+
+
+    // Handle used and missing privileges.
+    for (final String privilegeName : m.getPreAuthorizationUsedPrivileges())
+    {
+      updateCount(preAuthzPrivilegesUsed, privilegeName);
+    }
+
+    for (final String privilegeName : m.getUsedPrivileges())
+    {
+      updateCount(privilegesUsed, privilegeName);
+    }
+
+    for (final String privilegeName : m.getMissingPrivileges())
+    {
+      updateCount(privilegesMissing, privilegeName);
+    }
+  }
+
+
+
+  /**
+   * Updates the counter for the given key in the provided map.  If the key does
+   * not exist, it will be added to the map.
+   *
+   * @param  m    The map to be updated.
+   * @param  key  The key for which to update the count.
+   */
+  private static void updateCount(@NotNull final Map<String,AtomicLong> m,
+                                  @NotNull final String key)
+  {
+    AtomicLong count = m.get(key);
+    if (count == null)
+    {
+      count = new AtomicLong(0L);
+      m.put(key, count);
+    }
+
+    count.incrementAndGet();
   }
 
 
@@ -2397,13 +2929,31 @@ public final class SummarizeAccessLog
                     final long n,
                     @NotNull final LinkedHashMap<Long,AtomicLong> m)
   {
+    printHistogram("Count of " + t + " operations by processing time:", n, m);
+  }
+
+
+
+  /**
+   * Writes a breakdown of the processing times for a specified type of
+   * operation.
+   *
+   * @param  h  The header to display at the beginning of the histogram.
+   * @param  n  The total number of operations that were processed by the
+   *            server.
+   * @param  m  The map of operation counts by processing time bucket.
+   */
+  private void printHistogram(@NotNull final String h,
+                    final long n,
+                    @NotNull final LinkedHashMap<Long,AtomicLong> m)
+  {
     if (n <= 0)
     {
       return;
     }
 
     out();
-    out("Count of ", t, " operations by processing time:");
+    out(h);
 
     long lowerBound = 0;
     long accumulatedCount = 0;

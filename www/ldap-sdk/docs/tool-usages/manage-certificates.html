@@ -831,17 +831,17 @@
         <br><br>
       </li>
       <li>
-        <tt>--alias <i>{alias}</i></tt> &mdash; The alias (also called a nickname) to use for the newly-generated certificate.  If the --replace-existing-certificate argument is provided, then this must be the alias of the private key for which to replace the certificate chain with the self-signed certificate.  If the --replace-existing-certificate argument is not provided, then the alias must not already exist in the key store.
+        <tt>--alias <i>{alias}</i></tt> &mdash; The alias (also called a nickname) to use for the newly-generated certificate.  If the --use-existing-key-pair argument is provided, then this must be the alias of the private key for which to replace the certificate chain with the self-signed certificate.  If the --use-existing-key-pair argument is not provided, then the alias must not already exist in the key store.
         <br><br>
       </li>
       <li>
-        <tt>--replace-existing-certificate</tt> &mdash; Indicates that the new self-signed certificate should replace the certificate chain associated with an existing private key that is identified by the --alias argument, reusing the existing key pair.  If this argument is not provided, then a new key pair will be generated.
+        <tt>--use-existing-key-pair</tt> &mdash; Indicates that the new self-signed certificate should replace the certificate chain associated with an existing private key that is identified by the --alias argument, reusing the existing key pair.  If this argument is not provided, then a new key pair will be generated.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
       </li>
       <li>
-        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the new certificate.  This must be provided unless then --replace-existing-certificate argument is given.  If the --replace-existing-certificate argument is provided, then the --subject-dn argument may be omitted if you want to reuse the same subject as the existing certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department or organizational unit name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.
+        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the new certificate.  This must be provided unless the --use-existing-key-pair argument is given.  If the --use-existing-key-pair argument is provided, then the --subject-dn argument may be omitted if you want to reuse the same subject as the existing certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department or organizational unit name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.
         <br>
         A provided value must be able to be parsed as an LDAP distinguished name as described in RFC 4514.
         <br><br>
@@ -859,21 +859,21 @@
         <br><br>
       </li>
       <li>
-        <tt>--key-algorithm <i>{name}</i></tt> &mdash; The name of the key algorithm to use to generate the key pair.  If present, the value will typically be 'RSA' or 'EC' (for elliptic curve).  This argument must not be provided if the --replace-existing-certificate argument is used.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default key algorithm of 'RSA' will be used.
+        <tt>--key-algorithm <i>{name}</i></tt> &mdash; The name of the key algorithm to use to generate the key pair.  If present, the value will typically be 'RSA' or 'EC' (for elliptic curve).  This argument must not be provided if the --use-existing-key-pair argument is used.  If neither this argument nor the --use-existing-key-pair argument is provided, then a default key algorithm of 'RSA' will be used.
         <br><br>
       </li>
       <li>
-        <tt>--key-size-bits <i>{bits}</i></tt> &mdash; The size of the key to generate, in bits.  This argument must not be provided if the --replace-existing-certificate argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default key size of 2048 bits will be used.
+        <tt>--key-size-bits <i>{bits}</i></tt> &mdash; The size of the key to generate, in bits.  This argument must not be provided if the --use-existing-key-pair argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --use-existing-key-pair argument is provided, then a default key size of 2048 bits will be used.
         <br>
         The specified value must not be less than 1 or greater than 2,147,483,647.
         <br><br>
       </li>
       <li>
-        <tt>--signature-algorithm <i>{name}</i></tt> &mdash; The name of the algorithm to use to sign the certificate.  This argument must not be provided if the --replace-existing-certificate argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default signature algorithm of 'SHA256withRSA' will be used.
+        <tt>--signature-algorithm <i>{name}</i></tt> &mdash; The name of the algorithm to use to sign the certificate.  This argument must not be provided if the --use-existing-key-pair argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --use-existing-key-pair argument is provided, then a default signature algorithm of 'SHA256withRSA' will be used.
         <br><br>
       </li>
       <li>
-        <tt>--inherit-extensions</tt> &mdash; This argument can only be used in conjunction with the --replace-existing-certificate argument, and it indicates that the new certificate should inherit all of the same extension values as the certificate being replaced (although extensions known to apply to the certificate's issuer, like authority key identifier and issuer alternative name, may be excluded).  If the --replace-existing-certificate argument is provided without the --inherit-extensions argument, then the new certificate will only have the extensions that are explicitly specified using other arguments.
+        <tt>--inherit-extensions</tt> &mdash; This argument can only be used in conjunction with the --use-existing-key-pair argument, and it indicates that the new certificate should inherit all of the same extension values as the certificate being replaced (although extensions known to apply to the certificate's issuer, like authority key identifier and issuer alternative name, may be excluded).  If the --use-existing-key-pair argument is provided without the --inherit-extensions argument, then the new certificate will only have the extensions that are explicitly specified using other arguments.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -965,13 +965,13 @@
         The following arguments cannot be used together:  <tt>--private-key-password</tt>, <tt>--private-key-password-file</tt>, <tt>--prompt-for-private-key-password</tt>
       </li>
       <li>
-        The following arguments cannot be used together:  <tt>--replace-existing-certificate</tt>, <tt>--key-algorithm</tt>
+        The following arguments cannot be used together:  <tt>--use-existing-key-pair</tt>, <tt>--key-algorithm</tt>
       </li>
       <li>
-        The following arguments cannot be used together:  <tt>--replace-existing-certificate</tt>, <tt>--key-size-bits</tt>
+        The following arguments cannot be used together:  <tt>--use-existing-key-pair</tt>, <tt>--key-size-bits</tt>
       </li>
       <li>
-        The following arguments cannot be used together:  <tt>--replace-existing-certificate</tt>, <tt>--signature-algorithm</tt>
+        The following arguments cannot be used together:  <tt>--use-existing-key-pair</tt>, <tt>--signature-algorithm</tt>
       </li>
     </ul>
     <h3>Examples</h3>
@@ -983,12 +983,12 @@
          --keystore-password-file config/keystore.pin --alias server-cert \
          --subject-dn "CN=ldap.example.com,O=Example Corp,C=US"</pre></blockquote>
     <ul>
-      <li>Generates a self-signed certificate to replace the existing certificate with the 'server-cert' alias.  The new certificate will include the same subject, key and signature algorithms, and set of extensions as the existing certificate, and it will have a validity of 365 days, starting immediately.</li>
+      <li>Generates a self-signed certificate to replace the existing certificate with the 'server-cert' alias.  The new certificate will reuse the existing certificate's key pair, will include the same subject, key and signature algorithms, and set of extensions as the existing certificate, and it will have a validity of 365 days, starting immediately.</li>
     </ul>
     <blockquote><pre>    manage-certificates generate-self-signed-certificate \
          generate-self-signed-certificate --keystore config/keystore \
          --keystore-password-file config/keystore.pin --alias server-cert \
-         --replace-existing-certificate --inherit-extensions</pre></blockquote>
+         --use-existing-key-pair --inherit-extensions</pre></blockquote>
     <ul>
       <li>Generates a self-signed server certificate with an alias of 'server-cert', a subject DN of 'CN=ldap.example.com,O=Example Corp,C=US', a 4096-bit RSA key, a signature algorithm of SHA256withRSA, a subject alternate name extension with DNS names of 'ldap1.example.com' and 'ldap2.example.com' and IP addresses of 1.2.3.4 and 1.2.3.5, and an extended key usage extension with the server-auth and client-auth usages.  The certificate will have a validity of 3650 days, starting at midnight on January 1, 2017 in the local time zone.</li>
     </ul>
@@ -1081,7 +1081,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--alias <i>{alias}</i></tt> &mdash; The alias (also called a nickname) of the private key to use to generate the certificate signing request.  If the --replace-existing-certificate argument is provided, then this must be the alias of an existing private key.  If the --replace-existing-certificate argument is not provided, then the alias must not already exist in the key store, and a corresponding key pair will be created in that alias.
+        <tt>--alias <i>{alias}</i></tt> &mdash; The alias (also called a nickname) of the private key to use to generate the certificate signing request.  If the --use-existing-key-pair argument is provided, then this must be the alias of an existing private key.  If the --use-existing-key-pair argument is not provided, then the alias must not already exist in the key store, and a corresponding key pair will be created in that alias.
         <br><br>
       </li>
       <li>
@@ -1091,27 +1091,27 @@
         <br><br>
       </li>
       <li>
-        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the certificate signing request.  This must be provided unless then --replace-existing-certificate argument is given.  If the --replace-existing-certificate argument is provided, then the --subject-dn argument may be omitted if you want to reuse the same subject as the existing certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.
+        <tt>--subject-dn <i>{dn}</i></tt> &mdash; The subject DN for the certificate signing request.  This must be provided unless then --use-existing-key-pair argument is given.  If the --use-existing-key-pair argument is provided, then the --subject-dn argument may be omitted if you want to reuse the same subject as the existing certificate.  A subject DN typically includes at least a 'CN' attribute (which in a server certificate should be the hostname that clients are expected to use when connecting to the server, and in other certificates indicates the purpose of that certificate), and may also include additional attributes like 'OU' (the associated department name), 'O' (the company or organization name), 'L' (the city or locality name), 'ST' (the full name -- NOT the two-letter abbreviation -- of the state or province), 'C' (the two-letter country code -- NOT the full country name).  For example:  'CN=ldap.example.com,OU=Directory Services,O=Example Corporation,L=Austin,ST=Texas,C=US'.
         <br>
         A provided value must be able to be parsed as an LDAP distinguished name as described in RFC 4514.
         <br><br>
       </li>
       <li>
-        <tt>--key-algorithm <i>{name}</i></tt> &mdash; The name of the key algorithm to use to generate the key pair.  If present, the value will typically be 'RSA' or 'EC' (for elliptic curve).  This argument must not be provided if the --replace-existing-certificate argument is used.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default key algorithm of 'RSA' will be used.
+        <tt>--key-algorithm <i>{name}</i></tt> &mdash; The name of the key algorithm to use to generate the key pair.  If present, the value will typically be 'RSA' or 'EC' (for elliptic curve).  This argument must not be provided if the --use-existing-key-pair argument is used.  If neither this argument nor the --use-existing-key-pair argument is provided, then a default key algorithm of 'RSA' will be used.
         <br><br>
       </li>
       <li>
-        <tt>--key-size-bits <i>{bits}</i></tt> &mdash; The size of the key to generate, in bits.  This argument must not be provided if the --replace-existing-certificate argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default key size of 2048 bits will be used.
+        <tt>--key-size-bits <i>{bits}</i></tt> &mdash; The size of the key to generate, in bits.  This argument must not be provided if the --use-existing-key-pair argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --use-existing-key-pair argument is provided, then a default key size of 2048 bits will be used.
         <br>
         The specified value must not be less than 1 or greater than 2,147,483,647.
         <br><br>
       </li>
       <li>
-        <tt>--signature-algorithm <i>{name}</i></tt> &mdash; The name of the algorithm to use to sign the certificate.  This argument must not be provided if the --replace-existing-certificate argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --replace-existing-certificate argument is provided, then a default signature algorithm of 'SHA256withRSA' will be used.
+        <tt>--signature-algorithm <i>{name}</i></tt> &mdash; The name of the algorithm to use to sign the certificate.  This argument must not be provided if the --use-existing-key-pair argument is used.  This argument must be provided if the --key-algorithm argument is used to specify an algorithm other than 'RSA'.  If neither this argument nor the --use-existing-key-pair argument is provided, then a default signature algorithm of 'SHA256withRSA' will be used.
         <br><br>
       </li>
       <li>
-        <tt>--inherit-extensions</tt> &mdash; This argument can only be used in conjunction with the --replace-existing-certificate argument, and it indicates that the requested certificate should inherit all of the same extension values as the certificate being replaced (although extensions known to apply to the certificate's issuer, like authority key identifier and issuer alternative name, may be excluded).  If the --replace-existing-certificate argument is provided without the --inherit-extensions argument, then the new certificate will only have the extensions that are explicitly specified using other arguments.
+        <tt>--inherit-extensions</tt> &mdash; This argument can only be used in conjunction with the --use-existing-key-pair argument, and it indicates that the requested certificate should inherit all of the same extension values as the existing certificate (although extensions known to apply to the certificate's issuer, like authority key identifier and issuer alternative name, may be excluded).  If the --use-existing-key-pair argument is provided without the --inherit-extensions argument, then the new certificate will only have the extensions that are explicitly specified using other arguments.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -1206,7 +1206,7 @@
          --keystore-password-file config/keystore.pin --alias server-cert \
          --subject-dn "CN=ldap.example.com,O=Example Corp,C=US"</pre></blockquote>
     <ul>
-      <li>Generates a certificate signing request to replace the existing certificate with the 'server-cert' alias.  The new certificate will include the same subject, key and signature algorithms, and set of extensions as the existing certificate, and the request will be written to the server-cert.csr output file.</li>
+      <li>Generates a certificate signing request to replace the existing certificate with the 'server-cert' alias.  The new certificate will use the same key pair as the existing certificate, will include the same subject, key and signature algorithms, and set of extensions as the existing certificate, and the request will be written to the server-cert.csr output file.</li>
     </ul>
     <blockquote><pre>    manage-certificates generate-certificate-signing-request \
          generate-certificate-signing-request --keystore config/keystore \

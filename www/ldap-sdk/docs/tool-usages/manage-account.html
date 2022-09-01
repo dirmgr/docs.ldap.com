@@ -127,6 +127,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--verifyCertificateHostnames</tt> &mdash; Indicates that the tool should verify that the hostname or IP addressed used to establish connections ot the LDAP server matches an address for which the server's TLS certificate was issued.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-N <i>{nickname}</i></tt> / <tt>--certNickname <i>{nickname}</i></tt> &mdash; The nickname (alias) of the client certificate in the key store to present to the directory server for SSL client authentication.
         <br><br>
       </li>
@@ -914,13 +920,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220506154501.129Z'.</li>
+      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-changed-time set-password-changed-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordChangedTime 20220506154501.129Z</pre></blockquote>
+         --passwordChangedTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1012,13 +1018,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220506154501.129Z'.</li>
+      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-activation-time set-account-activation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountActivationTime 20220506154501.129Z</pre></blockquote>
+         --accountActivationTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1090,13 +1096,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220506154501.129Z'.</li>
+      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-expiration-time set-account-expiration-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountExpirationTime 20220506154501.129Z</pre></blockquote>
+         --accountExpirationTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1168,14 +1174,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220506154501.129Z'.</li>
+      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-expiration-warned-time \
          set-password-expiration-warned-time --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordExpirationWarnedTime 20220506154501.129Z</pre></blockquote>
+         --passwordExpirationWarnedTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1362,15 +1368,15 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20220506154448.784Z' and '20220506154501.129Z'.</li>
+      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20220831175356.410Z' and '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-authentication-failure-times \
          set-authentication-failure-times --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --authenticationFailureTime 20220506154448.784Z \
-         --authenticationFailureTime 20220506154501.129Z</pre></blockquote>
+         --authenticationFailureTime 20220831175356.410Z \
+         --authenticationFailureTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1559,13 +1565,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220506154501.129Z'.</li>
+      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-login-time set-last-login-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --lastLoginTime 20220506154501.129Z</pre></blockquote>
+         --lastLoginTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1677,14 +1683,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20220506154448.784Z' and '20220506154501.129Z'.</li>
+      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20220831175356.410Z' and '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-grace-login-use-times set-grace-login-use-times \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --graceLoginUseTime 20220506154448.784Z \
-         --graceLoginUseTime 20220506154501.129Z</pre></blockquote>
+         --graceLoginUseTime 20220831175356.410Z \
+         --graceLoginUseTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -2138,14 +2144,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Updates the password policy state for user 'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last invoked password validators during a bind at time '20220506154501.129Z'.</li>
+      <li>Updates the password policy state for user 'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last invoked password validators during a bind at time '20220831175408.755Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-bind-password-validation-time \
          set-last-bind-password-validation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --validationTime 20220506154501.129Z</pre></blockquote>
+         --validationTime 20220831175408.755Z</pre></blockquote>
 
     <p>&nbsp;</p>
 

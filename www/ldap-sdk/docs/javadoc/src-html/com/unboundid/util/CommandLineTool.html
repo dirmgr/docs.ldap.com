@@ -571,10 +571,10 @@
 <span class="sourceLineNo">563</span>      {<a name="line.563"></a>
 <span class="sourceLineNo">564</span>        exitCode.set(doToolProcessing());<a name="line.564"></a>
 <span class="sourceLineNo">565</span>      }<a name="line.565"></a>
-<span class="sourceLineNo">566</span>      catch (final Exception e)<a name="line.566"></a>
+<span class="sourceLineNo">566</span>      catch (final Throwable t)<a name="line.566"></a>
 <span class="sourceLineNo">567</span>      {<a name="line.567"></a>
-<span class="sourceLineNo">568</span>        Debug.debugException(e);<a name="line.568"></a>
-<span class="sourceLineNo">569</span>        err(StaticUtils.getExceptionMessage(e));<a name="line.569"></a>
+<span class="sourceLineNo">568</span>        Debug.debugException(t);<a name="line.568"></a>
+<span class="sourceLineNo">569</span>        err(StaticUtils.getExceptionMessage(t));<a name="line.569"></a>
 <span class="sourceLineNo">570</span>        exitCode.set(ResultCode.LOCAL_ERROR);<a name="line.570"></a>
 <span class="sourceLineNo">571</span>      }<a name="line.571"></a>
 <span class="sourceLineNo">572</span>      finally<a name="line.572"></a>

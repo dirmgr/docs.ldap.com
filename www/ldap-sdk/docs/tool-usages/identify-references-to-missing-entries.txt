@@ -72,6 +72,10 @@ Available options include:
     --trustStoreFormat {format}
         The format (e.g., JKS, PKCS12, PKCS11, BCFKS, etc.) for the trust store
         file.
+    --verifyCertificateHostnames
+        Indicates that the tool should verify that the hostname or IP addressed
+        used to establish connections ot the LDAP server matches an address for
+        which the server's TLS certificate was issued.
     -N, --certNickname {nickname}
         The nickname (alias) of the client certificate in the key store to
         present to the directory server for SSL client authentication.
@@ -103,6 +107,12 @@ Available options include:
         control, but it can avoid problems with the server sending entries too
         quickly for the client to handle.  By default, the simple paged results
         control will not be used.
+    -l, --outputLDIF {path}
+        The path to a file that should be written with the LDIF representation
+        of any changes that may be needed to remove references to missing
+        entries.  If this is omitted, then information about the missing
+        entries will only be written to standard output in a human-readable
+        form.
 
   Usage Arguments
 

@@ -122,6 +122,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--verifyCertificateHostnames</tt> &mdash; Indicates that the tool should verify that the hostname or IP addressed used to establish connections ot the LDAP server matches an address for which the server's TLS certificate was issued.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-N <i>{nickname}</i></tt> / <tt>--certNickname <i>{nickname}</i></tt> &mdash; The nickname (alias) of the client certificate in the key store to present to the directory server for SSL client authentication.
         <br><br>
       </li>
@@ -164,6 +170,12 @@
         <tt>-z <i>{num}</i></tt> / <tt>--simplePageSize <i>{num}</i></tt> &mdash; The maximum number of entries to retrieve at a time when attempting to find entries with references to other entries.  This requires that the authenticated user have permission to use the simple paged results control, but it can avoid problems with the server sending entries too quickly for the client to handle.  By default, the simple paged results control will not be used.
         <br>
         The specified value must not be less than 1 or greater than 2,147,483,647.
+        <br><br>
+      </li>
+      <li>
+        <tt>-l <i>{path}</i></tt> / <tt>--outputLDIF <i>{path}</i></tt> &mdash; The path to a file that should be written with the LDIF representation of any changes that may be needed to remove references to missing entries.  If this is omitted, then information about the missing entries will only be written to standard output in a human-readable form.
+        <br>
+        The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
         <br><br>
       </li>
       <li>

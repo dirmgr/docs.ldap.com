@@ -27,6 +27,60 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.7</h3>
+
+              <p>
+                The following changes were made between the 6.0.6 and 6.0.7 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed a bug in the SearchResultEntry.equals method that could prevent a
+                  SearchResultEntry object (which is a subclass of Entry) from being considered
+                  equal to an Entry that is not a SearchResultEntry.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue with the Entry.applyModifications method in which it could fail
+                  with a NOT_ALLOWED_ON_RDN result if the provided entry was missing one or more
+                  attribute values used in its RDN.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed a bug in the argument parser's support for mutually dependent arguments.
+                  In a mutually dependent argument set, if any one of the arguments is provided,
+                  then all of the other arguments in the set must also be provided, but there was
+                  a problem with support for sets containing three or more elements.  In such
+                  cases, the argument parser would only enforce that at least two arguments from
+                  the set were present.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added JSONObject methods for retrieving fields by name using case-insensitive
+                  matching.  By default, JSON field names are treated in a case-sensitive manner,
+                  but new methods allow them to be retrieved in a case-insensitive manner.
+                  Because a JSON object may have multiple fields with names differing only by
+                  case, there are a few options for handling the possibility of conflicts,
+                  including returning only the first match found and ignoring subsequent matches,
+                  throwing an exception if multiple matches are found, or returning a map
+                  containing all matching name-value pairs.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the set of LDAP-related specifications to include the latest version of
+                  draft-schmaus-kitten-sasl-ht.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.6</h3>
 
               <p>
@@ -75,7 +129,7 @@
 
                 <li>
                   Significantly improved the class-level Javadoc documentation for the SSLUtil
-                  class to provide a better overview of TLS protocol versions,  TLS cipher suites,
+                  class to provide a better overview of TLS protocol versions, TLS cipher suites,
                   key managers, trust managers, and certificate host name verification, and to
                   provide examples that better illustrate best practices for establishing secure
                   connections.  Also made Javadoc improvements in the LDAPConnection and
@@ -169,7 +223,7 @@
                   used and missing, and the most common filter sizes in terms of number of
                   components.  If the tool is invoked with the --doNotAnonymize option, then it
                   will also report on the target bind DNs with the most consecutive failed
-                  authetnication attempts, and on search filters that may potentially indicate
+                  authentication attempts, and on search filters that may potentially indicate
                   unsuccessful injection attempts based on suspicious content in an assertion
                   value (including parentheses, ampersands, pipes, quotes, or the words "select"
                   and "from").

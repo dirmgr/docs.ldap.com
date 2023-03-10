@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2007-2022 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2007-2023 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2007-2022 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2007-2023 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2007-2022 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2007-2023 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -1900,7 +1900,95 @@
 <span class="sourceLineNo">1892</span>  {<a name="line.1892"></a>
 <span class="sourceLineNo">1893</span>    return new DN(s1, schema).compareTo(new DN(s2, schema));<a name="line.1893"></a>
 <span class="sourceLineNo">1894</span>  }<a name="line.1894"></a>
-<span class="sourceLineNo">1895</span>}<a name="line.1895"></a>
+<span class="sourceLineNo">1895</span><a name="line.1895"></a>
+<span class="sourceLineNo">1896</span><a name="line.1896"></a>
+<span class="sourceLineNo">1897</span><a name="line.1897"></a>
+<span class="sourceLineNo">1898</span>  /**<a name="line.1898"></a>
+<span class="sourceLineNo">1899</span>   * Retrieves a string that represents the portion of the provided full DN that<a name="line.1899"></a>
+<span class="sourceLineNo">1900</span>   * is relative to the given base DN (that is, the full DN with the base DN<a name="line.1900"></a>
+<span class="sourceLineNo">1901</span>   * stripped off).  For example, if the provided full DN is<a name="line.1901"></a>
+<span class="sourceLineNo">1902</span>   * "uid=jdoe,ou=People,dc=example,dc=com" and the base DN is<a name="line.1902"></a>
+<span class="sourceLineNo">1903</span>   * "dc=example,dc=com", then the returned DN will be "uid=jdoe,ou=People".<a name="line.1903"></a>
+<span class="sourceLineNo">1904</span>   *<a name="line.1904"></a>
+<span class="sourceLineNo">1905</span>   * @param  fullDN  The full DN for which to obtain the portion relative to the<a name="line.1905"></a>
+<span class="sourceLineNo">1906</span>   *                 base DN.  It must not be {@code null}, and it must<a name="line.1906"></a>
+<span class="sourceLineNo">1907</span>   *                 represent a valid DN that is a descendant of or equal to<a name="line.1907"></a>
+<span class="sourceLineNo">1908</span>   *                 the base DN.<a name="line.1908"></a>
+<span class="sourceLineNo">1909</span>   * @param  baseDN  The base DN to strip off of the provided full DN.  It must<a name="line.1909"></a>
+<span class="sourceLineNo">1910</span>   *                 not be {@code null}, and it must be an ancestor of or equal<a name="line.1910"></a>
+<span class="sourceLineNo">1911</span>   *                 to the full DN.<a name="line.1911"></a>
+<span class="sourceLineNo">1912</span>   *<a name="line.1912"></a>
+<span class="sourceLineNo">1913</span>   * @return  A string representation of the DN that represents the portion of<a name="line.1913"></a>
+<span class="sourceLineNo">1914</span>   *          the full DN that is relative to the base DN, an empty string if<a name="line.1914"></a>
+<span class="sourceLineNo">1915</span>   *          the full DN is equal to the base DN, or the provided full DN if<a name="line.1915"></a>
+<span class="sourceLineNo">1916</span>   *          the base DN represents the null DN.<a name="line.1916"></a>
+<span class="sourceLineNo">1917</span>   *<a name="line.1917"></a>
+<span class="sourceLineNo">1918</span>   * @throws  LDAPException  If either of the provided strings is not a valid<a name="line.1918"></a>
+<span class="sourceLineNo">1919</span>   *                         DN, or if the provided full DN is not an ancestor<a name="line.1919"></a>
+<span class="sourceLineNo">1920</span>   *                         of or equal to the given base DN.<a name="line.1920"></a>
+<span class="sourceLineNo">1921</span>   */<a name="line.1921"></a>
+<span class="sourceLineNo">1922</span>  @NotNull()<a name="line.1922"></a>
+<span class="sourceLineNo">1923</span>  public static String getDNRelativeToBaseDN(@NotNull final String fullDN,<a name="line.1923"></a>
+<span class="sourceLineNo">1924</span>                                             @NotNull final String baseDN)<a name="line.1924"></a>
+<span class="sourceLineNo">1925</span>         throws LDAPException<a name="line.1925"></a>
+<span class="sourceLineNo">1926</span>  {<a name="line.1926"></a>
+<span class="sourceLineNo">1927</span>    final DN parsedFullDN = new DN(fullDN);<a name="line.1927"></a>
+<span class="sourceLineNo">1928</span>    final DN parsedBaseDN = new DN(baseDN);<a name="line.1928"></a>
+<span class="sourceLineNo">1929</span>    return getDNRelativeToBaseDN(parsedFullDN, parsedBaseDN).toString();<a name="line.1929"></a>
+<span class="sourceLineNo">1930</span>  }<a name="line.1930"></a>
+<span class="sourceLineNo">1931</span><a name="line.1931"></a>
+<span class="sourceLineNo">1932</span><a name="line.1932"></a>
+<span class="sourceLineNo">1933</span><a name="line.1933"></a>
+<span class="sourceLineNo">1934</span>  /**<a name="line.1934"></a>
+<span class="sourceLineNo">1935</span>   * Retrieves a portion of the provided full DN that is relative to the given<a name="line.1935"></a>
+<span class="sourceLineNo">1936</span>   * base DN (that is, the full DN with the base DN stripped off).  For example,<a name="line.1936"></a>
+<span class="sourceLineNo">1937</span>   * if the provided full DN is "uid=jdoe,ou=People,dc=example,dc=com" and the<a name="line.1937"></a>
+<span class="sourceLineNo">1938</span>   * base DN is "dc=example,dc=com", then the returned DN will be<a name="line.1938"></a>
+<span class="sourceLineNo">1939</span>   * "uid=jdoe,ou=People".<a name="line.1939"></a>
+<span class="sourceLineNo">1940</span>   *<a name="line.1940"></a>
+<span class="sourceLineNo">1941</span>   * @param  fullDN  The full DN for which to obtain the portion relative to the<a name="line.1941"></a>
+<span class="sourceLineNo">1942</span>   *                 base DN.  It must not be {@code null}, and it must be a<a name="line.1942"></a>
+<span class="sourceLineNo">1943</span>   *                 descendant of or equal to the base DN.<a name="line.1943"></a>
+<span class="sourceLineNo">1944</span>   * @param  baseDN  The base DN to strip off of the provided full DN.  It must<a name="line.1944"></a>
+<span class="sourceLineNo">1945</span>   *                 not be {@code null}, and it must be an ancestor of or equal<a name="line.1945"></a>
+<span class="sourceLineNo">1946</span>   *                 to the full DN.<a name="line.1946"></a>
+<span class="sourceLineNo">1947</span>   *<a name="line.1947"></a>
+<span class="sourceLineNo">1948</span>   * @return  A DN that represents the portion of the full DN that is relative<a name="line.1948"></a>
+<span class="sourceLineNo">1949</span>   *          to the base DN, {@link #NULL_DN} if the full DN is equal to the<a name="line.1949"></a>
+<span class="sourceLineNo">1950</span>   *          base DN, or the provided full DN if the base DN is the null DN.<a name="line.1950"></a>
+<span class="sourceLineNo">1951</span>   *<a name="line.1951"></a>
+<span class="sourceLineNo">1952</span>   * @throws  LDAPException  If the provided full DN is not an ancestor of or<a name="line.1952"></a>
+<span class="sourceLineNo">1953</span>   *                         equal to the given base DN.<a name="line.1953"></a>
+<span class="sourceLineNo">1954</span>   */<a name="line.1954"></a>
+<span class="sourceLineNo">1955</span>  @NotNull()<a name="line.1955"></a>
+<span class="sourceLineNo">1956</span>  public static DN getDNRelativeToBaseDN(@NotNull final DN fullDN,<a name="line.1956"></a>
+<span class="sourceLineNo">1957</span>                                         @NotNull final DN baseDN)<a name="line.1957"></a>
+<span class="sourceLineNo">1958</span>         throws LDAPException<a name="line.1958"></a>
+<span class="sourceLineNo">1959</span>  {<a name="line.1959"></a>
+<span class="sourceLineNo">1960</span>    if (baseDN.isNullDN())<a name="line.1960"></a>
+<span class="sourceLineNo">1961</span>    {<a name="line.1961"></a>
+<span class="sourceLineNo">1962</span>      return fullDN;<a name="line.1962"></a>
+<span class="sourceLineNo">1963</span>    }<a name="line.1963"></a>
+<span class="sourceLineNo">1964</span><a name="line.1964"></a>
+<span class="sourceLineNo">1965</span>    if (! fullDN.isDescendantOf(baseDN, true))<a name="line.1965"></a>
+<span class="sourceLineNo">1966</span>    {<a name="line.1966"></a>
+<span class="sourceLineNo">1967</span>      throw new LDAPException(ResultCode.PARAM_ERROR,<a name="line.1967"></a>
+<span class="sourceLineNo">1968</span>           ERR_DN_FULL_DN_NOT_DESCENDANT_OF_BASE.get(String.valueOf(fullDN),<a name="line.1968"></a>
+<span class="sourceLineNo">1969</span>                String.valueOf(baseDN)));<a name="line.1969"></a>
+<span class="sourceLineNo">1970</span>    }<a name="line.1970"></a>
+<span class="sourceLineNo">1971</span><a name="line.1971"></a>
+<span class="sourceLineNo">1972</span>    final RDN[] fullRDNs = fullDN.getRDNs();<a name="line.1972"></a>
+<span class="sourceLineNo">1973</span>    final RDN[] baseRDNs = baseDN.getRDNs();<a name="line.1973"></a>
+<span class="sourceLineNo">1974</span>    if (fullRDNs.length == baseRDNs.length)<a name="line.1974"></a>
+<span class="sourceLineNo">1975</span>    {<a name="line.1975"></a>
+<span class="sourceLineNo">1976</span>      return NULL_DN;<a name="line.1976"></a>
+<span class="sourceLineNo">1977</span>    }<a name="line.1977"></a>
+<span class="sourceLineNo">1978</span><a name="line.1978"></a>
+<span class="sourceLineNo">1979</span>    final RDN[] relativeRDNs = new RDN[fullRDNs.length - baseRDNs.length];<a name="line.1979"></a>
+<span class="sourceLineNo">1980</span>    System.arraycopy(fullRDNs, 0, relativeRDNs, 0, relativeRDNs.length);<a name="line.1980"></a>
+<span class="sourceLineNo">1981</span>    return new DN(relativeRDNs);<a name="line.1981"></a>
+<span class="sourceLineNo">1982</span>  }<a name="line.1982"></a>
+<span class="sourceLineNo">1983</span>}<a name="line.1983"></a>
 
 
 

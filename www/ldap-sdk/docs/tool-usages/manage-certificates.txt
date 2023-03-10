@@ -492,6 +492,24 @@ Available options include:
     written.  An output file is optional when using the PEM format, but
     required when using the DER format.  If no output file is provided, then
     the exported private key will be written to standard output.
+--encryption-password {password}
+    The password to use to encrypt the exported private key.  At most one of
+    the --encryption-password, --encryption-password-file, and
+    --prompt-for-encryption-password arguments may be provided.  If none of
+    those arguments is provided, then the private key will not be encrypted.
+--encryption-password-file {path}
+    The path to a file containing the password to use to encrypt the exported
+    private key.  If provided, the file must exist, must contain only one line,
+    and that line must consist only of the clear-text encryption password.  At
+    most one of the --encryption-password, --encryption-password-file, and
+    --prompt-for-encryption-password arguments may be provided.  If none of
+    those arguments is provided, then the private key will not be encrypted.
+--prompt-for-encryption-password
+    Interactively prompt for the password to use to encrypt the exported
+    private key.  At most one of the --encryption-password,
+    --encryption-password-file, and --prompt-for-encryption-password arguments
+    may be provided.  If none of those arguments is provided, then the private
+    key will not be encrypted.
 
 * Indicates the argument is required
 
@@ -645,6 +663,26 @@ Available options include:
     a password that does not match the key store password, then one of the
     --private-key-password, --private-key-password-file, or
     --prompt-for-private-key-password arguments should be provided.
+--encryption-password {password}
+    The password used to encrypt the private key being imported.  At most one
+    of the --encryption-password, --encryption-password-file, and
+    --prompt-for-encryption-password arguments may be provided.  If none of
+    those arguments is provided, then it will be assumed that the private key
+    is not encrypted.
+--encryption-password-file {path}
+    The path to a file containing the password used to encrypt the private key
+    being imported.  If provided, the file must exist, must contain only one
+    line, and that line must consist only of the clear-text encryption
+    password.  At most one of the --encryption-password,
+    --encryption-password-file, and --prompt-for-encryption-password arguments
+    may be provided.  If none of those arguments is provided, then it will be
+    assumed that the private key is not encrypted.
+--prompt-for-encryption-password
+    Interactively prompt for the password used to encrypt the private key being
+    imported.  At most one of the --encryption-password,
+    --encryption-password-file, and --prompt-for-encryption-password arguments
+    may be provided.  If none of those arguments is provided, then it will be
+    assumed that the private key is not encrypted.
 --no-prompt
     Import the certificates without prompting the end user.  By default, the
     certificates will be displayed and the user will be interactively prompted

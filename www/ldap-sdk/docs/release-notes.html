@@ -27,6 +27,97 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.8</h3>
+
+              <p>
+                The following changes were made between the 6.0.7 and 6.0.8 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added a DN.getDNRelativeToBaseDN method that may be used to retrieve the portion
+                  of a DN that is relative to a given base DN (that is, the portion of a DN with
+                  the given base DN stripped off).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAPConnectionPool and LDAPThreadLocalConnectionPool classes to add
+                  getServerSet methods that can be used to retrieve the server set used to
+                  establish new connections for the pool.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added convenience methods with shorter names for constructing search filters
+                  from their individual components.  For example, instead of calling
+                  Filter.createANDFilter(components), you can now use Filter.and(components), and
+                  instead of Filter.createEqualityFilter(attributeName, assertionValue), you can
+                  now use Filter.equals(attributeName, assertionValue).  The existing methods with
+                  longer names will remain available for backward compatibility.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added support for encrypted PKCS #8 private keys.  Private keys can now be
+                  formatted in encrypted PEM when provided with an encryption password and a set
+                  of encryption properties, and the PKCS #8 PEM file reader can read encrypted
+                  private keys when provided with the encryption password.  The
+                  manage-certificates export-private-key command has been updated to support
+                  writing an encrypted representation of the private key in either PEM or DER
+                  form, and manage-certificates import-certificate has been updated to support
+                  obtaining the private key when it is encrypted form.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the passphrase-encrypted output stream to use a higher key factory
+                  iteration count by default.  When using the strongest available 256-bit AES
+                  encryption, it now follows the latest OWASP recommendation of 600,000 PBKDF2
+                  iterations.  The key factory iteration count can still be explicitly specified
+                  when creating a new output stream if an alternative iteration count is desired,
+                  and the default iteration count can now be overridden with a system property.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the passphrase-encrypted output stream to make it possible to create a
+                  new output stream with the encryption header from a previously created
+                  encryption header.  This will make it possible to reuse the previously derived
+                  key (with a different initialization vector), which will be substantially faster
+                  when using the same passphrase to encrypt multiple output streams than needing
+                  to re-derive the key for each stream.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new ObjectTrio utility class that can be useful in cases where only a
+                  single object is allowed but three typed objects are needed (e.g., when you want
+                  to return three typed items from a method).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the set of LDAP-related specifications to include RFC 9371, which
+                  describes the procedures for registering private enterprise numbers (PENs),
+                  which may be used when defining your own object identifiers for custom schema
+                  elements or other purposes.  The OID registry document has also been updated to
+                  provide a link to this RFC and to the IANA PEN registry.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated documentation to include the latest versions of
+                  draft-howard-gssapi-aead, draft-ietf-kitten-scram-2fa, draft-melnikov-scram-bis,
+                  and draft-reitzenstein-kitten-opaque in the set of LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.7</h3>
 
               <p>
@@ -9330,6 +9421,6 @@
               </p>
 
 
-    <div class="copyright-footer">Copyright &copy; 2010-2022 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2023 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

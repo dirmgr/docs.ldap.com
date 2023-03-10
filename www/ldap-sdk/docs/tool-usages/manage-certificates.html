@@ -565,6 +565,22 @@
         The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
         <br><br>
       </li>
+      <li>
+        <tt>--encryption-password <i>{password}</i></tt> &mdash; The password to use to encrypt the exported private key.  At most one of the --encryption-password, --encryption-password-file, and --prompt-for-encryption-password arguments may be provided.  If none of those arguments is provided, then the private key will not be encrypted.
+        <br><br>
+      </li>
+      <li>
+        <tt>--encryption-password-file <i>{path}</i></tt> &mdash; The path to a file containing the password to use to encrypt the exported private key.  If provided, the file must exist, must contain only one line, and that line must consist only of the clear-text encryption password.  At most one of the --encryption-password, --encryption-password-file, and --prompt-for-encryption-password arguments may be provided.  If none of those arguments is provided, then the private key will not be encrypted.
+        <br>
+        The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--prompt-for-encryption-password</tt> &mdash; Interactively prompt for the password to use to encrypt the exported private key.  At most one of the --encryption-password, --encryption-password-file, and --prompt-for-encryption-password arguments may be provided.  If none of those arguments is provided, then the private key will not be encrypted.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
     </ul>
     <h3>Required Argument Sets</h3>
     <ul>
@@ -579,6 +595,9 @@
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--private-key-password</tt>, <tt>--private-key-password-file</tt>, <tt>--prompt-for-private-key-password</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--encryption-password</tt>, <tt>--encryption-password-file</tt>, <tt>--prompt-for-encryption-password</tt>
       </li>
     </ul>
     <h3>Examples</h3>
@@ -665,6 +684,22 @@
         <br><br>
       </li>
       <li>
+        <tt>--encryption-password <i>{password}</i></tt> &mdash; The password used to encrypt the private key being imported.  At most one of the --encryption-password, --encryption-password-file, and --prompt-for-encryption-password arguments may be provided.  If none of those arguments is provided, then it will be assumed that the private key is not encrypted.
+        <br><br>
+      </li>
+      <li>
+        <tt>--encryption-password-file <i>{path}</i></tt> &mdash; The path to a file containing the password used to encrypt the private key being imported.  If provided, the file must exist, must contain only one line, and that line must consist only of the clear-text encryption password.  At most one of the --encryption-password, --encryption-password-file, and --prompt-for-encryption-password arguments may be provided.  If none of those arguments is provided, then it will be assumed that the private key is not encrypted.
+        <br>
+        The specified path must refer to a file that exists.
+        <br><br>
+      </li>
+      <li>
+        <tt>--prompt-for-encryption-password</tt> &mdash; Interactively prompt for the password used to encrypt the private key being imported.  At most one of the --encryption-password, --encryption-password-file, and --prompt-for-encryption-password arguments may be provided.  If none of those arguments is provided, then it will be assumed that the private key is not encrypted.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>--no-prompt</tt> &mdash; Import the certificates without prompting the end user.  By default, the certificates will be displayed and the user will be interactively prompted about whether to import them.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -690,6 +725,9 @@
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--private-key-password</tt>, <tt>--private-key-password-file</tt>, <tt>--prompt-for-private-key-password</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--encryption-password</tt>, <tt>--encryption-password-file</tt>, <tt>--prompt-for-encryption-password</tt>
       </li>
     </ul>
     <h3>Examples</h3>

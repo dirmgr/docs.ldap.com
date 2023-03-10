@@ -404,10 +404,10 @@ String filter = "(|(cn=" + searchText + ")(sn=" + searchText +
               </p>
 
               <pre>
-Filter filter = Filter.createANDFilter(
-     Filter.createEqualityFilter("cn", searchText),
-     Filter.createEqualityFilter("sn", searchText),
-     Filter.createEqualityFilter("givenName", searchText));
+Filter filter = Filter.and(
+     Filter.equals("cn", searchText),
+     Filter.equals("sn", searchText),
+     Filter.equals("givenName", searchText));
 </pre>
 
               <p>
@@ -444,6 +444,6 @@ Filter filter = Filter.createANDFilter(
                 products.
               </p>
 
-    <div class="copyright-footer">Copyright &copy; 2010-2022 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2023 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

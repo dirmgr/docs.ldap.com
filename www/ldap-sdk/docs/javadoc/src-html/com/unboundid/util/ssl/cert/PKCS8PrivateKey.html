@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2017-2022 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2017-2023 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2017-2022 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2017-2023 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2017-2022 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2017-2023 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -740,21 +740,21 @@
 <span class="sourceLineNo">732</span><a name="line.732"></a>
 <span class="sourceLineNo">733</span>  /**<a name="line.733"></a>
 <span class="sourceLineNo">734</span>   * Retrieves a list of the lines that comprise a PEM representation of this<a name="line.734"></a>
-<span class="sourceLineNo">735</span>   * certificate signing request.<a name="line.735"></a>
+<span class="sourceLineNo">735</span>   * PKCS #8 private key.<a name="line.735"></a>
 <span class="sourceLineNo">736</span>   *<a name="line.736"></a>
 <span class="sourceLineNo">737</span>   * @return  A list of the lines that comprise a PEM representation of this<a name="line.737"></a>
-<span class="sourceLineNo">738</span>   *          certificate signing request.<a name="line.738"></a>
+<span class="sourceLineNo">738</span>   *          PKCS #8 private key.<a name="line.738"></a>
 <span class="sourceLineNo">739</span>   */<a name="line.739"></a>
 <span class="sourceLineNo">740</span>  @NotNull()<a name="line.740"></a>
 <span class="sourceLineNo">741</span>  public List&lt;String&gt; toPEM()<a name="line.741"></a>
 <span class="sourceLineNo">742</span>  {<a name="line.742"></a>
 <span class="sourceLineNo">743</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(10);<a name="line.743"></a>
-<span class="sourceLineNo">744</span>    lines.add("-----BEGIN PRIVATE KEY-----");<a name="line.744"></a>
+<span class="sourceLineNo">744</span>    lines.add(PKCS8PEMFileReader.BEGIN_PRIVATE_KEY_HEADER);<a name="line.744"></a>
 <span class="sourceLineNo">745</span><a name="line.745"></a>
 <span class="sourceLineNo">746</span>    final String keyBase64 = Base64.encode(pkcs8PrivateKeyBytes);<a name="line.746"></a>
 <span class="sourceLineNo">747</span>    lines.addAll(StaticUtils.wrapLine(keyBase64, 64));<a name="line.747"></a>
 <span class="sourceLineNo">748</span><a name="line.748"></a>
-<span class="sourceLineNo">749</span>    lines.add("-----END PRIVATE KEY-----");<a name="line.749"></a>
+<span class="sourceLineNo">749</span>    lines.add(PKCS8PEMFileReader.END_PRIVATE_KEY_FOOTER);<a name="line.749"></a>
 <span class="sourceLineNo">750</span><a name="line.750"></a>
 <span class="sourceLineNo">751</span>    return Collections.unmodifiableList(lines);<a name="line.751"></a>
 <span class="sourceLineNo">752</span>  }<a name="line.752"></a>
@@ -763,16 +763,16 @@
 <span class="sourceLineNo">755</span><a name="line.755"></a>
 <span class="sourceLineNo">756</span>  /**<a name="line.756"></a>
 <span class="sourceLineNo">757</span>   * Retrieves a multi-line string containing a PEM representation of this<a name="line.757"></a>
-<span class="sourceLineNo">758</span>   * certificate signing request.<a name="line.758"></a>
+<span class="sourceLineNo">758</span>   * PKCS #8 private key.<a name="line.758"></a>
 <span class="sourceLineNo">759</span>   *<a name="line.759"></a>
 <span class="sourceLineNo">760</span>   * @return  A multi-line string containing a PEM representation of this<a name="line.760"></a>
-<span class="sourceLineNo">761</span>   *          certificate signing request.<a name="line.761"></a>
+<span class="sourceLineNo">761</span>   *          PKCS #8 private key.<a name="line.761"></a>
 <span class="sourceLineNo">762</span>   */<a name="line.762"></a>
 <span class="sourceLineNo">763</span>  @NotNull()<a name="line.763"></a>
 <span class="sourceLineNo">764</span>  public String toPEMString()<a name="line.764"></a>
 <span class="sourceLineNo">765</span>  {<a name="line.765"></a>
 <span class="sourceLineNo">766</span>    final StringBuilder buffer = new StringBuilder();<a name="line.766"></a>
-<span class="sourceLineNo">767</span>    buffer.append("-----BEGIN PRIVATE KEY-----");<a name="line.767"></a>
+<span class="sourceLineNo">767</span>    buffer.append(PKCS8PEMFileReader.BEGIN_PRIVATE_KEY_HEADER);<a name="line.767"></a>
 <span class="sourceLineNo">768</span>    buffer.append(StaticUtils.EOL);<a name="line.768"></a>
 <span class="sourceLineNo">769</span><a name="line.769"></a>
 <span class="sourceLineNo">770</span>    final String keyBase64 = Base64.encode(pkcs8PrivateKeyBytes);<a name="line.770"></a>
@@ -781,12 +781,93 @@
 <span class="sourceLineNo">773</span>      buffer.append(line);<a name="line.773"></a>
 <span class="sourceLineNo">774</span>      buffer.append(StaticUtils.EOL);<a name="line.774"></a>
 <span class="sourceLineNo">775</span>    }<a name="line.775"></a>
-<span class="sourceLineNo">776</span>    buffer.append("-----END PRIVATE KEY-----");<a name="line.776"></a>
+<span class="sourceLineNo">776</span>    buffer.append(PKCS8PEMFileReader.END_PRIVATE_KEY_FOOTER);<a name="line.776"></a>
 <span class="sourceLineNo">777</span>    buffer.append(StaticUtils.EOL);<a name="line.777"></a>
 <span class="sourceLineNo">778</span><a name="line.778"></a>
 <span class="sourceLineNo">779</span>    return buffer.toString();<a name="line.779"></a>
 <span class="sourceLineNo">780</span>  }<a name="line.780"></a>
-<span class="sourceLineNo">781</span>}<a name="line.781"></a>
+<span class="sourceLineNo">781</span><a name="line.781"></a>
+<span class="sourceLineNo">782</span><a name="line.782"></a>
+<span class="sourceLineNo">783</span><a name="line.783"></a>
+<span class="sourceLineNo">784</span>  /**<a name="line.784"></a>
+<span class="sourceLineNo">785</span>   * Retrieves a list of the lines that comprise a PEM representation of this<a name="line.785"></a>
+<span class="sourceLineNo">786</span>   * private key that is encrypted with the provided settings.<a name="line.786"></a>
+<span class="sourceLineNo">787</span>   *<a name="line.787"></a>
+<span class="sourceLineNo">788</span>   * @param  encryptionPassword    The password to use to generate the<a name="line.788"></a>
+<span class="sourceLineNo">789</span>   *                               encryption key.  It must not be {@code null}.<a name="line.789"></a>
+<span class="sourceLineNo">790</span>   * @param  encryptionProperties  The properties to use when encrypting the<a name="line.790"></a>
+<span class="sourceLineNo">791</span>   *                               key.  It must not be {@code null}.<a name="line.791"></a>
+<span class="sourceLineNo">792</span>   *<a name="line.792"></a>
+<span class="sourceLineNo">793</span>   * @return  A list of the lines that comprise a PEM representation of this<a name="line.793"></a>
+<span class="sourceLineNo">794</span>   *          private key that is encrypted with the provided settings.<a name="line.794"></a>
+<span class="sourceLineNo">795</span>   *<a name="line.795"></a>
+<span class="sourceLineNo">796</span>   * @throws  CertException  If a problem occurs while encrypting the private<a name="line.796"></a>
+<span class="sourceLineNo">797</span>   *                         key.<a name="line.797"></a>
+<span class="sourceLineNo">798</span>   */<a name="line.798"></a>
+<span class="sourceLineNo">799</span>  @NotNull()<a name="line.799"></a>
+<span class="sourceLineNo">800</span>  public List&lt;String&gt; toEncryptedPEM(<a name="line.800"></a>
+<span class="sourceLineNo">801</span>              @NotNull final char[] encryptionPassword,<a name="line.801"></a>
+<span class="sourceLineNo">802</span>              @NotNull final PKCS8EncryptionProperties encryptionProperties)<a name="line.802"></a>
+<span class="sourceLineNo">803</span>         throws CertException<a name="line.803"></a>
+<span class="sourceLineNo">804</span>  {<a name="line.804"></a>
+<span class="sourceLineNo">805</span>    final byte[] encryptedPrivateKeyBytes =<a name="line.805"></a>
+<span class="sourceLineNo">806</span>         PKCS8EncryptionHandler.encryptPrivateKey(this, encryptionPassword,<a name="line.806"></a>
+<span class="sourceLineNo">807</span>              encryptionProperties);<a name="line.807"></a>
+<span class="sourceLineNo">808</span><a name="line.808"></a>
+<span class="sourceLineNo">809</span>    final ArrayList&lt;String&gt; lines = new ArrayList&lt;&gt;(10);<a name="line.809"></a>
+<span class="sourceLineNo">810</span>    lines.add(PKCS8PEMFileReader.BEGIN_ENCRYPTED_PRIVATE_KEY_HEADER);<a name="line.810"></a>
+<span class="sourceLineNo">811</span><a name="line.811"></a>
+<span class="sourceLineNo">812</span>    final String keyBase64 = Base64.encode(encryptedPrivateKeyBytes);<a name="line.812"></a>
+<span class="sourceLineNo">813</span>    lines.addAll(StaticUtils.wrapLine(keyBase64, 64));<a name="line.813"></a>
+<span class="sourceLineNo">814</span><a name="line.814"></a>
+<span class="sourceLineNo">815</span>    lines.add(PKCS8PEMFileReader.END_ENCRYPTED_PRIVATE_KEY_FOOTER);<a name="line.815"></a>
+<span class="sourceLineNo">816</span><a name="line.816"></a>
+<span class="sourceLineNo">817</span>    return Collections.unmodifiableList(lines);<a name="line.817"></a>
+<span class="sourceLineNo">818</span>  }<a name="line.818"></a>
+<span class="sourceLineNo">819</span><a name="line.819"></a>
+<span class="sourceLineNo">820</span><a name="line.820"></a>
+<span class="sourceLineNo">821</span><a name="line.821"></a>
+<span class="sourceLineNo">822</span>  /**<a name="line.822"></a>
+<span class="sourceLineNo">823</span>   * Retrieves a multi-line string containing a PEM representation of this<a name="line.823"></a>
+<span class="sourceLineNo">824</span>   * private key that is encrypted with the provided settings.<a name="line.824"></a>
+<span class="sourceLineNo">825</span>   *<a name="line.825"></a>
+<span class="sourceLineNo">826</span>   * @param  encryptionPassword    The password to use to generate the<a name="line.826"></a>
+<span class="sourceLineNo">827</span>   *                               encryption key.  It must not be {@code null}.<a name="line.827"></a>
+<span class="sourceLineNo">828</span>   * @param  encryptionProperties  The properties to use when encrypting the<a name="line.828"></a>
+<span class="sourceLineNo">829</span>   *                               key.  It must not be {@code null}.<a name="line.829"></a>
+<span class="sourceLineNo">830</span>   *<a name="line.830"></a>
+<span class="sourceLineNo">831</span>   * @return  A multi-line string containing a PEM representation of this<a name="line.831"></a>
+<span class="sourceLineNo">832</span>   *          private key that is encrypted with the provided settings.<a name="line.832"></a>
+<span class="sourceLineNo">833</span>   *<a name="line.833"></a>
+<span class="sourceLineNo">834</span>   * @throws  CertException  If a problem occurs while encrypting the private<a name="line.834"></a>
+<span class="sourceLineNo">835</span>   *                         key.<a name="line.835"></a>
+<span class="sourceLineNo">836</span>   */<a name="line.836"></a>
+<span class="sourceLineNo">837</span>  @NotNull()<a name="line.837"></a>
+<span class="sourceLineNo">838</span>  public String toEncryptedPEMString(<a name="line.838"></a>
+<span class="sourceLineNo">839</span>              @NotNull final char[] encryptionPassword,<a name="line.839"></a>
+<span class="sourceLineNo">840</span>              @NotNull final PKCS8EncryptionProperties encryptionProperties)<a name="line.840"></a>
+<span class="sourceLineNo">841</span>         throws CertException<a name="line.841"></a>
+<span class="sourceLineNo">842</span>  {<a name="line.842"></a>
+<span class="sourceLineNo">843</span>    final byte[] encryptedPrivateKeyBytes =<a name="line.843"></a>
+<span class="sourceLineNo">844</span>         PKCS8EncryptionHandler.encryptPrivateKey(this, encryptionPassword,<a name="line.844"></a>
+<span class="sourceLineNo">845</span>              encryptionProperties);<a name="line.845"></a>
+<span class="sourceLineNo">846</span><a name="line.846"></a>
+<span class="sourceLineNo">847</span>    final StringBuilder buffer = new StringBuilder();<a name="line.847"></a>
+<span class="sourceLineNo">848</span>    buffer.append(PKCS8PEMFileReader.BEGIN_ENCRYPTED_PRIVATE_KEY_HEADER);<a name="line.848"></a>
+<span class="sourceLineNo">849</span>    buffer.append(StaticUtils.EOL);<a name="line.849"></a>
+<span class="sourceLineNo">850</span><a name="line.850"></a>
+<span class="sourceLineNo">851</span>    final String keyBase64 = Base64.encode(encryptedPrivateKeyBytes);<a name="line.851"></a>
+<span class="sourceLineNo">852</span>    for (final String line : StaticUtils.wrapLine(keyBase64, 64))<a name="line.852"></a>
+<span class="sourceLineNo">853</span>    {<a name="line.853"></a>
+<span class="sourceLineNo">854</span>      buffer.append(line);<a name="line.854"></a>
+<span class="sourceLineNo">855</span>      buffer.append(StaticUtils.EOL);<a name="line.855"></a>
+<span class="sourceLineNo">856</span>    }<a name="line.856"></a>
+<span class="sourceLineNo">857</span>    buffer.append(PKCS8PEMFileReader.END_ENCRYPTED_PRIVATE_KEY_FOOTER);<a name="line.857"></a>
+<span class="sourceLineNo">858</span>    buffer.append(StaticUtils.EOL);<a name="line.858"></a>
+<span class="sourceLineNo">859</span><a name="line.859"></a>
+<span class="sourceLineNo">860</span>    return buffer.toString();<a name="line.860"></a>
+<span class="sourceLineNo">861</span>  }<a name="line.861"></a>
+<span class="sourceLineNo">862</span>}<a name="line.862"></a>
 
 
 

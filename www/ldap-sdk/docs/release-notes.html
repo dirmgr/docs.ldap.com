@@ -27,6 +27,135 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.9</h3>
+
+              <p>
+                The following changes were made between the 6.0.8 and 6.0.9 releases:
+              </p>
+
+              <ul>
+                <li>
+                  The LDAP SDK source code will now only be updated on GitHub and will no longer
+                  be maintained on SourceForge.  The SourceForge repository will still be
+                  available for historical releases, but the trunk has been replaced with a README
+                  file indicating that updated code is now only on GitHub.  It required effort to
+                  keep both repositories in sync, and GitHub is removing its support for acting as
+                  a Subversion repository, which that synchronization process relied upon.  The
+                  SourceForge project will still be updated with downloads for new releases, and
+                  the discussion forums and mailing lists will remain available.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added an option for customizing the set of result codes that the LDAP SDK may
+                  use to determine whether a connection may no longer be usable.  Previously, it
+                  used a hard-coded set of result codes for this purpose, and that set is still
+                  the default, but it is now possible to override that with a provided set of
+                  result codes.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new HTTPProxySocketFactory class that can be used to allow establishing
+                  LDAP and LDAPS connections through an HTTP proxy server, and added a new
+                  SOCKSProxySocketFactory class that can be used to allow establishing connections
+                  through a SOCKSv4 or SOCKSv5 proxy server.  Communication with the proxy server
+                  itself must be unencrypted (although communication with the target LDAP server
+                  may optionally be end-to-end encrypted with TLS), and the proxy server must not
+                  require authentication.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldif-diff tool to add a --byteForByte argument that can be used to
+                  indicate that it should not ignore differences between source and target entries
+                  that would otherwise be considered insignificant based on the associated
+                  matching rules (for example, values that differ only in capitalization for
+                  attributes that use case-ignore matching).  Byte-for-byte matching was
+                  previously always used when comparing source and target entries, but it should
+                  be a configurable option, and it is better to use schema-aware matching by
+                  default.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed an issue in which a non-default channel binding type was not preserved when
+                  duplicating a GSSAPI bind request.  Also, added a method to retrieve the channel
+                  binding type in use for a GSSAPI bind request.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a ResultCode.getStandardName method that can be used to retrieve the name
+                  assigned to the associated result code in the relevant specification.  This may
+                  not be available for result codes that are not defined in known specifications.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for passphrase-encrypted input and output streams to provide a
+                  mechanism for caching the derived secret keys so that it's not necessary to
+                  re-derive the key each time it's used.  This can dramatically improve
+                  performance when the same key is used multiple times.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the StaticUtils.isLikelyDisplayableCharacter method to add additional
+                  character types that are believed to be displayable.  While most types of
+                  symbols were already considered displayable, modifier symbols had previously
+                  been overlooked but are now included.  In addition, non-spacing marks,
+                  enclosing marks, and combining spacing marks are also considered displayable
+                  because even though they aren't displayable on their own, they are likely to
+                  be combined with other characters that makes them displayable.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new StaticUtils.getCodePoints method that can be used to retrieve an
+                  array of the code points that comprise a given string.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a StaticUtils.unicodeStringsAreEquivalent method that can be used to
+                  determine whether two strings represent an equivalent sequence of Unicode
+                  characters.  Also, added a StaticUtils.utf8StringsAreEquivalent method that can
+                  be used to determine whether two byte arrays represent UTF-8 strings with an
+                  equivalent set of Unicode characters.  Unicode may offer multiple ways of
+                  encoding the same character or sequence of characters, and these methods take
+                  those alternative encodings into account.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a StaticUtils.isValidUTF8WithNonASCIICharacters method that can be used to
+                  determine if a provided byte array represents a valid UTF-8 string that contains
+                  at least one non-ASCII character.  This new method can be more efficient than
+                  calling both the existing isValidUTF8 and isASCIIString methods when that
+                  combination is needed.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the client-side support for the administrative task used to invoke the
+                  collect support data tool in a Ping Identity Directory Server to make it possible
+                  to specify the start and end times for the set of log messages to include in the
+                  support data archive.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest versions of draft-melnikov-sasl2
+                  and draft-melnikov-scram-sha-512 in the set of LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.8</h3>
 
               <p>
@@ -107,7 +236,7 @@
                 </li>
 
                 <li>
-                  Updated documentation to include the latest versions of
+                  Updated the documentation to include the latest versions of
                   draft-howard-gssapi-aead, draft-ietf-kitten-scram-2fa, draft-melnikov-scram-bis,
                   and draft-reitzenstein-kitten-opaque in the set of LDAP-related specifications.
                   <br><br>

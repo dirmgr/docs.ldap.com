@@ -862,328 +862,347 @@
 <span class="sourceLineNo">854</span>                      final int keyFactoryKeyLengthBits)<a name="line.854"></a>
 <span class="sourceLineNo">855</span>          throws GeneralSecurityException<a name="line.855"></a>
 <span class="sourceLineNo">856</span>  {<a name="line.856"></a>
-<span class="sourceLineNo">857</span>    byte[] prev = null;<a name="line.857"></a>
-<span class="sourceLineNo">858</span>    byte[] prev2 = null;<a name="line.858"></a>
-<span class="sourceLineNo">859</span><a name="line.859"></a>
-<span class="sourceLineNo">860</span>    final int iterations = 10;<a name="line.860"></a>
-<span class="sourceLineNo">861</span>    for (int i = 0; i &lt; iterations; i++)<a name="line.861"></a>
-<span class="sourceLineNo">862</span>    {<a name="line.862"></a>
-<span class="sourceLineNo">863</span>      final SecretKeyFactory keyFactory =<a name="line.863"></a>
-<span class="sourceLineNo">864</span>           CryptoHelper.getSecretKeyFactory(keyFactoryAlgorithm);<a name="line.864"></a>
-<span class="sourceLineNo">865</span>      final String cipherAlgorithm = cipherTransformation.substring(0,<a name="line.865"></a>
-<span class="sourceLineNo">866</span>           cipherTransformation.indexOf('/'));<a name="line.866"></a>
-<span class="sourceLineNo">867</span>      final PBEKeySpec pbeKeySpec = new PBEKeySpec(passphrase, keyFactorySalt,<a name="line.867"></a>
-<span class="sourceLineNo">868</span>           keyFactoryIterationCount, keyFactoryKeyLengthBits);<a name="line.868"></a>
-<span class="sourceLineNo">869</span>      final SecretKey secretKey = new SecretKeySpec(<a name="line.869"></a>
-<span class="sourceLineNo">870</span>           keyFactory.generateSecret(pbeKeySpec).getEncoded(),<a name="line.870"></a>
-<span class="sourceLineNo">871</span>           cipherAlgorithm);<a name="line.871"></a>
-<span class="sourceLineNo">872</span>      final byte[] encoded = secretKey.getEncoded();<a name="line.872"></a>
-<span class="sourceLineNo">873</span><a name="line.873"></a>
-<span class="sourceLineNo">874</span>      // If this encoded key is the same as the previous one, and the one before<a name="line.874"></a>
-<span class="sourceLineNo">875</span>      // that, then it was likely computed correctly, so return it.<a name="line.875"></a>
-<span class="sourceLineNo">876</span>      if (Arrays.equals(encoded, prev) &amp;&amp; Arrays.equals(encoded, prev2))<a name="line.876"></a>
-<span class="sourceLineNo">877</span>      {<a name="line.877"></a>
-<span class="sourceLineNo">878</span>        if (i &gt; 2)<a name="line.878"></a>
-<span class="sourceLineNo">879</span>        {<a name="line.879"></a>
-<span class="sourceLineNo">880</span>          Debug.debug(Level.WARNING, DebugType.OTHER,<a name="line.880"></a>
-<span class="sourceLineNo">881</span>               "The secret key was generated inconsistently initially, but " +<a name="line.881"></a>
-<span class="sourceLineNo">882</span>               "after " + i + " iterations, we were able to generate a " +<a name="line.882"></a>
-<span class="sourceLineNo">883</span>               "consistent value.");<a name="line.883"></a>
-<span class="sourceLineNo">884</span>        }<a name="line.884"></a>
-<span class="sourceLineNo">885</span>        return secretKey;<a name="line.885"></a>
-<span class="sourceLineNo">886</span>      }<a name="line.886"></a>
+<span class="sourceLineNo">857</span>    // First, see if the key is already in the cache.  If so, then we'll use it.<a name="line.857"></a>
+<span class="sourceLineNo">858</span>    final PassphraseEncryptedStreamHeaderCachedKeyIdentifier identifier =<a name="line.858"></a>
+<span class="sourceLineNo">859</span>         new PassphraseEncryptedStreamHeaderCachedKeyIdentifier(<a name="line.859"></a>
+<span class="sourceLineNo">860</span>              keyFactoryAlgorithm, keyFactorySalt, keyFactoryIterationCount,<a name="line.860"></a>
+<span class="sourceLineNo">861</span>              keyFactoryKeyLengthBits, passphrase);<a name="line.861"></a>
+<span class="sourceLineNo">862</span>    SecretKey secretKey =<a name="line.862"></a>
+<span class="sourceLineNo">863</span>         PassphraseEncryptedStreamHeaderSecretKeyCache.get(identifier);<a name="line.863"></a>
+<span class="sourceLineNo">864</span>    if (secretKey != null)<a name="line.864"></a>
+<span class="sourceLineNo">865</span>    {<a name="line.865"></a>
+<span class="sourceLineNo">866</span>      return secretKey;<a name="line.866"></a>
+<span class="sourceLineNo">867</span>    }<a name="line.867"></a>
+<span class="sourceLineNo">868</span><a name="line.868"></a>
+<span class="sourceLineNo">869</span><a name="line.869"></a>
+<span class="sourceLineNo">870</span>    // Generate the key.  Because we've previously seen cases in which this can<a name="line.870"></a>
+<span class="sourceLineNo">871</span>    // yield inconsistent results, we'll make sure that we repeatedly get the<a name="line.871"></a>
+<span class="sourceLineNo">872</span>    // same answer.<a name="line.872"></a>
+<span class="sourceLineNo">873</span>    byte[] prev = null;<a name="line.873"></a>
+<span class="sourceLineNo">874</span>    byte[] prev2 = null;<a name="line.874"></a>
+<span class="sourceLineNo">875</span><a name="line.875"></a>
+<span class="sourceLineNo">876</span>    final int iterations = 10;<a name="line.876"></a>
+<span class="sourceLineNo">877</span>    for (int i = 0; i &lt; iterations; i++)<a name="line.877"></a>
+<span class="sourceLineNo">878</span>    {<a name="line.878"></a>
+<span class="sourceLineNo">879</span>      final SecretKeyFactory keyFactory =<a name="line.879"></a>
+<span class="sourceLineNo">880</span>           CryptoHelper.getSecretKeyFactory(keyFactoryAlgorithm);<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      final String cipherAlgorithm = cipherTransformation.substring(0,<a name="line.881"></a>
+<span class="sourceLineNo">882</span>           cipherTransformation.indexOf('/'));<a name="line.882"></a>
+<span class="sourceLineNo">883</span>      final PBEKeySpec pbeKeySpec = new PBEKeySpec(passphrase, keyFactorySalt,<a name="line.883"></a>
+<span class="sourceLineNo">884</span>           keyFactoryIterationCount, keyFactoryKeyLengthBits);<a name="line.884"></a>
+<span class="sourceLineNo">885</span>      final byte[] encoded = keyFactory.generateSecret(pbeKeySpec).getEncoded();<a name="line.885"></a>
+<span class="sourceLineNo">886</span>      secretKey = new SecretKeySpec(encoded, cipherAlgorithm);<a name="line.886"></a>
 <span class="sourceLineNo">887</span><a name="line.887"></a>
-<span class="sourceLineNo">888</span>      prev2 = prev;<a name="line.888"></a>
-<span class="sourceLineNo">889</span>      prev = encoded;<a name="line.889"></a>
-<span class="sourceLineNo">890</span>    }<a name="line.890"></a>
-<span class="sourceLineNo">891</span><a name="line.891"></a>
-<span class="sourceLineNo">892</span>    Debug.debug(Level.SEVERE, DebugType.OTHER,<a name="line.892"></a>
-<span class="sourceLineNo">893</span>         "Even after " + iterations + " iterations, the secret key could not " +<a name="line.893"></a>
-<span class="sourceLineNo">894</span>         "be reliably generated.");<a name="line.894"></a>
-<span class="sourceLineNo">895</span><a name="line.895"></a>
-<span class="sourceLineNo">896</span>    throw new InvalidKeyException(<a name="line.896"></a>
-<span class="sourceLineNo">897</span>         ERR_PW_ENCRYPTED_STREAM_HEADER_CANNOT_GENERATE_KEY.get());<a name="line.897"></a>
-<span class="sourceLineNo">898</span>  }<a name="line.898"></a>
+<span class="sourceLineNo">888</span>      // If this encoded key is the same as the previous one, and the one before<a name="line.888"></a>
+<span class="sourceLineNo">889</span>      // that, then it was likely computed correctly, so return it.<a name="line.889"></a>
+<span class="sourceLineNo">890</span>      if (Arrays.equals(encoded, prev) &amp;&amp; Arrays.equals(encoded, prev2))<a name="line.890"></a>
+<span class="sourceLineNo">891</span>      {<a name="line.891"></a>
+<span class="sourceLineNo">892</span>        if (i &gt; 2)<a name="line.892"></a>
+<span class="sourceLineNo">893</span>        {<a name="line.893"></a>
+<span class="sourceLineNo">894</span>          Debug.debug(Level.WARNING, DebugType.OTHER,<a name="line.894"></a>
+<span class="sourceLineNo">895</span>               "The secret key was generated inconsistently initially, but " +<a name="line.895"></a>
+<span class="sourceLineNo">896</span>               "after " + i + " iterations, we were able to generate a " +<a name="line.896"></a>
+<span class="sourceLineNo">897</span>               "consistent value.");<a name="line.897"></a>
+<span class="sourceLineNo">898</span>        }<a name="line.898"></a>
 <span class="sourceLineNo">899</span><a name="line.899"></a>
 <span class="sourceLineNo">900</span><a name="line.900"></a>
-<span class="sourceLineNo">901</span><a name="line.901"></a>
-<span class="sourceLineNo">902</span>  /**<a name="line.902"></a>
-<span class="sourceLineNo">903</span>   * Creates a {@code Cipher} for the specified purpose.<a name="line.903"></a>
-<span class="sourceLineNo">904</span>   *<a name="line.904"></a>
-<span class="sourceLineNo">905</span>   * @param  mode  The mode to use for the cipher.  It must be one of<a name="line.905"></a>
-<span class="sourceLineNo">906</span>   *               {@code Cipher.ENCRYPT_MODE} or {@code Cipher.DECRYPT_MODE}.<a name="line.906"></a>
-<span class="sourceLineNo">907</span>   *<a name="line.907"></a>
-<span class="sourceLineNo">908</span>   * @return  The {@code Cipher} instance that was created.<a name="line.908"></a>
-<span class="sourceLineNo">909</span>   *<a name="line.909"></a>
-<span class="sourceLineNo">910</span>   * @throws  InvalidKeyException  If no passphrase was provided when decoding<a name="line.910"></a>
-<span class="sourceLineNo">911</span>   *                               this passphrase-encrypted stream header.<a name="line.911"></a>
-<span class="sourceLineNo">912</span>   *<a name="line.912"></a>
-<span class="sourceLineNo">913</span>   * @throws  GeneralSecurityException  If a problem is encountered while<a name="line.913"></a>
-<span class="sourceLineNo">914</span>   *                                    creating the cipher.<a name="line.914"></a>
-<span class="sourceLineNo">915</span>   */<a name="line.915"></a>
-<span class="sourceLineNo">916</span>  @NotNull()<a name="line.916"></a>
-<span class="sourceLineNo">917</span>  Cipher createCipher(final int mode)<a name="line.917"></a>
-<span class="sourceLineNo">918</span>         throws InvalidKeyException, GeneralSecurityException<a name="line.918"></a>
-<span class="sourceLineNo">919</span>  {<a name="line.919"></a>
-<span class="sourceLineNo">920</span>    if (secretKey == null)<a name="line.920"></a>
-<span class="sourceLineNo">921</span>    {<a name="line.921"></a>
-<span class="sourceLineNo">922</span>      throw new InvalidKeyException(<a name="line.922"></a>
-<span class="sourceLineNo">923</span>           ERR_PW_ENCRYPTED_HEADER_NO_KEY_AVAILABLE.get());<a name="line.923"></a>
-<span class="sourceLineNo">924</span>    }<a name="line.924"></a>
-<span class="sourceLineNo">925</span><a name="line.925"></a>
-<span class="sourceLineNo">926</span>    final Cipher cipher = CryptoHelper.getCipher(cipherTransformation);<a name="line.926"></a>
-<span class="sourceLineNo">927</span>    cipher.init(mode, secretKey,<a name="line.927"></a>
-<span class="sourceLineNo">928</span>         new IvParameterSpec(cipherInitializationVector));<a name="line.928"></a>
-<span class="sourceLineNo">929</span><a name="line.929"></a>
-<span class="sourceLineNo">930</span>    return cipher;<a name="line.930"></a>
-<span class="sourceLineNo">931</span>  }<a name="line.931"></a>
-<span class="sourceLineNo">932</span><a name="line.932"></a>
-<span class="sourceLineNo">933</span><a name="line.933"></a>
-<span class="sourceLineNo">934</span><a name="line.934"></a>
-<span class="sourceLineNo">935</span>  /**<a name="line.935"></a>
-<span class="sourceLineNo">936</span>   * Retrieves the key factory algorithm used to generate the encryption key<a name="line.936"></a>
-<span class="sourceLineNo">937</span>   * from the passphrase.<a name="line.937"></a>
-<span class="sourceLineNo">938</span>   *<a name="line.938"></a>
-<span class="sourceLineNo">939</span>   * @return  The key factory algorithm used to generate the encryption key from<a name="line.939"></a>
-<span class="sourceLineNo">940</span>   *          the passphrase.<a name="line.940"></a>
-<span class="sourceLineNo">941</span>   */<a name="line.941"></a>
-<span class="sourceLineNo">942</span>  @NotNull()<a name="line.942"></a>
-<span class="sourceLineNo">943</span>  public String getKeyFactoryAlgorithm()<a name="line.943"></a>
-<span class="sourceLineNo">944</span>  {<a name="line.944"></a>
-<span class="sourceLineNo">945</span>    return keyFactoryAlgorithm;<a name="line.945"></a>
-<span class="sourceLineNo">946</span>  }<a name="line.946"></a>
-<span class="sourceLineNo">947</span><a name="line.947"></a>
+<span class="sourceLineNo">901</span>        // Put the new key in the cache and return it.<a name="line.901"></a>
+<span class="sourceLineNo">902</span>        PassphraseEncryptedStreamHeaderSecretKeyCache.put(identifier,<a name="line.902"></a>
+<span class="sourceLineNo">903</span>             secretKey);<a name="line.903"></a>
+<span class="sourceLineNo">904</span>        return secretKey;<a name="line.904"></a>
+<span class="sourceLineNo">905</span>      }<a name="line.905"></a>
+<span class="sourceLineNo">906</span><a name="line.906"></a>
+<span class="sourceLineNo">907</span>      prev2 = prev;<a name="line.907"></a>
+<span class="sourceLineNo">908</span>      prev = encoded;<a name="line.908"></a>
+<span class="sourceLineNo">909</span>    }<a name="line.909"></a>
+<span class="sourceLineNo">910</span><a name="line.910"></a>
+<span class="sourceLineNo">911</span>    Debug.debug(Level.SEVERE, DebugType.OTHER,<a name="line.911"></a>
+<span class="sourceLineNo">912</span>         "Even after " + iterations + " iterations, the secret key could not " +<a name="line.912"></a>
+<span class="sourceLineNo">913</span>         "be reliably generated.");<a name="line.913"></a>
+<span class="sourceLineNo">914</span><a name="line.914"></a>
+<span class="sourceLineNo">915</span>    throw new InvalidKeyException(<a name="line.915"></a>
+<span class="sourceLineNo">916</span>         ERR_PW_ENCRYPTED_STREAM_HEADER_CANNOT_GENERATE_KEY.get());<a name="line.916"></a>
+<span class="sourceLineNo">917</span>  }<a name="line.917"></a>
+<span class="sourceLineNo">918</span><a name="line.918"></a>
+<span class="sourceLineNo">919</span><a name="line.919"></a>
+<span class="sourceLineNo">920</span><a name="line.920"></a>
+<span class="sourceLineNo">921</span>  /**<a name="line.921"></a>
+<span class="sourceLineNo">922</span>   * Creates a {@code Cipher} for the specified purpose.<a name="line.922"></a>
+<span class="sourceLineNo">923</span>   *<a name="line.923"></a>
+<span class="sourceLineNo">924</span>   * @param  mode  The mode to use for the cipher.  It must be one of<a name="line.924"></a>
+<span class="sourceLineNo">925</span>   *               {@code Cipher.ENCRYPT_MODE} or {@code Cipher.DECRYPT_MODE}.<a name="line.925"></a>
+<span class="sourceLineNo">926</span>   *<a name="line.926"></a>
+<span class="sourceLineNo">927</span>   * @return  The {@code Cipher} instance that was created.<a name="line.927"></a>
+<span class="sourceLineNo">928</span>   *<a name="line.928"></a>
+<span class="sourceLineNo">929</span>   * @throws  InvalidKeyException  If no passphrase was provided when decoding<a name="line.929"></a>
+<span class="sourceLineNo">930</span>   *                               this passphrase-encrypted stream header.<a name="line.930"></a>
+<span class="sourceLineNo">931</span>   *<a name="line.931"></a>
+<span class="sourceLineNo">932</span>   * @throws  GeneralSecurityException  If a problem is encountered while<a name="line.932"></a>
+<span class="sourceLineNo">933</span>   *                                    creating the cipher.<a name="line.933"></a>
+<span class="sourceLineNo">934</span>   */<a name="line.934"></a>
+<span class="sourceLineNo">935</span>  @NotNull()<a name="line.935"></a>
+<span class="sourceLineNo">936</span>  Cipher createCipher(final int mode)<a name="line.936"></a>
+<span class="sourceLineNo">937</span>         throws InvalidKeyException, GeneralSecurityException<a name="line.937"></a>
+<span class="sourceLineNo">938</span>  {<a name="line.938"></a>
+<span class="sourceLineNo">939</span>    if (secretKey == null)<a name="line.939"></a>
+<span class="sourceLineNo">940</span>    {<a name="line.940"></a>
+<span class="sourceLineNo">941</span>      throw new InvalidKeyException(<a name="line.941"></a>
+<span class="sourceLineNo">942</span>           ERR_PW_ENCRYPTED_HEADER_NO_KEY_AVAILABLE.get());<a name="line.942"></a>
+<span class="sourceLineNo">943</span>    }<a name="line.943"></a>
+<span class="sourceLineNo">944</span><a name="line.944"></a>
+<span class="sourceLineNo">945</span>    final Cipher cipher = CryptoHelper.getCipher(cipherTransformation);<a name="line.945"></a>
+<span class="sourceLineNo">946</span>    cipher.init(mode, secretKey,<a name="line.946"></a>
+<span class="sourceLineNo">947</span>         new IvParameterSpec(cipherInitializationVector));<a name="line.947"></a>
 <span class="sourceLineNo">948</span><a name="line.948"></a>
-<span class="sourceLineNo">949</span><a name="line.949"></a>
-<span class="sourceLineNo">950</span>  /**<a name="line.950"></a>
-<span class="sourceLineNo">951</span>   * Retrieves the iteration count used to generate the encryption key from the<a name="line.951"></a>
-<span class="sourceLineNo">952</span>   * passphrase.<a name="line.952"></a>
-<span class="sourceLineNo">953</span>   *<a name="line.953"></a>
-<span class="sourceLineNo">954</span>   * @return  The iteration count used to generate the encryption key from the<a name="line.954"></a>
-<span class="sourceLineNo">955</span>   *          passphrase.<a name="line.955"></a>
-<span class="sourceLineNo">956</span>   */<a name="line.956"></a>
-<span class="sourceLineNo">957</span>  public int getKeyFactoryIterationCount()<a name="line.957"></a>
-<span class="sourceLineNo">958</span>  {<a name="line.958"></a>
-<span class="sourceLineNo">959</span>    return keyFactoryIterationCount;<a name="line.959"></a>
-<span class="sourceLineNo">960</span>  }<a name="line.960"></a>
-<span class="sourceLineNo">961</span><a name="line.961"></a>
-<span class="sourceLineNo">962</span><a name="line.962"></a>
-<span class="sourceLineNo">963</span><a name="line.963"></a>
-<span class="sourceLineNo">964</span>  /**<a name="line.964"></a>
-<span class="sourceLineNo">965</span>   * Retrieves the salt used to generate the encryption key from the passphrase.<a name="line.965"></a>
-<span class="sourceLineNo">966</span>   *<a name="line.966"></a>
-<span class="sourceLineNo">967</span>   * @return  The salt used to generate the encryption key from the passphrase.<a name="line.967"></a>
-<span class="sourceLineNo">968</span>   */<a name="line.968"></a>
-<span class="sourceLineNo">969</span>  @NotNull()<a name="line.969"></a>
-<span class="sourceLineNo">970</span>  public byte[] getKeyFactorySalt()<a name="line.970"></a>
-<span class="sourceLineNo">971</span>  {<a name="line.971"></a>
-<span class="sourceLineNo">972</span>    return Arrays.copyOf(keyFactorySalt, keyFactorySalt.length);<a name="line.972"></a>
-<span class="sourceLineNo">973</span>  }<a name="line.973"></a>
-<span class="sourceLineNo">974</span><a name="line.974"></a>
-<span class="sourceLineNo">975</span><a name="line.975"></a>
-<span class="sourceLineNo">976</span><a name="line.976"></a>
-<span class="sourceLineNo">977</span>  /**<a name="line.977"></a>
-<span class="sourceLineNo">978</span>   * Retrieves the length (in bits) of the encryption key generated from the<a name="line.978"></a>
-<span class="sourceLineNo">979</span>   * passphrase.<a name="line.979"></a>
-<span class="sourceLineNo">980</span>   *<a name="line.980"></a>
-<span class="sourceLineNo">981</span>   * @return  The length (in bits) of the encryption key generated from the<a name="line.981"></a>
-<span class="sourceLineNo">982</span>   *          passphrase.<a name="line.982"></a>
-<span class="sourceLineNo">983</span>   */<a name="line.983"></a>
-<span class="sourceLineNo">984</span>  public int getKeyFactoryKeyLengthBits()<a name="line.984"></a>
-<span class="sourceLineNo">985</span>  {<a name="line.985"></a>
-<span class="sourceLineNo">986</span>    return keyFactoryKeyLengthBits;<a name="line.986"></a>
-<span class="sourceLineNo">987</span>  }<a name="line.987"></a>
-<span class="sourceLineNo">988</span><a name="line.988"></a>
-<span class="sourceLineNo">989</span><a name="line.989"></a>
-<span class="sourceLineNo">990</span><a name="line.990"></a>
-<span class="sourceLineNo">991</span>  /**<a name="line.991"></a>
-<span class="sourceLineNo">992</span>   * Retrieves the cipher transformation used for the encryption.<a name="line.992"></a>
-<span class="sourceLineNo">993</span>   *<a name="line.993"></a>
-<span class="sourceLineNo">994</span>   * @return  The cipher transformation used for the encryption.<a name="line.994"></a>
-<span class="sourceLineNo">995</span>   */<a name="line.995"></a>
-<span class="sourceLineNo">996</span>  @NotNull()<a name="line.996"></a>
-<span class="sourceLineNo">997</span>  public String getCipherTransformation()<a name="line.997"></a>
-<span class="sourceLineNo">998</span>  {<a name="line.998"></a>
-<span class="sourceLineNo">999</span>    return cipherTransformation;<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>  }<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span><a name="line.1001"></a>
-<span class="sourceLineNo">1002</span><a name="line.1002"></a>
-<span class="sourceLineNo">1003</span><a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>  /**<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>   * Retrieves the cipher initialization vector used for the encryption.<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>   *<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>   * @return  The cipher initialization vector used for the encryption.<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>   */<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>  @NotNull()<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>  public byte[] getCipherInitializationVector()<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>  {<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>    return Arrays.copyOf(cipherInitializationVector,<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>         cipherInitializationVector.length);<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>  }<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span><a name="line.1015"></a>
-<span class="sourceLineNo">1016</span><a name="line.1016"></a>
-<span class="sourceLineNo">1017</span><a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>  /**<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>   * Retrieves the key identifier used to associate this passphrase-encrypted<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>   * stream header with some other encryption settings object, if defined.<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>   *<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>   * @return  The key identifier used to associate this passphrase-encrypted<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>   *          stream header with some other encryption settings object, or<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>   *          {@code null} if none was provided.<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>   */<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>  @Nullable()<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>  public String getKeyIdentifier()<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>  {<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>    return keyIdentifier;<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>  }<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span><a name="line.1031"></a>
-<span class="sourceLineNo">1032</span><a name="line.1032"></a>
-<span class="sourceLineNo">1033</span><a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>  /**<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>   * Retrieves the algorithm used to generate a MAC of the header content.<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>   *<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>   * @return  The algorithm used to generate a MAC of the header content.<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>   */<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>  @NotNull()<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>  public String getMACAlgorithm()<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>  {<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>    return macAlgorithm;<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>  }<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span><a name="line.1044"></a>
-<span class="sourceLineNo">1045</span><a name="line.1045"></a>
-<span class="sourceLineNo">1046</span><a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>  /**<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span>   * Retrieves an encoded representation of this passphrase-encrypted stream<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>   * header.<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>   *<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>   * @return  An encoded representation of this passphrase-encrypted stream<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>   *          header.<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>   */<a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>  @NotNull()<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>  public byte[] getEncodedHeader()<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>  {<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>    return Arrays.copyOf(encodedHeader, encodedHeader.length);<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>  }<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span><a name="line.1059"></a>
-<span class="sourceLineNo">1060</span><a name="line.1060"></a>
-<span class="sourceLineNo">1061</span><a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>  /**<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>   * Indicates whether this passphrase-encrypted stream header includes a secret<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>   * key.  If this header was read or decoded with no passphrase provided, then<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>   * it will not have a secret key, which means the MAC will not have been<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>   * validated and it cannot be used to encrypt or decrypt data.<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>   *<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>   * @return  {@code true} if this passphrase-encrypted stream header includes a<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span>   *          secret key and can be used to encrypt or decrypt data, or<a name="line.1069"></a>
-<span class="sourceLineNo">1070</span>   *          {@code false} if not.<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>   */<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>  public boolean isSecretKeyAvailable()<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>  {<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>    return (secretKey != null);<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>  }<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span><a name="line.1076"></a>
-<span class="sourceLineNo">1077</span><a name="line.1077"></a>
+<span class="sourceLineNo">949</span>    return cipher;<a name="line.949"></a>
+<span class="sourceLineNo">950</span>  }<a name="line.950"></a>
+<span class="sourceLineNo">951</span><a name="line.951"></a>
+<span class="sourceLineNo">952</span><a name="line.952"></a>
+<span class="sourceLineNo">953</span><a name="line.953"></a>
+<span class="sourceLineNo">954</span>  /**<a name="line.954"></a>
+<span class="sourceLineNo">955</span>   * Retrieves the key factory algorithm used to generate the encryption key<a name="line.955"></a>
+<span class="sourceLineNo">956</span>   * from the passphrase.<a name="line.956"></a>
+<span class="sourceLineNo">957</span>   *<a name="line.957"></a>
+<span class="sourceLineNo">958</span>   * @return  The key factory algorithm used to generate the encryption key from<a name="line.958"></a>
+<span class="sourceLineNo">959</span>   *          the passphrase.<a name="line.959"></a>
+<span class="sourceLineNo">960</span>   */<a name="line.960"></a>
+<span class="sourceLineNo">961</span>  @NotNull()<a name="line.961"></a>
+<span class="sourceLineNo">962</span>  public String getKeyFactoryAlgorithm()<a name="line.962"></a>
+<span class="sourceLineNo">963</span>  {<a name="line.963"></a>
+<span class="sourceLineNo">964</span>    return keyFactoryAlgorithm;<a name="line.964"></a>
+<span class="sourceLineNo">965</span>  }<a name="line.965"></a>
+<span class="sourceLineNo">966</span><a name="line.966"></a>
+<span class="sourceLineNo">967</span><a name="line.967"></a>
+<span class="sourceLineNo">968</span><a name="line.968"></a>
+<span class="sourceLineNo">969</span>  /**<a name="line.969"></a>
+<span class="sourceLineNo">970</span>   * Retrieves the iteration count used to generate the encryption key from the<a name="line.970"></a>
+<span class="sourceLineNo">971</span>   * passphrase.<a name="line.971"></a>
+<span class="sourceLineNo">972</span>   *<a name="line.972"></a>
+<span class="sourceLineNo">973</span>   * @return  The iteration count used to generate the encryption key from the<a name="line.973"></a>
+<span class="sourceLineNo">974</span>   *          passphrase.<a name="line.974"></a>
+<span class="sourceLineNo">975</span>   */<a name="line.975"></a>
+<span class="sourceLineNo">976</span>  public int getKeyFactoryIterationCount()<a name="line.976"></a>
+<span class="sourceLineNo">977</span>  {<a name="line.977"></a>
+<span class="sourceLineNo">978</span>    return keyFactoryIterationCount;<a name="line.978"></a>
+<span class="sourceLineNo">979</span>  }<a name="line.979"></a>
+<span class="sourceLineNo">980</span><a name="line.980"></a>
+<span class="sourceLineNo">981</span><a name="line.981"></a>
+<span class="sourceLineNo">982</span><a name="line.982"></a>
+<span class="sourceLineNo">983</span>  /**<a name="line.983"></a>
+<span class="sourceLineNo">984</span>   * Retrieves the salt used to generate the encryption key from the passphrase.<a name="line.984"></a>
+<span class="sourceLineNo">985</span>   *<a name="line.985"></a>
+<span class="sourceLineNo">986</span>   * @return  The salt used to generate the encryption key from the passphrase.<a name="line.986"></a>
+<span class="sourceLineNo">987</span>   */<a name="line.987"></a>
+<span class="sourceLineNo">988</span>  @NotNull()<a name="line.988"></a>
+<span class="sourceLineNo">989</span>  public byte[] getKeyFactorySalt()<a name="line.989"></a>
+<span class="sourceLineNo">990</span>  {<a name="line.990"></a>
+<span class="sourceLineNo">991</span>    return Arrays.copyOf(keyFactorySalt, keyFactorySalt.length);<a name="line.991"></a>
+<span class="sourceLineNo">992</span>  }<a name="line.992"></a>
+<span class="sourceLineNo">993</span><a name="line.993"></a>
+<span class="sourceLineNo">994</span><a name="line.994"></a>
+<span class="sourceLineNo">995</span><a name="line.995"></a>
+<span class="sourceLineNo">996</span>  /**<a name="line.996"></a>
+<span class="sourceLineNo">997</span>   * Retrieves the length (in bits) of the encryption key generated from the<a name="line.997"></a>
+<span class="sourceLineNo">998</span>   * passphrase.<a name="line.998"></a>
+<span class="sourceLineNo">999</span>   *<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>   * @return  The length (in bits) of the encryption key generated from the<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>   *          passphrase.<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>   */<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>  public int getKeyFactoryKeyLengthBits()<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>  {<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>    return keyFactoryKeyLengthBits;<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>  }<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span><a name="line.1007"></a>
+<span class="sourceLineNo">1008</span><a name="line.1008"></a>
+<span class="sourceLineNo">1009</span><a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>  /**<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>   * Retrieves the cipher transformation used for the encryption.<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>   *<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>   * @return  The cipher transformation used for the encryption.<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>   */<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>  @NotNull()<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>  public String getCipherTransformation()<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>  {<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>    return cipherTransformation;<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>  }<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span><a name="line.1020"></a>
+<span class="sourceLineNo">1021</span><a name="line.1021"></a>
+<span class="sourceLineNo">1022</span><a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>  /**<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>   * Retrieves the cipher initialization vector used for the encryption.<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>   *<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>   * @return  The cipher initialization vector used for the encryption.<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>   */<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>  @NotNull()<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>  public byte[] getCipherInitializationVector()<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>  {<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>    return Arrays.copyOf(cipherInitializationVector,<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>         cipherInitializationVector.length);<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>  }<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span><a name="line.1034"></a>
+<span class="sourceLineNo">1035</span><a name="line.1035"></a>
+<span class="sourceLineNo">1036</span><a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>  /**<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>   * Retrieves the key identifier used to associate this passphrase-encrypted<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>   * stream header with some other encryption settings object, if defined.<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>   *<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>   * @return  The key identifier used to associate this passphrase-encrypted<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>   *          stream header with some other encryption settings object, or<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>   *          {@code null} if none was provided.<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>   */<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>  @Nullable()<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>  public String getKeyIdentifier()<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>  {<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>    return keyIdentifier;<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>  }<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span><a name="line.1050"></a>
+<span class="sourceLineNo">1051</span><a name="line.1051"></a>
+<span class="sourceLineNo">1052</span><a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>  /**<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>   * Retrieves the algorithm used to generate a MAC of the header content.<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>   *<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>   * @return  The algorithm used to generate a MAC of the header content.<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>   */<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>  @NotNull()<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>  public String getMACAlgorithm()<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>  {<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>    return macAlgorithm;<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>  }<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span><a name="line.1063"></a>
+<span class="sourceLineNo">1064</span><a name="line.1064"></a>
+<span class="sourceLineNo">1065</span><a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>  /**<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>   * Retrieves an encoded representation of this passphrase-encrypted stream<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>   * header.<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>   *<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>   * @return  An encoded representation of this passphrase-encrypted stream<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>   *          header.<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>   */<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>  @NotNull()<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>  public byte[] getEncodedHeader()<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>  {<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>    return Arrays.copyOf(encodedHeader, encodedHeader.length);<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>  }<a name="line.1077"></a>
 <span class="sourceLineNo">1078</span><a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>  /**<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>   * Creates a copy of this passphrase-encrypted stream header that use a<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span>   * newly-computed initialization vector.  The new stream header can be used to<a name="line.1081"></a>
-<span class="sourceLineNo">1082</span>   * create a new passphrase-encrypted output stream that safely leverages an<a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>   * already computed secret key to dramatically reduce the cost of creating a<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>   * new stream from the same underlying passphrase.<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>   *<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>   * @return  The new passphrase-encrypted stream header that was created.<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>   *<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>   * @throws  GeneralSecurityException  If a problem occurs while creating a<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>   *                                    copy of this passphrase-encrypted stream<a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>   *                                    header with a new initialization vector.<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>   */<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>  @NotNull()<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>  PassphraseEncryptedStreamHeader withNewCipherInitializationVector()<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span>       throws GeneralSecurityException<a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>  {<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span>    if (secretKey == null)<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>    {<a name="line.1097"></a>
-<span class="sourceLineNo">1098</span>      throw new InvalidKeyException(<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>           ERR_PW_ENCRYPTED_STREAM_HEADER_COPY_WITHOUT_SECRET_KEY.get());<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>    }<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span><a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>    final byte[] newInitializationVector =<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>         new byte[cipherInitializationVector.length];<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span>    ThreadLocalSecureRandom.get().nextBytes(newInitializationVector);<a name="line.1104"></a>
-<span class="sourceLineNo">1105</span><a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>    final ObjectPair&lt;byte[],byte[]&gt; headerPair = encode(keyFactoryAlgorithm,<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>         keyFactoryIterationCount, this.keyFactorySalt, keyFactoryKeyLengthBits,<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>         cipherTransformation, newInitializationVector, keyIdentifier,<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>         secretKey, macAlgorithm);<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span>    final byte[] newEncodedHeader = headerPair.getFirst();<a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>    final byte[] newMACValue = headerPair.getSecond();<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span><a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>    return new PassphraseEncryptedStreamHeader(keyFactoryAlgorithm,<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span>         keyFactoryIterationCount, keyFactorySalt, keyFactoryKeyLengthBits,<a name="line.1114"></a>
-<span class="sourceLineNo">1115</span>         cipherTransformation, newInitializationVector, keyIdentifier,<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>         secretKey, macAlgorithm, newMACValue, newEncodedHeader);<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>  }<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span><a name="line.1118"></a>
-<span class="sourceLineNo">1119</span><a name="line.1119"></a>
+<span class="sourceLineNo">1079</span><a name="line.1079"></a>
+<span class="sourceLineNo">1080</span><a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>  /**<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>   * Indicates whether this passphrase-encrypted stream header includes a secret<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>   * key.  If this header was read or decoded with no passphrase provided, then<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>   * it will not have a secret key, which means the MAC will not have been<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>   * validated and it cannot be used to encrypt or decrypt data.<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>   *<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>   * @return  {@code true} if this passphrase-encrypted stream header includes a<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>   *          secret key and can be used to encrypt or decrypt data, or<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>   *          {@code false} if not.<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>   */<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>  public boolean isSecretKeyAvailable()<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>  {<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>    return (secretKey != null);<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>  }<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span><a name="line.1095"></a>
+<span class="sourceLineNo">1096</span><a name="line.1096"></a>
+<span class="sourceLineNo">1097</span><a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>  /**<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>   * Creates a copy of this passphrase-encrypted stream header that use a<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>   * newly-computed initialization vector.  The new stream header can be used to<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>   * create a new passphrase-encrypted output stream that safely leverages an<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>   * already computed secret key to dramatically reduce the cost of creating a<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>   * new stream from the same underlying passphrase.<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>   *<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>   * @return  The new passphrase-encrypted stream header that was created.<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>   *<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>   * @throws  GeneralSecurityException  If a problem occurs while creating a<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>   *                                    copy of this passphrase-encrypted stream<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>   *                                    header with a new initialization vector.<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>   */<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>  @NotNull()<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span>  PassphraseEncryptedStreamHeader withNewCipherInitializationVector()<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>       throws GeneralSecurityException<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>  {<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>    if (secretKey == null)<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>    {<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>      throw new InvalidKeyException(<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>           ERR_PW_ENCRYPTED_STREAM_HEADER_COPY_WITHOUT_SECRET_KEY.get());<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>    }<a name="line.1119"></a>
 <span class="sourceLineNo">1120</span><a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>  /**<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>   * Retrieves a string representation of this passphrase-encrypted stream<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span>   * header.<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>   *<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>   * @return  A string representation of this passphrase-encrypted stream<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>   *         header.<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>   */<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>  @Override()<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>  @NotNull()<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>  public String toString()<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span>  {<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>    toString(buffer);<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>    return buffer.toString();<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>  }<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span><a name="line.1136"></a>
+<span class="sourceLineNo">1121</span>    final byte[] newInitializationVector =<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>         new byte[cipherInitializationVector.length];<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>    ThreadLocalSecureRandom.get().nextBytes(newInitializationVector);<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span><a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>    final ObjectPair&lt;byte[],byte[]&gt; headerPair = encode(keyFactoryAlgorithm,<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>         keyFactoryIterationCount, this.keyFactorySalt, keyFactoryKeyLengthBits,<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>         cipherTransformation, newInitializationVector, keyIdentifier,<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>         secretKey, macAlgorithm);<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>    final byte[] newEncodedHeader = headerPair.getFirst();<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>    final byte[] newMACValue = headerPair.getSecond();<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span><a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>    return new PassphraseEncryptedStreamHeader(keyFactoryAlgorithm,<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>         keyFactoryIterationCount, keyFactorySalt, keyFactoryKeyLengthBits,<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>         cipherTransformation, newInitializationVector, keyIdentifier,<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>         secretKey, macAlgorithm, newMACValue, newEncodedHeader);<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>  }<a name="line.1136"></a>
 <span class="sourceLineNo">1137</span><a name="line.1137"></a>
 <span class="sourceLineNo">1138</span><a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>  /**<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>   * Appends a string representation of this passphrase-encrypted stream header<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>   * to the provided buffer.<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>   *<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>   */<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>  {<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>    buffer.append("PassphraseEncryptedStreamHeader(keyFactoryAlgorithm='");<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>    buffer.append(keyFactoryAlgorithm);<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>    buffer.append("', keyFactoryIterationCount=");<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>    buffer.append(keyFactoryIterationCount);<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>    buffer.append(", keyFactorySaltLengthBytes=");<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>    buffer.append(keyFactorySalt.length);<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>    buffer.append(", keyFactoryKeyLengthBits=");<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>    buffer.append(keyFactoryKeyLengthBits);<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>    buffer.append(", cipherTransformation'=");<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>    buffer.append(cipherTransformation);<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>    buffer.append("', cipherInitializationVectorLengthBytes=");<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>    buffer.append(cipherInitializationVector.length);<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>    buffer.append('\'');<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span><a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>    if (keyIdentifier != null)<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>    {<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>      buffer.append(", keyIdentifier='");<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>      buffer.append(keyIdentifier);<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>      buffer.append('\'');<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>    }<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span><a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>    buffer.append(", macAlgorithm='");<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>    buffer.append(macAlgorithm);<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>    buffer.append("', macValueLengthBytes=");<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>    buffer.append(macValue.length);<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>    buffer.append(", secretKeyAvailable=");<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>    buffer.append(isSecretKeyAvailable());<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>    buffer.append(", encodedHeaderLengthBytes=");<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>    buffer.append(encodedHeader.length);<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>    buffer.append(')');<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>  }<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>}<a name="line.1178"></a>
+<span class="sourceLineNo">1139</span><a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>  /**<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>   * Retrieves a string representation of this passphrase-encrypted stream<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>   * header.<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>   *<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>   * @return  A string representation of this passphrase-encrypted stream<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>   *         header.<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>   */<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>  @Override()<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>  @NotNull()<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>  public String toString()<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>  {<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>    final StringBuilder buffer = new StringBuilder();<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>    toString(buffer);<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>    return buffer.toString();<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>  }<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span><a name="line.1155"></a>
+<span class="sourceLineNo">1156</span><a name="line.1156"></a>
+<span class="sourceLineNo">1157</span><a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>  /**<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>   * Appends a string representation of this passphrase-encrypted stream header<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>   * to the provided buffer.<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>   *<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>   * @param  buffer  The buffer to which the information should be appended.<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>   */<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>  {<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>    buffer.append("PassphraseEncryptedStreamHeader(keyFactoryAlgorithm='");<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>    buffer.append(keyFactoryAlgorithm);<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>    buffer.append("', keyFactoryIterationCount=");<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>    buffer.append(keyFactoryIterationCount);<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>    buffer.append(", keyFactorySaltLengthBytes=");<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>    buffer.append(keyFactorySalt.length);<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>    buffer.append(", keyFactoryKeyLengthBits=");<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>    buffer.append(keyFactoryKeyLengthBits);<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>    buffer.append(", cipherTransformation'=");<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>    buffer.append(cipherTransformation);<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>    buffer.append("', cipherInitializationVectorLengthBytes=");<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>    buffer.append(cipherInitializationVector.length);<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>    buffer.append('\'');<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span><a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>    if (keyIdentifier != null)<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>    {<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>      buffer.append(", keyIdentifier='");<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>      buffer.append(keyIdentifier);<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>      buffer.append('\'');<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>    }<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span><a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>    buffer.append(", macAlgorithm='");<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>    buffer.append(macAlgorithm);<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>    buffer.append("', macValueLengthBytes=");<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>    buffer.append(macValue.length);<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>    buffer.append(", secretKeyAvailable=");<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>    buffer.append(isSecretKeyAvailable());<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>    buffer.append(", encodedHeaderLengthBytes=");<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>    buffer.append(encodedHeader.length);<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>    buffer.append(')');<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>  }<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>}<a name="line.1197"></a>
 
 
 

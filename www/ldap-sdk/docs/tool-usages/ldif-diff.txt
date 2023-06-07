@@ -157,6 +157,13 @@ Available options include:
         argument may be used multiple times to specify multiple schema paths.
         If this argument is ot provided, the LDAP SDK's default standard schema
         will be used.
+    --byteForByte
+        Use byte-for-byte comparisons when identifying differences between
+        entries.  By default, the tool will use schema-aware comparison, and
+        some types of differences (e.g., differences in capitalization in the
+        values of attributes with case-ignore matching) may be ignored.  With
+        byte-for-byte comparison, any difference at all will be considered
+        significant.
 
   Usage Arguments
 

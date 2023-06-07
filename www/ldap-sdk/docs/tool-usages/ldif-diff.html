@@ -155,6 +155,12 @@
         <br><br>
       </li>
       <li>
+        <tt>--byteForByte</tt> &mdash; Use byte-for-byte comparisons when identifying differences between entries.  By default, the tool will use schema-aware comparison, and some types of differences (e.g., differences in capitalization in the values of attributes with case-ignore matching) may be ignored.  With byte-for-byte comparison, any difference at all will be considered significant.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>--interactive</tt> &mdash; Launch the tool in interactive mode.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -231,6 +237,9 @@
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--nonReversibleModifications</tt>, <tt>--singleValueChanges</tt>
+      </li>
+      <li>
+        The following arguments cannot be used together:  <tt>--schemaPath</tt>, <tt>--byteForByte</tt>
       </li>
       <li>
         The following arguments cannot be used together:  <tt>--propertiesFilePath</tt>, <tt>--noPropertiesFile</tt>

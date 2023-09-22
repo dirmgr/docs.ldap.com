@@ -2454,366 +2454,372 @@
 <span class="sourceLineNo">2446</span>            changeRecord.getChangeType().getName(), " REJECT ", resultCode, " ",<a name="line.2446"></a>
 <span class="sourceLineNo">2447</span>             ldapException.getMessage());<a name="line.2447"></a>
 <span class="sourceLineNo">2448</span><a name="line.2448"></a>
-<span class="sourceLineNo">2449</span>        rejectWriter.writeChangeRecord(changeRecord, comment);<a name="line.2449"></a>
-<span class="sourceLineNo">2450</span>      }<a name="line.2450"></a>
-<span class="sourceLineNo">2451</span>      else<a name="line.2451"></a>
-<span class="sourceLineNo">2452</span>      {<a name="line.2452"></a>
-<span class="sourceLineNo">2453</span>        rejectWriter.writeComment(comment, true, true);<a name="line.2453"></a>
-<span class="sourceLineNo">2454</span>      }<a name="line.2454"></a>
-<span class="sourceLineNo">2455</span>    }<a name="line.2455"></a>
-<span class="sourceLineNo">2456</span>    catch (final Exception e)<a name="line.2456"></a>
-<span class="sourceLineNo">2457</span>    {<a name="line.2457"></a>
-<span class="sourceLineNo">2458</span>      Debug.debugException(e);<a name="line.2458"></a>
-<span class="sourceLineNo">2459</span><a name="line.2459"></a>
-<span class="sourceLineNo">2460</span>      final String errorMessage = ERR_PARALLEL_UPDATE_CANNOT_WRITE_REJECT.get(<a name="line.2460"></a>
-<span class="sourceLineNo">2461</span>           changeRecord.toString(),<a name="line.2461"></a>
-<span class="sourceLineNo">2462</span>           ERR_PARALLEL_UPDATE_REJECT_COMMENT.get(String.valueOf(resultCode),<a name="line.2462"></a>
-<span class="sourceLineNo">2463</span>                ldapException.getMessage()),<a name="line.2463"></a>
-<span class="sourceLineNo">2464</span>           StaticUtils.getExceptionMessage(e));<a name="line.2464"></a>
-<span class="sourceLineNo">2465</span>        wrapErr(0, WRAP_COLUMN, errorMessage);<a name="line.2465"></a>
-<span class="sourceLineNo">2466</span>        completionMessage.compareAndSet(null, errorMessage);<a name="line.2466"></a>
-<span class="sourceLineNo">2467</span>        shouldAbort.set(true);<a name="line.2467"></a>
-<span class="sourceLineNo">2468</span>    }<a name="line.2468"></a>
-<span class="sourceLineNo">2469</span>  }<a name="line.2469"></a>
-<span class="sourceLineNo">2470</span><a name="line.2470"></a>
-<span class="sourceLineNo">2471</span><a name="line.2471"></a>
-<span class="sourceLineNo">2472</span><a name="line.2472"></a>
-<span class="sourceLineNo">2473</span>  /**<a name="line.2473"></a>
-<span class="sourceLineNo">2474</span>   * Prints information about the processing performed by this program to<a name="line.2474"></a>
-<span class="sourceLineNo">2475</span>   * standard output.<a name="line.2475"></a>
-<span class="sourceLineNo">2476</span>   */<a name="line.2476"></a>
-<span class="sourceLineNo">2477</span>  void printIntervalData()<a name="line.2477"></a>
-<span class="sourceLineNo">2478</span>  {<a name="line.2478"></a>
-<span class="sourceLineNo">2479</span>    final long currentAttempts = opsAttempted.get();<a name="line.2479"></a>
-<span class="sourceLineNo">2480</span>    final long currentSuccesses = opsSucceeded.get();<a name="line.2480"></a>
-<span class="sourceLineNo">2481</span>    final long currentReject = opsRejected.get();<a name="line.2481"></a>
-<span class="sourceLineNo">2482</span>    final long currentRetry = retryQueueSize.get();<a name="line.2482"></a>
-<span class="sourceLineNo">2483</span>    final long currentDurationMillis = totalOpDurationMillis.get();<a name="line.2483"></a>
-<span class="sourceLineNo">2484</span>    final long currentTimeMillis = System.currentTimeMillis();<a name="line.2484"></a>
-<span class="sourceLineNo">2485</span>    final long totalDurationMillis =<a name="line.2485"></a>
-<span class="sourceLineNo">2486</span>         currentTimeMillis - processingStartTimeMillis;<a name="line.2486"></a>
-<span class="sourceLineNo">2487</span><a name="line.2487"></a>
-<span class="sourceLineNo">2488</span>    final long avgRate;<a name="line.2488"></a>
-<span class="sourceLineNo">2489</span>    if (totalDurationMillis == 0L)<a name="line.2489"></a>
-<span class="sourceLineNo">2490</span>    {<a name="line.2490"></a>
-<span class="sourceLineNo">2491</span>      avgRate = 0L;<a name="line.2491"></a>
-<span class="sourceLineNo">2492</span>    }<a name="line.2492"></a>
-<span class="sourceLineNo">2493</span>    else<a name="line.2493"></a>
-<span class="sourceLineNo">2494</span>    {<a name="line.2494"></a>
-<span class="sourceLineNo">2495</span>      avgRate = 1000L * currentAttempts / totalDurationMillis;<a name="line.2495"></a>
-<span class="sourceLineNo">2496</span>    }<a name="line.2496"></a>
-<span class="sourceLineNo">2497</span><a name="line.2497"></a>
-<span class="sourceLineNo">2498</span>    final long avgDurationMillis;<a name="line.2498"></a>
-<span class="sourceLineNo">2499</span>    if (currentAttempts == 0L)<a name="line.2499"></a>
+<span class="sourceLineNo">2449</span>        synchronized (rejectWriter)<a name="line.2449"></a>
+<span class="sourceLineNo">2450</span>        {<a name="line.2450"></a>
+<span class="sourceLineNo">2451</span>          rejectWriter.writeChangeRecord(changeRecord, comment);<a name="line.2451"></a>
+<span class="sourceLineNo">2452</span>        }<a name="line.2452"></a>
+<span class="sourceLineNo">2453</span>      }<a name="line.2453"></a>
+<span class="sourceLineNo">2454</span>      else<a name="line.2454"></a>
+<span class="sourceLineNo">2455</span>      {<a name="line.2455"></a>
+<span class="sourceLineNo">2456</span>        synchronized (rejectWriter)<a name="line.2456"></a>
+<span class="sourceLineNo">2457</span>        {<a name="line.2457"></a>
+<span class="sourceLineNo">2458</span>          rejectWriter.writeComment(comment, true, true);<a name="line.2458"></a>
+<span class="sourceLineNo">2459</span>        }<a name="line.2459"></a>
+<span class="sourceLineNo">2460</span>      }<a name="line.2460"></a>
+<span class="sourceLineNo">2461</span>    }<a name="line.2461"></a>
+<span class="sourceLineNo">2462</span>    catch (final Exception e)<a name="line.2462"></a>
+<span class="sourceLineNo">2463</span>    {<a name="line.2463"></a>
+<span class="sourceLineNo">2464</span>      Debug.debugException(e);<a name="line.2464"></a>
+<span class="sourceLineNo">2465</span><a name="line.2465"></a>
+<span class="sourceLineNo">2466</span>      final String errorMessage = ERR_PARALLEL_UPDATE_CANNOT_WRITE_REJECT.get(<a name="line.2466"></a>
+<span class="sourceLineNo">2467</span>           changeRecord.toString(),<a name="line.2467"></a>
+<span class="sourceLineNo">2468</span>           ERR_PARALLEL_UPDATE_REJECT_COMMENT.get(String.valueOf(resultCode),<a name="line.2468"></a>
+<span class="sourceLineNo">2469</span>                ldapException.getMessage()),<a name="line.2469"></a>
+<span class="sourceLineNo">2470</span>           StaticUtils.getExceptionMessage(e));<a name="line.2470"></a>
+<span class="sourceLineNo">2471</span>        wrapErr(0, WRAP_COLUMN, errorMessage);<a name="line.2471"></a>
+<span class="sourceLineNo">2472</span>        completionMessage.compareAndSet(null, errorMessage);<a name="line.2472"></a>
+<span class="sourceLineNo">2473</span>        shouldAbort.set(true);<a name="line.2473"></a>
+<span class="sourceLineNo">2474</span>    }<a name="line.2474"></a>
+<span class="sourceLineNo">2475</span>  }<a name="line.2475"></a>
+<span class="sourceLineNo">2476</span><a name="line.2476"></a>
+<span class="sourceLineNo">2477</span><a name="line.2477"></a>
+<span class="sourceLineNo">2478</span><a name="line.2478"></a>
+<span class="sourceLineNo">2479</span>  /**<a name="line.2479"></a>
+<span class="sourceLineNo">2480</span>   * Prints information about the processing performed by this program to<a name="line.2480"></a>
+<span class="sourceLineNo">2481</span>   * standard output.<a name="line.2481"></a>
+<span class="sourceLineNo">2482</span>   */<a name="line.2482"></a>
+<span class="sourceLineNo">2483</span>  void printIntervalData()<a name="line.2483"></a>
+<span class="sourceLineNo">2484</span>  {<a name="line.2484"></a>
+<span class="sourceLineNo">2485</span>    final long currentAttempts = opsAttempted.get();<a name="line.2485"></a>
+<span class="sourceLineNo">2486</span>    final long currentSuccesses = opsSucceeded.get();<a name="line.2486"></a>
+<span class="sourceLineNo">2487</span>    final long currentReject = opsRejected.get();<a name="line.2487"></a>
+<span class="sourceLineNo">2488</span>    final long currentRetry = retryQueueSize.get();<a name="line.2488"></a>
+<span class="sourceLineNo">2489</span>    final long currentDurationMillis = totalOpDurationMillis.get();<a name="line.2489"></a>
+<span class="sourceLineNo">2490</span>    final long currentTimeMillis = System.currentTimeMillis();<a name="line.2490"></a>
+<span class="sourceLineNo">2491</span>    final long totalDurationMillis =<a name="line.2491"></a>
+<span class="sourceLineNo">2492</span>         currentTimeMillis - processingStartTimeMillis;<a name="line.2492"></a>
+<span class="sourceLineNo">2493</span><a name="line.2493"></a>
+<span class="sourceLineNo">2494</span>    final long avgRate;<a name="line.2494"></a>
+<span class="sourceLineNo">2495</span>    if (totalDurationMillis == 0L)<a name="line.2495"></a>
+<span class="sourceLineNo">2496</span>    {<a name="line.2496"></a>
+<span class="sourceLineNo">2497</span>      avgRate = 0L;<a name="line.2497"></a>
+<span class="sourceLineNo">2498</span>    }<a name="line.2498"></a>
+<span class="sourceLineNo">2499</span>    else<a name="line.2499"></a>
 <span class="sourceLineNo">2500</span>    {<a name="line.2500"></a>
-<span class="sourceLineNo">2501</span>      avgDurationMillis = 0L;<a name="line.2501"></a>
+<span class="sourceLineNo">2501</span>      avgRate = 1000L * currentAttempts / totalDurationMillis;<a name="line.2501"></a>
 <span class="sourceLineNo">2502</span>    }<a name="line.2502"></a>
-<span class="sourceLineNo">2503</span>    else<a name="line.2503"></a>
-<span class="sourceLineNo">2504</span>    {<a name="line.2504"></a>
-<span class="sourceLineNo">2505</span>      avgDurationMillis = currentDurationMillis / currentAttempts;<a name="line.2505"></a>
-<span class="sourceLineNo">2506</span>    }<a name="line.2506"></a>
-<span class="sourceLineNo">2507</span><a name="line.2507"></a>
-<span class="sourceLineNo">2508</span>    final long recentDurationMillis;<a name="line.2508"></a>
-<span class="sourceLineNo">2509</span>    if (currentAttempts == lastOpsAttempted)<a name="line.2509"></a>
+<span class="sourceLineNo">2503</span><a name="line.2503"></a>
+<span class="sourceLineNo">2504</span>    final long avgDurationMillis;<a name="line.2504"></a>
+<span class="sourceLineNo">2505</span>    if (currentAttempts == 0L)<a name="line.2505"></a>
+<span class="sourceLineNo">2506</span>    {<a name="line.2506"></a>
+<span class="sourceLineNo">2507</span>      avgDurationMillis = 0L;<a name="line.2507"></a>
+<span class="sourceLineNo">2508</span>    }<a name="line.2508"></a>
+<span class="sourceLineNo">2509</span>    else<a name="line.2509"></a>
 <span class="sourceLineNo">2510</span>    {<a name="line.2510"></a>
-<span class="sourceLineNo">2511</span>      recentDurationMillis = 0L;<a name="line.2511"></a>
+<span class="sourceLineNo">2511</span>      avgDurationMillis = currentDurationMillis / currentAttempts;<a name="line.2511"></a>
 <span class="sourceLineNo">2512</span>    }<a name="line.2512"></a>
-<span class="sourceLineNo">2513</span>    else<a name="line.2513"></a>
-<span class="sourceLineNo">2514</span>    {<a name="line.2514"></a>
-<span class="sourceLineNo">2515</span>      recentDurationMillis = (currentDurationMillis - lastTotalDurationMillis) /<a name="line.2515"></a>
-<span class="sourceLineNo">2516</span>           (currentAttempts - lastOpsAttempted);<a name="line.2516"></a>
-<span class="sourceLineNo">2517</span>    }<a name="line.2517"></a>
-<span class="sourceLineNo">2518</span><a name="line.2518"></a>
-<span class="sourceLineNo">2519</span>    final long recentRate;<a name="line.2519"></a>
-<span class="sourceLineNo">2520</span>    if (lastOpsAttempted == 0)<a name="line.2520"></a>
-<span class="sourceLineNo">2521</span>    {<a name="line.2521"></a>
-<span class="sourceLineNo">2522</span>      out(" Attempts Successes   Rejects   ToRetry  AvgOps/S " +<a name="line.2522"></a>
-<span class="sourceLineNo">2523</span>          " RctOps/S  AvgDurMS  RctDurMS");<a name="line.2523"></a>
-<span class="sourceLineNo">2524</span>      out("--------- --------- --------- --------- --------- " +<a name="line.2524"></a>
-<span class="sourceLineNo">2525</span>          "--------- --------- ---------");<a name="line.2525"></a>
-<span class="sourceLineNo">2526</span>      recentRate = avgRate;<a name="line.2526"></a>
-<span class="sourceLineNo">2527</span>    }<a name="line.2527"></a>
-<span class="sourceLineNo">2528</span>    else if (currentTimeMillis == lastUpdateTimeMillis)<a name="line.2528"></a>
-<span class="sourceLineNo">2529</span>    {<a name="line.2529"></a>
-<span class="sourceLineNo">2530</span>      recentRate = 0L;<a name="line.2530"></a>
-<span class="sourceLineNo">2531</span>    }<a name="line.2531"></a>
-<span class="sourceLineNo">2532</span>    else<a name="line.2532"></a>
-<span class="sourceLineNo">2533</span>    {<a name="line.2533"></a>
-<span class="sourceLineNo">2534</span>      recentRate = 1000L * (currentAttempts - lastOpsAttempted) /<a name="line.2534"></a>
-<span class="sourceLineNo">2535</span>                   (currentTimeMillis - lastUpdateTimeMillis);<a name="line.2535"></a>
-<span class="sourceLineNo">2536</span>    }<a name="line.2536"></a>
-<span class="sourceLineNo">2537</span><a name="line.2537"></a>
-<span class="sourceLineNo">2538</span>    final StringBuilder buffer = new StringBuilder(80);<a name="line.2538"></a>
-<span class="sourceLineNo">2539</span>    appendJustified(currentAttempts, buffer, true);<a name="line.2539"></a>
-<span class="sourceLineNo">2540</span>    appendJustified(currentSuccesses, buffer, true);<a name="line.2540"></a>
-<span class="sourceLineNo">2541</span>    appendJustified(currentReject, buffer, true);<a name="line.2541"></a>
-<span class="sourceLineNo">2542</span>    appendJustified(currentRetry, buffer, true);<a name="line.2542"></a>
-<span class="sourceLineNo">2543</span>    appendJustified(avgRate, buffer, true);<a name="line.2543"></a>
-<span class="sourceLineNo">2544</span>    appendJustified(recentRate, buffer, true);<a name="line.2544"></a>
-<span class="sourceLineNo">2545</span>    appendJustified(avgDurationMillis, buffer, true);<a name="line.2545"></a>
-<span class="sourceLineNo">2546</span>    appendJustified(recentDurationMillis, buffer, false);<a name="line.2546"></a>
-<span class="sourceLineNo">2547</span><a name="line.2547"></a>
-<span class="sourceLineNo">2548</span>    out(buffer.toString());<a name="line.2548"></a>
-<span class="sourceLineNo">2549</span><a name="line.2549"></a>
-<span class="sourceLineNo">2550</span>    lastOpsAttempted = currentAttempts;<a name="line.2550"></a>
-<span class="sourceLineNo">2551</span>    lastTotalDurationMillis = currentDurationMillis;<a name="line.2551"></a>
-<span class="sourceLineNo">2552</span>    lastUpdateTimeMillis = currentTimeMillis;<a name="line.2552"></a>
-<span class="sourceLineNo">2553</span>  }<a name="line.2553"></a>
-<span class="sourceLineNo">2554</span><a name="line.2554"></a>
+<span class="sourceLineNo">2513</span><a name="line.2513"></a>
+<span class="sourceLineNo">2514</span>    final long recentDurationMillis;<a name="line.2514"></a>
+<span class="sourceLineNo">2515</span>    if (currentAttempts == lastOpsAttempted)<a name="line.2515"></a>
+<span class="sourceLineNo">2516</span>    {<a name="line.2516"></a>
+<span class="sourceLineNo">2517</span>      recentDurationMillis = 0L;<a name="line.2517"></a>
+<span class="sourceLineNo">2518</span>    }<a name="line.2518"></a>
+<span class="sourceLineNo">2519</span>    else<a name="line.2519"></a>
+<span class="sourceLineNo">2520</span>    {<a name="line.2520"></a>
+<span class="sourceLineNo">2521</span>      recentDurationMillis = (currentDurationMillis - lastTotalDurationMillis) /<a name="line.2521"></a>
+<span class="sourceLineNo">2522</span>           (currentAttempts - lastOpsAttempted);<a name="line.2522"></a>
+<span class="sourceLineNo">2523</span>    }<a name="line.2523"></a>
+<span class="sourceLineNo">2524</span><a name="line.2524"></a>
+<span class="sourceLineNo">2525</span>    final long recentRate;<a name="line.2525"></a>
+<span class="sourceLineNo">2526</span>    if (lastOpsAttempted == 0)<a name="line.2526"></a>
+<span class="sourceLineNo">2527</span>    {<a name="line.2527"></a>
+<span class="sourceLineNo">2528</span>      out(" Attempts Successes   Rejects   ToRetry  AvgOps/S " +<a name="line.2528"></a>
+<span class="sourceLineNo">2529</span>          " RctOps/S  AvgDurMS  RctDurMS");<a name="line.2529"></a>
+<span class="sourceLineNo">2530</span>      out("--------- --------- --------- --------- --------- " +<a name="line.2530"></a>
+<span class="sourceLineNo">2531</span>          "--------- --------- ---------");<a name="line.2531"></a>
+<span class="sourceLineNo">2532</span>      recentRate = avgRate;<a name="line.2532"></a>
+<span class="sourceLineNo">2533</span>    }<a name="line.2533"></a>
+<span class="sourceLineNo">2534</span>    else if (currentTimeMillis == lastUpdateTimeMillis)<a name="line.2534"></a>
+<span class="sourceLineNo">2535</span>    {<a name="line.2535"></a>
+<span class="sourceLineNo">2536</span>      recentRate = 0L;<a name="line.2536"></a>
+<span class="sourceLineNo">2537</span>    }<a name="line.2537"></a>
+<span class="sourceLineNo">2538</span>    else<a name="line.2538"></a>
+<span class="sourceLineNo">2539</span>    {<a name="line.2539"></a>
+<span class="sourceLineNo">2540</span>      recentRate = 1000L * (currentAttempts - lastOpsAttempted) /<a name="line.2540"></a>
+<span class="sourceLineNo">2541</span>                   (currentTimeMillis - lastUpdateTimeMillis);<a name="line.2541"></a>
+<span class="sourceLineNo">2542</span>    }<a name="line.2542"></a>
+<span class="sourceLineNo">2543</span><a name="line.2543"></a>
+<span class="sourceLineNo">2544</span>    final StringBuilder buffer = new StringBuilder(80);<a name="line.2544"></a>
+<span class="sourceLineNo">2545</span>    appendJustified(currentAttempts, buffer, true);<a name="line.2545"></a>
+<span class="sourceLineNo">2546</span>    appendJustified(currentSuccesses, buffer, true);<a name="line.2546"></a>
+<span class="sourceLineNo">2547</span>    appendJustified(currentReject, buffer, true);<a name="line.2547"></a>
+<span class="sourceLineNo">2548</span>    appendJustified(currentRetry, buffer, true);<a name="line.2548"></a>
+<span class="sourceLineNo">2549</span>    appendJustified(avgRate, buffer, true);<a name="line.2549"></a>
+<span class="sourceLineNo">2550</span>    appendJustified(recentRate, buffer, true);<a name="line.2550"></a>
+<span class="sourceLineNo">2551</span>    appendJustified(avgDurationMillis, buffer, true);<a name="line.2551"></a>
+<span class="sourceLineNo">2552</span>    appendJustified(recentDurationMillis, buffer, false);<a name="line.2552"></a>
+<span class="sourceLineNo">2553</span><a name="line.2553"></a>
+<span class="sourceLineNo">2554</span>    out(buffer.toString());<a name="line.2554"></a>
 <span class="sourceLineNo">2555</span><a name="line.2555"></a>
-<span class="sourceLineNo">2556</span><a name="line.2556"></a>
-<span class="sourceLineNo">2557</span>  /**<a name="line.2557"></a>
-<span class="sourceLineNo">2558</span>   * Appends the provided number to the buffer, right justified in nine columns.<a name="line.2558"></a>
-<span class="sourceLineNo">2559</span>   *<a name="line.2559"></a>
-<span class="sourceLineNo">2560</span>   * @param  value     The value to be appended to the buffer.<a name="line.2560"></a>
-<span class="sourceLineNo">2561</span>   * @param  buffer    The buffer to which the value should be appended.<a name="line.2561"></a>
-<span class="sourceLineNo">2562</span>   * @param  addSpace  Indicates whether to append a space after the number.<a name="line.2562"></a>
-<span class="sourceLineNo">2563</span>   */<a name="line.2563"></a>
-<span class="sourceLineNo">2564</span>  static void appendJustified(final long value,<a name="line.2564"></a>
-<span class="sourceLineNo">2565</span>                              @NotNull final StringBuilder buffer,<a name="line.2565"></a>
-<span class="sourceLineNo">2566</span>                              final boolean addSpace)<a name="line.2566"></a>
-<span class="sourceLineNo">2567</span>  {<a name="line.2567"></a>
-<span class="sourceLineNo">2568</span>    final String valueStr = String.valueOf(value);<a name="line.2568"></a>
-<span class="sourceLineNo">2569</span>    switch (valueStr.length())<a name="line.2569"></a>
-<span class="sourceLineNo">2570</span>    {<a name="line.2570"></a>
-<span class="sourceLineNo">2571</span>      case 1:<a name="line.2571"></a>
-<span class="sourceLineNo">2572</span>        buffer.append("        ");<a name="line.2572"></a>
-<span class="sourceLineNo">2573</span>        break;<a name="line.2573"></a>
-<span class="sourceLineNo">2574</span>      case 2:<a name="line.2574"></a>
-<span class="sourceLineNo">2575</span>        buffer.append("       ");<a name="line.2575"></a>
-<span class="sourceLineNo">2576</span>        break;<a name="line.2576"></a>
-<span class="sourceLineNo">2577</span>      case 3:<a name="line.2577"></a>
-<span class="sourceLineNo">2578</span>        buffer.append("      ");<a name="line.2578"></a>
+<span class="sourceLineNo">2556</span>    lastOpsAttempted = currentAttempts;<a name="line.2556"></a>
+<span class="sourceLineNo">2557</span>    lastTotalDurationMillis = currentDurationMillis;<a name="line.2557"></a>
+<span class="sourceLineNo">2558</span>    lastUpdateTimeMillis = currentTimeMillis;<a name="line.2558"></a>
+<span class="sourceLineNo">2559</span>  }<a name="line.2559"></a>
+<span class="sourceLineNo">2560</span><a name="line.2560"></a>
+<span class="sourceLineNo">2561</span><a name="line.2561"></a>
+<span class="sourceLineNo">2562</span><a name="line.2562"></a>
+<span class="sourceLineNo">2563</span>  /**<a name="line.2563"></a>
+<span class="sourceLineNo">2564</span>   * Appends the provided number to the buffer, right justified in nine columns.<a name="line.2564"></a>
+<span class="sourceLineNo">2565</span>   *<a name="line.2565"></a>
+<span class="sourceLineNo">2566</span>   * @param  value     The value to be appended to the buffer.<a name="line.2566"></a>
+<span class="sourceLineNo">2567</span>   * @param  buffer    The buffer to which the value should be appended.<a name="line.2567"></a>
+<span class="sourceLineNo">2568</span>   * @param  addSpace  Indicates whether to append a space after the number.<a name="line.2568"></a>
+<span class="sourceLineNo">2569</span>   */<a name="line.2569"></a>
+<span class="sourceLineNo">2570</span>  static void appendJustified(final long value,<a name="line.2570"></a>
+<span class="sourceLineNo">2571</span>                              @NotNull final StringBuilder buffer,<a name="line.2571"></a>
+<span class="sourceLineNo">2572</span>                              final boolean addSpace)<a name="line.2572"></a>
+<span class="sourceLineNo">2573</span>  {<a name="line.2573"></a>
+<span class="sourceLineNo">2574</span>    final String valueStr = String.valueOf(value);<a name="line.2574"></a>
+<span class="sourceLineNo">2575</span>    switch (valueStr.length())<a name="line.2575"></a>
+<span class="sourceLineNo">2576</span>    {<a name="line.2576"></a>
+<span class="sourceLineNo">2577</span>      case 1:<a name="line.2577"></a>
+<span class="sourceLineNo">2578</span>        buffer.append("        ");<a name="line.2578"></a>
 <span class="sourceLineNo">2579</span>        break;<a name="line.2579"></a>
-<span class="sourceLineNo">2580</span>      case 4:<a name="line.2580"></a>
-<span class="sourceLineNo">2581</span>        buffer.append("     ");<a name="line.2581"></a>
+<span class="sourceLineNo">2580</span>      case 2:<a name="line.2580"></a>
+<span class="sourceLineNo">2581</span>        buffer.append("       ");<a name="line.2581"></a>
 <span class="sourceLineNo">2582</span>        break;<a name="line.2582"></a>
-<span class="sourceLineNo">2583</span>      case 5:<a name="line.2583"></a>
-<span class="sourceLineNo">2584</span>        buffer.append("    ");<a name="line.2584"></a>
+<span class="sourceLineNo">2583</span>      case 3:<a name="line.2583"></a>
+<span class="sourceLineNo">2584</span>        buffer.append("      ");<a name="line.2584"></a>
 <span class="sourceLineNo">2585</span>        break;<a name="line.2585"></a>
-<span class="sourceLineNo">2586</span>      case 6:<a name="line.2586"></a>
-<span class="sourceLineNo">2587</span>        buffer.append("   ");<a name="line.2587"></a>
+<span class="sourceLineNo">2586</span>      case 4:<a name="line.2586"></a>
+<span class="sourceLineNo">2587</span>        buffer.append("     ");<a name="line.2587"></a>
 <span class="sourceLineNo">2588</span>        break;<a name="line.2588"></a>
-<span class="sourceLineNo">2589</span>      case 7:<a name="line.2589"></a>
-<span class="sourceLineNo">2590</span>        buffer.append("  ");<a name="line.2590"></a>
+<span class="sourceLineNo">2589</span>      case 5:<a name="line.2589"></a>
+<span class="sourceLineNo">2590</span>        buffer.append("    ");<a name="line.2590"></a>
 <span class="sourceLineNo">2591</span>        break;<a name="line.2591"></a>
-<span class="sourceLineNo">2592</span>      case 8:<a name="line.2592"></a>
-<span class="sourceLineNo">2593</span>        buffer.append(' ');<a name="line.2593"></a>
+<span class="sourceLineNo">2592</span>      case 6:<a name="line.2592"></a>
+<span class="sourceLineNo">2593</span>        buffer.append("   ");<a name="line.2593"></a>
 <span class="sourceLineNo">2594</span>        break;<a name="line.2594"></a>
-<span class="sourceLineNo">2595</span>    }<a name="line.2595"></a>
-<span class="sourceLineNo">2596</span><a name="line.2596"></a>
-<span class="sourceLineNo">2597</span>    buffer.append(value);<a name="line.2597"></a>
-<span class="sourceLineNo">2598</span><a name="line.2598"></a>
-<span class="sourceLineNo">2599</span>    if (addSpace)<a name="line.2599"></a>
-<span class="sourceLineNo">2600</span>    {<a name="line.2600"></a>
-<span class="sourceLineNo">2601</span>      buffer.append(' ');<a name="line.2601"></a>
-<span class="sourceLineNo">2602</span>    }<a name="line.2602"></a>
-<span class="sourceLineNo">2603</span>  }<a name="line.2603"></a>
+<span class="sourceLineNo">2595</span>      case 7:<a name="line.2595"></a>
+<span class="sourceLineNo">2596</span>        buffer.append("  ");<a name="line.2596"></a>
+<span class="sourceLineNo">2597</span>        break;<a name="line.2597"></a>
+<span class="sourceLineNo">2598</span>      case 8:<a name="line.2598"></a>
+<span class="sourceLineNo">2599</span>        buffer.append(' ');<a name="line.2599"></a>
+<span class="sourceLineNo">2600</span>        break;<a name="line.2600"></a>
+<span class="sourceLineNo">2601</span>    }<a name="line.2601"></a>
+<span class="sourceLineNo">2602</span><a name="line.2602"></a>
+<span class="sourceLineNo">2603</span>    buffer.append(value);<a name="line.2603"></a>
 <span class="sourceLineNo">2604</span><a name="line.2604"></a>
-<span class="sourceLineNo">2605</span><a name="line.2605"></a>
-<span class="sourceLineNo">2606</span><a name="line.2606"></a>
-<span class="sourceLineNo">2607</span>  /**<a name="line.2607"></a>
-<span class="sourceLineNo">2608</span>   * Retrieves the total number of operations attempted.  This should only be<a name="line.2608"></a>
-<span class="sourceLineNo">2609</span>   * called after all tool processing has completed.<a name="line.2609"></a>
-<span class="sourceLineNo">2610</span>   *<a name="line.2610"></a>
-<span class="sourceLineNo">2611</span>   * @return  The total number of operations attempted.<a name="line.2611"></a>
-<span class="sourceLineNo">2612</span>   */<a name="line.2612"></a>
-<span class="sourceLineNo">2613</span>  public long getTotalAttemptCount()<a name="line.2613"></a>
-<span class="sourceLineNo">2614</span>  {<a name="line.2614"></a>
-<span class="sourceLineNo">2615</span>    return opsAttempted.get();<a name="line.2615"></a>
-<span class="sourceLineNo">2616</span>  }<a name="line.2616"></a>
-<span class="sourceLineNo">2617</span><a name="line.2617"></a>
-<span class="sourceLineNo">2618</span><a name="line.2618"></a>
-<span class="sourceLineNo">2619</span><a name="line.2619"></a>
-<span class="sourceLineNo">2620</span>  /**<a name="line.2620"></a>
-<span class="sourceLineNo">2621</span>   * Retrieves the number of operations attempted on the initial pass through<a name="line.2621"></a>
-<span class="sourceLineNo">2622</span>   * the LDIF file (that is, operations for which no retry attempts was made).<a name="line.2622"></a>
-<span class="sourceLineNo">2623</span>   * This should only be called after all tool processing has completed.<a name="line.2623"></a>
-<span class="sourceLineNo">2624</span>   *<a name="line.2624"></a>
-<span class="sourceLineNo">2625</span>   * @return  The number of operations attempted on the initial pass through the<a name="line.2625"></a>
-<span class="sourceLineNo">2626</span>   *          LDIF file.<a name="line.2626"></a>
-<span class="sourceLineNo">2627</span>   */<a name="line.2627"></a>
-<span class="sourceLineNo">2628</span>  public long getInitialAttemptCount()<a name="line.2628"></a>
-<span class="sourceLineNo">2629</span>  {<a name="line.2629"></a>
-<span class="sourceLineNo">2630</span>    return initialAttempted;<a name="line.2630"></a>
-<span class="sourceLineNo">2631</span>  }<a name="line.2631"></a>
-<span class="sourceLineNo">2632</span><a name="line.2632"></a>
-<span class="sourceLineNo">2633</span><a name="line.2633"></a>
-<span class="sourceLineNo">2634</span><a name="line.2634"></a>
-<span class="sourceLineNo">2635</span>  /**<a name="line.2635"></a>
-<span class="sourceLineNo">2636</span>   * Retrieves the number of retry attempts made for operations that did not<a name="line.2636"></a>
-<span class="sourceLineNo">2637</span>   * complete successfully on their first attempt.  This should only be called<a name="line.2637"></a>
-<span class="sourceLineNo">2638</span>   * after all tool processing has completed.<a name="line.2638"></a>
-<span class="sourceLineNo">2639</span>   *<a name="line.2639"></a>
-<span class="sourceLineNo">2640</span>   * @return  The number of retry attempts made for operations that did not<a name="line.2640"></a>
-<span class="sourceLineNo">2641</span>   *          complete successfully on their first attempt.<a name="line.2641"></a>
-<span class="sourceLineNo">2642</span>   */<a name="line.2642"></a>
-<span class="sourceLineNo">2643</span>  public long getRetryAttemptCount()<a name="line.2643"></a>
-<span class="sourceLineNo">2644</span>  {<a name="line.2644"></a>
-<span class="sourceLineNo">2645</span>    return opsAttempted.get() - initialAttempted;<a name="line.2645"></a>
-<span class="sourceLineNo">2646</span>  }<a name="line.2646"></a>
-<span class="sourceLineNo">2647</span><a name="line.2647"></a>
-<span class="sourceLineNo">2648</span><a name="line.2648"></a>
-<span class="sourceLineNo">2649</span><a name="line.2649"></a>
-<span class="sourceLineNo">2650</span>  /**<a name="line.2650"></a>
-<span class="sourceLineNo">2651</span>   * Retrieves the total number of operations that completed successfully.  This<a name="line.2651"></a>
-<span class="sourceLineNo">2652</span>   * should only be called after all tool processing has completed.<a name="line.2652"></a>
-<span class="sourceLineNo">2653</span>   *<a name="line.2653"></a>
-<span class="sourceLineNo">2654</span>   * @return  The total number of operations that completed successfully.<a name="line.2654"></a>
-<span class="sourceLineNo">2655</span>   */<a name="line.2655"></a>
-<span class="sourceLineNo">2656</span>  public long getTotalSuccessCount()<a name="line.2656"></a>
-<span class="sourceLineNo">2657</span>  {<a name="line.2657"></a>
-<span class="sourceLineNo">2658</span>    return opsSucceeded.get();<a name="line.2658"></a>
-<span class="sourceLineNo">2659</span>  }<a name="line.2659"></a>
-<span class="sourceLineNo">2660</span><a name="line.2660"></a>
-<span class="sourceLineNo">2661</span><a name="line.2661"></a>
-<span class="sourceLineNo">2662</span><a name="line.2662"></a>
-<span class="sourceLineNo">2663</span>  /**<a name="line.2663"></a>
-<span class="sourceLineNo">2664</span>   * Retrieves the number of operations that completed successfully on their<a name="line.2664"></a>
-<span class="sourceLineNo">2665</span>   * first attempt.  This should only be called after all tool processing has<a name="line.2665"></a>
-<span class="sourceLineNo">2666</span>   * completed.<a name="line.2666"></a>
-<span class="sourceLineNo">2667</span>   *<a name="line.2667"></a>
-<span class="sourceLineNo">2668</span>   * @return  The total number of operations that completed successfully on<a name="line.2668"></a>
-<span class="sourceLineNo">2669</span>   *          their first attempt.<a name="line.2669"></a>
-<span class="sourceLineNo">2670</span>   */<a name="line.2670"></a>
-<span class="sourceLineNo">2671</span>  public long getInitialSuccessCount()<a name="line.2671"></a>
-<span class="sourceLineNo">2672</span>  {<a name="line.2672"></a>
-<span class="sourceLineNo">2673</span>    return initialSucceeded;<a name="line.2673"></a>
-<span class="sourceLineNo">2674</span>  }<a name="line.2674"></a>
-<span class="sourceLineNo">2675</span><a name="line.2675"></a>
-<span class="sourceLineNo">2676</span><a name="line.2676"></a>
-<span class="sourceLineNo">2677</span><a name="line.2677"></a>
-<span class="sourceLineNo">2678</span>  /**<a name="line.2678"></a>
-<span class="sourceLineNo">2679</span>   * Retrieves the number of operations that did not complete completed<a name="line.2679"></a>
-<span class="sourceLineNo">2680</span>   * successfully on their initial attempt but did succeed on a retry attempt.<a name="line.2680"></a>
-<span class="sourceLineNo">2681</span>   * This should only be called after all tool processing has completed.<a name="line.2681"></a>
-<span class="sourceLineNo">2682</span>   *<a name="line.2682"></a>
-<span class="sourceLineNo">2683</span>   * @return  The number of operations that completed successfully on a retry<a name="line.2683"></a>
-<span class="sourceLineNo">2684</span>   *          attempt.<a name="line.2684"></a>
-<span class="sourceLineNo">2685</span>   */<a name="line.2685"></a>
-<span class="sourceLineNo">2686</span>  public long getRetrySuccessCount()<a name="line.2686"></a>
-<span class="sourceLineNo">2687</span>  {<a name="line.2687"></a>
-<span class="sourceLineNo">2688</span>    return opsSucceeded.get() - initialSucceeded;<a name="line.2688"></a>
-<span class="sourceLineNo">2689</span>  }<a name="line.2689"></a>
-<span class="sourceLineNo">2690</span><a name="line.2690"></a>
-<span class="sourceLineNo">2691</span><a name="line.2691"></a>
-<span class="sourceLineNo">2692</span><a name="line.2692"></a>
-<span class="sourceLineNo">2693</span>  /**<a name="line.2693"></a>
-<span class="sourceLineNo">2694</span>   * Retrieves the number of operations that were rejected and did not complete<a name="line.2694"></a>
-<span class="sourceLineNo">2695</span>   * successfully during any of the attempts.  This should only be called after<a name="line.2695"></a>
-<span class="sourceLineNo">2696</span>   * all tool processing has completed.<a name="line.2696"></a>
-<span class="sourceLineNo">2697</span>   *<a name="line.2697"></a>
-<span class="sourceLineNo">2698</span>   * @return  The number of operations that were rejected.<a name="line.2698"></a>
-<span class="sourceLineNo">2699</span>   */<a name="line.2699"></a>
-<span class="sourceLineNo">2700</span>  public long getRejectCount()<a name="line.2700"></a>
-<span class="sourceLineNo">2701</span>  {<a name="line.2701"></a>
-<span class="sourceLineNo">2702</span>    return opsRejected.get();<a name="line.2702"></a>
-<span class="sourceLineNo">2703</span>  }<a name="line.2703"></a>
-<span class="sourceLineNo">2704</span><a name="line.2704"></a>
-<span class="sourceLineNo">2705</span><a name="line.2705"></a>
-<span class="sourceLineNo">2706</span><a name="line.2706"></a>
-<span class="sourceLineNo">2707</span>  /**<a name="line.2707"></a>
-<span class="sourceLineNo">2708</span>   * Retrieves the total length of time, in milliseconds, spent processing<a name="line.2708"></a>
-<span class="sourceLineNo">2709</span>   * operations.  This should only be called after all tool processing has<a name="line.2709"></a>
-<span class="sourceLineNo">2710</span>   * completed.  Note that when running with multiple threads, this can exceed<a name="line.2710"></a>
-<span class="sourceLineNo">2711</span>   * the length of time spent running the tool because multiple operations can<a name="line.2711"></a>
-<span class="sourceLineNo">2712</span>   * be processed in parallel.<a name="line.2712"></a>
-<span class="sourceLineNo">2713</span>   *<a name="line.2713"></a>
-<span class="sourceLineNo">2714</span>   * @return  The total length of time, in milliseconds, spent processing<a name="line.2714"></a>
-<span class="sourceLineNo">2715</span>   *          operations.<a name="line.2715"></a>
-<span class="sourceLineNo">2716</span>   */<a name="line.2716"></a>
-<span class="sourceLineNo">2717</span>  public long getTotalOpDurationMillis()<a name="line.2717"></a>
-<span class="sourceLineNo">2718</span>  {<a name="line.2718"></a>
-<span class="sourceLineNo">2719</span>    return totalOpDurationMillis.get();<a name="line.2719"></a>
-<span class="sourceLineNo">2720</span>  }<a name="line.2720"></a>
-<span class="sourceLineNo">2721</span><a name="line.2721"></a>
-<span class="sourceLineNo">2722</span><a name="line.2722"></a>
-<span class="sourceLineNo">2723</span><a name="line.2723"></a>
-<span class="sourceLineNo">2724</span>  /**<a name="line.2724"></a>
-<span class="sourceLineNo">2725</span>   * {@inheritDoc}<a name="line.2725"></a>
-<span class="sourceLineNo">2726</span>   */<a name="line.2726"></a>
-<span class="sourceLineNo">2727</span>  @Override()<a name="line.2727"></a>
-<span class="sourceLineNo">2728</span>  protected boolean registerShutdownHook()<a name="line.2728"></a>
-<span class="sourceLineNo">2729</span>  {<a name="line.2729"></a>
-<span class="sourceLineNo">2730</span>    return true;<a name="line.2730"></a>
-<span class="sourceLineNo">2731</span>  }<a name="line.2731"></a>
-<span class="sourceLineNo">2732</span><a name="line.2732"></a>
-<span class="sourceLineNo">2733</span><a name="line.2733"></a>
-<span class="sourceLineNo">2734</span><a name="line.2734"></a>
-<span class="sourceLineNo">2735</span>  /**<a name="line.2735"></a>
-<span class="sourceLineNo">2736</span>   * {@inheritDoc}<a name="line.2736"></a>
-<span class="sourceLineNo">2737</span>   */<a name="line.2737"></a>
-<span class="sourceLineNo">2738</span>  @Override()<a name="line.2738"></a>
-<span class="sourceLineNo">2739</span>  protected void doShutdownHookProcessing(@Nullable final ResultCode resultCode)<a name="line.2739"></a>
-<span class="sourceLineNo">2740</span>  {<a name="line.2740"></a>
-<span class="sourceLineNo">2741</span>    shouldAbort.set(true);<a name="line.2741"></a>
-<span class="sourceLineNo">2742</span><a name="line.2742"></a>
-<span class="sourceLineNo">2743</span>    final FixedRateBarrier b = rateLimiter;<a name="line.2743"></a>
-<span class="sourceLineNo">2744</span>    if (b != null)<a name="line.2744"></a>
-<span class="sourceLineNo">2745</span>    {<a name="line.2745"></a>
-<span class="sourceLineNo">2746</span>      b.shutdownRequested();<a name="line.2746"></a>
-<span class="sourceLineNo">2747</span>    }<a name="line.2747"></a>
-<span class="sourceLineNo">2748</span>  }<a name="line.2748"></a>
-<span class="sourceLineNo">2749</span><a name="line.2749"></a>
-<span class="sourceLineNo">2750</span><a name="line.2750"></a>
-<span class="sourceLineNo">2751</span><a name="line.2751"></a>
-<span class="sourceLineNo">2752</span>  /**<a name="line.2752"></a>
-<span class="sourceLineNo">2753</span>   * {@inheritDoc}<a name="line.2753"></a>
-<span class="sourceLineNo">2754</span>   */<a name="line.2754"></a>
-<span class="sourceLineNo">2755</span>  @Override()<a name="line.2755"></a>
-<span class="sourceLineNo">2756</span>  public void handleUnsolicitedNotification(<a name="line.2756"></a>
-<span class="sourceLineNo">2757</span>                   @NotNull final LDAPConnection connection,<a name="line.2757"></a>
-<span class="sourceLineNo">2758</span>                   @NotNull final ExtendedResult notification)<a name="line.2758"></a>
-<span class="sourceLineNo">2759</span>  {<a name="line.2759"></a>
-<span class="sourceLineNo">2760</span>    final String message;<a name="line.2760"></a>
-<span class="sourceLineNo">2761</span>    if (notification.getDiagnosticMessage() == null)<a name="line.2761"></a>
-<span class="sourceLineNo">2762</span>    {<a name="line.2762"></a>
-<span class="sourceLineNo">2763</span>      message = INFO_PARALLEL_UPDATE_UNSOLICITED_NOTIFICATION_NO_MESSAGE.get(<a name="line.2763"></a>
-<span class="sourceLineNo">2764</span>           getToolName(), String.valueOf(notification.getResultCode()),<a name="line.2764"></a>
-<span class="sourceLineNo">2765</span>           notification.getOID());<a name="line.2765"></a>
-<span class="sourceLineNo">2766</span>    }<a name="line.2766"></a>
-<span class="sourceLineNo">2767</span>    else<a name="line.2767"></a>
+<span class="sourceLineNo">2605</span>    if (addSpace)<a name="line.2605"></a>
+<span class="sourceLineNo">2606</span>    {<a name="line.2606"></a>
+<span class="sourceLineNo">2607</span>      buffer.append(' ');<a name="line.2607"></a>
+<span class="sourceLineNo">2608</span>    }<a name="line.2608"></a>
+<span class="sourceLineNo">2609</span>  }<a name="line.2609"></a>
+<span class="sourceLineNo">2610</span><a name="line.2610"></a>
+<span class="sourceLineNo">2611</span><a name="line.2611"></a>
+<span class="sourceLineNo">2612</span><a name="line.2612"></a>
+<span class="sourceLineNo">2613</span>  /**<a name="line.2613"></a>
+<span class="sourceLineNo">2614</span>   * Retrieves the total number of operations attempted.  This should only be<a name="line.2614"></a>
+<span class="sourceLineNo">2615</span>   * called after all tool processing has completed.<a name="line.2615"></a>
+<span class="sourceLineNo">2616</span>   *<a name="line.2616"></a>
+<span class="sourceLineNo">2617</span>   * @return  The total number of operations attempted.<a name="line.2617"></a>
+<span class="sourceLineNo">2618</span>   */<a name="line.2618"></a>
+<span class="sourceLineNo">2619</span>  public long getTotalAttemptCount()<a name="line.2619"></a>
+<span class="sourceLineNo">2620</span>  {<a name="line.2620"></a>
+<span class="sourceLineNo">2621</span>    return opsAttempted.get();<a name="line.2621"></a>
+<span class="sourceLineNo">2622</span>  }<a name="line.2622"></a>
+<span class="sourceLineNo">2623</span><a name="line.2623"></a>
+<span class="sourceLineNo">2624</span><a name="line.2624"></a>
+<span class="sourceLineNo">2625</span><a name="line.2625"></a>
+<span class="sourceLineNo">2626</span>  /**<a name="line.2626"></a>
+<span class="sourceLineNo">2627</span>   * Retrieves the number of operations attempted on the initial pass through<a name="line.2627"></a>
+<span class="sourceLineNo">2628</span>   * the LDIF file (that is, operations for which no retry attempts was made).<a name="line.2628"></a>
+<span class="sourceLineNo">2629</span>   * This should only be called after all tool processing has completed.<a name="line.2629"></a>
+<span class="sourceLineNo">2630</span>   *<a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>   * @return  The number of operations attempted on the initial pass through the<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span>   *          LDIF file.<a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>   */<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>  public long getInitialAttemptCount()<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span>  {<a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>    return initialAttempted;<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>  }<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span><a name="line.2638"></a>
+<span class="sourceLineNo">2639</span><a name="line.2639"></a>
+<span class="sourceLineNo">2640</span><a name="line.2640"></a>
+<span class="sourceLineNo">2641</span>  /**<a name="line.2641"></a>
+<span class="sourceLineNo">2642</span>   * Retrieves the number of retry attempts made for operations that did not<a name="line.2642"></a>
+<span class="sourceLineNo">2643</span>   * complete successfully on their first attempt.  This should only be called<a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>   * after all tool processing has completed.<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span>   *<a name="line.2645"></a>
+<span class="sourceLineNo">2646</span>   * @return  The number of retry attempts made for operations that did not<a name="line.2646"></a>
+<span class="sourceLineNo">2647</span>   *          complete successfully on their first attempt.<a name="line.2647"></a>
+<span class="sourceLineNo">2648</span>   */<a name="line.2648"></a>
+<span class="sourceLineNo">2649</span>  public long getRetryAttemptCount()<a name="line.2649"></a>
+<span class="sourceLineNo">2650</span>  {<a name="line.2650"></a>
+<span class="sourceLineNo">2651</span>    return opsAttempted.get() - initialAttempted;<a name="line.2651"></a>
+<span class="sourceLineNo">2652</span>  }<a name="line.2652"></a>
+<span class="sourceLineNo">2653</span><a name="line.2653"></a>
+<span class="sourceLineNo">2654</span><a name="line.2654"></a>
+<span class="sourceLineNo">2655</span><a name="line.2655"></a>
+<span class="sourceLineNo">2656</span>  /**<a name="line.2656"></a>
+<span class="sourceLineNo">2657</span>   * Retrieves the total number of operations that completed successfully.  This<a name="line.2657"></a>
+<span class="sourceLineNo">2658</span>   * should only be called after all tool processing has completed.<a name="line.2658"></a>
+<span class="sourceLineNo">2659</span>   *<a name="line.2659"></a>
+<span class="sourceLineNo">2660</span>   * @return  The total number of operations that completed successfully.<a name="line.2660"></a>
+<span class="sourceLineNo">2661</span>   */<a name="line.2661"></a>
+<span class="sourceLineNo">2662</span>  public long getTotalSuccessCount()<a name="line.2662"></a>
+<span class="sourceLineNo">2663</span>  {<a name="line.2663"></a>
+<span class="sourceLineNo">2664</span>    return opsSucceeded.get();<a name="line.2664"></a>
+<span class="sourceLineNo">2665</span>  }<a name="line.2665"></a>
+<span class="sourceLineNo">2666</span><a name="line.2666"></a>
+<span class="sourceLineNo">2667</span><a name="line.2667"></a>
+<span class="sourceLineNo">2668</span><a name="line.2668"></a>
+<span class="sourceLineNo">2669</span>  /**<a name="line.2669"></a>
+<span class="sourceLineNo">2670</span>   * Retrieves the number of operations that completed successfully on their<a name="line.2670"></a>
+<span class="sourceLineNo">2671</span>   * first attempt.  This should only be called after all tool processing has<a name="line.2671"></a>
+<span class="sourceLineNo">2672</span>   * completed.<a name="line.2672"></a>
+<span class="sourceLineNo">2673</span>   *<a name="line.2673"></a>
+<span class="sourceLineNo">2674</span>   * @return  The total number of operations that completed successfully on<a name="line.2674"></a>
+<span class="sourceLineNo">2675</span>   *          their first attempt.<a name="line.2675"></a>
+<span class="sourceLineNo">2676</span>   */<a name="line.2676"></a>
+<span class="sourceLineNo">2677</span>  public long getInitialSuccessCount()<a name="line.2677"></a>
+<span class="sourceLineNo">2678</span>  {<a name="line.2678"></a>
+<span class="sourceLineNo">2679</span>    return initialSucceeded;<a name="line.2679"></a>
+<span class="sourceLineNo">2680</span>  }<a name="line.2680"></a>
+<span class="sourceLineNo">2681</span><a name="line.2681"></a>
+<span class="sourceLineNo">2682</span><a name="line.2682"></a>
+<span class="sourceLineNo">2683</span><a name="line.2683"></a>
+<span class="sourceLineNo">2684</span>  /**<a name="line.2684"></a>
+<span class="sourceLineNo">2685</span>   * Retrieves the number of operations that did not complete completed<a name="line.2685"></a>
+<span class="sourceLineNo">2686</span>   * successfully on their initial attempt but did succeed on a retry attempt.<a name="line.2686"></a>
+<span class="sourceLineNo">2687</span>   * This should only be called after all tool processing has completed.<a name="line.2687"></a>
+<span class="sourceLineNo">2688</span>   *<a name="line.2688"></a>
+<span class="sourceLineNo">2689</span>   * @return  The number of operations that completed successfully on a retry<a name="line.2689"></a>
+<span class="sourceLineNo">2690</span>   *          attempt.<a name="line.2690"></a>
+<span class="sourceLineNo">2691</span>   */<a name="line.2691"></a>
+<span class="sourceLineNo">2692</span>  public long getRetrySuccessCount()<a name="line.2692"></a>
+<span class="sourceLineNo">2693</span>  {<a name="line.2693"></a>
+<span class="sourceLineNo">2694</span>    return opsSucceeded.get() - initialSucceeded;<a name="line.2694"></a>
+<span class="sourceLineNo">2695</span>  }<a name="line.2695"></a>
+<span class="sourceLineNo">2696</span><a name="line.2696"></a>
+<span class="sourceLineNo">2697</span><a name="line.2697"></a>
+<span class="sourceLineNo">2698</span><a name="line.2698"></a>
+<span class="sourceLineNo">2699</span>  /**<a name="line.2699"></a>
+<span class="sourceLineNo">2700</span>   * Retrieves the number of operations that were rejected and did not complete<a name="line.2700"></a>
+<span class="sourceLineNo">2701</span>   * successfully during any of the attempts.  This should only be called after<a name="line.2701"></a>
+<span class="sourceLineNo">2702</span>   * all tool processing has completed.<a name="line.2702"></a>
+<span class="sourceLineNo">2703</span>   *<a name="line.2703"></a>
+<span class="sourceLineNo">2704</span>   * @return  The number of operations that were rejected.<a name="line.2704"></a>
+<span class="sourceLineNo">2705</span>   */<a name="line.2705"></a>
+<span class="sourceLineNo">2706</span>  public long getRejectCount()<a name="line.2706"></a>
+<span class="sourceLineNo">2707</span>  {<a name="line.2707"></a>
+<span class="sourceLineNo">2708</span>    return opsRejected.get();<a name="line.2708"></a>
+<span class="sourceLineNo">2709</span>  }<a name="line.2709"></a>
+<span class="sourceLineNo">2710</span><a name="line.2710"></a>
+<span class="sourceLineNo">2711</span><a name="line.2711"></a>
+<span class="sourceLineNo">2712</span><a name="line.2712"></a>
+<span class="sourceLineNo">2713</span>  /**<a name="line.2713"></a>
+<span class="sourceLineNo">2714</span>   * Retrieves the total length of time, in milliseconds, spent processing<a name="line.2714"></a>
+<span class="sourceLineNo">2715</span>   * operations.  This should only be called after all tool processing has<a name="line.2715"></a>
+<span class="sourceLineNo">2716</span>   * completed.  Note that when running with multiple threads, this can exceed<a name="line.2716"></a>
+<span class="sourceLineNo">2717</span>   * the length of time spent running the tool because multiple operations can<a name="line.2717"></a>
+<span class="sourceLineNo">2718</span>   * be processed in parallel.<a name="line.2718"></a>
+<span class="sourceLineNo">2719</span>   *<a name="line.2719"></a>
+<span class="sourceLineNo">2720</span>   * @return  The total length of time, in milliseconds, spent processing<a name="line.2720"></a>
+<span class="sourceLineNo">2721</span>   *          operations.<a name="line.2721"></a>
+<span class="sourceLineNo">2722</span>   */<a name="line.2722"></a>
+<span class="sourceLineNo">2723</span>  public long getTotalOpDurationMillis()<a name="line.2723"></a>
+<span class="sourceLineNo">2724</span>  {<a name="line.2724"></a>
+<span class="sourceLineNo">2725</span>    return totalOpDurationMillis.get();<a name="line.2725"></a>
+<span class="sourceLineNo">2726</span>  }<a name="line.2726"></a>
+<span class="sourceLineNo">2727</span><a name="line.2727"></a>
+<span class="sourceLineNo">2728</span><a name="line.2728"></a>
+<span class="sourceLineNo">2729</span><a name="line.2729"></a>
+<span class="sourceLineNo">2730</span>  /**<a name="line.2730"></a>
+<span class="sourceLineNo">2731</span>   * {@inheritDoc}<a name="line.2731"></a>
+<span class="sourceLineNo">2732</span>   */<a name="line.2732"></a>
+<span class="sourceLineNo">2733</span>  @Override()<a name="line.2733"></a>
+<span class="sourceLineNo">2734</span>  protected boolean registerShutdownHook()<a name="line.2734"></a>
+<span class="sourceLineNo">2735</span>  {<a name="line.2735"></a>
+<span class="sourceLineNo">2736</span>    return true;<a name="line.2736"></a>
+<span class="sourceLineNo">2737</span>  }<a name="line.2737"></a>
+<span class="sourceLineNo">2738</span><a name="line.2738"></a>
+<span class="sourceLineNo">2739</span><a name="line.2739"></a>
+<span class="sourceLineNo">2740</span><a name="line.2740"></a>
+<span class="sourceLineNo">2741</span>  /**<a name="line.2741"></a>
+<span class="sourceLineNo">2742</span>   * {@inheritDoc}<a name="line.2742"></a>
+<span class="sourceLineNo">2743</span>   */<a name="line.2743"></a>
+<span class="sourceLineNo">2744</span>  @Override()<a name="line.2744"></a>
+<span class="sourceLineNo">2745</span>  protected void doShutdownHookProcessing(@Nullable final ResultCode resultCode)<a name="line.2745"></a>
+<span class="sourceLineNo">2746</span>  {<a name="line.2746"></a>
+<span class="sourceLineNo">2747</span>    shouldAbort.set(true);<a name="line.2747"></a>
+<span class="sourceLineNo">2748</span><a name="line.2748"></a>
+<span class="sourceLineNo">2749</span>    final FixedRateBarrier b = rateLimiter;<a name="line.2749"></a>
+<span class="sourceLineNo">2750</span>    if (b != null)<a name="line.2750"></a>
+<span class="sourceLineNo">2751</span>    {<a name="line.2751"></a>
+<span class="sourceLineNo">2752</span>      b.shutdownRequested();<a name="line.2752"></a>
+<span class="sourceLineNo">2753</span>    }<a name="line.2753"></a>
+<span class="sourceLineNo">2754</span>  }<a name="line.2754"></a>
+<span class="sourceLineNo">2755</span><a name="line.2755"></a>
+<span class="sourceLineNo">2756</span><a name="line.2756"></a>
+<span class="sourceLineNo">2757</span><a name="line.2757"></a>
+<span class="sourceLineNo">2758</span>  /**<a name="line.2758"></a>
+<span class="sourceLineNo">2759</span>   * {@inheritDoc}<a name="line.2759"></a>
+<span class="sourceLineNo">2760</span>   */<a name="line.2760"></a>
+<span class="sourceLineNo">2761</span>  @Override()<a name="line.2761"></a>
+<span class="sourceLineNo">2762</span>  public void handleUnsolicitedNotification(<a name="line.2762"></a>
+<span class="sourceLineNo">2763</span>                   @NotNull final LDAPConnection connection,<a name="line.2763"></a>
+<span class="sourceLineNo">2764</span>                   @NotNull final ExtendedResult notification)<a name="line.2764"></a>
+<span class="sourceLineNo">2765</span>  {<a name="line.2765"></a>
+<span class="sourceLineNo">2766</span>    final String message;<a name="line.2766"></a>
+<span class="sourceLineNo">2767</span>    if (notification.getDiagnosticMessage() == null)<a name="line.2767"></a>
 <span class="sourceLineNo">2768</span>    {<a name="line.2768"></a>
 <span class="sourceLineNo">2769</span>      message = INFO_PARALLEL_UPDATE_UNSOLICITED_NOTIFICATION_NO_MESSAGE.get(<a name="line.2769"></a>
 <span class="sourceLineNo">2770</span>           getToolName(), String.valueOf(notification.getResultCode()),<a name="line.2770"></a>
-<span class="sourceLineNo">2771</span>           notification.getOID(), notification.getDiagnosticMessage());<a name="line.2771"></a>
+<span class="sourceLineNo">2771</span>           notification.getOID());<a name="line.2771"></a>
 <span class="sourceLineNo">2772</span>    }<a name="line.2772"></a>
-<span class="sourceLineNo">2773</span><a name="line.2773"></a>
-<span class="sourceLineNo">2774</span>    out();<a name="line.2774"></a>
-<span class="sourceLineNo">2775</span>    wrapOut(0, WRAP_COLUMN, message);<a name="line.2775"></a>
-<span class="sourceLineNo">2776</span>    out();<a name="line.2776"></a>
-<span class="sourceLineNo">2777</span>  }<a name="line.2777"></a>
-<span class="sourceLineNo">2778</span><a name="line.2778"></a>
+<span class="sourceLineNo">2773</span>    else<a name="line.2773"></a>
+<span class="sourceLineNo">2774</span>    {<a name="line.2774"></a>
+<span class="sourceLineNo">2775</span>      message = INFO_PARALLEL_UPDATE_UNSOLICITED_NOTIFICATION_NO_MESSAGE.get(<a name="line.2775"></a>
+<span class="sourceLineNo">2776</span>           getToolName(), String.valueOf(notification.getResultCode()),<a name="line.2776"></a>
+<span class="sourceLineNo">2777</span>           notification.getOID(), notification.getDiagnosticMessage());<a name="line.2777"></a>
+<span class="sourceLineNo">2778</span>    }<a name="line.2778"></a>
 <span class="sourceLineNo">2779</span><a name="line.2779"></a>
-<span class="sourceLineNo">2780</span><a name="line.2780"></a>
-<span class="sourceLineNo">2781</span>  /**<a name="line.2781"></a>
-<span class="sourceLineNo">2782</span>   * {@inheritDoc}<a name="line.2782"></a>
-<span class="sourceLineNo">2783</span>   */<a name="line.2783"></a>
-<span class="sourceLineNo">2784</span>  @Override()<a name="line.2784"></a>
-<span class="sourceLineNo">2785</span>  @NotNull()<a name="line.2785"></a>
-<span class="sourceLineNo">2786</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.2786"></a>
-<span class="sourceLineNo">2787</span>  {<a name="line.2787"></a>
-<span class="sourceLineNo">2788</span>    final LinkedHashMap&lt;String[],String&gt; examples = new LinkedHashMap&lt;&gt;();<a name="line.2788"></a>
-<span class="sourceLineNo">2789</span><a name="line.2789"></a>
-<span class="sourceLineNo">2790</span>    examples.put(<a name="line.2790"></a>
-<span class="sourceLineNo">2791</span>         new String[]<a name="line.2791"></a>
-<span class="sourceLineNo">2792</span>         {<a name="line.2792"></a>
-<span class="sourceLineNo">2793</span>           "--hostname", "server.example.com",<a name="line.2793"></a>
-<span class="sourceLineNo">2794</span>           "--port", "636",<a name="line.2794"></a>
-<span class="sourceLineNo">2795</span>           "--useSSL",<a name="line.2795"></a>
-<span class="sourceLineNo">2796</span>           "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.2796"></a>
-<span class="sourceLineNo">2797</span>           "--promptForBindPassword",<a name="line.2797"></a>
-<span class="sourceLineNo">2798</span>           "--ldifFile", "changes.ldif",<a name="line.2798"></a>
-<span class="sourceLineNo">2799</span>           "--rejectFile", "rejects.ldif",<a name="line.2799"></a>
-<span class="sourceLineNo">2800</span>           "--defaultAdd",<a name="line.2800"></a>
-<span class="sourceLineNo">2801</span>           "--numThreads", "10",<a name="line.2801"></a>
-<span class="sourceLineNo">2802</span>           "--ratePerSecond", "5000"<a name="line.2802"></a>
-<span class="sourceLineNo">2803</span>         },<a name="line.2803"></a>
-<span class="sourceLineNo">2804</span>         INFO_PARALLEL_UPDATE_EXAMPLE_DESC.get());<a name="line.2804"></a>
-<span class="sourceLineNo">2805</span><a name="line.2805"></a>
-<span class="sourceLineNo">2806</span>    return examples;<a name="line.2806"></a>
-<span class="sourceLineNo">2807</span>  }<a name="line.2807"></a>
-<span class="sourceLineNo">2808</span>}<a name="line.2808"></a>
+<span class="sourceLineNo">2780</span>    out();<a name="line.2780"></a>
+<span class="sourceLineNo">2781</span>    wrapOut(0, WRAP_COLUMN, message);<a name="line.2781"></a>
+<span class="sourceLineNo">2782</span>    out();<a name="line.2782"></a>
+<span class="sourceLineNo">2783</span>  }<a name="line.2783"></a>
+<span class="sourceLineNo">2784</span><a name="line.2784"></a>
+<span class="sourceLineNo">2785</span><a name="line.2785"></a>
+<span class="sourceLineNo">2786</span><a name="line.2786"></a>
+<span class="sourceLineNo">2787</span>  /**<a name="line.2787"></a>
+<span class="sourceLineNo">2788</span>   * {@inheritDoc}<a name="line.2788"></a>
+<span class="sourceLineNo">2789</span>   */<a name="line.2789"></a>
+<span class="sourceLineNo">2790</span>  @Override()<a name="line.2790"></a>
+<span class="sourceLineNo">2791</span>  @NotNull()<a name="line.2791"></a>
+<span class="sourceLineNo">2792</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.2792"></a>
+<span class="sourceLineNo">2793</span>  {<a name="line.2793"></a>
+<span class="sourceLineNo">2794</span>    final LinkedHashMap&lt;String[],String&gt; examples = new LinkedHashMap&lt;&gt;();<a name="line.2794"></a>
+<span class="sourceLineNo">2795</span><a name="line.2795"></a>
+<span class="sourceLineNo">2796</span>    examples.put(<a name="line.2796"></a>
+<span class="sourceLineNo">2797</span>         new String[]<a name="line.2797"></a>
+<span class="sourceLineNo">2798</span>         {<a name="line.2798"></a>
+<span class="sourceLineNo">2799</span>           "--hostname", "server.example.com",<a name="line.2799"></a>
+<span class="sourceLineNo">2800</span>           "--port", "636",<a name="line.2800"></a>
+<span class="sourceLineNo">2801</span>           "--useSSL",<a name="line.2801"></a>
+<span class="sourceLineNo">2802</span>           "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.2802"></a>
+<span class="sourceLineNo">2803</span>           "--promptForBindPassword",<a name="line.2803"></a>
+<span class="sourceLineNo">2804</span>           "--ldifFile", "changes.ldif",<a name="line.2804"></a>
+<span class="sourceLineNo">2805</span>           "--rejectFile", "rejects.ldif",<a name="line.2805"></a>
+<span class="sourceLineNo">2806</span>           "--defaultAdd",<a name="line.2806"></a>
+<span class="sourceLineNo">2807</span>           "--numThreads", "10",<a name="line.2807"></a>
+<span class="sourceLineNo">2808</span>           "--ratePerSecond", "5000"<a name="line.2808"></a>
+<span class="sourceLineNo">2809</span>         },<a name="line.2809"></a>
+<span class="sourceLineNo">2810</span>         INFO_PARALLEL_UPDATE_EXAMPLE_DESC.get());<a name="line.2810"></a>
+<span class="sourceLineNo">2811</span><a name="line.2811"></a>
+<span class="sourceLineNo">2812</span>    return examples;<a name="line.2812"></a>
+<span class="sourceLineNo">2813</span>  }<a name="line.2813"></a>
+<span class="sourceLineNo">2814</span>}<a name="line.2814"></a>
 
 
 

@@ -221,6 +221,14 @@ Available options include:
         draft-weltman-ldapv3-proxy-04) to process the operation under an
         alternate authorization identity, specified as the DN of the desired
         user.
+    --accessLogField {name:value}
+        Indicates that all update requests should include an access log field
+        request control to indicate that the server should include a custom
+        field with the specified name and value.  The field name must contain
+        only ASCII letters, digits, dashes, and underscores.  The field name
+        must be followed by a colon and the field value for that field.  This
+        argument may be provided multiple times to request multiple access log
+        fields.
     --operationPurpose {purpose}
         Indicates that all operations should include the UnboundID-proprietary
         operation purpose request control to provide the specified reason for
@@ -238,6 +246,11 @@ Available options include:
         identity request control as defined in RFC 3829.  With this control, a
         successful bind result should include the authorization identity
         assigned to the connection.
+    --generateAccessToken
+        Indicates that the bind request should include the generate access
+        token request control, which may be used to request that the server
+        generate and return an access token that can be used to authorize
+        subsequent connections via the OAUTHBEARER SASL mechanism.
     --generatePassword
         Indicates that all add requests should include the generate password
         request control to request that the server generate a password for the

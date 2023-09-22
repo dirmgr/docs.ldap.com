@@ -359,6 +359,16 @@
         <br><br>
       </li>
       <li>
+        <tt>--accessLogField <i>{name:value}</i></tt> &mdash; Indicates that all search requests should include an access log field request control to indicate that the server should include a custom field with the specified name and value.  The field name must contain only ASCII letters, digits, dashes, and underscores.  The field name must be followed by a colon and the field value for that field.  This argument may be provided multiple times to request multiple access log fields.
+        <br><br>
+      </li>
+      <li>
+        <tt>--accountUsable</tt> &mdash; Indicates that all search requests should include the UnboundID-proprietary account usable request control to request that each search result entry returned include a response control with information about the password policy usability state for the entry.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
         <tt>-E</tt> / <tt>--authorizationIdentity</tt> &mdash; Indicates that all bind requests should include the authorization identity request control as defined in RFC 3829.  With this control, a successful bind result should include the authorization identity assigned to the connection.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
@@ -371,15 +381,15 @@
         <br><br>
       </li>
       <li>
-        <tt>--accountUsable</tt> &mdash; Indicates that all search requests should include the UnboundID-proprietary account usable request control to request that each search result entry returned include a response control with information about the password policy usability state for the entry.
-        <br>
-        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
-        <br><br>
-      </li>
-      <li>
         <tt>--excludeBranch <i>{dn}</i></tt> &mdash; Indicates that all search requests should include the UnboundID-proprietary exclude branch request control to indicate that matching entries below the specified base DN should be excluded from search results.  This argument may be provided multiple times if multiple branches should be excluded.
         <br>
         A provided value must be able to be parsed as an LDAP distinguished name as described in RFC 4514.
+        <br><br>
+      </li>
+      <li>
+        <tt>--generateAccessToken</tt> &mdash; Indicates that the bind request should include the generate access token request control, which may be used to request that the server generate and return an access token that can be used to authorize subsequent connections via the OAUTHBEARER SASL mechanism.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
       </li>
       <li>

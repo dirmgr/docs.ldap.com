@@ -283,6 +283,19 @@ Available options include:
     -J, --control {oid}[:{criticality}[:{stringValue}|::{base64Value}]]
         Specifies a control that should be included in all search requests sent
         to the server.
+    --accessLogField {name:value}
+        Indicates that all search requests should include an access log field
+        request control to indicate that the server should include a custom
+        field with the specified name and value.  The field name must contain
+        only ASCII letters, digits, dashes, and underscores.  The field name
+        must be followed by a colon and the field value for that field.  This
+        argument may be provided multiple times to request multiple access log
+        fields.
+    --accountUsable
+        Indicates that all search requests should include the
+        UnboundID-proprietary account usable request control to request that
+        each search result entry returned include a response control with
+        information about the password policy usability state for the entry.
     -E, --authorizationIdentity
         Indicates that all bind requests should include the authorization
         identity request control as defined in RFC 3829.  With this control, a
@@ -293,17 +306,17 @@ Available options include:
         request control (as described in RFC 4528) to indicate that the server
         should only process searches in which the entry specified as the base
         DN matches this filter.
-    --accountUsable
-        Indicates that all search requests should include the
-        UnboundID-proprietary account usable request control to request that
-        each search result entry returned include a response control with
-        information about the password policy usability state for the entry.
     --excludeBranch {dn}
         Indicates that all search requests should include the
         UnboundID-proprietary exclude branch request control to indicate that
         matching entries below the specified base DN should be excluded from
         search results.  This argument may be provided multiple times if
         multiple branches should be excluded.
+    --generateAccessToken
+        Indicates that the bind request should include the generate access
+        token request control, which may be used to request that the server
+        generate and return an access token that can be used to authorize
+        subsequent connections via the OAUTHBEARER SASL mechanism.
     --getAuthorizationEntryAttribute {attr}
         Indicates that all bind requests should include the
         UnboundID-proprietary get authorization entry request control to

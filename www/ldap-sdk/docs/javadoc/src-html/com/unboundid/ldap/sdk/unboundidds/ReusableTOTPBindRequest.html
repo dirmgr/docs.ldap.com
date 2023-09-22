@@ -440,82 +440,86 @@
 <span class="sourceLineNo">432</span>              getAuthorizationID(), sharedSecret, getStaticPassword(),<a name="line.432"></a>
 <span class="sourceLineNo">433</span>              totpIntervalDurationSeconds, totpNumDigits, controls);<a name="line.433"></a>
 <span class="sourceLineNo">434</span>    bindRequest.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.434"></a>
-<span class="sourceLineNo">435</span>    return bindRequest;<a name="line.435"></a>
-<span class="sourceLineNo">436</span>  }<a name="line.436"></a>
-<span class="sourceLineNo">437</span><a name="line.437"></a>
-<span class="sourceLineNo">438</span><a name="line.438"></a>
-<span class="sourceLineNo">439</span><a name="line.439"></a>
-<span class="sourceLineNo">440</span>  /**<a name="line.440"></a>
-<span class="sourceLineNo">441</span>   * {@inheritDoc}<a name="line.441"></a>
-<span class="sourceLineNo">442</span>   */<a name="line.442"></a>
-<span class="sourceLineNo">443</span>  @Override()<a name="line.443"></a>
-<span class="sourceLineNo">444</span>  public void toCode(@NotNull final List&lt;String&gt; lineList,<a name="line.444"></a>
-<span class="sourceLineNo">445</span>                     @NotNull final String requestID,<a name="line.445"></a>
-<span class="sourceLineNo">446</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.446"></a>
-<span class="sourceLineNo">447</span>  {<a name="line.447"></a>
-<span class="sourceLineNo">448</span>    // Create the request variable.<a name="line.448"></a>
-<span class="sourceLineNo">449</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs = new ArrayList&lt;&gt;(7);<a name="line.449"></a>
-<span class="sourceLineNo">450</span>    constructorArgs.add(ToCodeArgHelper.createString(getAuthenticationID(),<a name="line.450"></a>
-<span class="sourceLineNo">451</span>         "Authentication ID"));<a name="line.451"></a>
-<span class="sourceLineNo">452</span>    constructorArgs.add(ToCodeArgHelper.createString(getAuthorizationID(),<a name="line.452"></a>
-<span class="sourceLineNo">453</span>         "Authorization ID"));<a name="line.453"></a>
-<span class="sourceLineNo">454</span>    constructorArgs.add(ToCodeArgHelper.createByteArray(<a name="line.454"></a>
-<span class="sourceLineNo">455</span>         "---redacted-secret---".getBytes(StandardCharsets.UTF_8), true,<a name="line.455"></a>
-<span class="sourceLineNo">456</span>         "Shared Secret"));<a name="line.456"></a>
-<span class="sourceLineNo">457</span>    constructorArgs.add(ToCodeArgHelper.createString(<a name="line.457"></a>
-<span class="sourceLineNo">458</span>         ((getStaticPassword() == null) ? "null" : "---redacted-password---"),<a name="line.458"></a>
-<span class="sourceLineNo">459</span>         "Static Password"));<a name="line.459"></a>
-<span class="sourceLineNo">460</span>    constructorArgs.add(ToCodeArgHelper.createInteger(<a name="line.460"></a>
-<span class="sourceLineNo">461</span>         totpIntervalDurationSeconds, "Interval Duration (seconds)"));<a name="line.461"></a>
-<span class="sourceLineNo">462</span>    constructorArgs.add(ToCodeArgHelper.createInteger(totpNumDigits,<a name="line.462"></a>
-<span class="sourceLineNo">463</span>         "Number of TOTP Digits"));<a name="line.463"></a>
-<span class="sourceLineNo">464</span><a name="line.464"></a>
-<span class="sourceLineNo">465</span>    final Control[] controls = getControls();<a name="line.465"></a>
-<span class="sourceLineNo">466</span>    if (controls.length &gt; 0)<a name="line.466"></a>
-<span class="sourceLineNo">467</span>    {<a name="line.467"></a>
-<span class="sourceLineNo">468</span>      constructorArgs.add(ToCodeArgHelper.createControlArray(controls,<a name="line.468"></a>
-<span class="sourceLineNo">469</span>           "Bind Controls"));<a name="line.469"></a>
-<span class="sourceLineNo">470</span>    }<a name="line.470"></a>
-<span class="sourceLineNo">471</span><a name="line.471"></a>
-<span class="sourceLineNo">472</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces,<a name="line.472"></a>
-<span class="sourceLineNo">473</span>         "ReusableTOTPBindRequest", requestID + "Request",<a name="line.473"></a>
-<span class="sourceLineNo">474</span>         "new ReusableTOTPBindRequest", constructorArgs);<a name="line.474"></a>
+<span class="sourceLineNo">435</span>    bindRequest.setIntermediateResponseListener(<a name="line.435"></a>
+<span class="sourceLineNo">436</span>         getIntermediateResponseListener());<a name="line.436"></a>
+<span class="sourceLineNo">437</span>    bindRequest.setReferralDepth(getReferralDepth());<a name="line.437"></a>
+<span class="sourceLineNo">438</span>    bindRequest.setReferralConnector(getReferralConnectorInternal());<a name="line.438"></a>
+<span class="sourceLineNo">439</span>    return bindRequest;<a name="line.439"></a>
+<span class="sourceLineNo">440</span>  }<a name="line.440"></a>
+<span class="sourceLineNo">441</span><a name="line.441"></a>
+<span class="sourceLineNo">442</span><a name="line.442"></a>
+<span class="sourceLineNo">443</span><a name="line.443"></a>
+<span class="sourceLineNo">444</span>  /**<a name="line.444"></a>
+<span class="sourceLineNo">445</span>   * {@inheritDoc}<a name="line.445"></a>
+<span class="sourceLineNo">446</span>   */<a name="line.446"></a>
+<span class="sourceLineNo">447</span>  @Override()<a name="line.447"></a>
+<span class="sourceLineNo">448</span>  public void toCode(@NotNull final List&lt;String&gt; lineList,<a name="line.448"></a>
+<span class="sourceLineNo">449</span>                     @NotNull final String requestID,<a name="line.449"></a>
+<span class="sourceLineNo">450</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.450"></a>
+<span class="sourceLineNo">451</span>  {<a name="line.451"></a>
+<span class="sourceLineNo">452</span>    // Create the request variable.<a name="line.452"></a>
+<span class="sourceLineNo">453</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs = new ArrayList&lt;&gt;(7);<a name="line.453"></a>
+<span class="sourceLineNo">454</span>    constructorArgs.add(ToCodeArgHelper.createString(getAuthenticationID(),<a name="line.454"></a>
+<span class="sourceLineNo">455</span>         "Authentication ID"));<a name="line.455"></a>
+<span class="sourceLineNo">456</span>    constructorArgs.add(ToCodeArgHelper.createString(getAuthorizationID(),<a name="line.456"></a>
+<span class="sourceLineNo">457</span>         "Authorization ID"));<a name="line.457"></a>
+<span class="sourceLineNo">458</span>    constructorArgs.add(ToCodeArgHelper.createByteArray(<a name="line.458"></a>
+<span class="sourceLineNo">459</span>         "---redacted-secret---".getBytes(StandardCharsets.UTF_8), true,<a name="line.459"></a>
+<span class="sourceLineNo">460</span>         "Shared Secret"));<a name="line.460"></a>
+<span class="sourceLineNo">461</span>    constructorArgs.add(ToCodeArgHelper.createString(<a name="line.461"></a>
+<span class="sourceLineNo">462</span>         ((getStaticPassword() == null) ? "null" : "---redacted-password---"),<a name="line.462"></a>
+<span class="sourceLineNo">463</span>         "Static Password"));<a name="line.463"></a>
+<span class="sourceLineNo">464</span>    constructorArgs.add(ToCodeArgHelper.createInteger(<a name="line.464"></a>
+<span class="sourceLineNo">465</span>         totpIntervalDurationSeconds, "Interval Duration (seconds)"));<a name="line.465"></a>
+<span class="sourceLineNo">466</span>    constructorArgs.add(ToCodeArgHelper.createInteger(totpNumDigits,<a name="line.466"></a>
+<span class="sourceLineNo">467</span>         "Number of TOTP Digits"));<a name="line.467"></a>
+<span class="sourceLineNo">468</span><a name="line.468"></a>
+<span class="sourceLineNo">469</span>    final Control[] controls = getControls();<a name="line.469"></a>
+<span class="sourceLineNo">470</span>    if (controls.length &gt; 0)<a name="line.470"></a>
+<span class="sourceLineNo">471</span>    {<a name="line.471"></a>
+<span class="sourceLineNo">472</span>      constructorArgs.add(ToCodeArgHelper.createControlArray(controls,<a name="line.472"></a>
+<span class="sourceLineNo">473</span>           "Bind Controls"));<a name="line.473"></a>
+<span class="sourceLineNo">474</span>    }<a name="line.474"></a>
 <span class="sourceLineNo">475</span><a name="line.475"></a>
-<span class="sourceLineNo">476</span><a name="line.476"></a>
-<span class="sourceLineNo">477</span>    // Add lines for processing the request and obtaining the result.<a name="line.477"></a>
-<span class="sourceLineNo">478</span>    if (includeProcessing)<a name="line.478"></a>
-<span class="sourceLineNo">479</span>    {<a name="line.479"></a>
-<span class="sourceLineNo">480</span>      // Generate a string with the appropriate indent.<a name="line.480"></a>
-<span class="sourceLineNo">481</span>      final StringBuilder buffer = new StringBuilder();<a name="line.481"></a>
-<span class="sourceLineNo">482</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.482"></a>
-<span class="sourceLineNo">483</span>      {<a name="line.483"></a>
-<span class="sourceLineNo">484</span>        buffer.append(' ');<a name="line.484"></a>
-<span class="sourceLineNo">485</span>      }<a name="line.485"></a>
-<span class="sourceLineNo">486</span>      final String indent = buffer.toString();<a name="line.486"></a>
-<span class="sourceLineNo">487</span><a name="line.487"></a>
-<span class="sourceLineNo">488</span>      lineList.add("");<a name="line.488"></a>
-<span class="sourceLineNo">489</span>      lineList.add(indent + "try");<a name="line.489"></a>
-<span class="sourceLineNo">490</span>      lineList.add(indent + '{');<a name="line.490"></a>
-<span class="sourceLineNo">491</span>      lineList.add(indent + "  BindResult " + requestID +<a name="line.491"></a>
-<span class="sourceLineNo">492</span>           "Result = connection.bind(" + requestID + "Request);");<a name="line.492"></a>
-<span class="sourceLineNo">493</span>      lineList.add(indent + "  // The bind was processed successfully.");<a name="line.493"></a>
-<span class="sourceLineNo">494</span>      lineList.add(indent + '}');<a name="line.494"></a>
-<span class="sourceLineNo">495</span>      lineList.add(indent + "catch (LDAPException e)");<a name="line.495"></a>
-<span class="sourceLineNo">496</span>      lineList.add(indent + '{');<a name="line.496"></a>
-<span class="sourceLineNo">497</span>      lineList.add(indent + "  // The bind failed.  Maybe the following will " +<a name="line.497"></a>
-<span class="sourceLineNo">498</span>           "help explain why.");<a name="line.498"></a>
-<span class="sourceLineNo">499</span>      lineList.add(indent + "  // Note that the connection is now likely in " +<a name="line.499"></a>
-<span class="sourceLineNo">500</span>           "an unauthenticated state.");<a name="line.500"></a>
-<span class="sourceLineNo">501</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.501"></a>
-<span class="sourceLineNo">502</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.502"></a>
-<span class="sourceLineNo">503</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.503"></a>
-<span class="sourceLineNo">504</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.504"></a>
-<span class="sourceLineNo">505</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.505"></a>
-<span class="sourceLineNo">506</span>           "e.getResponseControls();");<a name="line.506"></a>
-<span class="sourceLineNo">507</span>      lineList.add(indent + '}');<a name="line.507"></a>
-<span class="sourceLineNo">508</span>    }<a name="line.508"></a>
-<span class="sourceLineNo">509</span>  }<a name="line.509"></a>
-<span class="sourceLineNo">510</span>}<a name="line.510"></a>
+<span class="sourceLineNo">476</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces,<a name="line.476"></a>
+<span class="sourceLineNo">477</span>         "ReusableTOTPBindRequest", requestID + "Request",<a name="line.477"></a>
+<span class="sourceLineNo">478</span>         "new ReusableTOTPBindRequest", constructorArgs);<a name="line.478"></a>
+<span class="sourceLineNo">479</span><a name="line.479"></a>
+<span class="sourceLineNo">480</span><a name="line.480"></a>
+<span class="sourceLineNo">481</span>    // Add lines for processing the request and obtaining the result.<a name="line.481"></a>
+<span class="sourceLineNo">482</span>    if (includeProcessing)<a name="line.482"></a>
+<span class="sourceLineNo">483</span>    {<a name="line.483"></a>
+<span class="sourceLineNo">484</span>      // Generate a string with the appropriate indent.<a name="line.484"></a>
+<span class="sourceLineNo">485</span>      final StringBuilder buffer = new StringBuilder();<a name="line.485"></a>
+<span class="sourceLineNo">486</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.486"></a>
+<span class="sourceLineNo">487</span>      {<a name="line.487"></a>
+<span class="sourceLineNo">488</span>        buffer.append(' ');<a name="line.488"></a>
+<span class="sourceLineNo">489</span>      }<a name="line.489"></a>
+<span class="sourceLineNo">490</span>      final String indent = buffer.toString();<a name="line.490"></a>
+<span class="sourceLineNo">491</span><a name="line.491"></a>
+<span class="sourceLineNo">492</span>      lineList.add("");<a name="line.492"></a>
+<span class="sourceLineNo">493</span>      lineList.add(indent + "try");<a name="line.493"></a>
+<span class="sourceLineNo">494</span>      lineList.add(indent + '{');<a name="line.494"></a>
+<span class="sourceLineNo">495</span>      lineList.add(indent + "  BindResult " + requestID +<a name="line.495"></a>
+<span class="sourceLineNo">496</span>           "Result = connection.bind(" + requestID + "Request);");<a name="line.496"></a>
+<span class="sourceLineNo">497</span>      lineList.add(indent + "  // The bind was processed successfully.");<a name="line.497"></a>
+<span class="sourceLineNo">498</span>      lineList.add(indent + '}');<a name="line.498"></a>
+<span class="sourceLineNo">499</span>      lineList.add(indent + "catch (LDAPException e)");<a name="line.499"></a>
+<span class="sourceLineNo">500</span>      lineList.add(indent + '{');<a name="line.500"></a>
+<span class="sourceLineNo">501</span>      lineList.add(indent + "  // The bind failed.  Maybe the following will " +<a name="line.501"></a>
+<span class="sourceLineNo">502</span>           "help explain why.");<a name="line.502"></a>
+<span class="sourceLineNo">503</span>      lineList.add(indent + "  // Note that the connection is now likely in " +<a name="line.503"></a>
+<span class="sourceLineNo">504</span>           "an unauthenticated state.");<a name="line.504"></a>
+<span class="sourceLineNo">505</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.505"></a>
+<span class="sourceLineNo">506</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.506"></a>
+<span class="sourceLineNo">507</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.507"></a>
+<span class="sourceLineNo">508</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.508"></a>
+<span class="sourceLineNo">509</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.509"></a>
+<span class="sourceLineNo">510</span>           "e.getResponseControls();");<a name="line.510"></a>
+<span class="sourceLineNo">511</span>      lineList.add(indent + '}');<a name="line.511"></a>
+<span class="sourceLineNo">512</span>    }<a name="line.512"></a>
+<span class="sourceLineNo">513</span>  }<a name="line.513"></a>
+<span class="sourceLineNo">514</span>}<a name="line.514"></a>
 
 
 

@@ -291,56 +291,59 @@
 <span class="sourceLineNo">283</span>         new DeleteNotificationSubscriptionExtendedRequest(managerID,<a name="line.283"></a>
 <span class="sourceLineNo">284</span>              destinationID, subscriptionID, controls);<a name="line.284"></a>
 <span class="sourceLineNo">285</span>    r.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.285"></a>
-<span class="sourceLineNo">286</span>    return r;<a name="line.286"></a>
-<span class="sourceLineNo">287</span>  }<a name="line.287"></a>
-<span class="sourceLineNo">288</span><a name="line.288"></a>
-<span class="sourceLineNo">289</span><a name="line.289"></a>
-<span class="sourceLineNo">290</span><a name="line.290"></a>
-<span class="sourceLineNo">291</span>  /**<a name="line.291"></a>
-<span class="sourceLineNo">292</span>   * {@inheritDoc}<a name="line.292"></a>
-<span class="sourceLineNo">293</span>   */<a name="line.293"></a>
-<span class="sourceLineNo">294</span>  @Override()<a name="line.294"></a>
-<span class="sourceLineNo">295</span>  @NotNull()<a name="line.295"></a>
-<span class="sourceLineNo">296</span>  public String getExtendedRequestName()<a name="line.296"></a>
-<span class="sourceLineNo">297</span>  {<a name="line.297"></a>
-<span class="sourceLineNo">298</span>    return INFO_EXTENDED_REQUEST_NAME_DEL_NOTIFICATION_SUB.get();<a name="line.298"></a>
-<span class="sourceLineNo">299</span>  }<a name="line.299"></a>
-<span class="sourceLineNo">300</span><a name="line.300"></a>
-<span class="sourceLineNo">301</span><a name="line.301"></a>
-<span class="sourceLineNo">302</span><a name="line.302"></a>
-<span class="sourceLineNo">303</span>  /**<a name="line.303"></a>
-<span class="sourceLineNo">304</span>   * {@inheritDoc}<a name="line.304"></a>
-<span class="sourceLineNo">305</span>   */<a name="line.305"></a>
-<span class="sourceLineNo">306</span>  @Override()<a name="line.306"></a>
-<span class="sourceLineNo">307</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.307"></a>
-<span class="sourceLineNo">308</span>  {<a name="line.308"></a>
-<span class="sourceLineNo">309</span>    buffer.append("DeleteNotificationSubscriptionExtendedRequest(managerID='");<a name="line.309"></a>
-<span class="sourceLineNo">310</span>    buffer.append(managerID);<a name="line.310"></a>
-<span class="sourceLineNo">311</span>    buffer.append("', destinationID='");<a name="line.311"></a>
-<span class="sourceLineNo">312</span>    buffer.append(destinationID);<a name="line.312"></a>
-<span class="sourceLineNo">313</span>    buffer.append("', subscriptionID='");<a name="line.313"></a>
-<span class="sourceLineNo">314</span>    buffer.append(subscriptionID);<a name="line.314"></a>
-<span class="sourceLineNo">315</span>    buffer.append('\'');<a name="line.315"></a>
-<span class="sourceLineNo">316</span><a name="line.316"></a>
-<span class="sourceLineNo">317</span>    final Control[] controls = getControls();<a name="line.317"></a>
-<span class="sourceLineNo">318</span>    if (controls.length &gt; 0)<a name="line.318"></a>
-<span class="sourceLineNo">319</span>    {<a name="line.319"></a>
-<span class="sourceLineNo">320</span>      buffer.append(", controls={");<a name="line.320"></a>
-<span class="sourceLineNo">321</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.321"></a>
-<span class="sourceLineNo">322</span>      {<a name="line.322"></a>
-<span class="sourceLineNo">323</span>        if (i &gt; 0)<a name="line.323"></a>
-<span class="sourceLineNo">324</span>        {<a name="line.324"></a>
-<span class="sourceLineNo">325</span>          buffer.append(", ");<a name="line.325"></a>
-<span class="sourceLineNo">326</span>        }<a name="line.326"></a>
-<span class="sourceLineNo">327</span><a name="line.327"></a>
-<span class="sourceLineNo">328</span>        buffer.append(controls[i]);<a name="line.328"></a>
-<span class="sourceLineNo">329</span>      }<a name="line.329"></a>
-<span class="sourceLineNo">330</span>      buffer.append('}');<a name="line.330"></a>
-<span class="sourceLineNo">331</span>    }<a name="line.331"></a>
-<span class="sourceLineNo">332</span><a name="line.332"></a>
-<span class="sourceLineNo">333</span>    buffer.append(')');<a name="line.333"></a>
-<span class="sourceLineNo">334</span>  }<a name="line.334"></a>
-<span class="sourceLineNo">335</span>}<a name="line.335"></a>
+<span class="sourceLineNo">286</span>    r.setIntermediateResponseListener(getIntermediateResponseListener());<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    r.setReferralDepth(getReferralDepth());<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    r.setReferralConnector(getReferralConnectorInternal());<a name="line.288"></a>
+<span class="sourceLineNo">289</span>    return r;<a name="line.289"></a>
+<span class="sourceLineNo">290</span>  }<a name="line.290"></a>
+<span class="sourceLineNo">291</span><a name="line.291"></a>
+<span class="sourceLineNo">292</span><a name="line.292"></a>
+<span class="sourceLineNo">293</span><a name="line.293"></a>
+<span class="sourceLineNo">294</span>  /**<a name="line.294"></a>
+<span class="sourceLineNo">295</span>   * {@inheritDoc}<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   */<a name="line.296"></a>
+<span class="sourceLineNo">297</span>  @Override()<a name="line.297"></a>
+<span class="sourceLineNo">298</span>  @NotNull()<a name="line.298"></a>
+<span class="sourceLineNo">299</span>  public String getExtendedRequestName()<a name="line.299"></a>
+<span class="sourceLineNo">300</span>  {<a name="line.300"></a>
+<span class="sourceLineNo">301</span>    return INFO_EXTENDED_REQUEST_NAME_DEL_NOTIFICATION_SUB.get();<a name="line.301"></a>
+<span class="sourceLineNo">302</span>  }<a name="line.302"></a>
+<span class="sourceLineNo">303</span><a name="line.303"></a>
+<span class="sourceLineNo">304</span><a name="line.304"></a>
+<span class="sourceLineNo">305</span><a name="line.305"></a>
+<span class="sourceLineNo">306</span>  /**<a name="line.306"></a>
+<span class="sourceLineNo">307</span>   * {@inheritDoc}<a name="line.307"></a>
+<span class="sourceLineNo">308</span>   */<a name="line.308"></a>
+<span class="sourceLineNo">309</span>  @Override()<a name="line.309"></a>
+<span class="sourceLineNo">310</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.310"></a>
+<span class="sourceLineNo">311</span>  {<a name="line.311"></a>
+<span class="sourceLineNo">312</span>    buffer.append("DeleteNotificationSubscriptionExtendedRequest(managerID='");<a name="line.312"></a>
+<span class="sourceLineNo">313</span>    buffer.append(managerID);<a name="line.313"></a>
+<span class="sourceLineNo">314</span>    buffer.append("', destinationID='");<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    buffer.append(destinationID);<a name="line.315"></a>
+<span class="sourceLineNo">316</span>    buffer.append("', subscriptionID='");<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    buffer.append(subscriptionID);<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    buffer.append('\'');<a name="line.318"></a>
+<span class="sourceLineNo">319</span><a name="line.319"></a>
+<span class="sourceLineNo">320</span>    final Control[] controls = getControls();<a name="line.320"></a>
+<span class="sourceLineNo">321</span>    if (controls.length &gt; 0)<a name="line.321"></a>
+<span class="sourceLineNo">322</span>    {<a name="line.322"></a>
+<span class="sourceLineNo">323</span>      buffer.append(", controls={");<a name="line.323"></a>
+<span class="sourceLineNo">324</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.324"></a>
+<span class="sourceLineNo">325</span>      {<a name="line.325"></a>
+<span class="sourceLineNo">326</span>        if (i &gt; 0)<a name="line.326"></a>
+<span class="sourceLineNo">327</span>        {<a name="line.327"></a>
+<span class="sourceLineNo">328</span>          buffer.append(", ");<a name="line.328"></a>
+<span class="sourceLineNo">329</span>        }<a name="line.329"></a>
+<span class="sourceLineNo">330</span><a name="line.330"></a>
+<span class="sourceLineNo">331</span>        buffer.append(controls[i]);<a name="line.331"></a>
+<span class="sourceLineNo">332</span>      }<a name="line.332"></a>
+<span class="sourceLineNo">333</span>      buffer.append('}');<a name="line.333"></a>
+<span class="sourceLineNo">334</span>    }<a name="line.334"></a>
+<span class="sourceLineNo">335</span><a name="line.335"></a>
+<span class="sourceLineNo">336</span>    buffer.append(')');<a name="line.336"></a>
+<span class="sourceLineNo">337</span>  }<a name="line.337"></a>
+<span class="sourceLineNo">338</span>}<a name="line.338"></a>
 
 
 

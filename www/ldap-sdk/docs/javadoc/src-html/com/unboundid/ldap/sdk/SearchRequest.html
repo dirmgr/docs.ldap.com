@@ -1399,526 +1399,526 @@
 <span class="sourceLineNo">1391</span>                                 final int depth)<a name="line.1391"></a>
 <span class="sourceLineNo">1392</span>            throws LDAPException<a name="line.1392"></a>
 <span class="sourceLineNo">1393</span>  {<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>    if (connection.synchronousMode())<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>    {<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>      @SuppressWarnings("deprecation")<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>      final boolean autoReconnect =<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>           connection.getConnectionOptions().autoReconnect();<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>      return processSync(connection, depth, autoReconnect);<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>    }<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span><a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>    final long requestTime = System.nanoTime();<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>    processAsync(connection, null);<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span><a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>    try<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>    {<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>      // Wait for and process the response.<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>      final ArrayList&lt;SearchResultEntry&gt; entryList;<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>      final ArrayList&lt;SearchResultReference&gt; referenceList;<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>      if (searchResultListener == null)<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>      {<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>        entryList     = new ArrayList&lt;&gt;(5);<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>        referenceList = new ArrayList&lt;&gt;(5);<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>      }<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>      else<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>      {<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>        entryList     = null;<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>        referenceList = null;<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>      }<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span><a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>      int numEntries    = 0;<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>      int numReferences = 0;<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>      ResultCode intermediateResultCode = ResultCode.SUCCESS;<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>      final long responseTimeout = getResponseTimeoutMillis(connection);<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>      while (true)<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>      {<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>        final LDAPResponse response;<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>        try<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>        {<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>          if (responseTimeout &gt; 0)<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>          {<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>            response =<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>                 responseQueue.poll(responseTimeout, TimeUnit.MILLISECONDS);<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>          }<a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>          else<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span>          {<a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>            response = responseQueue.take();<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>          }<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>        }<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>        catch (final InterruptedException ie)<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>        {<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>          Debug.debugException(ie);<a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>          Thread.currentThread().interrupt();<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>          throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>               ERR_SEARCH_INTERRUPTED.get(connection.getHostPort()), ie);<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>        }<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span><a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>        if (response == null)<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>        {<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>          if (connection.getConnectionOptions().abandonOnTimeout())<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>          {<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>            connection.abandon(messageID);<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>          }<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span><a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>          final SearchResult searchResult =<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>               new SearchResult(messageID, ResultCode.TIMEOUT,<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>                    ERR_SEARCH_CLIENT_TIMEOUT.get(responseTimeout, messageID,<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>                         baseDN, scope.getName(), filter.toString(),<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>                         connection.getHostPort()),<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>                    null, null, entryList, referenceList, numEntries,<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>                    numReferences, null);<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>          throw new LDAPSearchException(searchResult);<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>        }<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span><a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>        if (response instanceof ConnectionClosedResponse)<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>        {<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>          final ConnectionClosedResponse ccr =<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>               (ConnectionClosedResponse) response;<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>          final String message = ccr.getMessage();<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>          if (message == null)<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>          {<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>            // The connection was closed while waiting for the response.<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>            final SearchResult searchResult =<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>                 new SearchResult(messageID, ccr.getResultCode(),<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>                      ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE.get(<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>                           connection.getHostPort(), toString()),<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>                      null, null, entryList, referenceList, numEntries,<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>                      numReferences, null);<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>            throw new LDAPSearchException(searchResult);<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>          }<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>          else<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>          {<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>            // The connection was closed while waiting for the response.<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>            final SearchResult searchResult =<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>                 new SearchResult(messageID, ccr.getResultCode(),<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>                      ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE_WITH_MESSAGE.<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>                           get(connection.getHostPort(), toString(), message),<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>                      null, null, entryList, referenceList, numEntries,<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>                      numReferences, null);<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>            throw new LDAPSearchException(searchResult);<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>          }<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>        }<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>        else if (response instanceof SearchResultEntry)<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>        {<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>          final SearchResultEntry searchEntry = (SearchResultEntry) response;<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>          numEntries++;<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>          if (searchResultListener == null)<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>          {<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>            entryList.add(searchEntry);<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>          }<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>          else<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>          {<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>            searchResultListener.searchEntryReturned(searchEntry);<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>          }<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>        }<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>        else if (response instanceof SearchResultReference)<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>        {<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>          final SearchResultReference searchReference =<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>               (SearchResultReference) response;<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>          if (followReferrals(connection))<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>          {<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>            final LDAPResult result = followSearchReference(messageID,<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>                 searchReference, connection, depth);<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>            if (! result.getResultCode().equals(ResultCode.SUCCESS))<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>            {<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>              // We couldn't follow the reference.  We don't want to fail the<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>              // entire search because of this right now, so treat it as if<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>              // referral following had not been enabled.  Also, set the<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>              // intermediate result code to match that of the result.<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>              numReferences++;<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>              if (searchResultListener == null)<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>              {<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>                referenceList.add(searchReference);<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>              }<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>              else<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>              {<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>                searchResultListener.searchReferenceReturned(searchReference);<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>              }<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span><a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>              if (intermediateResultCode.equals(ResultCode.SUCCESS) &amp;&amp;<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>                 (result.getResultCode() != ResultCode.REFERRAL))<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>              {<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>                intermediateResultCode = result.getResultCode();<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>              }<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>            }<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>            else if (result instanceof SearchResult)<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>            {<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>              final SearchResult searchResult = (SearchResult) result;<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>              numEntries += searchResult.getEntryCount();<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>              if (searchResultListener == null)<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>              {<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>                entryList.addAll(searchResult.getSearchEntries());<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>              }<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>            }<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>          }<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>          else<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>          {<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>            numReferences++;<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>            if (searchResultListener == null)<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>            {<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>              referenceList.add(searchReference);<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>            }<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>            else<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>            {<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>              searchResultListener.searchReferenceReturned(searchReference);<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>            }<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>          }<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>        }<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>        else<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>        {<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>          connection.getConnectionStatistics().incrementNumSearchResponses(<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>               numEntries, numReferences,<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>               (System.nanoTime() - requestTime));<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>          SearchResult result = (SearchResult) response;<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>          result.setCounts(numEntries, entryList, numReferences, referenceList);<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span><a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>          if ((result.getResultCode().equals(ResultCode.REFERRAL)) &amp;&amp;<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>              followReferrals(connection))<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>          {<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>            if (depth &gt;=<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>                connection.getConnectionOptions().getReferralHopLimit())<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>            {<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>              return new SearchResult(messageID,<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>                                      ResultCode.REFERRAL_LIMIT_EXCEEDED,<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span>                                      ERR_TOO_MANY_REFERRALS.get(),<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>                                      result.getMatchedDN(),<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>                                      result.getReferralURLs(), entryList,<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>                                      referenceList, numEntries,<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>                                      numReferences,<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>                                      result.getResponseControls());<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>            }<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span><a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>            result = followReferral(result, connection, depth);<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span>          }<a name="line.1584"></a>
-<span class="sourceLineNo">1585</span><a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>          if ((result.getResultCode().equals(ResultCode.SUCCESS)) &amp;&amp;<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>              (! intermediateResultCode.equals(ResultCode.SUCCESS)))<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>          {<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>            return new SearchResult(messageID, intermediateResultCode,<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>                                    result.getDiagnosticMessage(),<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>                                    result.getMatchedDN(),<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>                                    result.getReferralURLs(),<a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>                                    entryList, referenceList, numEntries,<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>                                    numReferences,<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>                                    result.getResponseControls());<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>          }<a name="line.1596"></a>
-<span class="sourceLineNo">1597</span><a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>          return result;<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>        }<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>      }<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>    }<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span>    finally<a name="line.1602"></a>
-<span class="sourceLineNo">1603</span>    {<a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>      connection.deregisterResponseAcceptor(messageID);<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>    }<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span>  }<a name="line.1606"></a>
-<span class="sourceLineNo">1607</span><a name="line.1607"></a>
+<span class="sourceLineNo">1394</span>    setReferralDepth(depth);<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span><a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>    if (connection.synchronousMode())<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>    {<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>      @SuppressWarnings("deprecation")<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>      final boolean autoReconnect =<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>           connection.getConnectionOptions().autoReconnect();<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>      return processSync(connection, depth, autoReconnect);<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>    }<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span><a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>    final long requestTime = System.nanoTime();<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>    processAsync(connection, null);<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span><a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>    try<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>    {<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>      // Wait for and process the response.<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>      final ArrayList&lt;SearchResultEntry&gt; entryList;<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>      final ArrayList&lt;SearchResultReference&gt; referenceList;<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>      if (searchResultListener == null)<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>      {<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>        entryList     = new ArrayList&lt;&gt;(5);<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>        referenceList = new ArrayList&lt;&gt;(5);<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>      }<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>      else<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>      {<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>        entryList     = null;<a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>        referenceList = null;<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>      }<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span><a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>      int numEntries    = 0;<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>      int numReferences = 0;<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>      ResultCode intermediateResultCode = ResultCode.SUCCESS;<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>      final long responseTimeout = getResponseTimeoutMillis(connection);<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>      while (true)<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>      {<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>        final LDAPResponse response;<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>        try<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>        {<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>          if (responseTimeout &gt; 0)<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span>          {<a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>            response =<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>                 responseQueue.poll(responseTimeout, TimeUnit.MILLISECONDS);<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>          }<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>          else<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>          {<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>            response = responseQueue.take();<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>          }<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>        }<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>        catch (final InterruptedException ie)<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>        {<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>          Debug.debugException(ie);<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>          Thread.currentThread().interrupt();<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>          throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>               ERR_SEARCH_INTERRUPTED.get(connection.getHostPort()), ie);<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>        }<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span><a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>        if (response == null)<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>        {<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>          if (connection.getConnectionOptions().abandonOnTimeout())<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>          {<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>            connection.abandon(messageID);<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>          }<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span><a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>          final SearchResult searchResult =<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>               new SearchResult(messageID, ResultCode.TIMEOUT,<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>                    ERR_SEARCH_CLIENT_TIMEOUT.get(responseTimeout, messageID,<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>                         baseDN, scope.getName(), filter.toString(),<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>                         connection.getHostPort()),<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>                    null, null, entryList, referenceList, numEntries,<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>                    numReferences, null);<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>          throw new LDAPSearchException(searchResult);<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>        }<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span><a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>        if (response instanceof ConnectionClosedResponse)<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>        {<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>          final ConnectionClosedResponse ccr =<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>               (ConnectionClosedResponse) response;<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>          final String message = ccr.getMessage();<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>          if (message == null)<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>          {<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>            // The connection was closed while waiting for the response.<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>            final SearchResult searchResult =<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>                 new SearchResult(messageID, ccr.getResultCode(),<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>                      ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE.get(<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>                           connection.getHostPort(), toString()),<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>                      null, null, entryList, referenceList, numEntries,<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>                      numReferences, null);<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>            throw new LDAPSearchException(searchResult);<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>          }<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>          else<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>          {<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>            // The connection was closed while waiting for the response.<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>            final SearchResult searchResult =<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>                 new SearchResult(messageID, ccr.getResultCode(),<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>                      ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE_WITH_MESSAGE.<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>                           get(connection.getHostPort(), toString(), message),<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>                      null, null, entryList, referenceList, numEntries,<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>                      numReferences, null);<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>            throw new LDAPSearchException(searchResult);<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>          }<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>        }<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>        else if (response instanceof SearchResultEntry)<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>        {<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>          final SearchResultEntry searchEntry = (SearchResultEntry) response;<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>          numEntries++;<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>          if (searchResultListener == null)<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>          {<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>            entryList.add(searchEntry);<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>          }<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>          else<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>          {<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>            searchResultListener.searchEntryReturned(searchEntry);<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>          }<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>        }<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>        else if (response instanceof SearchResultReference)<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>        {<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>          final SearchResultReference searchReference =<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>               (SearchResultReference) response;<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>          if (followReferrals(connection))<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>          {<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>            final SearchResult result = ReferralHelper.handleReferral(this,<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>                 searchReference, connection);<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>            if (! result.getResultCode().equals(ResultCode.SUCCESS))<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>            {<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>              // We couldn't follow the reference.  We don't want to fail the<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>              // entire search because of this right now, so treat it as if<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>              // referral following had not been enabled.  Also, set the<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>              // intermediate result code to match that of the result.<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>              numReferences++;<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>              if (searchResultListener == null)<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>              {<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>                referenceList.add(searchReference);<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>              }<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>              else<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>              {<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>                searchResultListener.searchReferenceReturned(searchReference);<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>              }<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span><a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>              if (intermediateResultCode.equals(ResultCode.SUCCESS) &amp;&amp;<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>                 (result.getResultCode() != ResultCode.REFERRAL))<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>              {<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>                intermediateResultCode = result.getResultCode();<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>              }<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>            }<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>            else if (result instanceof SearchResult)<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>            {<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>              numEntries += result.getEntryCount();<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>              if (searchResultListener == null)<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>              {<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>                entryList.addAll(result.getSearchEntries());<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>              }<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>            }<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>          }<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>          else<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>          {<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>            numReferences++;<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>            if (searchResultListener == null)<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>            {<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>              referenceList.add(searchReference);<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>            }<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>            else<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>            {<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>              searchResultListener.searchReferenceReturned(searchReference);<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>            }<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>          }<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>        }<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>        else<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>        {<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>          connection.getConnectionStatistics().incrementNumSearchResponses(<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>               numEntries, numReferences,<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>               (System.nanoTime() - requestTime));<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>          SearchResult result = (SearchResult) response;<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>          result.setCounts(numEntries, entryList, numReferences, referenceList);<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span><a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>          if ((result.getResultCode().equals(ResultCode.REFERRAL)) &amp;&amp;<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>              followReferrals(connection))<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>          {<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>            if (depth &gt;=<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>                connection.getConnectionOptions().getReferralHopLimit())<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>            {<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>              return new SearchResult(messageID,<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>                                      ResultCode.REFERRAL_LIMIT_EXCEEDED,<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>                                      ERR_TOO_MANY_REFERRALS.get(),<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>                                      result.getMatchedDN(),<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>                                      result.getReferralURLs(), entryList,<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>                                      referenceList, numEntries,<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>                                      numReferences,<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>                                      result.getResponseControls());<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>            }<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span><a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>            result = ReferralHelper.handleReferral(this, result, connection);<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>          }<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span><a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>          if ((result.getResultCode().equals(ResultCode.SUCCESS)) &amp;&amp;<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>              (! intermediateResultCode.equals(ResultCode.SUCCESS)))<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>          {<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>            return new SearchResult(messageID, intermediateResultCode,<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>                                    result.getDiagnosticMessage(),<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>                                    result.getMatchedDN(),<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>                                    result.getReferralURLs(),<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>                                    entryList, referenceList, numEntries,<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>                                    numReferences,<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>                                    result.getResponseControls());<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>          }<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span><a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>          return result;<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>        }<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>      }<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>    }<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>    finally<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>    {<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>      connection.deregisterResponseAcceptor(messageID);<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>    }<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span>  }<a name="line.1607"></a>
 <span class="sourceLineNo">1608</span><a name="line.1608"></a>
 <span class="sourceLineNo">1609</span><a name="line.1609"></a>
-<span class="sourceLineNo">1610</span>  /**<a name="line.1610"></a>
-<span class="sourceLineNo">1611</span>   * Sends this search request to the directory server over the provided<a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>   * connection and returns the message ID for the request.<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span>   *<a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>   * @param  connection      The connection to use to communicate with the<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span>   *                         directory server.<a name="line.1615"></a>
-<span class="sourceLineNo">1616</span>   * @param  resultListener  The async result listener that is to be notified<a name="line.1616"></a>
-<span class="sourceLineNo">1617</span>   *                         when the response is received.  It may be<a name="line.1617"></a>
-<span class="sourceLineNo">1618</span>   *                         {@code null} only if the result is to be processed<a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>   *                         by this class.<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>   *<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>   * @return  The async request ID created for the operation, or {@code null} if<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span>   *          the provided {@code resultListener} is {@code null} and the<a name="line.1622"></a>
-<span class="sourceLineNo">1623</span>   *          operation will not actually be processed asynchronously.<a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>   *<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span>   * @throws  LDAPException  If a problem occurs while sending the request.<a name="line.1625"></a>
-<span class="sourceLineNo">1626</span>   */<a name="line.1626"></a>
-<span class="sourceLineNo">1627</span>  @Nullable()<a name="line.1627"></a>
-<span class="sourceLineNo">1628</span>  AsyncRequestID processAsync(@NotNull final LDAPConnection connection,<a name="line.1628"></a>
-<span class="sourceLineNo">1629</span>                      @Nullable final AsyncSearchResultListener resultListener)<a name="line.1629"></a>
-<span class="sourceLineNo">1630</span>                 throws LDAPException<a name="line.1630"></a>
-<span class="sourceLineNo">1631</span>  {<a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>    // Create the LDAP message.<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span>    messageID = connection.nextMessageID();<a name="line.1633"></a>
-<span class="sourceLineNo">1634</span>    final LDAPMessage message = new LDAPMessage(messageID, this, getControls());<a name="line.1634"></a>
-<span class="sourceLineNo">1635</span><a name="line.1635"></a>
+<span class="sourceLineNo">1610</span><a name="line.1610"></a>
+<span class="sourceLineNo">1611</span>  /**<a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>   * Sends this search request to the directory server over the provided<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span>   * connection and returns the message ID for the request.<a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>   *<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>   * @param  connection      The connection to use to communicate with the<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>   *                         directory server.<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>   * @param  resultListener  The async result listener that is to be notified<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span>   *                         when the response is received.  It may be<a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>   *                         {@code null} only if the result is to be processed<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>   *                         by this class.<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>   *<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>   * @return  The async request ID created for the operation, or {@code null} if<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span>   *          the provided {@code resultListener} is {@code null} and the<a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>   *          operation will not actually be processed asynchronously.<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>   *<a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>   * @throws  LDAPException  If a problem occurs while sending the request.<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>   */<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>  @Nullable()<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span>  AsyncRequestID processAsync(@NotNull final LDAPConnection connection,<a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>                      @Nullable final AsyncSearchResultListener resultListener)<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>                 throws LDAPException<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>  {<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>    // Create the LDAP message.<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>    messageID = connection.nextMessageID();<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>    final LDAPMessage message = new LDAPMessage(messageID, this, getControls());<a name="line.1635"></a>
 <span class="sourceLineNo">1636</span><a name="line.1636"></a>
-<span class="sourceLineNo">1637</span>    // If the provided async result listener is {@code null}, then we'll use<a name="line.1637"></a>
-<span class="sourceLineNo">1638</span>    // this class as the message acceptor.  Otherwise, create an async helper<a name="line.1638"></a>
-<span class="sourceLineNo">1639</span>    // and use it as the message acceptor.<a name="line.1639"></a>
-<span class="sourceLineNo">1640</span>    final AsyncRequestID asyncRequestID;<a name="line.1640"></a>
-<span class="sourceLineNo">1641</span>    final long timeout = getResponseTimeoutMillis(connection);<a name="line.1641"></a>
-<span class="sourceLineNo">1642</span>    if (resultListener == null)<a name="line.1642"></a>
-<span class="sourceLineNo">1643</span>    {<a name="line.1643"></a>
-<span class="sourceLineNo">1644</span>      asyncRequestID = null;<a name="line.1644"></a>
-<span class="sourceLineNo">1645</span>      connection.registerResponseAcceptor(messageID, this);<a name="line.1645"></a>
-<span class="sourceLineNo">1646</span>    }<a name="line.1646"></a>
-<span class="sourceLineNo">1647</span>    else<a name="line.1647"></a>
-<span class="sourceLineNo">1648</span>    {<a name="line.1648"></a>
-<span class="sourceLineNo">1649</span>      final AsyncSearchHelper helper = new AsyncSearchHelper(connection,<a name="line.1649"></a>
-<span class="sourceLineNo">1650</span>           messageID, resultListener, getIntermediateResponseListener());<a name="line.1650"></a>
-<span class="sourceLineNo">1651</span>      connection.registerResponseAcceptor(messageID, helper);<a name="line.1651"></a>
-<span class="sourceLineNo">1652</span>      asyncRequestID = helper.getAsyncRequestID();<a name="line.1652"></a>
-<span class="sourceLineNo">1653</span><a name="line.1653"></a>
-<span class="sourceLineNo">1654</span>      if (timeout &gt; 0L)<a name="line.1654"></a>
-<span class="sourceLineNo">1655</span>      {<a name="line.1655"></a>
-<span class="sourceLineNo">1656</span>        final Timer timer = connection.getTimer();<a name="line.1656"></a>
-<span class="sourceLineNo">1657</span>        final AsyncTimeoutTimerTask timerTask =<a name="line.1657"></a>
-<span class="sourceLineNo">1658</span>             new AsyncTimeoutTimerTask(helper);<a name="line.1658"></a>
-<span class="sourceLineNo">1659</span>        timer.schedule(timerTask, timeout);<a name="line.1659"></a>
-<span class="sourceLineNo">1660</span>        asyncRequestID.setTimerTask(timerTask);<a name="line.1660"></a>
-<span class="sourceLineNo">1661</span>      }<a name="line.1661"></a>
-<span class="sourceLineNo">1662</span>    }<a name="line.1662"></a>
-<span class="sourceLineNo">1663</span><a name="line.1663"></a>
+<span class="sourceLineNo">1637</span><a name="line.1637"></a>
+<span class="sourceLineNo">1638</span>    // If the provided async result listener is {@code null}, then we'll use<a name="line.1638"></a>
+<span class="sourceLineNo">1639</span>    // this class as the message acceptor.  Otherwise, create an async helper<a name="line.1639"></a>
+<span class="sourceLineNo">1640</span>    // and use it as the message acceptor.<a name="line.1640"></a>
+<span class="sourceLineNo">1641</span>    final AsyncRequestID asyncRequestID;<a name="line.1641"></a>
+<span class="sourceLineNo">1642</span>    final long timeout = getResponseTimeoutMillis(connection);<a name="line.1642"></a>
+<span class="sourceLineNo">1643</span>    if (resultListener == null)<a name="line.1643"></a>
+<span class="sourceLineNo">1644</span>    {<a name="line.1644"></a>
+<span class="sourceLineNo">1645</span>      asyncRequestID = null;<a name="line.1645"></a>
+<span class="sourceLineNo">1646</span>      connection.registerResponseAcceptor(messageID, this);<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>    }<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span>    else<a name="line.1648"></a>
+<span class="sourceLineNo">1649</span>    {<a name="line.1649"></a>
+<span class="sourceLineNo">1650</span>      final AsyncSearchHelper helper = new AsyncSearchHelper(connection,<a name="line.1650"></a>
+<span class="sourceLineNo">1651</span>           messageID, resultListener, getIntermediateResponseListener());<a name="line.1651"></a>
+<span class="sourceLineNo">1652</span>      connection.registerResponseAcceptor(messageID, helper);<a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>      asyncRequestID = helper.getAsyncRequestID();<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span><a name="line.1654"></a>
+<span class="sourceLineNo">1655</span>      if (timeout &gt; 0L)<a name="line.1655"></a>
+<span class="sourceLineNo">1656</span>      {<a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>        final Timer timer = connection.getTimer();<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>        final AsyncTimeoutTimerTask timerTask =<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>             new AsyncTimeoutTimerTask(helper);<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>        timer.schedule(timerTask, timeout);<a name="line.1660"></a>
+<span class="sourceLineNo">1661</span>        asyncRequestID.setTimerTask(timerTask);<a name="line.1661"></a>
+<span class="sourceLineNo">1662</span>      }<a name="line.1662"></a>
+<span class="sourceLineNo">1663</span>    }<a name="line.1663"></a>
 <span class="sourceLineNo">1664</span><a name="line.1664"></a>
-<span class="sourceLineNo">1665</span>    // Send the request to the server.<a name="line.1665"></a>
-<span class="sourceLineNo">1666</span>    try<a name="line.1666"></a>
-<span class="sourceLineNo">1667</span>    {<a name="line.1667"></a>
-<span class="sourceLineNo">1668</span>      Debug.debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.1668"></a>
-<span class="sourceLineNo">1669</span><a name="line.1669"></a>
-<span class="sourceLineNo">1670</span>      final LDAPConnectionLogger logger =<a name="line.1670"></a>
-<span class="sourceLineNo">1671</span>           connection.getConnectionOptions().getConnectionLogger();<a name="line.1671"></a>
-<span class="sourceLineNo">1672</span>      if (logger != null)<a name="line.1672"></a>
-<span class="sourceLineNo">1673</span>      {<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>        logger.logSearchRequest(connection, messageID, this);<a name="line.1674"></a>
-<span class="sourceLineNo">1675</span>      }<a name="line.1675"></a>
-<span class="sourceLineNo">1676</span><a name="line.1676"></a>
-<span class="sourceLineNo">1677</span>      connection.getConnectionStatistics().incrementNumSearchRequests();<a name="line.1677"></a>
-<span class="sourceLineNo">1678</span>      connection.sendMessage(message, timeout);<a name="line.1678"></a>
-<span class="sourceLineNo">1679</span>      return asyncRequestID;<a name="line.1679"></a>
-<span class="sourceLineNo">1680</span>    }<a name="line.1680"></a>
-<span class="sourceLineNo">1681</span>    catch (final LDAPException le)<a name="line.1681"></a>
-<span class="sourceLineNo">1682</span>    {<a name="line.1682"></a>
-<span class="sourceLineNo">1683</span>      Debug.debugException(le);<a name="line.1683"></a>
-<span class="sourceLineNo">1684</span><a name="line.1684"></a>
-<span class="sourceLineNo">1685</span>      connection.deregisterResponseAcceptor(messageID);<a name="line.1685"></a>
-<span class="sourceLineNo">1686</span>      throw le;<a name="line.1686"></a>
-<span class="sourceLineNo">1687</span>    }<a name="line.1687"></a>
-<span class="sourceLineNo">1688</span>  }<a name="line.1688"></a>
-<span class="sourceLineNo">1689</span><a name="line.1689"></a>
+<span class="sourceLineNo">1665</span><a name="line.1665"></a>
+<span class="sourceLineNo">1666</span>    // Send the request to the server.<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span>    try<a name="line.1667"></a>
+<span class="sourceLineNo">1668</span>    {<a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>      Debug.debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span><a name="line.1670"></a>
+<span class="sourceLineNo">1671</span>      final LDAPConnectionLogger logger =<a name="line.1671"></a>
+<span class="sourceLineNo">1672</span>           connection.getConnectionOptions().getConnectionLogger();<a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>      if (logger != null)<a name="line.1673"></a>
+<span class="sourceLineNo">1674</span>      {<a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>        logger.logSearchRequest(connection, messageID, this);<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span>      }<a name="line.1676"></a>
+<span class="sourceLineNo">1677</span><a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>      connection.getConnectionStatistics().incrementNumSearchRequests();<a name="line.1678"></a>
+<span class="sourceLineNo">1679</span>      connection.sendMessage(message, timeout);<a name="line.1679"></a>
+<span class="sourceLineNo">1680</span>      return asyncRequestID;<a name="line.1680"></a>
+<span class="sourceLineNo">1681</span>    }<a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>    catch (final LDAPException le)<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span>    {<a name="line.1683"></a>
+<span class="sourceLineNo">1684</span>      Debug.debugException(le);<a name="line.1684"></a>
+<span class="sourceLineNo">1685</span><a name="line.1685"></a>
+<span class="sourceLineNo">1686</span>      connection.deregisterResponseAcceptor(messageID);<a name="line.1686"></a>
+<span class="sourceLineNo">1687</span>      throw le;<a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>    }<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>  }<a name="line.1689"></a>
 <span class="sourceLineNo">1690</span><a name="line.1690"></a>
 <span class="sourceLineNo">1691</span><a name="line.1691"></a>
-<span class="sourceLineNo">1692</span>  /**<a name="line.1692"></a>
-<span class="sourceLineNo">1693</span>   * Processes this search operation in synchronous mode, in which the same<a name="line.1693"></a>
-<span class="sourceLineNo">1694</span>   * thread will send the request and read the response.<a name="line.1694"></a>
-<span class="sourceLineNo">1695</span>   *<a name="line.1695"></a>
-<span class="sourceLineNo">1696</span>   * @param  connection  The connection to use to communicate with the directory<a name="line.1696"></a>
-<span class="sourceLineNo">1697</span>   *                     server.<a name="line.1697"></a>
-<span class="sourceLineNo">1698</span>   * @param  depth       The current referral depth for this request.  It should<a name="line.1698"></a>
-<span class="sourceLineNo">1699</span>   *                     always be one for the initial request, and should only<a name="line.1699"></a>
-<span class="sourceLineNo">1700</span>   *                     be incremented when following referrals.<a name="line.1700"></a>
-<span class="sourceLineNo">1701</span>   * @param  allowRetry  Indicates whether the request may be re-tried on a<a name="line.1701"></a>
-<span class="sourceLineNo">1702</span>   *                     re-established connection if the initial attempt fails<a name="line.1702"></a>
-<span class="sourceLineNo">1703</span>   *                     in a way that indicates the connection is no longer<a name="line.1703"></a>
-<span class="sourceLineNo">1704</span>   *                     valid and autoReconnect is true.<a name="line.1704"></a>
-<span class="sourceLineNo">1705</span>   *<a name="line.1705"></a>
-<span class="sourceLineNo">1706</span>   * @return  An LDAP result object that provides information about the result<a name="line.1706"></a>
-<span class="sourceLineNo">1707</span>   *          of the search processing.<a name="line.1707"></a>
-<span class="sourceLineNo">1708</span>   *<a name="line.1708"></a>
-<span class="sourceLineNo">1709</span>   * @throws  LDAPException  If a problem occurs while sending the request or<a name="line.1709"></a>
-<span class="sourceLineNo">1710</span>   *                         reading the response.<a name="line.1710"></a>
-<span class="sourceLineNo">1711</span>   */<a name="line.1711"></a>
-<span class="sourceLineNo">1712</span>  @NotNull()<a name="line.1712"></a>
-<span class="sourceLineNo">1713</span>  private SearchResult processSync(@NotNull final LDAPConnection connection,<a name="line.1713"></a>
-<span class="sourceLineNo">1714</span>                                   final int depth, final boolean allowRetry)<a name="line.1714"></a>
-<span class="sourceLineNo">1715</span>          throws LDAPException<a name="line.1715"></a>
-<span class="sourceLineNo">1716</span>  {<a name="line.1716"></a>
-<span class="sourceLineNo">1717</span>    // Create the LDAP message.<a name="line.1717"></a>
-<span class="sourceLineNo">1718</span>    messageID = connection.nextMessageID();<a name="line.1718"></a>
-<span class="sourceLineNo">1719</span>    final LDAPMessage message =<a name="line.1719"></a>
-<span class="sourceLineNo">1720</span>         new LDAPMessage(messageID,  this, getControls());<a name="line.1720"></a>
-<span class="sourceLineNo">1721</span><a name="line.1721"></a>
+<span class="sourceLineNo">1692</span><a name="line.1692"></a>
+<span class="sourceLineNo">1693</span>  /**<a name="line.1693"></a>
+<span class="sourceLineNo">1694</span>   * Processes this search operation in synchronous mode, in which the same<a name="line.1694"></a>
+<span class="sourceLineNo">1695</span>   * thread will send the request and read the response.<a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>   *<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>   * @param  connection  The connection to use to communicate with the directory<a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>   *                     server.<a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>   * @param  depth       The current referral depth for this request.  It should<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span>   *                     always be one for the initial request, and should only<a name="line.1700"></a>
+<span class="sourceLineNo">1701</span>   *                     be incremented when following referrals.<a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>   * @param  allowRetry  Indicates whether the request may be re-tried on a<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span>   *                     re-established connection if the initial attempt fails<a name="line.1703"></a>
+<span class="sourceLineNo">1704</span>   *                     in a way that indicates the connection is no longer<a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>   *                     valid and autoReconnect is true.<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span>   *<a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>   * @return  An LDAP result object that provides information about the result<a name="line.1707"></a>
+<span class="sourceLineNo">1708</span>   *          of the search processing.<a name="line.1708"></a>
+<span class="sourceLineNo">1709</span>   *<a name="line.1709"></a>
+<span class="sourceLineNo">1710</span>   * @throws  LDAPException  If a problem occurs while sending the request or<a name="line.1710"></a>
+<span class="sourceLineNo">1711</span>   *                         reading the response.<a name="line.1711"></a>
+<span class="sourceLineNo">1712</span>   */<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span>  @NotNull()<a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>  private SearchResult processSync(@NotNull final LDAPConnection connection,<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span>                                   final int depth, final boolean allowRetry)<a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>          throws LDAPException<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>  {<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>    // Create the LDAP message.<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span>    messageID = connection.nextMessageID();<a name="line.1719"></a>
+<span class="sourceLineNo">1720</span>    final LDAPMessage message =<a name="line.1720"></a>
+<span class="sourceLineNo">1721</span>         new LDAPMessage(messageID,  this, getControls());<a name="line.1721"></a>
 <span class="sourceLineNo">1722</span><a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>    // Send the request to the server.<a name="line.1723"></a>
-<span class="sourceLineNo">1724</span>    final long responseTimeout = getResponseTimeoutMillis(connection);<a name="line.1724"></a>
-<span class="sourceLineNo">1725</span>    final long requestTime = System.nanoTime();<a name="line.1725"></a>
-<span class="sourceLineNo">1726</span>    Debug.debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.1726"></a>
-<span class="sourceLineNo">1727</span><a name="line.1727"></a>
-<span class="sourceLineNo">1728</span>    final LDAPConnectionLogger logger =<a name="line.1728"></a>
-<span class="sourceLineNo">1729</span>         connection.getConnectionOptions().getConnectionLogger();<a name="line.1729"></a>
-<span class="sourceLineNo">1730</span>    if (logger != null)<a name="line.1730"></a>
-<span class="sourceLineNo">1731</span>    {<a name="line.1731"></a>
-<span class="sourceLineNo">1732</span>      logger.logSearchRequest(connection, messageID, this);<a name="line.1732"></a>
-<span class="sourceLineNo">1733</span>    }<a name="line.1733"></a>
-<span class="sourceLineNo">1734</span><a name="line.1734"></a>
-<span class="sourceLineNo">1735</span>    connection.getConnectionStatistics().incrementNumSearchRequests();<a name="line.1735"></a>
-<span class="sourceLineNo">1736</span>    try<a name="line.1736"></a>
-<span class="sourceLineNo">1737</span>    {<a name="line.1737"></a>
-<span class="sourceLineNo">1738</span>      connection.sendMessage(message, responseTimeout);<a name="line.1738"></a>
-<span class="sourceLineNo">1739</span>    }<a name="line.1739"></a>
-<span class="sourceLineNo">1740</span>    catch (final LDAPException le)<a name="line.1740"></a>
-<span class="sourceLineNo">1741</span>    {<a name="line.1741"></a>
-<span class="sourceLineNo">1742</span>      Debug.debugException(le);<a name="line.1742"></a>
-<span class="sourceLineNo">1743</span><a name="line.1743"></a>
-<span class="sourceLineNo">1744</span>      if (allowRetry)<a name="line.1744"></a>
-<span class="sourceLineNo">1745</span>      {<a name="line.1745"></a>
-<span class="sourceLineNo">1746</span>        final SearchResult retryResult = reconnectAndRetry(connection, depth,<a name="line.1746"></a>
-<span class="sourceLineNo">1747</span>             le.getResultCode(), 0, 0);<a name="line.1747"></a>
-<span class="sourceLineNo">1748</span>        if (retryResult != null)<a name="line.1748"></a>
-<span class="sourceLineNo">1749</span>        {<a name="line.1749"></a>
-<span class="sourceLineNo">1750</span>          return retryResult;<a name="line.1750"></a>
-<span class="sourceLineNo">1751</span>        }<a name="line.1751"></a>
-<span class="sourceLineNo">1752</span>      }<a name="line.1752"></a>
-<span class="sourceLineNo">1753</span><a name="line.1753"></a>
-<span class="sourceLineNo">1754</span>      throw le;<a name="line.1754"></a>
-<span class="sourceLineNo">1755</span>    }<a name="line.1755"></a>
-<span class="sourceLineNo">1756</span><a name="line.1756"></a>
-<span class="sourceLineNo">1757</span>    final ArrayList&lt;SearchResultEntry&gt; entryList;<a name="line.1757"></a>
-<span class="sourceLineNo">1758</span>    final ArrayList&lt;SearchResultReference&gt; referenceList;<a name="line.1758"></a>
-<span class="sourceLineNo">1759</span>    if (searchResultListener == null)<a name="line.1759"></a>
-<span class="sourceLineNo">1760</span>    {<a name="line.1760"></a>
-<span class="sourceLineNo">1761</span>      entryList     = new ArrayList&lt;&gt;(5);<a name="line.1761"></a>
-<span class="sourceLineNo">1762</span>      referenceList = new ArrayList&lt;&gt;(5);<a name="line.1762"></a>
-<span class="sourceLineNo">1763</span>    }<a name="line.1763"></a>
-<span class="sourceLineNo">1764</span>    else<a name="line.1764"></a>
-<span class="sourceLineNo">1765</span>    {<a name="line.1765"></a>
-<span class="sourceLineNo">1766</span>      entryList     = null;<a name="line.1766"></a>
-<span class="sourceLineNo">1767</span>      referenceList = null;<a name="line.1767"></a>
-<span class="sourceLineNo">1768</span>    }<a name="line.1768"></a>
-<span class="sourceLineNo">1769</span><a name="line.1769"></a>
-<span class="sourceLineNo">1770</span>    int numEntries    = 0;<a name="line.1770"></a>
-<span class="sourceLineNo">1771</span>    int numReferences = 0;<a name="line.1771"></a>
-<span class="sourceLineNo">1772</span>    ResultCode intermediateResultCode = ResultCode.SUCCESS;<a name="line.1772"></a>
-<span class="sourceLineNo">1773</span>    while (true)<a name="line.1773"></a>
-<span class="sourceLineNo">1774</span>    {<a name="line.1774"></a>
-<span class="sourceLineNo">1775</span>      final LDAPResponse response;<a name="line.1775"></a>
-<span class="sourceLineNo">1776</span>      try<a name="line.1776"></a>
-<span class="sourceLineNo">1777</span>      {<a name="line.1777"></a>
-<span class="sourceLineNo">1778</span>        response = connection.readResponse(messageID);<a name="line.1778"></a>
-<span class="sourceLineNo">1779</span>      }<a name="line.1779"></a>
-<span class="sourceLineNo">1780</span>      catch (final LDAPException le)<a name="line.1780"></a>
-<span class="sourceLineNo">1781</span>      {<a name="line.1781"></a>
-<span class="sourceLineNo">1782</span>        Debug.debugException(le);<a name="line.1782"></a>
-<span class="sourceLineNo">1783</span><a name="line.1783"></a>
-<span class="sourceLineNo">1784</span>        if ((le.getResultCode() == ResultCode.TIMEOUT) &amp;&amp;<a name="line.1784"></a>
-<span class="sourceLineNo">1785</span>            connection.getConnectionOptions().abandonOnTimeout())<a name="line.1785"></a>
-<span class="sourceLineNo">1786</span>        {<a name="line.1786"></a>
-<span class="sourceLineNo">1787</span>          connection.abandon(messageID);<a name="line.1787"></a>
-<span class="sourceLineNo">1788</span>        }<a name="line.1788"></a>
-<span class="sourceLineNo">1789</span><a name="line.1789"></a>
-<span class="sourceLineNo">1790</span>        if (allowRetry)<a name="line.1790"></a>
-<span class="sourceLineNo">1791</span>        {<a name="line.1791"></a>
-<span class="sourceLineNo">1792</span>          final SearchResult retryResult = reconnectAndRetry(connection, depth,<a name="line.1792"></a>
-<span class="sourceLineNo">1793</span>               le.getResultCode(), numEntries, numReferences);<a name="line.1793"></a>
-<span class="sourceLineNo">1794</span>          if (retryResult != null)<a name="line.1794"></a>
-<span class="sourceLineNo">1795</span>          {<a name="line.1795"></a>
-<span class="sourceLineNo">1796</span>            return retryResult;<a name="line.1796"></a>
-<span class="sourceLineNo">1797</span>          }<a name="line.1797"></a>
-<span class="sourceLineNo">1798</span>        }<a name="line.1798"></a>
-<span class="sourceLineNo">1799</span><a name="line.1799"></a>
-<span class="sourceLineNo">1800</span>        throw le;<a name="line.1800"></a>
-<span class="sourceLineNo">1801</span>      }<a name="line.1801"></a>
-<span class="sourceLineNo">1802</span><a name="line.1802"></a>
-<span class="sourceLineNo">1803</span>      if (response == null)<a name="line.1803"></a>
-<span class="sourceLineNo">1804</span>      {<a name="line.1804"></a>
-<span class="sourceLineNo">1805</span>        if (connection.getConnectionOptions().abandonOnTimeout())<a name="line.1805"></a>
-<span class="sourceLineNo">1806</span>        {<a name="line.1806"></a>
-<span class="sourceLineNo">1807</span>          connection.abandon(messageID);<a name="line.1807"></a>
-<span class="sourceLineNo">1808</span>        }<a name="line.1808"></a>
-<span class="sourceLineNo">1809</span><a name="line.1809"></a>
-<span class="sourceLineNo">1810</span>        throw new LDAPException(ResultCode.TIMEOUT,<a name="line.1810"></a>
-<span class="sourceLineNo">1811</span>             ERR_SEARCH_CLIENT_TIMEOUT.get(responseTimeout, messageID, baseDN,<a name="line.1811"></a>
-<span class="sourceLineNo">1812</span>                  scope.getName(), filter.toString(),<a name="line.1812"></a>
-<span class="sourceLineNo">1813</span>                  connection.getHostPort()));<a name="line.1813"></a>
-<span class="sourceLineNo">1814</span>      }<a name="line.1814"></a>
-<span class="sourceLineNo">1815</span>      else if (response instanceof ConnectionClosedResponse)<a name="line.1815"></a>
-<span class="sourceLineNo">1816</span>      {<a name="line.1816"></a>
-<span class="sourceLineNo">1817</span><a name="line.1817"></a>
-<span class="sourceLineNo">1818</span>        if (allowRetry)<a name="line.1818"></a>
-<span class="sourceLineNo">1819</span>        {<a name="line.1819"></a>
-<span class="sourceLineNo">1820</span>          final SearchResult retryResult = reconnectAndRetry(connection, depth,<a name="line.1820"></a>
-<span class="sourceLineNo">1821</span>               ResultCode.SERVER_DOWN, numEntries, numReferences);<a name="line.1821"></a>
-<span class="sourceLineNo">1822</span>          if (retryResult != null)<a name="line.1822"></a>
-<span class="sourceLineNo">1823</span>          {<a name="line.1823"></a>
-<span class="sourceLineNo">1824</span>            return retryResult;<a name="line.1824"></a>
-<span class="sourceLineNo">1825</span>          }<a name="line.1825"></a>
-<span class="sourceLineNo">1826</span>        }<a name="line.1826"></a>
-<span class="sourceLineNo">1827</span><a name="line.1827"></a>
-<span class="sourceLineNo">1828</span>        final ConnectionClosedResponse ccr =<a name="line.1828"></a>
-<span class="sourceLineNo">1829</span>             (ConnectionClosedResponse) response;<a name="line.1829"></a>
-<span class="sourceLineNo">1830</span>        final String msg = ccr.getMessage();<a name="line.1830"></a>
-<span class="sourceLineNo">1831</span>        if (msg == null)<a name="line.1831"></a>
-<span class="sourceLineNo">1832</span>        {<a name="line.1832"></a>
-<span class="sourceLineNo">1833</span>          // The connection was closed while waiting for the response.<a name="line.1833"></a>
-<span class="sourceLineNo">1834</span>          final SearchResult searchResult =<a name="line.1834"></a>
-<span class="sourceLineNo">1835</span>               new SearchResult(messageID, ccr.getResultCode(),<a name="line.1835"></a>
-<span class="sourceLineNo">1836</span>                    ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE.get(<a name="line.1836"></a>
-<span class="sourceLineNo">1837</span>                         connection.getHostPort(), toString()),<a name="line.1837"></a>
-<span class="sourceLineNo">1838</span>                    null, null, entryList, referenceList, numEntries,<a name="line.1838"></a>
-<span class="sourceLineNo">1839</span>                    numReferences, null);<a name="line.1839"></a>
-<span class="sourceLineNo">1840</span>          throw new LDAPSearchException(searchResult);<a name="line.1840"></a>
-<span class="sourceLineNo">1841</span>        }<a name="line.1841"></a>
-<span class="sourceLineNo">1842</span>        else<a name="line.1842"></a>
-<span class="sourceLineNo">1843</span>        {<a name="line.1843"></a>
-<span class="sourceLineNo">1844</span>          // The connection was closed while waiting for the response.<a name="line.1844"></a>
-<span class="sourceLineNo">1845</span>          final SearchResult searchResult =<a name="line.1845"></a>
-<span class="sourceLineNo">1846</span>               new SearchResult(messageID, ccr.getResultCode(),<a name="line.1846"></a>
-<span class="sourceLineNo">1847</span>                    ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE_WITH_MESSAGE.<a name="line.1847"></a>
-<span class="sourceLineNo">1848</span>                         get(connection.getHostPort(), toString(), msg),<a name="line.1848"></a>
-<span class="sourceLineNo">1849</span>                    null, null, entryList, referenceList, numEntries,<a name="line.1849"></a>
-<span class="sourceLineNo">1850</span>                    numReferences, null);<a name="line.1850"></a>
-<span class="sourceLineNo">1851</span>          throw new LDAPSearchException(searchResult);<a name="line.1851"></a>
-<span class="sourceLineNo">1852</span>        }<a name="line.1852"></a>
-<span class="sourceLineNo">1853</span>      }<a name="line.1853"></a>
-<span class="sourceLineNo">1854</span>      else if (response instanceof IntermediateResponse)<a name="line.1854"></a>
-<span class="sourceLineNo">1855</span>      {<a name="line.1855"></a>
-<span class="sourceLineNo">1856</span>        final IntermediateResponseListener listener =<a name="line.1856"></a>
-<span class="sourceLineNo">1857</span>             getIntermediateResponseListener();<a name="line.1857"></a>
-<span class="sourceLineNo">1858</span>        if (listener != null)<a name="line.1858"></a>
-<span class="sourceLineNo">1859</span>        {<a name="line.1859"></a>
-<span class="sourceLineNo">1860</span>          listener.intermediateResponseReturned(<a name="line.1860"></a>
-<span class="sourceLineNo">1861</span>               (IntermediateResponse) response);<a name="line.1861"></a>
-<span class="sourceLineNo">1862</span>        }<a name="line.1862"></a>
-<span class="sourceLineNo">1863</span>      }<a name="line.1863"></a>
-<span class="sourceLineNo">1864</span>      else if (response instanceof SearchResultEntry)<a name="line.1864"></a>
-<span class="sourceLineNo">1865</span>      {<a name="line.1865"></a>
-<span class="sourceLineNo">1866</span>        final SearchResultEntry searchEntry = (SearchResultEntry) response;<a name="line.1866"></a>
-<span class="sourceLineNo">1867</span>        numEntries++;<a name="line.1867"></a>
-<span class="sourceLineNo">1868</span>        if (searchResultListener == null)<a name="line.1868"></a>
-<span class="sourceLineNo">1869</span>        {<a name="line.1869"></a>
-<span class="sourceLineNo">1870</span>          entryList.add(searchEntry);<a name="line.1870"></a>
-<span class="sourceLineNo">1871</span>        }<a name="line.1871"></a>
-<span class="sourceLineNo">1872</span>        else<a name="line.1872"></a>
-<span class="sourceLineNo">1873</span>        {<a name="line.1873"></a>
-<span class="sourceLineNo">1874</span>          searchResultListener.searchEntryReturned(searchEntry);<a name="line.1874"></a>
-<span class="sourceLineNo">1875</span>        }<a name="line.1875"></a>
-<span class="sourceLineNo">1876</span>      }<a name="line.1876"></a>
-<span class="sourceLineNo">1877</span>      else if (response instanceof SearchResultReference)<a name="line.1877"></a>
-<span class="sourceLineNo">1878</span>      {<a name="line.1878"></a>
-<span class="sourceLineNo">1879</span>        final SearchResultReference searchReference =<a name="line.1879"></a>
-<span class="sourceLineNo">1880</span>             (SearchResultReference) response;<a name="line.1880"></a>
-<span class="sourceLineNo">1881</span>        if (followReferrals(connection))<a name="line.1881"></a>
-<span class="sourceLineNo">1882</span>        {<a name="line.1882"></a>
-<span class="sourceLineNo">1883</span>          final LDAPResult result = followSearchReference(messageID,<a name="line.1883"></a>
-<span class="sourceLineNo">1884</span>               searchReference, connection, depth);<a name="line.1884"></a>
-<span class="sourceLineNo">1885</span>          if (! result.getResultCode().equals(ResultCode.SUCCESS))<a name="line.1885"></a>
-<span class="sourceLineNo">1886</span>          {<a name="line.1886"></a>
-<span class="sourceLineNo">1887</span>            // We couldn't follow the reference.  We don't want to fail the<a name="line.1887"></a>
-<span class="sourceLineNo">1888</span>            // entire search because of this right now, so treat it as if<a name="line.1888"></a>
-<span class="sourceLineNo">1889</span>            // referral following had not been enabled.  Also, set the<a name="line.1889"></a>
-<span class="sourceLineNo">1890</span>            // intermediate result code to match that of the result.<a name="line.1890"></a>
-<span class="sourceLineNo">1891</span>            numReferences++;<a name="line.1891"></a>
-<span class="sourceLineNo">1892</span>            if (searchResultListener == null)<a name="line.1892"></a>
-<span class="sourceLineNo">1893</span>            {<a name="line.1893"></a>
-<span class="sourceLineNo">1894</span>              referenceList.add(searchReference);<a name="line.1894"></a>
-<span class="sourceLineNo">1895</span>            }<a name="line.1895"></a>
-<span class="sourceLineNo">1896</span>            else<a name="line.1896"></a>
-<span class="sourceLineNo">1897</span>            {<a name="line.1897"></a>
-<span class="sourceLineNo">1898</span>              searchResultListener.searchReferenceReturned(searchReference);<a name="line.1898"></a>
-<span class="sourceLineNo">1899</span>            }<a name="line.1899"></a>
-<span class="sourceLineNo">1900</span><a name="line.1900"></a>
-<span class="sourceLineNo">1901</span>            if (intermediateResultCode.equals(ResultCode.SUCCESS) &amp;&amp;<a name="line.1901"></a>
-<span class="sourceLineNo">1902</span>               (result.getResultCode() != ResultCode.REFERRAL))<a name="line.1902"></a>
-<span class="sourceLineNo">1903</span>            {<a name="line.1903"></a>
-<span class="sourceLineNo">1904</span>              intermediateResultCode = result.getResultCode();<a name="line.1904"></a>
-<span class="sourceLineNo">1905</span>            }<a name="line.1905"></a>
-<span class="sourceLineNo">1906</span>          }<a name="line.1906"></a>
-<span class="sourceLineNo">1907</span>          else if (result instanceof SearchResult)<a name="line.1907"></a>
-<span class="sourceLineNo">1908</span>          {<a name="line.1908"></a>
-<span class="sourceLineNo">1909</span>            final SearchResult searchResult = (SearchResult) result;<a name="line.1909"></a>
-<span class="sourceLineNo">1910</span>            numEntries += searchResult.getEntryCount();<a name="line.1910"></a>
+<span class="sourceLineNo">1723</span><a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>    // Send the request to the server.<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span>    final long responseTimeout = getResponseTimeoutMillis(connection);<a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>    final long requestTime = System.nanoTime();<a name="line.1726"></a>
+<span class="sourceLineNo">1727</span>    Debug.debugLDAPRequest(Level.INFO, this, messageID, connection);<a name="line.1727"></a>
+<span class="sourceLineNo">1728</span><a name="line.1728"></a>
+<span class="sourceLineNo">1729</span>    final LDAPConnectionLogger logger =<a name="line.1729"></a>
+<span class="sourceLineNo">1730</span>         connection.getConnectionOptions().getConnectionLogger();<a name="line.1730"></a>
+<span class="sourceLineNo">1731</span>    if (logger != null)<a name="line.1731"></a>
+<span class="sourceLineNo">1732</span>    {<a name="line.1732"></a>
+<span class="sourceLineNo">1733</span>      logger.logSearchRequest(connection, messageID, this);<a name="line.1733"></a>
+<span class="sourceLineNo">1734</span>    }<a name="line.1734"></a>
+<span class="sourceLineNo">1735</span><a name="line.1735"></a>
+<span class="sourceLineNo">1736</span>    connection.getConnectionStatistics().incrementNumSearchRequests();<a name="line.1736"></a>
+<span class="sourceLineNo">1737</span>    try<a name="line.1737"></a>
+<span class="sourceLineNo">1738</span>    {<a name="line.1738"></a>
+<span class="sourceLineNo">1739</span>      connection.sendMessage(message, responseTimeout);<a name="line.1739"></a>
+<span class="sourceLineNo">1740</span>    }<a name="line.1740"></a>
+<span class="sourceLineNo">1741</span>    catch (final LDAPException le)<a name="line.1741"></a>
+<span class="sourceLineNo">1742</span>    {<a name="line.1742"></a>
+<span class="sourceLineNo">1743</span>      Debug.debugException(le);<a name="line.1743"></a>
+<span class="sourceLineNo">1744</span><a name="line.1744"></a>
+<span class="sourceLineNo">1745</span>      if (allowRetry)<a name="line.1745"></a>
+<span class="sourceLineNo">1746</span>      {<a name="line.1746"></a>
+<span class="sourceLineNo">1747</span>        final SearchResult retryResult = reconnectAndRetry(connection, depth,<a name="line.1747"></a>
+<span class="sourceLineNo">1748</span>             le.getResultCode(), 0, 0);<a name="line.1748"></a>
+<span class="sourceLineNo">1749</span>        if (retryResult != null)<a name="line.1749"></a>
+<span class="sourceLineNo">1750</span>        {<a name="line.1750"></a>
+<span class="sourceLineNo">1751</span>          return retryResult;<a name="line.1751"></a>
+<span class="sourceLineNo">1752</span>        }<a name="line.1752"></a>
+<span class="sourceLineNo">1753</span>      }<a name="line.1753"></a>
+<span class="sourceLineNo">1754</span><a name="line.1754"></a>
+<span class="sourceLineNo">1755</span>      throw le;<a name="line.1755"></a>
+<span class="sourceLineNo">1756</span>    }<a name="line.1756"></a>
+<span class="sourceLineNo">1757</span><a name="line.1757"></a>
+<span class="sourceLineNo">1758</span>    final ArrayList&lt;SearchResultEntry&gt; entryList;<a name="line.1758"></a>
+<span class="sourceLineNo">1759</span>    final ArrayList&lt;SearchResultReference&gt; referenceList;<a name="line.1759"></a>
+<span class="sourceLineNo">1760</span>    if (searchResultListener == null)<a name="line.1760"></a>
+<span class="sourceLineNo">1761</span>    {<a name="line.1761"></a>
+<span class="sourceLineNo">1762</span>      entryList     = new ArrayList&lt;&gt;(5);<a name="line.1762"></a>
+<span class="sourceLineNo">1763</span>      referenceList = new ArrayList&lt;&gt;(5);<a name="line.1763"></a>
+<span class="sourceLineNo">1764</span>    }<a name="line.1764"></a>
+<span class="sourceLineNo">1765</span>    else<a name="line.1765"></a>
+<span class="sourceLineNo">1766</span>    {<a name="line.1766"></a>
+<span class="sourceLineNo">1767</span>      entryList     = null;<a name="line.1767"></a>
+<span class="sourceLineNo">1768</span>      referenceList = null;<a name="line.1768"></a>
+<span class="sourceLineNo">1769</span>    }<a name="line.1769"></a>
+<span class="sourceLineNo">1770</span><a name="line.1770"></a>
+<span class="sourceLineNo">1771</span>    int numEntries    = 0;<a name="line.1771"></a>
+<span class="sourceLineNo">1772</span>    int numReferences = 0;<a name="line.1772"></a>
+<span class="sourceLineNo">1773</span>    ResultCode intermediateResultCode = ResultCode.SUCCESS;<a name="line.1773"></a>
+<span class="sourceLineNo">1774</span>    while (true)<a name="line.1774"></a>
+<span class="sourceLineNo">1775</span>    {<a name="line.1775"></a>
+<span class="sourceLineNo">1776</span>      final LDAPResponse response;<a name="line.1776"></a>
+<span class="sourceLineNo">1777</span>      try<a name="line.1777"></a>
+<span class="sourceLineNo">1778</span>      {<a name="line.1778"></a>
+<span class="sourceLineNo">1779</span>        response = connection.readResponse(messageID);<a name="line.1779"></a>
+<span class="sourceLineNo">1780</span>      }<a name="line.1780"></a>
+<span class="sourceLineNo">1781</span>      catch (final LDAPException le)<a name="line.1781"></a>
+<span class="sourceLineNo">1782</span>      {<a name="line.1782"></a>
+<span class="sourceLineNo">1783</span>        Debug.debugException(le);<a name="line.1783"></a>
+<span class="sourceLineNo">1784</span><a name="line.1784"></a>
+<span class="sourceLineNo">1785</span>        if ((le.getResultCode() == ResultCode.TIMEOUT) &amp;&amp;<a name="line.1785"></a>
+<span class="sourceLineNo">1786</span>            connection.getConnectionOptions().abandonOnTimeout())<a name="line.1786"></a>
+<span class="sourceLineNo">1787</span>        {<a name="line.1787"></a>
+<span class="sourceLineNo">1788</span>          connection.abandon(messageID);<a name="line.1788"></a>
+<span class="sourceLineNo">1789</span>        }<a name="line.1789"></a>
+<span class="sourceLineNo">1790</span><a name="line.1790"></a>
+<span class="sourceLineNo">1791</span>        if (allowRetry)<a name="line.1791"></a>
+<span class="sourceLineNo">1792</span>        {<a name="line.1792"></a>
+<span class="sourceLineNo">1793</span>          final SearchResult retryResult = reconnectAndRetry(connection, depth,<a name="line.1793"></a>
+<span class="sourceLineNo">1794</span>               le.getResultCode(), numEntries, numReferences);<a name="line.1794"></a>
+<span class="sourceLineNo">1795</span>          if (retryResult != null)<a name="line.1795"></a>
+<span class="sourceLineNo">1796</span>          {<a name="line.1796"></a>
+<span class="sourceLineNo">1797</span>            return retryResult;<a name="line.1797"></a>
+<span class="sourceLineNo">1798</span>          }<a name="line.1798"></a>
+<span class="sourceLineNo">1799</span>        }<a name="line.1799"></a>
+<span class="sourceLineNo">1800</span><a name="line.1800"></a>
+<span class="sourceLineNo">1801</span>        throw le;<a name="line.1801"></a>
+<span class="sourceLineNo">1802</span>      }<a name="line.1802"></a>
+<span class="sourceLineNo">1803</span><a name="line.1803"></a>
+<span class="sourceLineNo">1804</span>      if (response == null)<a name="line.1804"></a>
+<span class="sourceLineNo">1805</span>      {<a name="line.1805"></a>
+<span class="sourceLineNo">1806</span>        if (connection.getConnectionOptions().abandonOnTimeout())<a name="line.1806"></a>
+<span class="sourceLineNo">1807</span>        {<a name="line.1807"></a>
+<span class="sourceLineNo">1808</span>          connection.abandon(messageID);<a name="line.1808"></a>
+<span class="sourceLineNo">1809</span>        }<a name="line.1809"></a>
+<span class="sourceLineNo">1810</span><a name="line.1810"></a>
+<span class="sourceLineNo">1811</span>        throw new LDAPException(ResultCode.TIMEOUT,<a name="line.1811"></a>
+<span class="sourceLineNo">1812</span>             ERR_SEARCH_CLIENT_TIMEOUT.get(responseTimeout, messageID, baseDN,<a name="line.1812"></a>
+<span class="sourceLineNo">1813</span>                  scope.getName(), filter.toString(),<a name="line.1813"></a>
+<span class="sourceLineNo">1814</span>                  connection.getHostPort()));<a name="line.1814"></a>
+<span class="sourceLineNo">1815</span>      }<a name="line.1815"></a>
+<span class="sourceLineNo">1816</span>      else if (response instanceof ConnectionClosedResponse)<a name="line.1816"></a>
+<span class="sourceLineNo">1817</span>      {<a name="line.1817"></a>
+<span class="sourceLineNo">1818</span><a name="line.1818"></a>
+<span class="sourceLineNo">1819</span>        if (allowRetry)<a name="line.1819"></a>
+<span class="sourceLineNo">1820</span>        {<a name="line.1820"></a>
+<span class="sourceLineNo">1821</span>          final SearchResult retryResult = reconnectAndRetry(connection, depth,<a name="line.1821"></a>
+<span class="sourceLineNo">1822</span>               ResultCode.SERVER_DOWN, numEntries, numReferences);<a name="line.1822"></a>
+<span class="sourceLineNo">1823</span>          if (retryResult != null)<a name="line.1823"></a>
+<span class="sourceLineNo">1824</span>          {<a name="line.1824"></a>
+<span class="sourceLineNo">1825</span>            return retryResult;<a name="line.1825"></a>
+<span class="sourceLineNo">1826</span>          }<a name="line.1826"></a>
+<span class="sourceLineNo">1827</span>        }<a name="line.1827"></a>
+<span class="sourceLineNo">1828</span><a name="line.1828"></a>
+<span class="sourceLineNo">1829</span>        final ConnectionClosedResponse ccr =<a name="line.1829"></a>
+<span class="sourceLineNo">1830</span>             (ConnectionClosedResponse) response;<a name="line.1830"></a>
+<span class="sourceLineNo">1831</span>        final String msg = ccr.getMessage();<a name="line.1831"></a>
+<span class="sourceLineNo">1832</span>        if (msg == null)<a name="line.1832"></a>
+<span class="sourceLineNo">1833</span>        {<a name="line.1833"></a>
+<span class="sourceLineNo">1834</span>          // The connection was closed while waiting for the response.<a name="line.1834"></a>
+<span class="sourceLineNo">1835</span>          final SearchResult searchResult =<a name="line.1835"></a>
+<span class="sourceLineNo">1836</span>               new SearchResult(messageID, ccr.getResultCode(),<a name="line.1836"></a>
+<span class="sourceLineNo">1837</span>                    ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE.get(<a name="line.1837"></a>
+<span class="sourceLineNo">1838</span>                         connection.getHostPort(), toString()),<a name="line.1838"></a>
+<span class="sourceLineNo">1839</span>                    null, null, entryList, referenceList, numEntries,<a name="line.1839"></a>
+<span class="sourceLineNo">1840</span>                    numReferences, null);<a name="line.1840"></a>
+<span class="sourceLineNo">1841</span>          throw new LDAPSearchException(searchResult);<a name="line.1841"></a>
+<span class="sourceLineNo">1842</span>        }<a name="line.1842"></a>
+<span class="sourceLineNo">1843</span>        else<a name="line.1843"></a>
+<span class="sourceLineNo">1844</span>        {<a name="line.1844"></a>
+<span class="sourceLineNo">1845</span>          // The connection was closed while waiting for the response.<a name="line.1845"></a>
+<span class="sourceLineNo">1846</span>          final SearchResult searchResult =<a name="line.1846"></a>
+<span class="sourceLineNo">1847</span>               new SearchResult(messageID, ccr.getResultCode(),<a name="line.1847"></a>
+<span class="sourceLineNo">1848</span>                    ERR_CONN_CLOSED_WAITING_FOR_SEARCH_RESPONSE_WITH_MESSAGE.<a name="line.1848"></a>
+<span class="sourceLineNo">1849</span>                         get(connection.getHostPort(), toString(), msg),<a name="line.1849"></a>
+<span class="sourceLineNo">1850</span>                    null, null, entryList, referenceList, numEntries,<a name="line.1850"></a>
+<span class="sourceLineNo">1851</span>                    numReferences, null);<a name="line.1851"></a>
+<span class="sourceLineNo">1852</span>          throw new LDAPSearchException(searchResult);<a name="line.1852"></a>
+<span class="sourceLineNo">1853</span>        }<a name="line.1853"></a>
+<span class="sourceLineNo">1854</span>      }<a name="line.1854"></a>
+<span class="sourceLineNo">1855</span>      else if (response instanceof IntermediateResponse)<a name="line.1855"></a>
+<span class="sourceLineNo">1856</span>      {<a name="line.1856"></a>
+<span class="sourceLineNo">1857</span>        final IntermediateResponseListener listener =<a name="line.1857"></a>
+<span class="sourceLineNo">1858</span>             getIntermediateResponseListener();<a name="line.1858"></a>
+<span class="sourceLineNo">1859</span>        if (listener != null)<a name="line.1859"></a>
+<span class="sourceLineNo">1860</span>        {<a name="line.1860"></a>
+<span class="sourceLineNo">1861</span>          listener.intermediateResponseReturned(<a name="line.1861"></a>
+<span class="sourceLineNo">1862</span>               (IntermediateResponse) response);<a name="line.1862"></a>
+<span class="sourceLineNo">1863</span>        }<a name="line.1863"></a>
+<span class="sourceLineNo">1864</span>      }<a name="line.1864"></a>
+<span class="sourceLineNo">1865</span>      else if (response instanceof SearchResultEntry)<a name="line.1865"></a>
+<span class="sourceLineNo">1866</span>      {<a name="line.1866"></a>
+<span class="sourceLineNo">1867</span>        final SearchResultEntry searchEntry = (SearchResultEntry) response;<a name="line.1867"></a>
+<span class="sourceLineNo">1868</span>        numEntries++;<a name="line.1868"></a>
+<span class="sourceLineNo">1869</span>        if (searchResultListener == null)<a name="line.1869"></a>
+<span class="sourceLineNo">1870</span>        {<a name="line.1870"></a>
+<span class="sourceLineNo">1871</span>          entryList.add(searchEntry);<a name="line.1871"></a>
+<span class="sourceLineNo">1872</span>        }<a name="line.1872"></a>
+<span class="sourceLineNo">1873</span>        else<a name="line.1873"></a>
+<span class="sourceLineNo">1874</span>        {<a name="line.1874"></a>
+<span class="sourceLineNo">1875</span>          searchResultListener.searchEntryReturned(searchEntry);<a name="line.1875"></a>
+<span class="sourceLineNo">1876</span>        }<a name="line.1876"></a>
+<span class="sourceLineNo">1877</span>      }<a name="line.1877"></a>
+<span class="sourceLineNo">1878</span>      else if (response instanceof SearchResultReference)<a name="line.1878"></a>
+<span class="sourceLineNo">1879</span>      {<a name="line.1879"></a>
+<span class="sourceLineNo">1880</span>        final SearchResultReference searchReference =<a name="line.1880"></a>
+<span class="sourceLineNo">1881</span>             (SearchResultReference) response;<a name="line.1881"></a>
+<span class="sourceLineNo">1882</span>        if (followReferrals(connection))<a name="line.1882"></a>
+<span class="sourceLineNo">1883</span>        {<a name="line.1883"></a>
+<span class="sourceLineNo">1884</span>          final SearchResult result = ReferralHelper.handleReferral(this,<a name="line.1884"></a>
+<span class="sourceLineNo">1885</span>               searchReference, connection);<a name="line.1885"></a>
+<span class="sourceLineNo">1886</span>          if (! result.getResultCode().equals(ResultCode.SUCCESS))<a name="line.1886"></a>
+<span class="sourceLineNo">1887</span>          {<a name="line.1887"></a>
+<span class="sourceLineNo">1888</span>            // We couldn't follow the reference.  We don't want to fail the<a name="line.1888"></a>
+<span class="sourceLineNo">1889</span>            // entire search because of this right now, so treat it as if<a name="line.1889"></a>
+<span class="sourceLineNo">1890</span>            // referral following had not been enabled.  Also, set the<a name="line.1890"></a>
+<span class="sourceLineNo">1891</span>            // intermediate result code to match that of the result.<a name="line.1891"></a>
+<span class="sourceLineNo">1892</span>            numReferences++;<a name="line.1892"></a>
+<span class="sourceLineNo">1893</span>            if (searchResultListener == null)<a name="line.1893"></a>
+<span class="sourceLineNo">1894</span>            {<a name="line.1894"></a>
+<span class="sourceLineNo">1895</span>              referenceList.add(searchReference);<a name="line.1895"></a>
+<span class="sourceLineNo">1896</span>            }<a name="line.1896"></a>
+<span class="sourceLineNo">1897</span>            else<a name="line.1897"></a>
+<span class="sourceLineNo">1898</span>            {<a name="line.1898"></a>
+<span class="sourceLineNo">1899</span>              searchResultListener.searchReferenceReturned(searchReference);<a name="line.1899"></a>
+<span class="sourceLineNo">1900</span>            }<a name="line.1900"></a>
+<span class="sourceLineNo">1901</span><a name="line.1901"></a>
+<span class="sourceLineNo">1902</span>            if (intermediateResultCode.equals(ResultCode.SUCCESS) &amp;&amp;<a name="line.1902"></a>
+<span class="sourceLineNo">1903</span>               (result.getResultCode() != ResultCode.REFERRAL))<a name="line.1903"></a>
+<span class="sourceLineNo">1904</span>            {<a name="line.1904"></a>
+<span class="sourceLineNo">1905</span>              intermediateResultCode = result.getResultCode();<a name="line.1905"></a>
+<span class="sourceLineNo">1906</span>            }<a name="line.1906"></a>
+<span class="sourceLineNo">1907</span>          }<a name="line.1907"></a>
+<span class="sourceLineNo">1908</span>          else if (result instanceof SearchResult)<a name="line.1908"></a>
+<span class="sourceLineNo">1909</span>          {<a name="line.1909"></a>
+<span class="sourceLineNo">1910</span>            numEntries += result.getEntryCount();<a name="line.1910"></a>
 <span class="sourceLineNo">1911</span>            if (searchResultListener == null)<a name="line.1911"></a>
 <span class="sourceLineNo">1912</span>            {<a name="line.1912"></a>
-<span class="sourceLineNo">1913</span>              entryList.addAll(searchResult.getSearchEntries());<a name="line.1913"></a>
+<span class="sourceLineNo">1913</span>              entryList.addAll(result.getSearchEntries());<a name="line.1913"></a>
 <span class="sourceLineNo">1914</span>            }<a name="line.1914"></a>
 <span class="sourceLineNo">1915</span>          }<a name="line.1915"></a>
 <span class="sourceLineNo">1916</span>        }<a name="line.1916"></a>
@@ -2069,7 +2069,7 @@
 <span class="sourceLineNo">2061</span>                                result.getResponseControls());<a name="line.2061"></a>
 <span class="sourceLineNo">2062</span>      }<a name="line.2062"></a>
 <span class="sourceLineNo">2063</span><a name="line.2063"></a>
-<span class="sourceLineNo">2064</span>      result = followReferral(result, connection, depth);<a name="line.2064"></a>
+<span class="sourceLineNo">2064</span>      result = ReferralHelper.handleReferral(this, result, connection);<a name="line.2064"></a>
 <span class="sourceLineNo">2065</span>    }<a name="line.2065"></a>
 <span class="sourceLineNo">2066</span><a name="line.2066"></a>
 <span class="sourceLineNo">2067</span>    if ((result.getResultCode().equals(ResultCode.SUCCESS)) &amp;&amp;<a name="line.2067"></a>
@@ -2090,443 +2090,234 @@
 <span class="sourceLineNo">2082</span><a name="line.2082"></a>
 <span class="sourceLineNo">2083</span><a name="line.2083"></a>
 <span class="sourceLineNo">2084</span>  /**<a name="line.2084"></a>
-<span class="sourceLineNo">2085</span>   * Attempts to follow a search result reference to continue a search in a<a name="line.2085"></a>
-<span class="sourceLineNo">2086</span>   * remote server.<a name="line.2086"></a>
-<span class="sourceLineNo">2087</span>   *<a name="line.2087"></a>
-<span class="sourceLineNo">2088</span>   * @param  messageID        The message ID for the LDAP message that is<a name="line.2088"></a>
-<span class="sourceLineNo">2089</span>   *                          associated with this result.<a name="line.2089"></a>
-<span class="sourceLineNo">2090</span>   * @param  searchReference  The search result reference to follow.<a name="line.2090"></a>
-<span class="sourceLineNo">2091</span>   * @param  connection       The connection on which the reference was<a name="line.2091"></a>
-<span class="sourceLineNo">2092</span>   *                          received.<a name="line.2092"></a>
-<span class="sourceLineNo">2093</span>   * @param  depth            The number of referrals followed in the course of<a name="line.2093"></a>
-<span class="sourceLineNo">2094</span>   *                          processing this request.<a name="line.2094"></a>
-<span class="sourceLineNo">2095</span>   *<a name="line.2095"></a>
-<span class="sourceLineNo">2096</span>   * @return  The result of attempting to follow the search result reference.<a name="line.2096"></a>
-<span class="sourceLineNo">2097</span>   *<a name="line.2097"></a>
-<span class="sourceLineNo">2098</span>   * @throws  LDAPException  If a problem occurs while attempting to establish<a name="line.2098"></a>
-<span class="sourceLineNo">2099</span>   *                         the referral connection, sending the request, or<a name="line.2099"></a>
-<span class="sourceLineNo">2100</span>   *                         reading the result.<a name="line.2100"></a>
-<span class="sourceLineNo">2101</span>   */<a name="line.2101"></a>
-<span class="sourceLineNo">2102</span>  @NotNull()<a name="line.2102"></a>
-<span class="sourceLineNo">2103</span>  private LDAPResult followSearchReference(final int messageID,<a name="line.2103"></a>
-<span class="sourceLineNo">2104</span>                          @NotNull final SearchResultReference searchReference,<a name="line.2104"></a>
-<span class="sourceLineNo">2105</span>                          @NotNull final LDAPConnection connection,<a name="line.2105"></a>
-<span class="sourceLineNo">2106</span>                          final int depth)<a name="line.2106"></a>
-<span class="sourceLineNo">2107</span>          throws LDAPException<a name="line.2107"></a>
-<span class="sourceLineNo">2108</span>  {<a name="line.2108"></a>
-<span class="sourceLineNo">2109</span>    for (final String urlString : searchReference.getReferralURLs())<a name="line.2109"></a>
-<span class="sourceLineNo">2110</span>    {<a name="line.2110"></a>
-<span class="sourceLineNo">2111</span>      try<a name="line.2111"></a>
-<span class="sourceLineNo">2112</span>      {<a name="line.2112"></a>
-<span class="sourceLineNo">2113</span>        final LDAPURL referralURL = new LDAPURL(urlString);<a name="line.2113"></a>
-<span class="sourceLineNo">2114</span>        final String host = referralURL.getHost();<a name="line.2114"></a>
-<span class="sourceLineNo">2115</span><a name="line.2115"></a>
-<span class="sourceLineNo">2116</span>        if (host == null)<a name="line.2116"></a>
-<span class="sourceLineNo">2117</span>        {<a name="line.2117"></a>
-<span class="sourceLineNo">2118</span>          // We can't handle a referral in which there is no host.<a name="line.2118"></a>
-<span class="sourceLineNo">2119</span>          continue;<a name="line.2119"></a>
-<span class="sourceLineNo">2120</span>        }<a name="line.2120"></a>
-<span class="sourceLineNo">2121</span><a name="line.2121"></a>
-<span class="sourceLineNo">2122</span>        final String requestBaseDN;<a name="line.2122"></a>
-<span class="sourceLineNo">2123</span>        if (referralURL.baseDNProvided())<a name="line.2123"></a>
-<span class="sourceLineNo">2124</span>        {<a name="line.2124"></a>
-<span class="sourceLineNo">2125</span>          requestBaseDN = referralURL.getBaseDN().toString();<a name="line.2125"></a>
-<span class="sourceLineNo">2126</span>        }<a name="line.2126"></a>
-<span class="sourceLineNo">2127</span>        else<a name="line.2127"></a>
-<span class="sourceLineNo">2128</span>        {<a name="line.2128"></a>
-<span class="sourceLineNo">2129</span>          requestBaseDN = baseDN;<a name="line.2129"></a>
-<span class="sourceLineNo">2130</span>        }<a name="line.2130"></a>
-<span class="sourceLineNo">2131</span><a name="line.2131"></a>
-<span class="sourceLineNo">2132</span>        final SearchScope requestScope;<a name="line.2132"></a>
-<span class="sourceLineNo">2133</span>        if (referralURL.scopeProvided())<a name="line.2133"></a>
-<span class="sourceLineNo">2134</span>        {<a name="line.2134"></a>
-<span class="sourceLineNo">2135</span>          requestScope = referralURL.getScope();<a name="line.2135"></a>
-<span class="sourceLineNo">2136</span>        }<a name="line.2136"></a>
-<span class="sourceLineNo">2137</span>        else<a name="line.2137"></a>
-<span class="sourceLineNo">2138</span>        {<a name="line.2138"></a>
-<span class="sourceLineNo">2139</span>          requestScope = scope;<a name="line.2139"></a>
-<span class="sourceLineNo">2140</span>        }<a name="line.2140"></a>
-<span class="sourceLineNo">2141</span><a name="line.2141"></a>
-<span class="sourceLineNo">2142</span>        final Filter requestFilter;<a name="line.2142"></a>
-<span class="sourceLineNo">2143</span>        if (referralURL.filterProvided())<a name="line.2143"></a>
-<span class="sourceLineNo">2144</span>        {<a name="line.2144"></a>
-<span class="sourceLineNo">2145</span>          requestFilter = referralURL.getFilter();<a name="line.2145"></a>
-<span class="sourceLineNo">2146</span>        }<a name="line.2146"></a>
-<span class="sourceLineNo">2147</span>        else<a name="line.2147"></a>
-<span class="sourceLineNo">2148</span>        {<a name="line.2148"></a>
-<span class="sourceLineNo">2149</span>          requestFilter = filter;<a name="line.2149"></a>
-<span class="sourceLineNo">2150</span>        }<a name="line.2150"></a>
-<span class="sourceLineNo">2151</span><a name="line.2151"></a>
-<span class="sourceLineNo">2152</span><a name="line.2152"></a>
-<span class="sourceLineNo">2153</span>        final SearchRequest searchRequest =<a name="line.2153"></a>
-<span class="sourceLineNo">2154</span>             new SearchRequest(searchResultListener, getControls(),<a name="line.2154"></a>
-<span class="sourceLineNo">2155</span>                               requestBaseDN, requestScope, derefPolicy,<a name="line.2155"></a>
-<span class="sourceLineNo">2156</span>                               sizeLimit, timeLimit, typesOnly, requestFilter,<a name="line.2156"></a>
-<span class="sourceLineNo">2157</span>                               attributes);<a name="line.2157"></a>
-<span class="sourceLineNo">2158</span><a name="line.2158"></a>
-<span class="sourceLineNo">2159</span>        final LDAPConnection referralConn = getReferralConnector(connection).<a name="line.2159"></a>
-<span class="sourceLineNo">2160</span>             getReferralConnection(referralURL, connection);<a name="line.2160"></a>
-<span class="sourceLineNo">2161</span><a name="line.2161"></a>
-<span class="sourceLineNo">2162</span>        try<a name="line.2162"></a>
-<span class="sourceLineNo">2163</span>        {<a name="line.2163"></a>
-<span class="sourceLineNo">2164</span>          return searchRequest.process(referralConn, depth+1);<a name="line.2164"></a>
-<span class="sourceLineNo">2165</span>        }<a name="line.2165"></a>
-<span class="sourceLineNo">2166</span>        finally<a name="line.2166"></a>
-<span class="sourceLineNo">2167</span>        {<a name="line.2167"></a>
-<span class="sourceLineNo">2168</span>          referralConn.setDisconnectInfo(DisconnectType.REFERRAL, null, null);<a name="line.2168"></a>
-<span class="sourceLineNo">2169</span>          referralConn.close();<a name="line.2169"></a>
-<span class="sourceLineNo">2170</span>        }<a name="line.2170"></a>
-<span class="sourceLineNo">2171</span>      }<a name="line.2171"></a>
-<span class="sourceLineNo">2172</span>      catch (final LDAPException le)<a name="line.2172"></a>
-<span class="sourceLineNo">2173</span>      {<a name="line.2173"></a>
-<span class="sourceLineNo">2174</span>        Debug.debugException(le);<a name="line.2174"></a>
+<span class="sourceLineNo">2085</span>   * {@inheritDoc}<a name="line.2085"></a>
+<span class="sourceLineNo">2086</span>   */<a name="line.2086"></a>
+<span class="sourceLineNo">2087</span>  @InternalUseOnly()<a name="line.2087"></a>
+<span class="sourceLineNo">2088</span>  @Override()<a name="line.2088"></a>
+<span class="sourceLineNo">2089</span>  public void responseReceived(@NotNull final LDAPResponse response)<a name="line.2089"></a>
+<span class="sourceLineNo">2090</span>         throws LDAPException<a name="line.2090"></a>
+<span class="sourceLineNo">2091</span>  {<a name="line.2091"></a>
+<span class="sourceLineNo">2092</span>    try<a name="line.2092"></a>
+<span class="sourceLineNo">2093</span>    {<a name="line.2093"></a>
+<span class="sourceLineNo">2094</span>      responseQueue.put(response);<a name="line.2094"></a>
+<span class="sourceLineNo">2095</span>    }<a name="line.2095"></a>
+<span class="sourceLineNo">2096</span>    catch (final Exception e)<a name="line.2096"></a>
+<span class="sourceLineNo">2097</span>    {<a name="line.2097"></a>
+<span class="sourceLineNo">2098</span>      Debug.debugException(e);<a name="line.2098"></a>
+<span class="sourceLineNo">2099</span><a name="line.2099"></a>
+<span class="sourceLineNo">2100</span>      if (e instanceof InterruptedException)<a name="line.2100"></a>
+<span class="sourceLineNo">2101</span>      {<a name="line.2101"></a>
+<span class="sourceLineNo">2102</span>        Thread.currentThread().interrupt();<a name="line.2102"></a>
+<span class="sourceLineNo">2103</span>      }<a name="line.2103"></a>
+<span class="sourceLineNo">2104</span><a name="line.2104"></a>
+<span class="sourceLineNo">2105</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.2105"></a>
+<span class="sourceLineNo">2106</span>           ERR_EXCEPTION_HANDLING_RESPONSE.get(<a name="line.2106"></a>
+<span class="sourceLineNo">2107</span>                StaticUtils.getExceptionMessage(e)),<a name="line.2107"></a>
+<span class="sourceLineNo">2108</span>           e);<a name="line.2108"></a>
+<span class="sourceLineNo">2109</span>    }<a name="line.2109"></a>
+<span class="sourceLineNo">2110</span>  }<a name="line.2110"></a>
+<span class="sourceLineNo">2111</span><a name="line.2111"></a>
+<span class="sourceLineNo">2112</span><a name="line.2112"></a>
+<span class="sourceLineNo">2113</span><a name="line.2113"></a>
+<span class="sourceLineNo">2114</span>  /**<a name="line.2114"></a>
+<span class="sourceLineNo">2115</span>   * {@inheritDoc}<a name="line.2115"></a>
+<span class="sourceLineNo">2116</span>   */<a name="line.2116"></a>
+<span class="sourceLineNo">2117</span>  @Override()<a name="line.2117"></a>
+<span class="sourceLineNo">2118</span>  public int getLastMessageID()<a name="line.2118"></a>
+<span class="sourceLineNo">2119</span>  {<a name="line.2119"></a>
+<span class="sourceLineNo">2120</span>    return messageID;<a name="line.2120"></a>
+<span class="sourceLineNo">2121</span>  }<a name="line.2121"></a>
+<span class="sourceLineNo">2122</span><a name="line.2122"></a>
+<span class="sourceLineNo">2123</span><a name="line.2123"></a>
+<span class="sourceLineNo">2124</span><a name="line.2124"></a>
+<span class="sourceLineNo">2125</span>  /**<a name="line.2125"></a>
+<span class="sourceLineNo">2126</span>   * {@inheritDoc}<a name="line.2126"></a>
+<span class="sourceLineNo">2127</span>   */<a name="line.2127"></a>
+<span class="sourceLineNo">2128</span>  @Override()<a name="line.2128"></a>
+<span class="sourceLineNo">2129</span>  @NotNull()<a name="line.2129"></a>
+<span class="sourceLineNo">2130</span>  public OperationType getOperationType()<a name="line.2130"></a>
+<span class="sourceLineNo">2131</span>  {<a name="line.2131"></a>
+<span class="sourceLineNo">2132</span>    return OperationType.SEARCH;<a name="line.2132"></a>
+<span class="sourceLineNo">2133</span>  }<a name="line.2133"></a>
+<span class="sourceLineNo">2134</span><a name="line.2134"></a>
+<span class="sourceLineNo">2135</span><a name="line.2135"></a>
+<span class="sourceLineNo">2136</span><a name="line.2136"></a>
+<span class="sourceLineNo">2137</span>  /**<a name="line.2137"></a>
+<span class="sourceLineNo">2138</span>   * {@inheritDoc}<a name="line.2138"></a>
+<span class="sourceLineNo">2139</span>   */<a name="line.2139"></a>
+<span class="sourceLineNo">2140</span>  @Override()<a name="line.2140"></a>
+<span class="sourceLineNo">2141</span>  @NotNull()<a name="line.2141"></a>
+<span class="sourceLineNo">2142</span>  public SearchRequest duplicate()<a name="line.2142"></a>
+<span class="sourceLineNo">2143</span>  {<a name="line.2143"></a>
+<span class="sourceLineNo">2144</span>    return duplicate(getControls());<a name="line.2144"></a>
+<span class="sourceLineNo">2145</span>  }<a name="line.2145"></a>
+<span class="sourceLineNo">2146</span><a name="line.2146"></a>
+<span class="sourceLineNo">2147</span><a name="line.2147"></a>
+<span class="sourceLineNo">2148</span><a name="line.2148"></a>
+<span class="sourceLineNo">2149</span>  /**<a name="line.2149"></a>
+<span class="sourceLineNo">2150</span>   * {@inheritDoc}<a name="line.2150"></a>
+<span class="sourceLineNo">2151</span>   */<a name="line.2151"></a>
+<span class="sourceLineNo">2152</span>  @Override()<a name="line.2152"></a>
+<span class="sourceLineNo">2153</span>  @NotNull()<a name="line.2153"></a>
+<span class="sourceLineNo">2154</span>  public SearchRequest duplicate(@Nullable final Control[] controls)<a name="line.2154"></a>
+<span class="sourceLineNo">2155</span>  {<a name="line.2155"></a>
+<span class="sourceLineNo">2156</span>    final SearchRequest r = new SearchRequest(searchResultListener, controls,<a name="line.2156"></a>
+<span class="sourceLineNo">2157</span>         baseDN, scope, derefPolicy, sizeLimit, timeLimit, typesOnly, filter,<a name="line.2157"></a>
+<span class="sourceLineNo">2158</span>         attributes);<a name="line.2158"></a>
+<span class="sourceLineNo">2159</span>    if (followReferralsInternal() != null)<a name="line.2159"></a>
+<span class="sourceLineNo">2160</span>    {<a name="line.2160"></a>
+<span class="sourceLineNo">2161</span>      r.setFollowReferrals(followReferralsInternal());<a name="line.2161"></a>
+<span class="sourceLineNo">2162</span>    }<a name="line.2162"></a>
+<span class="sourceLineNo">2163</span><a name="line.2163"></a>
+<span class="sourceLineNo">2164</span>    if (getReferralConnectorInternal() != null)<a name="line.2164"></a>
+<span class="sourceLineNo">2165</span>    {<a name="line.2165"></a>
+<span class="sourceLineNo">2166</span>      r.setReferralConnector(getReferralConnectorInternal());<a name="line.2166"></a>
+<span class="sourceLineNo">2167</span>    }<a name="line.2167"></a>
+<span class="sourceLineNo">2168</span><a name="line.2168"></a>
+<span class="sourceLineNo">2169</span>    r.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.2169"></a>
+<span class="sourceLineNo">2170</span>    r.setIntermediateResponseListener(getIntermediateResponseListener());<a name="line.2170"></a>
+<span class="sourceLineNo">2171</span>    r.setReferralDepth(getReferralDepth());<a name="line.2171"></a>
+<span class="sourceLineNo">2172</span><a name="line.2172"></a>
+<span class="sourceLineNo">2173</span>    return r;<a name="line.2173"></a>
+<span class="sourceLineNo">2174</span>  }<a name="line.2174"></a>
 <span class="sourceLineNo">2175</span><a name="line.2175"></a>
-<span class="sourceLineNo">2176</span>        if (le.getResultCode().equals(ResultCode.REFERRAL_LIMIT_EXCEEDED))<a name="line.2176"></a>
-<span class="sourceLineNo">2177</span>        {<a name="line.2177"></a>
-<span class="sourceLineNo">2178</span>          throw le;<a name="line.2178"></a>
-<span class="sourceLineNo">2179</span>        }<a name="line.2179"></a>
-<span class="sourceLineNo">2180</span>      }<a name="line.2180"></a>
-<span class="sourceLineNo">2181</span>    }<a name="line.2181"></a>
-<span class="sourceLineNo">2182</span><a name="line.2182"></a>
-<span class="sourceLineNo">2183</span>    // If we've gotten here, then we could not follow any of the referral URLs,<a name="line.2183"></a>
-<span class="sourceLineNo">2184</span>    // so we'll create a failure result.<a name="line.2184"></a>
-<span class="sourceLineNo">2185</span>    return new SearchResult(messageID, ResultCode.REFERRAL, null, null,<a name="line.2185"></a>
-<span class="sourceLineNo">2186</span>                            searchReference.getReferralURLs(), 0, 0, null);<a name="line.2186"></a>
-<span class="sourceLineNo">2187</span>  }<a name="line.2187"></a>
-<span class="sourceLineNo">2188</span><a name="line.2188"></a>
-<span class="sourceLineNo">2189</span><a name="line.2189"></a>
-<span class="sourceLineNo">2190</span><a name="line.2190"></a>
-<span class="sourceLineNo">2191</span>  /**<a name="line.2191"></a>
-<span class="sourceLineNo">2192</span>   * Attempts to follow a referral to perform an add operation in the target<a name="line.2192"></a>
-<span class="sourceLineNo">2193</span>   * server.<a name="line.2193"></a>
-<span class="sourceLineNo">2194</span>   *<a name="line.2194"></a>
-<span class="sourceLineNo">2195</span>   * @param  referralResult  The LDAP result object containing information about<a name="line.2195"></a>
-<span class="sourceLineNo">2196</span>   *                         the referral to follow.<a name="line.2196"></a>
-<span class="sourceLineNo">2197</span>   * @param  connection      The connection on which the referral was received.<a name="line.2197"></a>
-<span class="sourceLineNo">2198</span>   * @param  depth           The number of referrals followed in the course of<a name="line.2198"></a>
-<span class="sourceLineNo">2199</span>   *                         processing this request.<a name="line.2199"></a>
-<span class="sourceLineNo">2200</span>   *<a name="line.2200"></a>
-<span class="sourceLineNo">2201</span>   * @return  The result of attempting to process the add operation by following<a name="line.2201"></a>
-<span class="sourceLineNo">2202</span>   *          the referral.<a name="line.2202"></a>
-<span class="sourceLineNo">2203</span>   *<a name="line.2203"></a>
-<span class="sourceLineNo">2204</span>   * @throws  LDAPException  If a problem occurs while attempting to establish<a name="line.2204"></a>
-<span class="sourceLineNo">2205</span>   *                         the referral connection, sending the request, or<a name="line.2205"></a>
-<span class="sourceLineNo">2206</span>   *                         reading the result.<a name="line.2206"></a>
-<span class="sourceLineNo">2207</span>   */<a name="line.2207"></a>
-<span class="sourceLineNo">2208</span>  @NotNull()<a name="line.2208"></a>
-<span class="sourceLineNo">2209</span>  private SearchResult followReferral(<a name="line.2209"></a>
-<span class="sourceLineNo">2210</span>                            @NotNull final SearchResult referralResult,<a name="line.2210"></a>
-<span class="sourceLineNo">2211</span>                            @NotNull final LDAPConnection connection,<a name="line.2211"></a>
-<span class="sourceLineNo">2212</span>                            final int depth)<a name="line.2212"></a>
-<span class="sourceLineNo">2213</span>          throws LDAPException<a name="line.2213"></a>
-<span class="sourceLineNo">2214</span>  {<a name="line.2214"></a>
-<span class="sourceLineNo">2215</span>    for (final String urlString : referralResult.getReferralURLs())<a name="line.2215"></a>
-<span class="sourceLineNo">2216</span>    {<a name="line.2216"></a>
-<span class="sourceLineNo">2217</span>      try<a name="line.2217"></a>
-<span class="sourceLineNo">2218</span>      {<a name="line.2218"></a>
-<span class="sourceLineNo">2219</span>        final LDAPURL referralURL = new LDAPURL(urlString);<a name="line.2219"></a>
-<span class="sourceLineNo">2220</span>        final String host = referralURL.getHost();<a name="line.2220"></a>
-<span class="sourceLineNo">2221</span><a name="line.2221"></a>
-<span class="sourceLineNo">2222</span>        if (host == null)<a name="line.2222"></a>
-<span class="sourceLineNo">2223</span>        {<a name="line.2223"></a>
-<span class="sourceLineNo">2224</span>          // We can't handle a referral in which there is no host.<a name="line.2224"></a>
-<span class="sourceLineNo">2225</span>          continue;<a name="line.2225"></a>
-<span class="sourceLineNo">2226</span>        }<a name="line.2226"></a>
+<span class="sourceLineNo">2176</span><a name="line.2176"></a>
+<span class="sourceLineNo">2177</span><a name="line.2177"></a>
+<span class="sourceLineNo">2178</span>  /**<a name="line.2178"></a>
+<span class="sourceLineNo">2179</span>   * {@inheritDoc}<a name="line.2179"></a>
+<span class="sourceLineNo">2180</span>   */<a name="line.2180"></a>
+<span class="sourceLineNo">2181</span>  @Override()<a name="line.2181"></a>
+<span class="sourceLineNo">2182</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.2182"></a>
+<span class="sourceLineNo">2183</span>  {<a name="line.2183"></a>
+<span class="sourceLineNo">2184</span>    buffer.append("SearchRequest(baseDN='");<a name="line.2184"></a>
+<span class="sourceLineNo">2185</span>    buffer.append(baseDN);<a name="line.2185"></a>
+<span class="sourceLineNo">2186</span>    buffer.append("', scope=");<a name="line.2186"></a>
+<span class="sourceLineNo">2187</span>    buffer.append(scope);<a name="line.2187"></a>
+<span class="sourceLineNo">2188</span>    buffer.append(", deref=");<a name="line.2188"></a>
+<span class="sourceLineNo">2189</span>    buffer.append(derefPolicy);<a name="line.2189"></a>
+<span class="sourceLineNo">2190</span>    buffer.append(", sizeLimit=");<a name="line.2190"></a>
+<span class="sourceLineNo">2191</span>    buffer.append(sizeLimit);<a name="line.2191"></a>
+<span class="sourceLineNo">2192</span>    buffer.append(", timeLimit=");<a name="line.2192"></a>
+<span class="sourceLineNo">2193</span>    buffer.append(timeLimit);<a name="line.2193"></a>
+<span class="sourceLineNo">2194</span>    buffer.append(", filter='");<a name="line.2194"></a>
+<span class="sourceLineNo">2195</span>    buffer.append(filter);<a name="line.2195"></a>
+<span class="sourceLineNo">2196</span>    buffer.append("', attrs={");<a name="line.2196"></a>
+<span class="sourceLineNo">2197</span><a name="line.2197"></a>
+<span class="sourceLineNo">2198</span>    for (int i=0; i &lt; attributes.length; i++)<a name="line.2198"></a>
+<span class="sourceLineNo">2199</span>    {<a name="line.2199"></a>
+<span class="sourceLineNo">2200</span>      if (i &gt; 0)<a name="line.2200"></a>
+<span class="sourceLineNo">2201</span>      {<a name="line.2201"></a>
+<span class="sourceLineNo">2202</span>        buffer.append(", ");<a name="line.2202"></a>
+<span class="sourceLineNo">2203</span>      }<a name="line.2203"></a>
+<span class="sourceLineNo">2204</span><a name="line.2204"></a>
+<span class="sourceLineNo">2205</span>      buffer.append(attributes[i]);<a name="line.2205"></a>
+<span class="sourceLineNo">2206</span>    }<a name="line.2206"></a>
+<span class="sourceLineNo">2207</span>    buffer.append('}');<a name="line.2207"></a>
+<span class="sourceLineNo">2208</span><a name="line.2208"></a>
+<span class="sourceLineNo">2209</span>    final Control[] controls = getControls();<a name="line.2209"></a>
+<span class="sourceLineNo">2210</span>    if (controls.length &gt; 0)<a name="line.2210"></a>
+<span class="sourceLineNo">2211</span>    {<a name="line.2211"></a>
+<span class="sourceLineNo">2212</span>      buffer.append(", controls={");<a name="line.2212"></a>
+<span class="sourceLineNo">2213</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.2213"></a>
+<span class="sourceLineNo">2214</span>      {<a name="line.2214"></a>
+<span class="sourceLineNo">2215</span>        if (i &gt; 0)<a name="line.2215"></a>
+<span class="sourceLineNo">2216</span>        {<a name="line.2216"></a>
+<span class="sourceLineNo">2217</span>          buffer.append(", ");<a name="line.2217"></a>
+<span class="sourceLineNo">2218</span>        }<a name="line.2218"></a>
+<span class="sourceLineNo">2219</span><a name="line.2219"></a>
+<span class="sourceLineNo">2220</span>        buffer.append(controls[i]);<a name="line.2220"></a>
+<span class="sourceLineNo">2221</span>      }<a name="line.2221"></a>
+<span class="sourceLineNo">2222</span>      buffer.append('}');<a name="line.2222"></a>
+<span class="sourceLineNo">2223</span>    }<a name="line.2223"></a>
+<span class="sourceLineNo">2224</span><a name="line.2224"></a>
+<span class="sourceLineNo">2225</span>    buffer.append(')');<a name="line.2225"></a>
+<span class="sourceLineNo">2226</span>  }<a name="line.2226"></a>
 <span class="sourceLineNo">2227</span><a name="line.2227"></a>
-<span class="sourceLineNo">2228</span>        final String requestBaseDN;<a name="line.2228"></a>
-<span class="sourceLineNo">2229</span>        if (referralURL.baseDNProvided())<a name="line.2229"></a>
-<span class="sourceLineNo">2230</span>        {<a name="line.2230"></a>
-<span class="sourceLineNo">2231</span>          requestBaseDN = referralURL.getBaseDN().toString();<a name="line.2231"></a>
-<span class="sourceLineNo">2232</span>        }<a name="line.2232"></a>
-<span class="sourceLineNo">2233</span>        else<a name="line.2233"></a>
-<span class="sourceLineNo">2234</span>        {<a name="line.2234"></a>
-<span class="sourceLineNo">2235</span>          requestBaseDN = baseDN;<a name="line.2235"></a>
-<span class="sourceLineNo">2236</span>        }<a name="line.2236"></a>
-<span class="sourceLineNo">2237</span><a name="line.2237"></a>
-<span class="sourceLineNo">2238</span>        final SearchScope requestScope;<a name="line.2238"></a>
-<span class="sourceLineNo">2239</span>        if (referralURL.scopeProvided())<a name="line.2239"></a>
-<span class="sourceLineNo">2240</span>        {<a name="line.2240"></a>
-<span class="sourceLineNo">2241</span>          requestScope = referralURL.getScope();<a name="line.2241"></a>
-<span class="sourceLineNo">2242</span>        }<a name="line.2242"></a>
-<span class="sourceLineNo">2243</span>        else<a name="line.2243"></a>
-<span class="sourceLineNo">2244</span>        {<a name="line.2244"></a>
-<span class="sourceLineNo">2245</span>          requestScope = scope;<a name="line.2245"></a>
-<span class="sourceLineNo">2246</span>        }<a name="line.2246"></a>
-<span class="sourceLineNo">2247</span><a name="line.2247"></a>
-<span class="sourceLineNo">2248</span>        final Filter requestFilter;<a name="line.2248"></a>
-<span class="sourceLineNo">2249</span>        if (referralURL.filterProvided())<a name="line.2249"></a>
-<span class="sourceLineNo">2250</span>        {<a name="line.2250"></a>
-<span class="sourceLineNo">2251</span>          requestFilter = referralURL.getFilter();<a name="line.2251"></a>
-<span class="sourceLineNo">2252</span>        }<a name="line.2252"></a>
-<span class="sourceLineNo">2253</span>        else<a name="line.2253"></a>
-<span class="sourceLineNo">2254</span>        {<a name="line.2254"></a>
-<span class="sourceLineNo">2255</span>          requestFilter = filter;<a name="line.2255"></a>
-<span class="sourceLineNo">2256</span>        }<a name="line.2256"></a>
-<span class="sourceLineNo">2257</span><a name="line.2257"></a>
+<span class="sourceLineNo">2228</span><a name="line.2228"></a>
+<span class="sourceLineNo">2229</span><a name="line.2229"></a>
+<span class="sourceLineNo">2230</span>  /**<a name="line.2230"></a>
+<span class="sourceLineNo">2231</span>   * {@inheritDoc}<a name="line.2231"></a>
+<span class="sourceLineNo">2232</span>   */<a name="line.2232"></a>
+<span class="sourceLineNo">2233</span>  @Override()<a name="line.2233"></a>
+<span class="sourceLineNo">2234</span>  public void toCode(@NotNull final List&lt;String&gt; lineList,<a name="line.2234"></a>
+<span class="sourceLineNo">2235</span>                     @NotNull final String requestID,<a name="line.2235"></a>
+<span class="sourceLineNo">2236</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.2236"></a>
+<span class="sourceLineNo">2237</span>  {<a name="line.2237"></a>
+<span class="sourceLineNo">2238</span>    // Create the request variable.<a name="line.2238"></a>
+<span class="sourceLineNo">2239</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs = new ArrayList&lt;&gt;(10);<a name="line.2239"></a>
+<span class="sourceLineNo">2240</span>    constructorArgs.add(ToCodeArgHelper.createString(baseDN, "Base DN"));<a name="line.2240"></a>
+<span class="sourceLineNo">2241</span>    constructorArgs.add(ToCodeArgHelper.createScope(scope, "Scope"));<a name="line.2241"></a>
+<span class="sourceLineNo">2242</span>    constructorArgs.add(ToCodeArgHelper.createDerefPolicy(derefPolicy,<a name="line.2242"></a>
+<span class="sourceLineNo">2243</span>         "Alias Dereference Policy"));<a name="line.2243"></a>
+<span class="sourceLineNo">2244</span>    constructorArgs.add(ToCodeArgHelper.createInteger(sizeLimit, "Size Limit"));<a name="line.2244"></a>
+<span class="sourceLineNo">2245</span>    constructorArgs.add(ToCodeArgHelper.createInteger(timeLimit, "Time Limit"));<a name="line.2245"></a>
+<span class="sourceLineNo">2246</span>    constructorArgs.add(ToCodeArgHelper.createBoolean(typesOnly, "Types Only"));<a name="line.2246"></a>
+<span class="sourceLineNo">2247</span>    constructorArgs.add(ToCodeArgHelper.createFilter(filter, "Filter"));<a name="line.2247"></a>
+<span class="sourceLineNo">2248</span><a name="line.2248"></a>
+<span class="sourceLineNo">2249</span>    String comment = "Requested Attributes";<a name="line.2249"></a>
+<span class="sourceLineNo">2250</span>    for (final String s : attributes)<a name="line.2250"></a>
+<span class="sourceLineNo">2251</span>    {<a name="line.2251"></a>
+<span class="sourceLineNo">2252</span>      constructorArgs.add(ToCodeArgHelper.createString(s, comment));<a name="line.2252"></a>
+<span class="sourceLineNo">2253</span>      comment = null;<a name="line.2253"></a>
+<span class="sourceLineNo">2254</span>    }<a name="line.2254"></a>
+<span class="sourceLineNo">2255</span><a name="line.2255"></a>
+<span class="sourceLineNo">2256</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, "SearchRequest",<a name="line.2256"></a>
+<span class="sourceLineNo">2257</span>         requestID + "Request", "new SearchRequest", constructorArgs);<a name="line.2257"></a>
 <span class="sourceLineNo">2258</span><a name="line.2258"></a>
-<span class="sourceLineNo">2259</span>        final SearchRequest searchRequest =<a name="line.2259"></a>
-<span class="sourceLineNo">2260</span>             new SearchRequest(searchResultListener, getControls(),<a name="line.2260"></a>
-<span class="sourceLineNo">2261</span>                               requestBaseDN, requestScope, derefPolicy,<a name="line.2261"></a>
-<span class="sourceLineNo">2262</span>                               sizeLimit, timeLimit, typesOnly, requestFilter,<a name="line.2262"></a>
-<span class="sourceLineNo">2263</span>                               attributes);<a name="line.2263"></a>
-<span class="sourceLineNo">2264</span><a name="line.2264"></a>
-<span class="sourceLineNo">2265</span>        final LDAPConnection referralConn = getReferralConnector(connection).<a name="line.2265"></a>
-<span class="sourceLineNo">2266</span>             getReferralConnection(referralURL, connection);<a name="line.2266"></a>
-<span class="sourceLineNo">2267</span>        try<a name="line.2267"></a>
-<span class="sourceLineNo">2268</span>        {<a name="line.2268"></a>
-<span class="sourceLineNo">2269</span>          return searchRequest.process(referralConn, depth+1);<a name="line.2269"></a>
-<span class="sourceLineNo">2270</span>        }<a name="line.2270"></a>
-<span class="sourceLineNo">2271</span>        finally<a name="line.2271"></a>
-<span class="sourceLineNo">2272</span>        {<a name="line.2272"></a>
-<span class="sourceLineNo">2273</span>          referralConn.setDisconnectInfo(DisconnectType.REFERRAL, null, null);<a name="line.2273"></a>
-<span class="sourceLineNo">2274</span>          referralConn.close();<a name="line.2274"></a>
-<span class="sourceLineNo">2275</span>        }<a name="line.2275"></a>
-<span class="sourceLineNo">2276</span>      }<a name="line.2276"></a>
-<span class="sourceLineNo">2277</span>      catch (final LDAPException le)<a name="line.2277"></a>
-<span class="sourceLineNo">2278</span>      {<a name="line.2278"></a>
-<span class="sourceLineNo">2279</span>        Debug.debugException(le);<a name="line.2279"></a>
-<span class="sourceLineNo">2280</span><a name="line.2280"></a>
-<span class="sourceLineNo">2281</span>        if (le.getResultCode().equals(ResultCode.REFERRAL_LIMIT_EXCEEDED))<a name="line.2281"></a>
-<span class="sourceLineNo">2282</span>        {<a name="line.2282"></a>
-<span class="sourceLineNo">2283</span>          throw le;<a name="line.2283"></a>
-<span class="sourceLineNo">2284</span>        }<a name="line.2284"></a>
-<span class="sourceLineNo">2285</span>      }<a name="line.2285"></a>
-<span class="sourceLineNo">2286</span>    }<a name="line.2286"></a>
-<span class="sourceLineNo">2287</span><a name="line.2287"></a>
-<span class="sourceLineNo">2288</span>    // If we've gotten here, then we could not follow any of the referral URLs,<a name="line.2288"></a>
-<span class="sourceLineNo">2289</span>    // so we'll just return the original referral result.<a name="line.2289"></a>
-<span class="sourceLineNo">2290</span>    return referralResult;<a name="line.2290"></a>
-<span class="sourceLineNo">2291</span>  }<a name="line.2291"></a>
-<span class="sourceLineNo">2292</span><a name="line.2292"></a>
-<span class="sourceLineNo">2293</span><a name="line.2293"></a>
-<span class="sourceLineNo">2294</span><a name="line.2294"></a>
-<span class="sourceLineNo">2295</span>  /**<a name="line.2295"></a>
-<span class="sourceLineNo">2296</span>   * {@inheritDoc}<a name="line.2296"></a>
-<span class="sourceLineNo">2297</span>   */<a name="line.2297"></a>
-<span class="sourceLineNo">2298</span>  @InternalUseOnly()<a name="line.2298"></a>
-<span class="sourceLineNo">2299</span>  @Override()<a name="line.2299"></a>
-<span class="sourceLineNo">2300</span>  public void responseReceived(@NotNull final LDAPResponse response)<a name="line.2300"></a>
-<span class="sourceLineNo">2301</span>         throws LDAPException<a name="line.2301"></a>
-<span class="sourceLineNo">2302</span>  {<a name="line.2302"></a>
-<span class="sourceLineNo">2303</span>    try<a name="line.2303"></a>
-<span class="sourceLineNo">2304</span>    {<a name="line.2304"></a>
-<span class="sourceLineNo">2305</span>      responseQueue.put(response);<a name="line.2305"></a>
-<span class="sourceLineNo">2306</span>    }<a name="line.2306"></a>
-<span class="sourceLineNo">2307</span>    catch (final Exception e)<a name="line.2307"></a>
-<span class="sourceLineNo">2308</span>    {<a name="line.2308"></a>
-<span class="sourceLineNo">2309</span>      Debug.debugException(e);<a name="line.2309"></a>
-<span class="sourceLineNo">2310</span><a name="line.2310"></a>
-<span class="sourceLineNo">2311</span>      if (e instanceof InterruptedException)<a name="line.2311"></a>
-<span class="sourceLineNo">2312</span>      {<a name="line.2312"></a>
-<span class="sourceLineNo">2313</span>        Thread.currentThread().interrupt();<a name="line.2313"></a>
-<span class="sourceLineNo">2314</span>      }<a name="line.2314"></a>
-<span class="sourceLineNo">2315</span><a name="line.2315"></a>
-<span class="sourceLineNo">2316</span>      throw new LDAPException(ResultCode.LOCAL_ERROR,<a name="line.2316"></a>
-<span class="sourceLineNo">2317</span>           ERR_EXCEPTION_HANDLING_RESPONSE.get(<a name="line.2317"></a>
-<span class="sourceLineNo">2318</span>                StaticUtils.getExceptionMessage(e)),<a name="line.2318"></a>
-<span class="sourceLineNo">2319</span>           e);<a name="line.2319"></a>
-<span class="sourceLineNo">2320</span>    }<a name="line.2320"></a>
-<span class="sourceLineNo">2321</span>  }<a name="line.2321"></a>
-<span class="sourceLineNo">2322</span><a name="line.2322"></a>
-<span class="sourceLineNo">2323</span><a name="line.2323"></a>
-<span class="sourceLineNo">2324</span><a name="line.2324"></a>
-<span class="sourceLineNo">2325</span>  /**<a name="line.2325"></a>
-<span class="sourceLineNo">2326</span>   * {@inheritDoc}<a name="line.2326"></a>
-<span class="sourceLineNo">2327</span>   */<a name="line.2327"></a>
-<span class="sourceLineNo">2328</span>  @Override()<a name="line.2328"></a>
-<span class="sourceLineNo">2329</span>  public int getLastMessageID()<a name="line.2329"></a>
-<span class="sourceLineNo">2330</span>  {<a name="line.2330"></a>
-<span class="sourceLineNo">2331</span>    return messageID;<a name="line.2331"></a>
-<span class="sourceLineNo">2332</span>  }<a name="line.2332"></a>
-<span class="sourceLineNo">2333</span><a name="line.2333"></a>
-<span class="sourceLineNo">2334</span><a name="line.2334"></a>
-<span class="sourceLineNo">2335</span><a name="line.2335"></a>
-<span class="sourceLineNo">2336</span>  /**<a name="line.2336"></a>
-<span class="sourceLineNo">2337</span>   * {@inheritDoc}<a name="line.2337"></a>
-<span class="sourceLineNo">2338</span>   */<a name="line.2338"></a>
-<span class="sourceLineNo">2339</span>  @Override()<a name="line.2339"></a>
-<span class="sourceLineNo">2340</span>  @NotNull()<a name="line.2340"></a>
-<span class="sourceLineNo">2341</span>  public OperationType getOperationType()<a name="line.2341"></a>
-<span class="sourceLineNo">2342</span>  {<a name="line.2342"></a>
-<span class="sourceLineNo">2343</span>    return OperationType.SEARCH;<a name="line.2343"></a>
-<span class="sourceLineNo">2344</span>  }<a name="line.2344"></a>
-<span class="sourceLineNo">2345</span><a name="line.2345"></a>
-<span class="sourceLineNo">2346</span><a name="line.2346"></a>
-<span class="sourceLineNo">2347</span><a name="line.2347"></a>
-<span class="sourceLineNo">2348</span>  /**<a name="line.2348"></a>
-<span class="sourceLineNo">2349</span>   * {@inheritDoc}<a name="line.2349"></a>
-<span class="sourceLineNo">2350</span>   */<a name="line.2350"></a>
-<span class="sourceLineNo">2351</span>  @Override()<a name="line.2351"></a>
-<span class="sourceLineNo">2352</span>  @NotNull()<a name="line.2352"></a>
-<span class="sourceLineNo">2353</span>  public SearchRequest duplicate()<a name="line.2353"></a>
-<span class="sourceLineNo">2354</span>  {<a name="line.2354"></a>
-<span class="sourceLineNo">2355</span>    return duplicate(getControls());<a name="line.2355"></a>
-<span class="sourceLineNo">2356</span>  }<a name="line.2356"></a>
-<span class="sourceLineNo">2357</span><a name="line.2357"></a>
-<span class="sourceLineNo">2358</span><a name="line.2358"></a>
-<span class="sourceLineNo">2359</span><a name="line.2359"></a>
-<span class="sourceLineNo">2360</span>  /**<a name="line.2360"></a>
-<span class="sourceLineNo">2361</span>   * {@inheritDoc}<a name="line.2361"></a>
-<span class="sourceLineNo">2362</span>   */<a name="line.2362"></a>
-<span class="sourceLineNo">2363</span>  @Override()<a name="line.2363"></a>
-<span class="sourceLineNo">2364</span>  @NotNull()<a name="line.2364"></a>
-<span class="sourceLineNo">2365</span>  public SearchRequest duplicate(@Nullable final Control[] controls)<a name="line.2365"></a>
-<span class="sourceLineNo">2366</span>  {<a name="line.2366"></a>
-<span class="sourceLineNo">2367</span>    final SearchRequest r = new SearchRequest(searchResultListener, controls,<a name="line.2367"></a>
-<span class="sourceLineNo">2368</span>         baseDN, scope, derefPolicy, sizeLimit, timeLimit, typesOnly, filter,<a name="line.2368"></a>
-<span class="sourceLineNo">2369</span>         attributes);<a name="line.2369"></a>
-<span class="sourceLineNo">2370</span>    if (followReferralsInternal() != null)<a name="line.2370"></a>
-<span class="sourceLineNo">2371</span>    {<a name="line.2371"></a>
-<span class="sourceLineNo">2372</span>      r.setFollowReferrals(followReferralsInternal());<a name="line.2372"></a>
-<span class="sourceLineNo">2373</span>    }<a name="line.2373"></a>
-<span class="sourceLineNo">2374</span><a name="line.2374"></a>
-<span class="sourceLineNo">2375</span>    if (getReferralConnectorInternal() != null)<a name="line.2375"></a>
-<span class="sourceLineNo">2376</span>    {<a name="line.2376"></a>
-<span class="sourceLineNo">2377</span>      r.setReferralConnector(getReferralConnectorInternal());<a name="line.2377"></a>
-<span class="sourceLineNo">2378</span>    }<a name="line.2378"></a>
-<span class="sourceLineNo">2379</span><a name="line.2379"></a>
-<span class="sourceLineNo">2380</span>    r.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.2380"></a>
-<span class="sourceLineNo">2381</span><a name="line.2381"></a>
-<span class="sourceLineNo">2382</span>    return r;<a name="line.2382"></a>
-<span class="sourceLineNo">2383</span>  }<a name="line.2383"></a>
-<span class="sourceLineNo">2384</span><a name="line.2384"></a>
-<span class="sourceLineNo">2385</span><a name="line.2385"></a>
-<span class="sourceLineNo">2386</span><a name="line.2386"></a>
-<span class="sourceLineNo">2387</span>  /**<a name="line.2387"></a>
-<span class="sourceLineNo">2388</span>   * {@inheritDoc}<a name="line.2388"></a>
-<span class="sourceLineNo">2389</span>   */<a name="line.2389"></a>
-<span class="sourceLineNo">2390</span>  @Override()<a name="line.2390"></a>
-<span class="sourceLineNo">2391</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.2391"></a>
-<span class="sourceLineNo">2392</span>  {<a name="line.2392"></a>
-<span class="sourceLineNo">2393</span>    buffer.append("SearchRequest(baseDN='");<a name="line.2393"></a>
-<span class="sourceLineNo">2394</span>    buffer.append(baseDN);<a name="line.2394"></a>
-<span class="sourceLineNo">2395</span>    buffer.append("', scope=");<a name="line.2395"></a>
-<span class="sourceLineNo">2396</span>    buffer.append(scope);<a name="line.2396"></a>
-<span class="sourceLineNo">2397</span>    buffer.append(", deref=");<a name="line.2397"></a>
-<span class="sourceLineNo">2398</span>    buffer.append(derefPolicy);<a name="line.2398"></a>
-<span class="sourceLineNo">2399</span>    buffer.append(", sizeLimit=");<a name="line.2399"></a>
-<span class="sourceLineNo">2400</span>    buffer.append(sizeLimit);<a name="line.2400"></a>
-<span class="sourceLineNo">2401</span>    buffer.append(", timeLimit=");<a name="line.2401"></a>
-<span class="sourceLineNo">2402</span>    buffer.append(timeLimit);<a name="line.2402"></a>
-<span class="sourceLineNo">2403</span>    buffer.append(", filter='");<a name="line.2403"></a>
-<span class="sourceLineNo">2404</span>    buffer.append(filter);<a name="line.2404"></a>
-<span class="sourceLineNo">2405</span>    buffer.append("', attrs={");<a name="line.2405"></a>
-<span class="sourceLineNo">2406</span><a name="line.2406"></a>
-<span class="sourceLineNo">2407</span>    for (int i=0; i &lt; attributes.length; i++)<a name="line.2407"></a>
-<span class="sourceLineNo">2408</span>    {<a name="line.2408"></a>
-<span class="sourceLineNo">2409</span>      if (i &gt; 0)<a name="line.2409"></a>
-<span class="sourceLineNo">2410</span>      {<a name="line.2410"></a>
-<span class="sourceLineNo">2411</span>        buffer.append(", ");<a name="line.2411"></a>
-<span class="sourceLineNo">2412</span>      }<a name="line.2412"></a>
-<span class="sourceLineNo">2413</span><a name="line.2413"></a>
-<span class="sourceLineNo">2414</span>      buffer.append(attributes[i]);<a name="line.2414"></a>
-<span class="sourceLineNo">2415</span>    }<a name="line.2415"></a>
-<span class="sourceLineNo">2416</span>    buffer.append('}');<a name="line.2416"></a>
-<span class="sourceLineNo">2417</span><a name="line.2417"></a>
-<span class="sourceLineNo">2418</span>    final Control[] controls = getControls();<a name="line.2418"></a>
-<span class="sourceLineNo">2419</span>    if (controls.length &gt; 0)<a name="line.2419"></a>
-<span class="sourceLineNo">2420</span>    {<a name="line.2420"></a>
-<span class="sourceLineNo">2421</span>      buffer.append(", controls={");<a name="line.2421"></a>
-<span class="sourceLineNo">2422</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.2422"></a>
-<span class="sourceLineNo">2423</span>      {<a name="line.2423"></a>
-<span class="sourceLineNo">2424</span>        if (i &gt; 0)<a name="line.2424"></a>
-<span class="sourceLineNo">2425</span>        {<a name="line.2425"></a>
-<span class="sourceLineNo">2426</span>          buffer.append(", ");<a name="line.2426"></a>
-<span class="sourceLineNo">2427</span>        }<a name="line.2427"></a>
-<span class="sourceLineNo">2428</span><a name="line.2428"></a>
-<span class="sourceLineNo">2429</span>        buffer.append(controls[i]);<a name="line.2429"></a>
-<span class="sourceLineNo">2430</span>      }<a name="line.2430"></a>
-<span class="sourceLineNo">2431</span>      buffer.append('}');<a name="line.2431"></a>
-<span class="sourceLineNo">2432</span>    }<a name="line.2432"></a>
-<span class="sourceLineNo">2433</span><a name="line.2433"></a>
-<span class="sourceLineNo">2434</span>    buffer.append(')');<a name="line.2434"></a>
-<span class="sourceLineNo">2435</span>  }<a name="line.2435"></a>
-<span class="sourceLineNo">2436</span><a name="line.2436"></a>
-<span class="sourceLineNo">2437</span><a name="line.2437"></a>
-<span class="sourceLineNo">2438</span><a name="line.2438"></a>
-<span class="sourceLineNo">2439</span>  /**<a name="line.2439"></a>
-<span class="sourceLineNo">2440</span>   * {@inheritDoc}<a name="line.2440"></a>
-<span class="sourceLineNo">2441</span>   */<a name="line.2441"></a>
-<span class="sourceLineNo">2442</span>  @Override()<a name="line.2442"></a>
-<span class="sourceLineNo">2443</span>  public void toCode(@NotNull final List&lt;String&gt; lineList,<a name="line.2443"></a>
-<span class="sourceLineNo">2444</span>                     @NotNull final String requestID,<a name="line.2444"></a>
-<span class="sourceLineNo">2445</span>                     final int indentSpaces, final boolean includeProcessing)<a name="line.2445"></a>
-<span class="sourceLineNo">2446</span>  {<a name="line.2446"></a>
-<span class="sourceLineNo">2447</span>    // Create the request variable.<a name="line.2447"></a>
-<span class="sourceLineNo">2448</span>    final ArrayList&lt;ToCodeArgHelper&gt; constructorArgs = new ArrayList&lt;&gt;(10);<a name="line.2448"></a>
-<span class="sourceLineNo">2449</span>    constructorArgs.add(ToCodeArgHelper.createString(baseDN, "Base DN"));<a name="line.2449"></a>
-<span class="sourceLineNo">2450</span>    constructorArgs.add(ToCodeArgHelper.createScope(scope, "Scope"));<a name="line.2450"></a>
-<span class="sourceLineNo">2451</span>    constructorArgs.add(ToCodeArgHelper.createDerefPolicy(derefPolicy,<a name="line.2451"></a>
-<span class="sourceLineNo">2452</span>         "Alias Dereference Policy"));<a name="line.2452"></a>
-<span class="sourceLineNo">2453</span>    constructorArgs.add(ToCodeArgHelper.createInteger(sizeLimit, "Size Limit"));<a name="line.2453"></a>
-<span class="sourceLineNo">2454</span>    constructorArgs.add(ToCodeArgHelper.createInteger(timeLimit, "Time Limit"));<a name="line.2454"></a>
-<span class="sourceLineNo">2455</span>    constructorArgs.add(ToCodeArgHelper.createBoolean(typesOnly, "Types Only"));<a name="line.2455"></a>
-<span class="sourceLineNo">2456</span>    constructorArgs.add(ToCodeArgHelper.createFilter(filter, "Filter"));<a name="line.2456"></a>
-<span class="sourceLineNo">2457</span><a name="line.2457"></a>
-<span class="sourceLineNo">2458</span>    String comment = "Requested Attributes";<a name="line.2458"></a>
-<span class="sourceLineNo">2459</span>    for (final String s : attributes)<a name="line.2459"></a>
-<span class="sourceLineNo">2460</span>    {<a name="line.2460"></a>
-<span class="sourceLineNo">2461</span>      constructorArgs.add(ToCodeArgHelper.createString(s, comment));<a name="line.2461"></a>
-<span class="sourceLineNo">2462</span>      comment = null;<a name="line.2462"></a>
-<span class="sourceLineNo">2463</span>    }<a name="line.2463"></a>
-<span class="sourceLineNo">2464</span><a name="line.2464"></a>
-<span class="sourceLineNo">2465</span>    ToCodeHelper.generateMethodCall(lineList, indentSpaces, "SearchRequest",<a name="line.2465"></a>
-<span class="sourceLineNo">2466</span>         requestID + "Request", "new SearchRequest", constructorArgs);<a name="line.2466"></a>
-<span class="sourceLineNo">2467</span><a name="line.2467"></a>
-<span class="sourceLineNo">2468</span><a name="line.2468"></a>
-<span class="sourceLineNo">2469</span>    // If there are any controls, then add them to the request.<a name="line.2469"></a>
-<span class="sourceLineNo">2470</span>    for (final Control c : getControls())<a name="line.2470"></a>
-<span class="sourceLineNo">2471</span>    {<a name="line.2471"></a>
-<span class="sourceLineNo">2472</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.2472"></a>
-<span class="sourceLineNo">2473</span>           requestID + "Request.addControl",<a name="line.2473"></a>
-<span class="sourceLineNo">2474</span>           ToCodeArgHelper.createControl(c, null));<a name="line.2474"></a>
-<span class="sourceLineNo">2475</span>    }<a name="line.2475"></a>
-<span class="sourceLineNo">2476</span><a name="line.2476"></a>
-<span class="sourceLineNo">2477</span><a name="line.2477"></a>
-<span class="sourceLineNo">2478</span>    // Add lines for processing the request and obtaining the result.<a name="line.2478"></a>
-<span class="sourceLineNo">2479</span>    if (includeProcessing)<a name="line.2479"></a>
-<span class="sourceLineNo">2480</span>    {<a name="line.2480"></a>
-<span class="sourceLineNo">2481</span>      // Generate a string with the appropriate indent.<a name="line.2481"></a>
-<span class="sourceLineNo">2482</span>      final StringBuilder buffer = new StringBuilder();<a name="line.2482"></a>
-<span class="sourceLineNo">2483</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.2483"></a>
-<span class="sourceLineNo">2484</span>      {<a name="line.2484"></a>
-<span class="sourceLineNo">2485</span>        buffer.append(' ');<a name="line.2485"></a>
-<span class="sourceLineNo">2486</span>      }<a name="line.2486"></a>
-<span class="sourceLineNo">2487</span>      final String indent = buffer.toString();<a name="line.2487"></a>
-<span class="sourceLineNo">2488</span><a name="line.2488"></a>
-<span class="sourceLineNo">2489</span>      lineList.add("");<a name="line.2489"></a>
-<span class="sourceLineNo">2490</span>      lineList.add(indent + "SearchResult " + requestID + "Result;");<a name="line.2490"></a>
-<span class="sourceLineNo">2491</span>      lineList.add(indent + "try");<a name="line.2491"></a>
-<span class="sourceLineNo">2492</span>      lineList.add(indent + '{');<a name="line.2492"></a>
-<span class="sourceLineNo">2493</span>      lineList.add(indent + "  " + requestID + "Result = connection.search(" +<a name="line.2493"></a>
-<span class="sourceLineNo">2494</span>           requestID + "Request);");<a name="line.2494"></a>
-<span class="sourceLineNo">2495</span>      lineList.add(indent + "  // The search was processed successfully.");<a name="line.2495"></a>
-<span class="sourceLineNo">2496</span>      lineList.add(indent + '}');<a name="line.2496"></a>
-<span class="sourceLineNo">2497</span>      lineList.add(indent + "catch (LDAPSearchException e)");<a name="line.2497"></a>
-<span class="sourceLineNo">2498</span>      lineList.add(indent + '{');<a name="line.2498"></a>
-<span class="sourceLineNo">2499</span>      lineList.add(indent + "  // The search failed.  Maybe the following " +<a name="line.2499"></a>
-<span class="sourceLineNo">2500</span>           "will help explain why.");<a name="line.2500"></a>
-<span class="sourceLineNo">2501</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.2501"></a>
-<span class="sourceLineNo">2502</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.2502"></a>
-<span class="sourceLineNo">2503</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.2503"></a>
-<span class="sourceLineNo">2504</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.2504"></a>
-<span class="sourceLineNo">2505</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.2505"></a>
-<span class="sourceLineNo">2506</span>           "e.getResponseControls();");<a name="line.2506"></a>
-<span class="sourceLineNo">2507</span>      lineList.add("");<a name="line.2507"></a>
-<span class="sourceLineNo">2508</span>      lineList.add(indent + "  // Even though there was an error, we may " +<a name="line.2508"></a>
-<span class="sourceLineNo">2509</span>           "have gotten some results.");<a name="line.2509"></a>
-<span class="sourceLineNo">2510</span>      lineList.add(indent + "  " + requestID + "Result = e.getSearchResult();");<a name="line.2510"></a>
-<span class="sourceLineNo">2511</span>      lineList.add(indent + '}');<a name="line.2511"></a>
-<span class="sourceLineNo">2512</span>      lineList.add("");<a name="line.2512"></a>
-<span class="sourceLineNo">2513</span>      lineList.add(indent + "// If there were results, then process them.");<a name="line.2513"></a>
-<span class="sourceLineNo">2514</span>      lineList.add(indent + "for (SearchResultEntry e : " + requestID +<a name="line.2514"></a>
-<span class="sourceLineNo">2515</span>           "Result.getSearchEntries())");<a name="line.2515"></a>
-<span class="sourceLineNo">2516</span>      lineList.add(indent + '{');<a name="line.2516"></a>
-<span class="sourceLineNo">2517</span>      lineList.add(indent + "  // Do something with the entry.");<a name="line.2517"></a>
-<span class="sourceLineNo">2518</span>      lineList.add(indent + '}');<a name="line.2518"></a>
-<span class="sourceLineNo">2519</span>    }<a name="line.2519"></a>
-<span class="sourceLineNo">2520</span>  }<a name="line.2520"></a>
-<span class="sourceLineNo">2521</span>}<a name="line.2521"></a>
+<span class="sourceLineNo">2259</span><a name="line.2259"></a>
+<span class="sourceLineNo">2260</span>    // If there are any controls, then add them to the request.<a name="line.2260"></a>
+<span class="sourceLineNo">2261</span>    for (final Control c : getControls())<a name="line.2261"></a>
+<span class="sourceLineNo">2262</span>    {<a name="line.2262"></a>
+<span class="sourceLineNo">2263</span>      ToCodeHelper.generateMethodCall(lineList, indentSpaces, null, null,<a name="line.2263"></a>
+<span class="sourceLineNo">2264</span>           requestID + "Request.addControl",<a name="line.2264"></a>
+<span class="sourceLineNo">2265</span>           ToCodeArgHelper.createControl(c, null));<a name="line.2265"></a>
+<span class="sourceLineNo">2266</span>    }<a name="line.2266"></a>
+<span class="sourceLineNo">2267</span><a name="line.2267"></a>
+<span class="sourceLineNo">2268</span><a name="line.2268"></a>
+<span class="sourceLineNo">2269</span>    // Add lines for processing the request and obtaining the result.<a name="line.2269"></a>
+<span class="sourceLineNo">2270</span>    if (includeProcessing)<a name="line.2270"></a>
+<span class="sourceLineNo">2271</span>    {<a name="line.2271"></a>
+<span class="sourceLineNo">2272</span>      // Generate a string with the appropriate indent.<a name="line.2272"></a>
+<span class="sourceLineNo">2273</span>      final StringBuilder buffer = new StringBuilder();<a name="line.2273"></a>
+<span class="sourceLineNo">2274</span>      for (int i=0; i &lt; indentSpaces; i++)<a name="line.2274"></a>
+<span class="sourceLineNo">2275</span>      {<a name="line.2275"></a>
+<span class="sourceLineNo">2276</span>        buffer.append(' ');<a name="line.2276"></a>
+<span class="sourceLineNo">2277</span>      }<a name="line.2277"></a>
+<span class="sourceLineNo">2278</span>      final String indent = buffer.toString();<a name="line.2278"></a>
+<span class="sourceLineNo">2279</span><a name="line.2279"></a>
+<span class="sourceLineNo">2280</span>      lineList.add("");<a name="line.2280"></a>
+<span class="sourceLineNo">2281</span>      lineList.add(indent + "SearchResult " + requestID + "Result;");<a name="line.2281"></a>
+<span class="sourceLineNo">2282</span>      lineList.add(indent + "try");<a name="line.2282"></a>
+<span class="sourceLineNo">2283</span>      lineList.add(indent + '{');<a name="line.2283"></a>
+<span class="sourceLineNo">2284</span>      lineList.add(indent + "  " + requestID + "Result = connection.search(" +<a name="line.2284"></a>
+<span class="sourceLineNo">2285</span>           requestID + "Request);");<a name="line.2285"></a>
+<span class="sourceLineNo">2286</span>      lineList.add(indent + "  // The search was processed successfully.");<a name="line.2286"></a>
+<span class="sourceLineNo">2287</span>      lineList.add(indent + '}');<a name="line.2287"></a>
+<span class="sourceLineNo">2288</span>      lineList.add(indent + "catch (LDAPSearchException e)");<a name="line.2288"></a>
+<span class="sourceLineNo">2289</span>      lineList.add(indent + '{');<a name="line.2289"></a>
+<span class="sourceLineNo">2290</span>      lineList.add(indent + "  // The search failed.  Maybe the following " +<a name="line.2290"></a>
+<span class="sourceLineNo">2291</span>           "will help explain why.");<a name="line.2291"></a>
+<span class="sourceLineNo">2292</span>      lineList.add(indent + "  ResultCode resultCode = e.getResultCode();");<a name="line.2292"></a>
+<span class="sourceLineNo">2293</span>      lineList.add(indent + "  String message = e.getMessage();");<a name="line.2293"></a>
+<span class="sourceLineNo">2294</span>      lineList.add(indent + "  String matchedDN = e.getMatchedDN();");<a name="line.2294"></a>
+<span class="sourceLineNo">2295</span>      lineList.add(indent + "  String[] referralURLs = e.getReferralURLs();");<a name="line.2295"></a>
+<span class="sourceLineNo">2296</span>      lineList.add(indent + "  Control[] responseControls = " +<a name="line.2296"></a>
+<span class="sourceLineNo">2297</span>           "e.getResponseControls();");<a name="line.2297"></a>
+<span class="sourceLineNo">2298</span>      lineList.add("");<a name="line.2298"></a>
+<span class="sourceLineNo">2299</span>      lineList.add(indent + "  // Even though there was an error, we may " +<a name="line.2299"></a>
+<span class="sourceLineNo">2300</span>           "have gotten some results.");<a name="line.2300"></a>
+<span class="sourceLineNo">2301</span>      lineList.add(indent + "  " + requestID + "Result = e.getSearchResult();");<a name="line.2301"></a>
+<span class="sourceLineNo">2302</span>      lineList.add(indent + '}');<a name="line.2302"></a>
+<span class="sourceLineNo">2303</span>      lineList.add("");<a name="line.2303"></a>
+<span class="sourceLineNo">2304</span>      lineList.add(indent + "// If there were results, then process them.");<a name="line.2304"></a>
+<span class="sourceLineNo">2305</span>      lineList.add(indent + "for (SearchResultEntry e : " + requestID +<a name="line.2305"></a>
+<span class="sourceLineNo">2306</span>           "Result.getSearchEntries())");<a name="line.2306"></a>
+<span class="sourceLineNo">2307</span>      lineList.add(indent + '{');<a name="line.2307"></a>
+<span class="sourceLineNo">2308</span>      lineList.add(indent + "  // Do something with the entry.");<a name="line.2308"></a>
+<span class="sourceLineNo">2309</span>      lineList.add(indent + '}');<a name="line.2309"></a>
+<span class="sourceLineNo">2310</span>    }<a name="line.2310"></a>
+<span class="sourceLineNo">2311</span>  }<a name="line.2311"></a>
+<span class="sourceLineNo">2312</span>}<a name="line.2312"></a>
 
 
 

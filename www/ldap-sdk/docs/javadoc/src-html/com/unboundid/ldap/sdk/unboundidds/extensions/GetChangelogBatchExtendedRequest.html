@@ -1528,118 +1528,121 @@
 <span class="sourceLineNo">1520</span>              includeSoftDeletedEntryMods, includeSoftDeletedEntryDeletes,<a name="line.1520"></a>
 <span class="sourceLineNo">1521</span>              controls);<a name="line.1521"></a>
 <span class="sourceLineNo">1522</span>    r.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>    return r;<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>  }<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span><a name="line.1525"></a>
-<span class="sourceLineNo">1526</span><a name="line.1526"></a>
-<span class="sourceLineNo">1527</span><a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>  /**<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>   * {@inheritDoc}<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>   */<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>  @Override()<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>  @NotNull()<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>  public String getExtendedRequestName()<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>  {<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>    return INFO_GET_CHANGELOG_BATCH_REQ_NAME.get();<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>  }<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span><a name="line.1537"></a>
-<span class="sourceLineNo">1538</span><a name="line.1538"></a>
-<span class="sourceLineNo">1539</span><a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>  /**<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>   * {@inheritDoc}<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>   */<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>  @Override()<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>  {<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>    buffer.append("GetChangelogBatchExtendedRequest(startingPoint=");<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span>    startingPoint.toString(buffer);<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span><a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>    buffer.append(", maxChanges=");<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>    buffer.append(maxChanges);<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>    buffer.append(", maxWaitTimeMillis=");<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>    buffer.append(maxWaitTimeMillis);<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>    buffer.append(", waitForMaxChanges=");<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>    buffer.append(waitForMaxChanges);<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>    buffer.append(", includeBase={");<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span><a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>    final Iterator&lt;String&gt; includeIterator = includeBaseDNs.iterator();<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>    while (includeIterator.hasNext())<a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>    {<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>      buffer.append('"');<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>      buffer.append(includeIterator.next());<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>      buffer.append('"');<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>      if (includeIterator.hasNext())<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>      {<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>        buffer.append(", ");<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>      }<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>    }<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span><a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>    buffer.append("}, excludeBase={");<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span><a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>    final Iterator&lt;String&gt; excludeIterator = excludeBaseDNs.iterator();<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>    while (excludeIterator.hasNext())<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>    {<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>      buffer.append('"');<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span>      buffer.append(excludeIterator.next());<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>      buffer.append('"');<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>      if (excludeIterator.hasNext())<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>      {<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>        buffer.append(", ");<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>      }<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>    }<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span><a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>    buffer.append("}, changeTypes={");<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span><a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>    final Iterator&lt;ChangeType&gt; typeIterator = changeTypes.iterator();<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>    while (typeIterator.hasNext())<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>    {<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>      buffer.append(typeIterator.next().getName());<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>      if (typeIterator.hasNext())<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>      {<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>        buffer.append(", ");<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>      }<a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>    }<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span><a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>    buffer.append("}, continueOnMissingChanges=");<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>    buffer.append(continueOnMissingChanges);<a name="line.1596"></a>
+<span class="sourceLineNo">1523</span>    r.setIntermediateResponseListener(getIntermediateResponseListener());<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>    r.setReferralDepth(getReferralDepth());<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>    r.setReferralConnector(getReferralConnectorInternal());<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>    return r;<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>  }<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span><a name="line.1528"></a>
+<span class="sourceLineNo">1529</span><a name="line.1529"></a>
+<span class="sourceLineNo">1530</span><a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>  /**<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>   * {@inheritDoc}<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>   */<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>  @Override()<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>  @NotNull()<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>  public String getExtendedRequestName()<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>  {<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>    return INFO_GET_CHANGELOG_BATCH_REQ_NAME.get();<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>  }<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span><a name="line.1540"></a>
+<span class="sourceLineNo">1541</span><a name="line.1541"></a>
+<span class="sourceLineNo">1542</span><a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>  /**<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>   * {@inheritDoc}<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>   */<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>  @Override()<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>  {<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>    buffer.append("GetChangelogBatchExtendedRequest(startingPoint=");<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>    startingPoint.toString(buffer);<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span><a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>    buffer.append(", maxChanges=");<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>    buffer.append(maxChanges);<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>    buffer.append(", maxWaitTimeMillis=");<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>    buffer.append(maxWaitTimeMillis);<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>    buffer.append(", waitForMaxChanges=");<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>    buffer.append(waitForMaxChanges);<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>    buffer.append(", includeBase={");<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span><a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>    final Iterator&lt;String&gt; includeIterator = includeBaseDNs.iterator();<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>    while (includeIterator.hasNext())<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>    {<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>      buffer.append('"');<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>      buffer.append(includeIterator.next());<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>      buffer.append('"');<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>      if (includeIterator.hasNext())<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>      {<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>        buffer.append(", ");<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>      }<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>    }<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span><a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>    buffer.append("}, excludeBase={");<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span><a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>    final Iterator&lt;String&gt; excludeIterator = excludeBaseDNs.iterator();<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>    while (excludeIterator.hasNext())<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>    {<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>      buffer.append('"');<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>      buffer.append(excludeIterator.next());<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>      buffer.append('"');<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>      if (excludeIterator.hasNext())<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>      {<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>        buffer.append(", ");<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>      }<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>    }<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span><a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>    buffer.append("}, changeTypes={");<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span><a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>    final Iterator&lt;ChangeType&gt; typeIterator = changeTypes.iterator();<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>    while (typeIterator.hasNext())<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>    {<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>      buffer.append(typeIterator.next().getName());<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>      if (typeIterator.hasNext())<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>      {<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>        buffer.append(", ");<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>      }<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>    }<a name="line.1596"></a>
 <span class="sourceLineNo">1597</span><a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>    if (pareEntriesForUserDN != null)<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>    {<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>      buffer.append(", pareEntriesForUserDN='");<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>      buffer.append(pareEntriesForUserDN);<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span>      buffer.append('\'');<a name="line.1602"></a>
-<span class="sourceLineNo">1603</span>    }<a name="line.1603"></a>
-<span class="sourceLineNo">1604</span><a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>    if (changeSelectionCriteria != null)<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span>    {<a name="line.1606"></a>
-<span class="sourceLineNo">1607</span>      buffer.append(", changeSelectionCriteria=");<a name="line.1607"></a>
-<span class="sourceLineNo">1608</span>      changeSelectionCriteria.toString(buffer);<a name="line.1608"></a>
-<span class="sourceLineNo">1609</span>    }<a name="line.1609"></a>
-<span class="sourceLineNo">1610</span><a name="line.1610"></a>
-<span class="sourceLineNo">1611</span>    buffer.append(", includeSoftDeletedEntryMods=");<a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>    buffer.append(includeSoftDeletedEntryMods);<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span>    buffer.append(", includeSoftDeletedEntryDeletes=");<a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>    buffer.append(includeSoftDeletedEntryDeletes);<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span><a name="line.1615"></a>
-<span class="sourceLineNo">1616</span>    final Control[] controls = getControls();<a name="line.1616"></a>
-<span class="sourceLineNo">1617</span>    if (controls.length &gt; 0)<a name="line.1617"></a>
-<span class="sourceLineNo">1618</span>    {<a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>      buffer.append(", controls={");<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>      {<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span>        if (i &gt; 0)<a name="line.1622"></a>
-<span class="sourceLineNo">1623</span>        {<a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>          buffer.append(", ");<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span>        }<a name="line.1625"></a>
-<span class="sourceLineNo">1626</span><a name="line.1626"></a>
-<span class="sourceLineNo">1627</span>        buffer.append(controls[i]);<a name="line.1627"></a>
-<span class="sourceLineNo">1628</span>      }<a name="line.1628"></a>
-<span class="sourceLineNo">1629</span>      buffer.append('}');<a name="line.1629"></a>
-<span class="sourceLineNo">1630</span>    }<a name="line.1630"></a>
-<span class="sourceLineNo">1631</span><a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>    buffer.append(')');<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span>  }<a name="line.1633"></a>
-<span class="sourceLineNo">1634</span>}<a name="line.1634"></a>
+<span class="sourceLineNo">1598</span>    buffer.append("}, continueOnMissingChanges=");<a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>    buffer.append(continueOnMissingChanges);<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span><a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>    if (pareEntriesForUserDN != null)<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>    {<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>      buffer.append(", pareEntriesForUserDN='");<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>      buffer.append(pareEntriesForUserDN);<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>      buffer.append('\'');<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>    }<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span><a name="line.1607"></a>
+<span class="sourceLineNo">1608</span>    if (changeSelectionCriteria != null)<a name="line.1608"></a>
+<span class="sourceLineNo">1609</span>    {<a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>      buffer.append(", changeSelectionCriteria=");<a name="line.1610"></a>
+<span class="sourceLineNo">1611</span>      changeSelectionCriteria.toString(buffer);<a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>    }<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span><a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>    buffer.append(", includeSoftDeletedEntryMods=");<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>    buffer.append(includeSoftDeletedEntryMods);<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>    buffer.append(", includeSoftDeletedEntryDeletes=");<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>    buffer.append(includeSoftDeletedEntryDeletes);<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span><a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>    final Control[] controls = getControls();<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>    if (controls.length &gt; 0)<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>    {<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>      buffer.append(", controls={");<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>      {<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>        if (i &gt; 0)<a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>        {<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>          buffer.append(", ");<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>        }<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span><a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>        buffer.append(controls[i]);<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>      }<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>      buffer.append('}');<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>    }<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span><a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>    buffer.append(')');<a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>  }<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span>}<a name="line.1637"></a>
 
 
 

@@ -536,60 +536,63 @@
 <span class="sourceLineNo">528</span>         new RegisterYubiKeyOTPDeviceExtendedRequest(authenticationID,<a name="line.528"></a>
 <span class="sourceLineNo">529</span>              staticPassword, yubiKeyOTP, controls);<a name="line.529"></a>
 <span class="sourceLineNo">530</span>    r.setResponseTimeoutMillis(getResponseTimeoutMillis(null));<a name="line.530"></a>
-<span class="sourceLineNo">531</span>    return r;<a name="line.531"></a>
-<span class="sourceLineNo">532</span>  }<a name="line.532"></a>
-<span class="sourceLineNo">533</span><a name="line.533"></a>
-<span class="sourceLineNo">534</span><a name="line.534"></a>
-<span class="sourceLineNo">535</span><a name="line.535"></a>
-<span class="sourceLineNo">536</span>  /**<a name="line.536"></a>
-<span class="sourceLineNo">537</span>   * {@inheritDoc}<a name="line.537"></a>
-<span class="sourceLineNo">538</span>   */<a name="line.538"></a>
-<span class="sourceLineNo">539</span>  @Override()<a name="line.539"></a>
-<span class="sourceLineNo">540</span>  @NotNull()<a name="line.540"></a>
-<span class="sourceLineNo">541</span>  public String getExtendedRequestName()<a name="line.541"></a>
-<span class="sourceLineNo">542</span>  {<a name="line.542"></a>
-<span class="sourceLineNo">543</span>    return INFO_REGISTER_YUBIKEY_OTP_REQUEST_NAME.get();<a name="line.543"></a>
-<span class="sourceLineNo">544</span>  }<a name="line.544"></a>
-<span class="sourceLineNo">545</span><a name="line.545"></a>
-<span class="sourceLineNo">546</span><a name="line.546"></a>
-<span class="sourceLineNo">547</span><a name="line.547"></a>
-<span class="sourceLineNo">548</span>  /**<a name="line.548"></a>
-<span class="sourceLineNo">549</span>   * {@inheritDoc}<a name="line.549"></a>
-<span class="sourceLineNo">550</span>   */<a name="line.550"></a>
-<span class="sourceLineNo">551</span>  @Override()<a name="line.551"></a>
-<span class="sourceLineNo">552</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.552"></a>
-<span class="sourceLineNo">553</span>  {<a name="line.553"></a>
-<span class="sourceLineNo">554</span>    buffer.append("RegisterYubiKeyOTPDeviceExtendedRequest(");<a name="line.554"></a>
-<span class="sourceLineNo">555</span><a name="line.555"></a>
-<span class="sourceLineNo">556</span>    if (authenticationID != null)<a name="line.556"></a>
-<span class="sourceLineNo">557</span>    {<a name="line.557"></a>
-<span class="sourceLineNo">558</span>      buffer.append("authenticationID='");<a name="line.558"></a>
-<span class="sourceLineNo">559</span>      buffer.append(authenticationID);<a name="line.559"></a>
-<span class="sourceLineNo">560</span>      buffer.append("', ");<a name="line.560"></a>
-<span class="sourceLineNo">561</span>    }<a name="line.561"></a>
-<span class="sourceLineNo">562</span><a name="line.562"></a>
-<span class="sourceLineNo">563</span>    buffer.append("staticPasswordProvided=");<a name="line.563"></a>
-<span class="sourceLineNo">564</span>    buffer.append(staticPassword != null);<a name="line.564"></a>
+<span class="sourceLineNo">531</span>    r.setIntermediateResponseListener(getIntermediateResponseListener());<a name="line.531"></a>
+<span class="sourceLineNo">532</span>    r.setReferralDepth(getReferralDepth());<a name="line.532"></a>
+<span class="sourceLineNo">533</span>    r.setReferralConnector(getReferralConnectorInternal());<a name="line.533"></a>
+<span class="sourceLineNo">534</span>    return r;<a name="line.534"></a>
+<span class="sourceLineNo">535</span>  }<a name="line.535"></a>
+<span class="sourceLineNo">536</span><a name="line.536"></a>
+<span class="sourceLineNo">537</span><a name="line.537"></a>
+<span class="sourceLineNo">538</span><a name="line.538"></a>
+<span class="sourceLineNo">539</span>  /**<a name="line.539"></a>
+<span class="sourceLineNo">540</span>   * {@inheritDoc}<a name="line.540"></a>
+<span class="sourceLineNo">541</span>   */<a name="line.541"></a>
+<span class="sourceLineNo">542</span>  @Override()<a name="line.542"></a>
+<span class="sourceLineNo">543</span>  @NotNull()<a name="line.543"></a>
+<span class="sourceLineNo">544</span>  public String getExtendedRequestName()<a name="line.544"></a>
+<span class="sourceLineNo">545</span>  {<a name="line.545"></a>
+<span class="sourceLineNo">546</span>    return INFO_REGISTER_YUBIKEY_OTP_REQUEST_NAME.get();<a name="line.546"></a>
+<span class="sourceLineNo">547</span>  }<a name="line.547"></a>
+<span class="sourceLineNo">548</span><a name="line.548"></a>
+<span class="sourceLineNo">549</span><a name="line.549"></a>
+<span class="sourceLineNo">550</span><a name="line.550"></a>
+<span class="sourceLineNo">551</span>  /**<a name="line.551"></a>
+<span class="sourceLineNo">552</span>   * {@inheritDoc}<a name="line.552"></a>
+<span class="sourceLineNo">553</span>   */<a name="line.553"></a>
+<span class="sourceLineNo">554</span>  @Override()<a name="line.554"></a>
+<span class="sourceLineNo">555</span>  public void toString(@NotNull final StringBuilder buffer)<a name="line.555"></a>
+<span class="sourceLineNo">556</span>  {<a name="line.556"></a>
+<span class="sourceLineNo">557</span>    buffer.append("RegisterYubiKeyOTPDeviceExtendedRequest(");<a name="line.557"></a>
+<span class="sourceLineNo">558</span><a name="line.558"></a>
+<span class="sourceLineNo">559</span>    if (authenticationID != null)<a name="line.559"></a>
+<span class="sourceLineNo">560</span>    {<a name="line.560"></a>
+<span class="sourceLineNo">561</span>      buffer.append("authenticationID='");<a name="line.561"></a>
+<span class="sourceLineNo">562</span>      buffer.append(authenticationID);<a name="line.562"></a>
+<span class="sourceLineNo">563</span>      buffer.append("', ");<a name="line.563"></a>
+<span class="sourceLineNo">564</span>    }<a name="line.564"></a>
 <span class="sourceLineNo">565</span><a name="line.565"></a>
-<span class="sourceLineNo">566</span>    final Control[] controls = getControls();<a name="line.566"></a>
-<span class="sourceLineNo">567</span>    if (controls.length &gt; 0)<a name="line.567"></a>
-<span class="sourceLineNo">568</span>    {<a name="line.568"></a>
-<span class="sourceLineNo">569</span>      buffer.append(", controls={");<a name="line.569"></a>
-<span class="sourceLineNo">570</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.570"></a>
-<span class="sourceLineNo">571</span>      {<a name="line.571"></a>
-<span class="sourceLineNo">572</span>        if (i &gt; 0)<a name="line.572"></a>
-<span class="sourceLineNo">573</span>        {<a name="line.573"></a>
-<span class="sourceLineNo">574</span>          buffer.append(", ");<a name="line.574"></a>
-<span class="sourceLineNo">575</span>        }<a name="line.575"></a>
-<span class="sourceLineNo">576</span><a name="line.576"></a>
-<span class="sourceLineNo">577</span>        buffer.append(controls[i]);<a name="line.577"></a>
-<span class="sourceLineNo">578</span>      }<a name="line.578"></a>
-<span class="sourceLineNo">579</span>      buffer.append('}');<a name="line.579"></a>
-<span class="sourceLineNo">580</span>    }<a name="line.580"></a>
-<span class="sourceLineNo">581</span><a name="line.581"></a>
-<span class="sourceLineNo">582</span>    buffer.append(')');<a name="line.582"></a>
-<span class="sourceLineNo">583</span>  }<a name="line.583"></a>
-<span class="sourceLineNo">584</span>}<a name="line.584"></a>
+<span class="sourceLineNo">566</span>    buffer.append("staticPasswordProvided=");<a name="line.566"></a>
+<span class="sourceLineNo">567</span>    buffer.append(staticPassword != null);<a name="line.567"></a>
+<span class="sourceLineNo">568</span><a name="line.568"></a>
+<span class="sourceLineNo">569</span>    final Control[] controls = getControls();<a name="line.569"></a>
+<span class="sourceLineNo">570</span>    if (controls.length &gt; 0)<a name="line.570"></a>
+<span class="sourceLineNo">571</span>    {<a name="line.571"></a>
+<span class="sourceLineNo">572</span>      buffer.append(", controls={");<a name="line.572"></a>
+<span class="sourceLineNo">573</span>      for (int i=0; i &lt; controls.length; i++)<a name="line.573"></a>
+<span class="sourceLineNo">574</span>      {<a name="line.574"></a>
+<span class="sourceLineNo">575</span>        if (i &gt; 0)<a name="line.575"></a>
+<span class="sourceLineNo">576</span>        {<a name="line.576"></a>
+<span class="sourceLineNo">577</span>          buffer.append(", ");<a name="line.577"></a>
+<span class="sourceLineNo">578</span>        }<a name="line.578"></a>
+<span class="sourceLineNo">579</span><a name="line.579"></a>
+<span class="sourceLineNo">580</span>        buffer.append(controls[i]);<a name="line.580"></a>
+<span class="sourceLineNo">581</span>      }<a name="line.581"></a>
+<span class="sourceLineNo">582</span>      buffer.append('}');<a name="line.582"></a>
+<span class="sourceLineNo">583</span>    }<a name="line.583"></a>
+<span class="sourceLineNo">584</span><a name="line.584"></a>
+<span class="sourceLineNo">585</span>    buffer.append(')');<a name="line.585"></a>
+<span class="sourceLineNo">586</span>  }<a name="line.586"></a>
+<span class="sourceLineNo">587</span>}<a name="line.587"></a>
 
 
 

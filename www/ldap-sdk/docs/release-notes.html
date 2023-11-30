@@ -27,6 +27,92 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 6.0.11</h3>
+
+              <p>
+                The following changes were made between the 6.0.10 and 6.0.11 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Note that this is the last release that will support Java 7.  The next release
+                  (expected to have a version number of 7.0.0) will only support Java 8 and later.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldapsearch and ldapmodify command-line tools to provide better
+                  validation for the value of the --proxyAs argument.  The tools will now reject
+                  attempts to use the argument with a value that doesn't start with either "dn:" or
+                  "u:", and they will also reject attempts to use a value that starts with "dn:"
+                  but is not followed by a valid LDAP DN.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the Filter methods for creating substring filters to better support empty
+                  components.  In LDAP filters, filters are transmitted using a binary encoding,
+                  and substring components may be absent but not empty.  However, because
+                  developers creating LDAP-enabled applications are more likely to be familiar with
+                  the string representations of filters, it is understandable if someone were to
+                  try to provide an empty string instead of null to indicate that the component is
+                  not needed.  The methods for creating substring filters will now interpret empty
+                  components as equivalent to being null, causing them to be omitted from the
+                  resulting encoded LDAP filter.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the logic that the LDAP SDK uses in the in-memory directory server and
+                  the ldifsearch tool to pare matching entries based on a set of requested
+                  attributes in the in-memory.  If an entry included an attribute with an invalid
+                  name, then the logic used to parse an attribute description into the base
+                  attribute type name and a set of attribute options would result in a null pointer
+                  exception.  It now uses more lenient logic for parsing attribute descriptions,
+                  and it can handle malformed attribute descriptions in a more graceful manner.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the TimestampArgument class to allow it to accept timestamps in the ISO
+                  8601 format described in RFC 3339.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the JSONBuffer class to add an appendField method that can be used for a
+                  field object that already encapsulates a name and value.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added new BinarySizeUnit and DecimalSizeUnit enums that can be used when working
+                  with data sizes in a variety of units, including bytes, kilobytes, megabytes,
+                  gigabytes, terabytes, petabytes, exabytes, zettabytes, and yottabytes.  These
+                  enums provide methods for determining the number of bytes in a specified number
+                  of instances of the given unit, determining the number of instances of a unit
+                  represented by a given number of bytes, and generating a human-readable string
+                  representation of a given number of bytes using the unit deemed most appropriate.
+                  The BinarySizeUnit enum assumes that each unit is 1024 times larger than the next
+                  smaller unit (e.g., so one kilobyte is 1024 bytes, one megabyte is 1024
+                  kilobytes, etc.), while the DecimalSizeUnit enum assumes that each unit is 1000
+                  times larger than the next smaller unit (e.g., so one kilobyte is 1000 bytes, one
+                  megabyte is 1000 kilobytes, etc.).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated client-side support for the LDIF export administrative task in the Ping
+                  Identity Directory Server to allow requesting that the server invoke one or more
+                  post-LDIF-export task processors after the data is successfully exported.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.10</h3>
 
               <p>

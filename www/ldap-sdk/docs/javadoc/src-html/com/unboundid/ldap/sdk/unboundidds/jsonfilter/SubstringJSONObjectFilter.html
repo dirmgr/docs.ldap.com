@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2015-2023 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2015-2024 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -849,36 +849,133 @@
 <span class="sourceLineNo">841</span>   */<a name="line.841"></a>
 <span class="sourceLineNo">842</span>  @Override()<a name="line.842"></a>
 <span class="sourceLineNo">843</span>  @NotNull()<a name="line.843"></a>
-<span class="sourceLineNo">844</span>  protected SubstringJSONObjectFilter decodeFilter(<a name="line.844"></a>
-<span class="sourceLineNo">845</span>                 @NotNull final JSONObject filterObject)<a name="line.845"></a>
-<span class="sourceLineNo">846</span>            throws JSONException<a name="line.846"></a>
-<span class="sourceLineNo">847</span>  {<a name="line.847"></a>
-<span class="sourceLineNo">848</span>    final List&lt;String&gt; fieldPath =<a name="line.848"></a>
-<span class="sourceLineNo">849</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.849"></a>
+<span class="sourceLineNo">844</span>  public JSONObject toNormalizedJSONObject()<a name="line.844"></a>
+<span class="sourceLineNo">845</span>  {<a name="line.845"></a>
+<span class="sourceLineNo">846</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.846"></a>
+<span class="sourceLineNo">847</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(6));<a name="line.847"></a>
+<span class="sourceLineNo">848</span><a name="line.848"></a>
+<span class="sourceLineNo">849</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.849"></a>
 <span class="sourceLineNo">850</span><a name="line.850"></a>
-<span class="sourceLineNo">851</span>    final String subInitial = getString(filterObject, FIELD_STARTS_WITH, null,<a name="line.851"></a>
-<span class="sourceLineNo">852</span>         false);<a name="line.852"></a>
-<span class="sourceLineNo">853</span><a name="line.853"></a>
-<span class="sourceLineNo">854</span>    final List&lt;String&gt; subAny = getStrings(filterObject, FIELD_CONTAINS, true,<a name="line.854"></a>
-<span class="sourceLineNo">855</span>         Collections.&lt;String&gt;emptyList());<a name="line.855"></a>
-<span class="sourceLineNo">856</span><a name="line.856"></a>
-<span class="sourceLineNo">857</span>    final String subFinal = getString(filterObject, FIELD_ENDS_WITH, null,<a name="line.857"></a>
-<span class="sourceLineNo">858</span>         false);<a name="line.858"></a>
-<span class="sourceLineNo">859</span><a name="line.859"></a>
-<span class="sourceLineNo">860</span>    if ((subInitial == null) &amp;&amp; (subFinal == null) &amp;&amp; subAny.isEmpty())<a name="line.860"></a>
-<span class="sourceLineNo">861</span>    {<a name="line.861"></a>
-<span class="sourceLineNo">862</span>      throw new JSONException(ERR_SUBSTRING_FILTER_NO_COMPONENTS.get(<a name="line.862"></a>
-<span class="sourceLineNo">863</span>           String.valueOf(filterObject), FILTER_TYPE, FIELD_STARTS_WITH,<a name="line.863"></a>
-<span class="sourceLineNo">864</span>           FIELD_CONTAINS, FIELD_ENDS_WITH));<a name="line.864"></a>
-<span class="sourceLineNo">865</span>    }<a name="line.865"></a>
-<span class="sourceLineNo">866</span><a name="line.866"></a>
-<span class="sourceLineNo">867</span>    final boolean isCaseSensitive = getBoolean(filterObject,<a name="line.867"></a>
-<span class="sourceLineNo">868</span>         FIELD_CASE_SENSITIVE, false);<a name="line.868"></a>
-<span class="sourceLineNo">869</span><a name="line.869"></a>
-<span class="sourceLineNo">870</span>    return new SubstringJSONObjectFilter(fieldPath, subInitial, subAny,<a name="line.870"></a>
-<span class="sourceLineNo">871</span>         subFinal, isCaseSensitive);<a name="line.871"></a>
-<span class="sourceLineNo">872</span>  }<a name="line.872"></a>
-<span class="sourceLineNo">873</span>}<a name="line.873"></a>
+<span class="sourceLineNo">851</span>    if (field.size() == 1)<a name="line.851"></a>
+<span class="sourceLineNo">852</span>    {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>      fields.put(FIELD_FIELD_PATH, new JSONString(field.get(0)));<a name="line.853"></a>
+<span class="sourceLineNo">854</span>    }<a name="line.854"></a>
+<span class="sourceLineNo">855</span>    else<a name="line.855"></a>
+<span class="sourceLineNo">856</span>    {<a name="line.856"></a>
+<span class="sourceLineNo">857</span>      final ArrayList&lt;JSONValue&gt; fieldNameValues =<a name="line.857"></a>
+<span class="sourceLineNo">858</span>           new ArrayList&lt;&gt;(field.size());<a name="line.858"></a>
+<span class="sourceLineNo">859</span>      for (final String s : field)<a name="line.859"></a>
+<span class="sourceLineNo">860</span>      {<a name="line.860"></a>
+<span class="sourceLineNo">861</span>        fieldNameValues.add(new JSONString(s));<a name="line.861"></a>
+<span class="sourceLineNo">862</span>      }<a name="line.862"></a>
+<span class="sourceLineNo">863</span>      fields.put(FIELD_FIELD_PATH, new JSONArray(fieldNameValues));<a name="line.863"></a>
+<span class="sourceLineNo">864</span>    }<a name="line.864"></a>
+<span class="sourceLineNo">865</span><a name="line.865"></a>
+<span class="sourceLineNo">866</span>    if (startsWith != null)<a name="line.866"></a>
+<span class="sourceLineNo">867</span>    {<a name="line.867"></a>
+<span class="sourceLineNo">868</span>      if (caseSensitive)<a name="line.868"></a>
+<span class="sourceLineNo">869</span>      {<a name="line.869"></a>
+<span class="sourceLineNo">870</span>        fields.put(FIELD_STARTS_WITH, new JSONString(startsWith));<a name="line.870"></a>
+<span class="sourceLineNo">871</span>      }<a name="line.871"></a>
+<span class="sourceLineNo">872</span>      else<a name="line.872"></a>
+<span class="sourceLineNo">873</span>      {<a name="line.873"></a>
+<span class="sourceLineNo">874</span>        fields.put(FIELD_STARTS_WITH, new JSONString(<a name="line.874"></a>
+<span class="sourceLineNo">875</span>             StaticUtils.toLowerCase(startsWith)));<a name="line.875"></a>
+<span class="sourceLineNo">876</span>      }<a name="line.876"></a>
+<span class="sourceLineNo">877</span>    }<a name="line.877"></a>
+<span class="sourceLineNo">878</span><a name="line.878"></a>
+<span class="sourceLineNo">879</span>    if (! contains.isEmpty())<a name="line.879"></a>
+<span class="sourceLineNo">880</span>    {<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      if (contains.size() == 1)<a name="line.881"></a>
+<span class="sourceLineNo">882</span>      {<a name="line.882"></a>
+<span class="sourceLineNo">883</span>        if (caseSensitive)<a name="line.883"></a>
+<span class="sourceLineNo">884</span>        {<a name="line.884"></a>
+<span class="sourceLineNo">885</span>          fields.put(FIELD_CONTAINS, new JSONString(contains.get(0)));<a name="line.885"></a>
+<span class="sourceLineNo">886</span>        }<a name="line.886"></a>
+<span class="sourceLineNo">887</span>        else<a name="line.887"></a>
+<span class="sourceLineNo">888</span>        {<a name="line.888"></a>
+<span class="sourceLineNo">889</span>          fields.put(FIELD_CONTAINS, new JSONString(<a name="line.889"></a>
+<span class="sourceLineNo">890</span>               StaticUtils.toLowerCase(contains.get(0))));<a name="line.890"></a>
+<span class="sourceLineNo">891</span>        }<a name="line.891"></a>
+<span class="sourceLineNo">892</span><a name="line.892"></a>
+<span class="sourceLineNo">893</span>      }<a name="line.893"></a>
+<span class="sourceLineNo">894</span>      else<a name="line.894"></a>
+<span class="sourceLineNo">895</span>      {<a name="line.895"></a>
+<span class="sourceLineNo">896</span>        final ArrayList&lt;JSONValue&gt; containsValues =<a name="line.896"></a>
+<span class="sourceLineNo">897</span>             new ArrayList&lt;&gt;(contains.size());<a name="line.897"></a>
+<span class="sourceLineNo">898</span>        for (final String s : contains)<a name="line.898"></a>
+<span class="sourceLineNo">899</span>        {<a name="line.899"></a>
+<span class="sourceLineNo">900</span>          if (caseSensitive)<a name="line.900"></a>
+<span class="sourceLineNo">901</span>          {<a name="line.901"></a>
+<span class="sourceLineNo">902</span>            containsValues.add(new JSONString(s));<a name="line.902"></a>
+<span class="sourceLineNo">903</span>          }<a name="line.903"></a>
+<span class="sourceLineNo">904</span>          else<a name="line.904"></a>
+<span class="sourceLineNo">905</span>          {<a name="line.905"></a>
+<span class="sourceLineNo">906</span>            containsValues.add(new JSONString(StaticUtils.toLowerCase(s)));<a name="line.906"></a>
+<span class="sourceLineNo">907</span>          }<a name="line.907"></a>
+<span class="sourceLineNo">908</span>        }<a name="line.908"></a>
+<span class="sourceLineNo">909</span>        fields.put(FIELD_CONTAINS, new JSONArray(containsValues));<a name="line.909"></a>
+<span class="sourceLineNo">910</span>      }<a name="line.910"></a>
+<span class="sourceLineNo">911</span>    }<a name="line.911"></a>
+<span class="sourceLineNo">912</span><a name="line.912"></a>
+<span class="sourceLineNo">913</span>    if (endsWith != null)<a name="line.913"></a>
+<span class="sourceLineNo">914</span>    {<a name="line.914"></a>
+<span class="sourceLineNo">915</span>      if (caseSensitive)<a name="line.915"></a>
+<span class="sourceLineNo">916</span>      {<a name="line.916"></a>
+<span class="sourceLineNo">917</span>        fields.put(FIELD_ENDS_WITH, new JSONString(endsWith));<a name="line.917"></a>
+<span class="sourceLineNo">918</span>      }<a name="line.918"></a>
+<span class="sourceLineNo">919</span>      else<a name="line.919"></a>
+<span class="sourceLineNo">920</span>      {<a name="line.920"></a>
+<span class="sourceLineNo">921</span>        fields.put(FIELD_ENDS_WITH, new JSONString(<a name="line.921"></a>
+<span class="sourceLineNo">922</span>             StaticUtils.toLowerCase(endsWith)));<a name="line.922"></a>
+<span class="sourceLineNo">923</span>      }<a name="line.923"></a>
+<span class="sourceLineNo">924</span>    }<a name="line.924"></a>
+<span class="sourceLineNo">925</span><a name="line.925"></a>
+<span class="sourceLineNo">926</span>    if (caseSensitive)<a name="line.926"></a>
+<span class="sourceLineNo">927</span>    {<a name="line.927"></a>
+<span class="sourceLineNo">928</span>      fields.put(FIELD_CASE_SENSITIVE, JSONBoolean.TRUE);<a name="line.928"></a>
+<span class="sourceLineNo">929</span>    }<a name="line.929"></a>
+<span class="sourceLineNo">930</span><a name="line.930"></a>
+<span class="sourceLineNo">931</span>    return new JSONObject(fields);<a name="line.931"></a>
+<span class="sourceLineNo">932</span>  }<a name="line.932"></a>
+<span class="sourceLineNo">933</span><a name="line.933"></a>
+<span class="sourceLineNo">934</span><a name="line.934"></a>
+<span class="sourceLineNo">935</span><a name="line.935"></a>
+<span class="sourceLineNo">936</span>  /**<a name="line.936"></a>
+<span class="sourceLineNo">937</span>   * {@inheritDoc}<a name="line.937"></a>
+<span class="sourceLineNo">938</span>   */<a name="line.938"></a>
+<span class="sourceLineNo">939</span>  @Override()<a name="line.939"></a>
+<span class="sourceLineNo">940</span>  @NotNull()<a name="line.940"></a>
+<span class="sourceLineNo">941</span>  protected SubstringJSONObjectFilter decodeFilter(<a name="line.941"></a>
+<span class="sourceLineNo">942</span>                 @NotNull final JSONObject filterObject)<a name="line.942"></a>
+<span class="sourceLineNo">943</span>            throws JSONException<a name="line.943"></a>
+<span class="sourceLineNo">944</span>  {<a name="line.944"></a>
+<span class="sourceLineNo">945</span>    final List&lt;String&gt; fieldPath =<a name="line.945"></a>
+<span class="sourceLineNo">946</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.946"></a>
+<span class="sourceLineNo">947</span><a name="line.947"></a>
+<span class="sourceLineNo">948</span>    final String subInitial = getString(filterObject, FIELD_STARTS_WITH, null,<a name="line.948"></a>
+<span class="sourceLineNo">949</span>         false);<a name="line.949"></a>
+<span class="sourceLineNo">950</span><a name="line.950"></a>
+<span class="sourceLineNo">951</span>    final List&lt;String&gt; subAny = getStrings(filterObject, FIELD_CONTAINS, true,<a name="line.951"></a>
+<span class="sourceLineNo">952</span>         Collections.&lt;String&gt;emptyList());<a name="line.952"></a>
+<span class="sourceLineNo">953</span><a name="line.953"></a>
+<span class="sourceLineNo">954</span>    final String subFinal = getString(filterObject, FIELD_ENDS_WITH, null,<a name="line.954"></a>
+<span class="sourceLineNo">955</span>         false);<a name="line.955"></a>
+<span class="sourceLineNo">956</span><a name="line.956"></a>
+<span class="sourceLineNo">957</span>    if ((subInitial == null) &amp;&amp; (subFinal == null) &amp;&amp; subAny.isEmpty())<a name="line.957"></a>
+<span class="sourceLineNo">958</span>    {<a name="line.958"></a>
+<span class="sourceLineNo">959</span>      throw new JSONException(ERR_SUBSTRING_FILTER_NO_COMPONENTS.get(<a name="line.959"></a>
+<span class="sourceLineNo">960</span>           String.valueOf(filterObject), FILTER_TYPE, FIELD_STARTS_WITH,<a name="line.960"></a>
+<span class="sourceLineNo">961</span>           FIELD_CONTAINS, FIELD_ENDS_WITH));<a name="line.961"></a>
+<span class="sourceLineNo">962</span>    }<a name="line.962"></a>
+<span class="sourceLineNo">963</span><a name="line.963"></a>
+<span class="sourceLineNo">964</span>    final boolean isCaseSensitive = getBoolean(filterObject,<a name="line.964"></a>
+<span class="sourceLineNo">965</span>         FIELD_CASE_SENSITIVE, false);<a name="line.965"></a>
+<span class="sourceLineNo">966</span><a name="line.966"></a>
+<span class="sourceLineNo">967</span>    return new SubstringJSONObjectFilter(fieldPath, subInitial, subAny,<a name="line.967"></a>
+<span class="sourceLineNo">968</span>         subFinal, isCaseSensitive);<a name="line.968"></a>
+<span class="sourceLineNo">969</span>  }<a name="line.969"></a>
+<span class="sourceLineNo">970</span>}<a name="line.970"></a>
 
 
 

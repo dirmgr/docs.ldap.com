@@ -280,7 +280,7 @@
       <li>
         <tt>--multiUpdateErrorBehavior <i>{atomic|abort-on-error|continue-on-error}</i></tt> &mdash; Indicates that all add, delete, modify, and modify DN requests should be sent to the server in a single multi-update request with the specified error behavior.  The value for this argument must be one of 'atomic' (to indicate that all updates should be processed atomically so that they will either all succeed or all fail), 'abort-on-error' (to indicate that the server should only process changes until the first error is encountered and ignore any remaining changes after that error), or 'continue-on-error' (to indicate that the server should continue attempting to process changes, even after one of them has resulted in a failure).
         <br>
-        A provided value should be one of the following:  'continue-on-error', 'abort-on-error', 'atomic'.
+        A provided value should be one of the following:  'abort-on-error', 'atomic', 'continue-on-error'.
         <br><br>
       </li>
       <li>
@@ -399,13 +399,13 @@
       <li>
         <tt>--assuredReplicationLocalLevel <i>{level}</i></tt> &mdash; Specifies the local assurance level to use for the assured replication request control.  This should only be used if the '--useAssuredReplication' argument is provided.  The value should be one of 'none', 'received-any-server', or 'processed-all-servers'.  If assured replication is to be used but this argument is not provided, then the server will automatically determine the local assurance level to use.
         <br>
-        A provided value should be one of the following:  'none', 'processed-all-servers', 'received-any-server'.
+        A provided value should be one of the following:  'received-any-server', 'processed-all-servers', 'none'.
         <br><br>
       </li>
       <li>
         <tt>--assuredReplicationRemoteLevel <i>{level}</i></tt> &mdash; Specifies the remote assurance level to use for the assured replication request control.  This should only be used if the '--useAssuredReplication' argument is provided.  The value should be one of 'none', 'received-any-remote-location', 'received-all-remote-locations', or 'processed-all-remote-servers'.  If assured replication is to be used but this argument is not provided, then the server will automatically determine the remote assurance level to use.
         <br>
-        A provided value should be one of the following:  'none', 'processed-all-remote-servers', 'received-any-remote-location', 'received-all-remote-locations'.
+        A provided value should be one of the following:  'processed-all-remote-servers', 'none', 'received-any-remote-location', 'received-all-remote-locations'.
         <br><br>
       </li>
       <li>
@@ -493,7 +493,7 @@
       <li>
         <tt>--suppressOperationalAttributeUpdates <i>{attr}</i></tt> &mdash; Indicates that all operations should include the UnboundID-proprietary suppress operational attribute updates request control to indicate that the server should not apply any updates to the specified operational attributes.  The value may be one of 'last-access-time', 'last-login-time', 'last-login-ip', or 'lastmod'.
         <br>
-        A provided value should be one of the following:  'last-access-time', 'lastmod', 'last-login-ip', 'last-login-time'.
+        A provided value should be one of the following:  'last-access-time', 'last-login-ip', 'last-login-time', 'lastmod'.
         <br><br>
       </li>
       <li>
@@ -527,19 +527,19 @@
       <li>
         <tt>--uniquenessMultipleAttributeBehavior <i>{behavior}</i></tt> &mdash; Specifies the behavior that the server should exhibit if the multiple unique attribute types are configured.  This can only be used if the '--uniquenessAttribute' argument is provided.  Allowed values for this argument are 'unique-within-each-attribute' (to indicate that each attribute should be considered separately), 'unique-across-all-attributes-including-in-same-entry' (to indicate that the value of one unique attribute cannot also be present in the value of any other unique attributes, even if the conflicting values are in the same entry), 'unique-across-all-attributes-except-in-same-entry' (to indicate that the value of one unique attribute cannot also be present in the value of any other unique attribute, although the same entry will be permitted to have the same value in multiple attributes), or 'unique-in-combination' (to indicate that no other entry will be permitted to have the same combination of unique attribute values).  If this is not specified, then a default of 'unique-within-each-attribute' will be used.
         <br>
-        A provided value should be one of the following:  'unique-across-all-attributes-including-in-same-entry', 'unique-in-combination', 'unique-across-all-attributes-except-in-same-entry', 'unique-within-each-attribute'.
+        A provided value should be one of the following:  'unique-within-each-attribute', 'unique-across-all-attributes-including-in-same-entry', 'unique-in-combination', 'unique-across-all-attributes-except-in-same-entry'.
         <br><br>
       </li>
       <li>
         <tt>--uniquenessPreCommitValidationLevel <i>{level}</i></tt> &mdash; Specifies the level of pre-commit validation that should be used for the uniqueness request control.  This can only be used if at least one of the '--uniquenessAttribute' or '--uniquenessFilter' arguments is provided.  Allowed values for this argument are 'none' (to indicate that no pre-commit validation should be performed), 'all-subtree-views' (to indicate that a minimum of one pre-commit check should be performed in each applicable subtree view), 'all-backend-sets' (to indicate that a minimum of one pre-commit check should be performed in each entry-balancing backend set), and 'all-available-backend-servers' (to indicate that the pre-commit check should be made in all backend servers available through the Directory Proxy Server).  If this is not specified, then a default of 'all-subtree-views' will be used.
         <br>
-        A provided value should be one of the following:  'all-subtree-views', 'all-backend-sets', 'none', 'all-available-backend-servers'.
+        A provided value should be one of the following:  'all-subtree-views', 'all-available-backend-servers', 'none', 'all-backend-sets'.
         <br><br>
       </li>
       <li>
         <tt>--uniquenessPostCommitValidationLevel <i>{level}</i></tt> &mdash; Specifies the level of post-commit validation that should be used for the uniqueness request control.  This can only be used if at least one of the '--uniquenessAttribute' or '--uniquenessFilter' arguments is provided.  Allowed values for this argument are 'none' (to indicate that no post-commit validation should be performed), 'all-subtree-views' (to indicate that a minimum of one post-commit check should be performed in each applicable subtree view), 'all-backend-sets' (to indicate that a minimum of one post-commit check should be performed in each entry-balancing backend set), and 'all-available-backend-servers' (to indicate that the post-commit check should be made in all backend servers available through the Directory Proxy Server).  If this is not specified, then a default of 'all-subtree-views' will be used.
         <br>
-        A provided value should be one of the following:  'all-subtree-views', 'all-backend-sets', 'none', 'all-available-backend-servers'.
+        A provided value should be one of the following:  'all-subtree-views', 'all-available-backend-servers', 'none', 'all-backend-sets'.
         <br><br>
       </li>
       <li>

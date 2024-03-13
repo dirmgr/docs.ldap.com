@@ -225,7 +225,7 @@
       <li>
         <tt>--securityLevel <i>{none|obscure-secrets|maximum}</i></tt> &mdash; Specifies the degree to which the tool will attempt to obscure or omit potentially sensitive information.  A value of 'none' indicates that the tool will not attempt to obscure or redact any information.  A value of 'obscure-secrets' indicates that the tool will attempt to obscure secret information (like the values of sensitive configuration properties) and omit log files containing user data (like the data recovery log).  A value of 'maximum' indicates that the tool will take even more drastic measures, like omitting access log files and obscuring attribute values in entry DNs and search filters, but at the risk of omitting information that could be useful in investigating the associated issue.  If this is not provided, a value of 'obscure-secrets' will be used by default.
         <br>
-        A provided value should be one of the following:  'none', 'obscure-secrets', 'maximum'.
+        A provided value should be one of the following:  'maximum', 'none', 'obscure-secrets'.
         <br><br>
       </li>
       <li>
@@ -523,7 +523,7 @@
       <li>Decrypts an encrypted support data archive using a passphrase read from the specified file.</li>
     </ul>
     <blockquote><pre>    collect-support-data \
-         --decrypt support-data-ds-inst1-20231130162211.329Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20240312152746.485Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt</pre></blockquote>
   </body>
 </html>

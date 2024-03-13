@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2015-2023 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2015-2024 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -430,16 +430,45 @@
 <span class="sourceLineNo">422</span>   */<a name="line.422"></a>
 <span class="sourceLineNo">423</span>  @Override()<a name="line.423"></a>
 <span class="sourceLineNo">424</span>  @NotNull()<a name="line.424"></a>
-<span class="sourceLineNo">425</span>  protected ORJSONObjectFilter decodeFilter(<a name="line.425"></a>
-<span class="sourceLineNo">426</span>                 @NotNull final JSONObject filterObject)<a name="line.426"></a>
-<span class="sourceLineNo">427</span>            throws JSONException<a name="line.427"></a>
-<span class="sourceLineNo">428</span>  {<a name="line.428"></a>
-<span class="sourceLineNo">429</span>    final ORJSONObjectFilter orFilter =<a name="line.429"></a>
-<span class="sourceLineNo">430</span>         new ORJSONObjectFilter(getFilters(filterObject, FIELD_OR_FILTERS));<a name="line.430"></a>
-<span class="sourceLineNo">431</span>    orFilter.exclusive = getBoolean(filterObject, FIELD_EXCLUSIVE, false);<a name="line.431"></a>
-<span class="sourceLineNo">432</span>    return orFilter;<a name="line.432"></a>
-<span class="sourceLineNo">433</span>  }<a name="line.433"></a>
-<span class="sourceLineNo">434</span>}<a name="line.434"></a>
+<span class="sourceLineNo">425</span>  public JSONObject toNormalizedJSONObject()<a name="line.425"></a>
+<span class="sourceLineNo">426</span>  {<a name="line.426"></a>
+<span class="sourceLineNo">427</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.427"></a>
+<span class="sourceLineNo">428</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(3));<a name="line.428"></a>
+<span class="sourceLineNo">429</span><a name="line.429"></a>
+<span class="sourceLineNo">430</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.430"></a>
+<span class="sourceLineNo">431</span><a name="line.431"></a>
+<span class="sourceLineNo">432</span>    final ArrayList&lt;JSONValue&gt; filterValues = new ArrayList&lt;&gt;(orFilters.size());<a name="line.432"></a>
+<span class="sourceLineNo">433</span>    for (final JSONObjectFilter f : orFilters)<a name="line.433"></a>
+<span class="sourceLineNo">434</span>    {<a name="line.434"></a>
+<span class="sourceLineNo">435</span>      filterValues.add(f.toNormalizedJSONObject());<a name="line.435"></a>
+<span class="sourceLineNo">436</span>    }<a name="line.436"></a>
+<span class="sourceLineNo">437</span>    fields.put(FIELD_OR_FILTERS, new JSONArray(filterValues));<a name="line.437"></a>
+<span class="sourceLineNo">438</span><a name="line.438"></a>
+<span class="sourceLineNo">439</span>    if (exclusive)<a name="line.439"></a>
+<span class="sourceLineNo">440</span>    {<a name="line.440"></a>
+<span class="sourceLineNo">441</span>      fields.put(FIELD_EXCLUSIVE, JSONBoolean.TRUE);<a name="line.441"></a>
+<span class="sourceLineNo">442</span>    }<a name="line.442"></a>
+<span class="sourceLineNo">443</span><a name="line.443"></a>
+<span class="sourceLineNo">444</span>    return new JSONObject(fields);<a name="line.444"></a>
+<span class="sourceLineNo">445</span>  }<a name="line.445"></a>
+<span class="sourceLineNo">446</span><a name="line.446"></a>
+<span class="sourceLineNo">447</span><a name="line.447"></a>
+<span class="sourceLineNo">448</span><a name="line.448"></a>
+<span class="sourceLineNo">449</span>  /**<a name="line.449"></a>
+<span class="sourceLineNo">450</span>   * {@inheritDoc}<a name="line.450"></a>
+<span class="sourceLineNo">451</span>   */<a name="line.451"></a>
+<span class="sourceLineNo">452</span>  @Override()<a name="line.452"></a>
+<span class="sourceLineNo">453</span>  @NotNull()<a name="line.453"></a>
+<span class="sourceLineNo">454</span>  protected ORJSONObjectFilter decodeFilter(<a name="line.454"></a>
+<span class="sourceLineNo">455</span>                 @NotNull final JSONObject filterObject)<a name="line.455"></a>
+<span class="sourceLineNo">456</span>            throws JSONException<a name="line.456"></a>
+<span class="sourceLineNo">457</span>  {<a name="line.457"></a>
+<span class="sourceLineNo">458</span>    final ORJSONObjectFilter orFilter =<a name="line.458"></a>
+<span class="sourceLineNo">459</span>         new ORJSONObjectFilter(getFilters(filterObject, FIELD_OR_FILTERS));<a name="line.459"></a>
+<span class="sourceLineNo">460</span>    orFilter.exclusive = getBoolean(filterObject, FIELD_EXCLUSIVE, false);<a name="line.460"></a>
+<span class="sourceLineNo">461</span>    return orFilter;<a name="line.461"></a>
+<span class="sourceLineNo">462</span>  }<a name="line.462"></a>
+<span class="sourceLineNo">463</span>}<a name="line.463"></a>
 
 
 

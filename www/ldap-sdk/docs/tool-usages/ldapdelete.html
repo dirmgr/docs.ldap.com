@@ -359,13 +359,13 @@
       <li>
         <tt>--assuredReplicationLocalLevel <i>{none|received-any-server|processed-all-servers}</i></tt> &mdash; The replication assurance level that should be used for servers in the same location as the server that originally processed the change.  The value must be one of 'none', 'received-any-server', or 'processed-all-servers'.  If this is not provided, the server will determine an appropriate local assurance level.
         <br>
-        A provided value should be one of the following:  'none', 'processed-all-servers', 'received-any-server'.
+        A provided value should be one of the following:  'received-any-server', 'processed-all-servers', 'none'.
         <br><br>
       </li>
       <li>
         <tt>--assuredReplicationRemoteLevel <i>{none|received-any-remote-location|received-all-remote-locations|processed-all-remote-servers}</i></tt> &mdash; The replication assurance level that should be used for servers in a different location from the server that originally processed the change.  The value must be one of 'none', 'received-any-remote-location', 'received-all-remote-locations', or 'processed-all-remote-servers'.  If this is not provided, the server will determine an appropriate remote assurance level.
         <br>
-        A provided value should be one of the following:  'none', 'processed-all-remote-servers', 'received-any-remote-location', 'received-all-remote-locations'.
+        A provided value should be one of the following:  'processed-all-remote-servers', 'none', 'received-any-remote-location', 'received-all-remote-locations'.
         <br><br>
       </li>
       <li>

@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2018-2023 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2018-2024 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2018-2023 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2018-2024 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2018-2023 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2018-2024 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -72,14 +72,14 @@
 <span class="sourceLineNo">064</span> * necessary support for that encryption).  The current implementation uses a<a name="line.64"></a>
 <span class="sourceLineNo">065</span> * baseline of 128-bit AES/CBC/PKCS5Padding using a key generated from the<a name="line.65"></a>
 <span class="sourceLineNo">066</span> * provided passphrase using the PBKDF2WithHmacSHA1 key factory algorithm<a name="line.66"></a>
-<span class="sourceLineNo">067</span> * (unfortunately, PBKDF2WithHmacSHA256 isn't available on Java 7, which is<a name="line.67"></a>
-<span class="sourceLineNo">068</span> * still a supported Java version for the LDAP SDK) with 16,384 iterations and a<a name="line.68"></a>
-<span class="sourceLineNo">069</span> * 128-bit (16-byte) salt.  However, if the  output stream is configured to use<a name="line.69"></a>
-<span class="sourceLineNo">070</span> * strong encryption, then it will attempt to use 256-bit AES/CBC/PKCS5Padding<a name="line.70"></a>
-<span class="sourceLineNo">071</span> * with a PBKDF2WithHmacSHA512 key factory algorithm with 131,072 iterations and<a name="line.71"></a>
-<span class="sourceLineNo">072</span> * a 128-bit salt.  If the JVM does not support this level of encryption, then<a name="line.72"></a>
-<span class="sourceLineNo">073</span> * it will fall back to a key size of 128 bits and a key factory algorithm of<a name="line.73"></a>
-<span class="sourceLineNo">074</span> * PBKDF2WithHmacSHA1.<a name="line.74"></a>
+<span class="sourceLineNo">067</span> * (unfortunately, PBKDF2WithHmacSHA256 isn't available on Java 7, which was<a name="line.67"></a>
+<span class="sourceLineNo">068</span> * still a supported Java version for the LDAP SDK at the time this class was<a name="line.68"></a>
+<span class="sourceLineNo">069</span> * created) with 16,384 iterations and a 128-bit (16-byte) salt.  However, if<a name="line.69"></a>
+<span class="sourceLineNo">070</span> * the  output stream is configured to use strong encryption, then it will<a name="line.70"></a>
+<span class="sourceLineNo">071</span> * attempt to use 256-bit AES/CBC/PKCS5Padding with a PBKDF2WithHmacSHA512 key<a name="line.71"></a>
+<span class="sourceLineNo">072</span> * factory algorithm with 131,072 iterations and a 128-bit salt.  If the JVM<a name="line.72"></a>
+<span class="sourceLineNo">073</span> * does not support this level of encryption, then it will fall back to a key<a name="line.73"></a>
+<span class="sourceLineNo">074</span> * size of 128 bits and a key factory algorithm of PBKDF2WithHmacSHA1.<a name="line.74"></a>
 <span class="sourceLineNo">075</span> * &lt;BR&gt;&lt;BR&gt;<a name="line.75"></a>
 <span class="sourceLineNo">076</span> * Note that the use of strong encryption may require special configuration for<a name="line.76"></a>
 <span class="sourceLineNo">077</span> * some versions of the JVM (for example, installation of JCE unlimited strength<a name="line.77"></a>

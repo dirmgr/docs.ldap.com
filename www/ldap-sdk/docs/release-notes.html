@@ -27,6 +27,172 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 7.0.0</h3>
+
+              <p>
+                The following changes were made between the 6.0.11 and 7.0.0 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Updated the LDAP SDK to require Java SE 8 or later.  As of the 7.0.0 release,
+                  Java 7 is no longer supported.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the LDAPConnectionPool behavior in the case that an attempt to check out
+                  a connection from the pool first encounters an existing connection that is deemed
+                  not valid by the configured health check.  Previously, it would close that
+                  connection as defunct and try to create a new connection to replace it, but if
+                  that attempt was successful, the newly created connection would be added to the
+                  end of the pool's set of potentially available connections, and it would continue
+                  iterating through the set of connections to try to find one that is valid.  Now,
+                  if the pool is able to successfully create a new connection to replace the
+                  existing defunct connection, it will immediately return that new connection
+                  without checking any of the other existing connections.  This should
+                  substantially improve performance in the case that the pool has several
+                  connections that are already established but have become invalid for some reason
+                  in a way that does not prevent successfully establishing new connections.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a compare-ldap-schemas command-line tool that can be used to identify
+                  differences between the schemas of two LDAP servers.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added the ability to reuse automatically generated JAAS configuration files if
+                  possible when attempting a SASL GSSAPI bind.  Previously, if the caller didn't
+                  explicitly provide a JAAS config file, the LDAP SDK would generate one based on
+                  the provided bind request properties.  It would do this for every GSSAPI bind
+                  attempt, even if they all used the same properties, which means that it could
+                  generate many copies of the same JAAS config file, which could unnecessarily
+                  waste disk space and memory.  It will now detect when a bind request would use a
+                  JAAS configuration that matches one that has already been generated, and will
+                  reuse the previously generated file rather than creating a new one.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for the LDAP relax rules request control as defined in
+                  draft-zeilenga-ldap-relax-03.  Note that this support is currently classified as
+                  experimental because this most recent version of the Internet Draft (which
+                  expired in 2008 without being renewed or standardized as an RFC) does not specify
+                  an official OID for the control.  However, some servers (including OpenLDAP and
+                  ForgeRock Directory Services) appear to have implemented support for the control
+                  with an OID of 1.3.6.1.4.1.4203.666.5.12, and that is the OID used in this
+                  implementation.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for the transaction ID request control as used in the
+                  ForgeRock Directory Server.  This control may be included in an operation request
+                  to provide a transaction ID that will appear in the access log message for that
+                  operation.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for the replication repair request control as used in
+                  the ForgeRock Directory Server.  This control may be included in an add, delete,
+                  modify, or modify DN request to indicate that the associated change should only
+                  be processed in the local server and not replicated to other servers in the
+                  topology.  It is primarily intended for use in manually resolving replication
+                  conflicts and other replication-related issues.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for the change sequence number request and response
+                  controls as used in the ForgeRock Directory Server.  The request control may be
+                  included in an add, delete, modify, or modify DN request to indicate that the
+                  server should return a corresponding response control containing the replication
+                  change sequence number (CSN) that the server has assigned to that operation.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for the affinity request control as used in the
+                  ForgeRock Directory Proxy Server, which allows explicitly routing multiple
+                  related requests to the same backend server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new "lockdown mode" LDAP connection pool health check that can be used to
+                  determine whether a Ping Identity Directory Server instance is currently in
+                  lockdown mode.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new "active alerts" LDAP connection pool health check that can retrieve
+                  the set of active alert types from a Ping Identity Directory Server instance to
+                  determine whether the server considers itself to be in a degraded or unavailable
+                  state.  You can configure it to only care about unavailable alert types, or to
+                  ignore a specific set of degraded or unavailable alert types.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new "replication backlog" LDAP connection pool health check that can be
+                  used to evaluate a Ping Identity Directory Server instance based on the number or
+                  age of changes that have been made in other replicas but have not yet been applied
+                  in the local server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated support for the replica monitor entry in the Ping Identity Directory
+                  Server to include support for a number of additional attributes.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the CryptoHelper class to add convenience methods for generating
+                  cryptographic message digests from byte arrays, strings, and files.  Specific
+                  methods are provided for the SHA-256, SHA-384, and SHA-512 digest algorithms, as
+                  well as more general methods in which you must specify the desired algorithm.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added methods for normalizing JSON values and JSON object filters.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the BouncyCastleFIPSHelper class to add a constant with the name of a
+                  system property that can be used to enable support for the MD5 digest algorithm
+                  if necessary.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest revisions of
+                  draft-ietf-kitten-scram-2fa, draft-melnikov-scram-bis,
+                  draft-melnikov-scram-sha-512, and draft-melnikov-scram-sha3-512 in the set of
+                  LDAP-related specifications.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include draft-coretta-oiddir-radit,
+                  draft-coretta-oiddir-radsa, draft-coretta-oiddir-radua,
+                  draft-coretta-oiddir-roadmap, and draft-coretta-oiddir-schema in the set of
+                  LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 6.0.11</h3>
 
               <p>
@@ -9736,6 +9902,6 @@
               </p>
 
 
-    <div class="copyright-footer">Copyright &copy; 2010-2023 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2024 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

@@ -72,7 +72,7 @@
       <li>
         <tt>--sslClientAuthPolicy <i>{prohibited|optional|required}</i></tt> &mdash; The policy that the server should use for requesting client certificates during TLS negotiation.  If this is 'prohibited' (or not specified), then the server will not ask clients to present a certificate chain.  If this is 'optional', then the server will ask clients to present a certificate chain but will continue with TLS negotiation if the client does not present one.  If this is 'required', then the server will ask clients to present a certificate chain and will abort TLS negotiation if the client does not present one.
         <br>
-        A provided value should be one of the following:  'required', 'prohibited', 'optional'.
+        A provided value should be one of the following:  'optional', 'prohibited', 'required'.
         <br><br>
       </li>
       <li>
@@ -159,19 +159,19 @@
       <li>
         <tt>--defaultPasswordEncoding <i>{scheme}</i></tt> &mdash; The default scheme that should be used for encoding new passwords.  Allowed values include MD5, SMD5, SHA, SSHA, SHA256, SSHA256, SHA384, SSHA384, SHA512, SSHA512, CLEAR, BASE64, and HEX.  If this is not specified, then clear-text passwords will not be encoded.
         <br>
-        A provided value should be one of the following:  'ssha384', 'sha256', 'sha', 'sha512', 'clear', 'ssha512', 'base64', 'hex', 'ssha256', 'md5', 'ssha', 'sha384', 'smd5'.
+        A provided value should be one of the following:  'sha384', 'sha256', 'ssha384', 'clear', 'base64', 'sha512', 'ssha256', 'sha', 'ssha512', 'ssha', 'hex', 'smd5', 'md5'.
         <br><br>
       </li>
       <li>
         <tt>--allowedOperationType <i>{type}</i></tt> &mdash; A type of operation that the server will allow.  Allowed values include add, bind, compare, delete, extended, modify, modify-dn, and search.  This may be provided multiple times to specify multiple allowed operation types.  If this is not provided, then all types of operations will be allowed.
         <br>
-        A provided value should be one of the following:  'search', 'modify-dn', 'compare', 'delete', 'modify', 'extended', 'add', 'bind'.
+        A provided value should be one of the following:  'add', 'modify', 'compare', 'search', 'bind', 'modify-dn', 'delete', 'extended'.
         <br><br>
       </li>
       <li>
         <tt>--authenticationRequiredOperationType <i>{type}</i></tt> &mdash; A type of operation that the server will only allow on connections that are authenticated.  Allowed values include add, compare, delete, extended, modify, modify-dn, and search.  This may be provided multiple times to specify multiple authentication required operation types.  If this is not provided, then authentication will not be required for any type of operation.
         <br>
-        A provided value should be one of the following:  'search', 'modify-dn', 'compare', 'delete', 'modify', 'extended', 'add'.
+        A provided value should be one of the following:  'add', 'modify', 'compare', 'search', 'modify-dn', 'delete', 'extended'.
         <br><br>
       </li>
       <li>

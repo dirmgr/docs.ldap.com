@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2015-2023 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2015-2024 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -281,38 +281,56 @@
 <span class="sourceLineNo">273</span>   */<a name="line.273"></a>
 <span class="sourceLineNo">274</span>  @Override()<a name="line.274"></a>
 <span class="sourceLineNo">275</span>  @NotNull()<a name="line.275"></a>
-<span class="sourceLineNo">276</span>  protected NegateJSONObjectFilter decodeFilter(<a name="line.276"></a>
-<span class="sourceLineNo">277</span>                 @NotNull final JSONObject filterObject)<a name="line.277"></a>
-<span class="sourceLineNo">278</span>            throws JSONException<a name="line.278"></a>
-<span class="sourceLineNo">279</span>  {<a name="line.279"></a>
-<span class="sourceLineNo">280</span>    final JSONValue v = filterObject.getField(FIELD_NEGATE_FILTER);<a name="line.280"></a>
-<span class="sourceLineNo">281</span>    if (v == null)<a name="line.281"></a>
-<span class="sourceLineNo">282</span>    {<a name="line.282"></a>
-<span class="sourceLineNo">283</span>      throw new JSONException(ERR_OBJECT_FILTER_MISSING_REQUIRED_FIELD.get(<a name="line.283"></a>
-<span class="sourceLineNo">284</span>           String.valueOf(filterObject), FILTER_TYPE, FIELD_NEGATE_FILTER));<a name="line.284"></a>
-<span class="sourceLineNo">285</span>    }<a name="line.285"></a>
+<span class="sourceLineNo">276</span>  public JSONObject toNormalizedJSONObject()<a name="line.276"></a>
+<span class="sourceLineNo">277</span>  {<a name="line.277"></a>
+<span class="sourceLineNo">278</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.278"></a>
+<span class="sourceLineNo">279</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(2));<a name="line.279"></a>
+<span class="sourceLineNo">280</span><a name="line.280"></a>
+<span class="sourceLineNo">281</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    fields.put(FIELD_NEGATE_FILTER, negateFilter.toNormalizedJSONObject());<a name="line.282"></a>
+<span class="sourceLineNo">283</span><a name="line.283"></a>
+<span class="sourceLineNo">284</span>    return new JSONObject(fields);<a name="line.284"></a>
+<span class="sourceLineNo">285</span>  }<a name="line.285"></a>
 <span class="sourceLineNo">286</span><a name="line.286"></a>
-<span class="sourceLineNo">287</span>    if (! (v instanceof JSONObject))<a name="line.287"></a>
-<span class="sourceLineNo">288</span>    {<a name="line.288"></a>
-<span class="sourceLineNo">289</span>      throw new JSONException(ERR_OBJECT_FILTER_VALUE_NOT_OBJECT.get(<a name="line.289"></a>
-<span class="sourceLineNo">290</span>           String.valueOf(filterObject), FILTER_TYPE, FIELD_NEGATE_FILTER));<a name="line.290"></a>
-<span class="sourceLineNo">291</span>    }<a name="line.291"></a>
-<span class="sourceLineNo">292</span><a name="line.292"></a>
-<span class="sourceLineNo">293</span>    try<a name="line.293"></a>
-<span class="sourceLineNo">294</span>    {<a name="line.294"></a>
-<span class="sourceLineNo">295</span>      return new NegateJSONObjectFilter(<a name="line.295"></a>
-<span class="sourceLineNo">296</span>           JSONObjectFilter.decode((JSONObject) v));<a name="line.296"></a>
-<span class="sourceLineNo">297</span>    }<a name="line.297"></a>
-<span class="sourceLineNo">298</span>    catch (final JSONException e)<a name="line.298"></a>
-<span class="sourceLineNo">299</span>    {<a name="line.299"></a>
-<span class="sourceLineNo">300</span>      Debug.debugException(e);<a name="line.300"></a>
-<span class="sourceLineNo">301</span>      throw new JSONException(<a name="line.301"></a>
-<span class="sourceLineNo">302</span>           ERR_OBJECT_FILTER_VALUE_NOT_FILTER.get(String.valueOf(filterObject),<a name="line.302"></a>
-<span class="sourceLineNo">303</span>                FILTER_TYPE, FIELD_NEGATE_FILTER, e.getMessage()),<a name="line.303"></a>
-<span class="sourceLineNo">304</span>           e);<a name="line.304"></a>
-<span class="sourceLineNo">305</span>    }<a name="line.305"></a>
-<span class="sourceLineNo">306</span>  }<a name="line.306"></a>
-<span class="sourceLineNo">307</span>}<a name="line.307"></a>
+<span class="sourceLineNo">287</span><a name="line.287"></a>
+<span class="sourceLineNo">288</span><a name="line.288"></a>
+<span class="sourceLineNo">289</span>  /**<a name="line.289"></a>
+<span class="sourceLineNo">290</span>   * {@inheritDoc}<a name="line.290"></a>
+<span class="sourceLineNo">291</span>   */<a name="line.291"></a>
+<span class="sourceLineNo">292</span>  @Override()<a name="line.292"></a>
+<span class="sourceLineNo">293</span>  @NotNull()<a name="line.293"></a>
+<span class="sourceLineNo">294</span>  protected NegateJSONObjectFilter decodeFilter(<a name="line.294"></a>
+<span class="sourceLineNo">295</span>                 @NotNull final JSONObject filterObject)<a name="line.295"></a>
+<span class="sourceLineNo">296</span>            throws JSONException<a name="line.296"></a>
+<span class="sourceLineNo">297</span>  {<a name="line.297"></a>
+<span class="sourceLineNo">298</span>    final JSONValue v = filterObject.getField(FIELD_NEGATE_FILTER);<a name="line.298"></a>
+<span class="sourceLineNo">299</span>    if (v == null)<a name="line.299"></a>
+<span class="sourceLineNo">300</span>    {<a name="line.300"></a>
+<span class="sourceLineNo">301</span>      throw new JSONException(ERR_OBJECT_FILTER_MISSING_REQUIRED_FIELD.get(<a name="line.301"></a>
+<span class="sourceLineNo">302</span>           String.valueOf(filterObject), FILTER_TYPE, FIELD_NEGATE_FILTER));<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    }<a name="line.303"></a>
+<span class="sourceLineNo">304</span><a name="line.304"></a>
+<span class="sourceLineNo">305</span>    if (! (v instanceof JSONObject))<a name="line.305"></a>
+<span class="sourceLineNo">306</span>    {<a name="line.306"></a>
+<span class="sourceLineNo">307</span>      throw new JSONException(ERR_OBJECT_FILTER_VALUE_NOT_OBJECT.get(<a name="line.307"></a>
+<span class="sourceLineNo">308</span>           String.valueOf(filterObject), FILTER_TYPE, FIELD_NEGATE_FILTER));<a name="line.308"></a>
+<span class="sourceLineNo">309</span>    }<a name="line.309"></a>
+<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">311</span>    try<a name="line.311"></a>
+<span class="sourceLineNo">312</span>    {<a name="line.312"></a>
+<span class="sourceLineNo">313</span>      return new NegateJSONObjectFilter(<a name="line.313"></a>
+<span class="sourceLineNo">314</span>           JSONObjectFilter.decode((JSONObject) v));<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    }<a name="line.315"></a>
+<span class="sourceLineNo">316</span>    catch (final JSONException e)<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    {<a name="line.317"></a>
+<span class="sourceLineNo">318</span>      Debug.debugException(e);<a name="line.318"></a>
+<span class="sourceLineNo">319</span>      throw new JSONException(<a name="line.319"></a>
+<span class="sourceLineNo">320</span>           ERR_OBJECT_FILTER_VALUE_NOT_FILTER.get(String.valueOf(filterObject),<a name="line.320"></a>
+<span class="sourceLineNo">321</span>                FILTER_TYPE, FIELD_NEGATE_FILTER, e.getMessage()),<a name="line.321"></a>
+<span class="sourceLineNo">322</span>           e);<a name="line.322"></a>
+<span class="sourceLineNo">323</span>    }<a name="line.323"></a>
+<span class="sourceLineNo">324</span>  }<a name="line.324"></a>
+<span class="sourceLineNo">325</span>}<a name="line.325"></a>
 
 
 

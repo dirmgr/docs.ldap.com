@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2015-2023 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2015-2024 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -806,27 +806,77 @@
 <span class="sourceLineNo">798</span>   */<a name="line.798"></a>
 <span class="sourceLineNo">799</span>  @Override()<a name="line.799"></a>
 <span class="sourceLineNo">800</span>  @NotNull()<a name="line.800"></a>
-<span class="sourceLineNo">801</span>  protected GreaterThanJSONObjectFilter decodeFilter(<a name="line.801"></a>
-<span class="sourceLineNo">802</span>                 @NotNull final JSONObject filterObject)<a name="line.802"></a>
-<span class="sourceLineNo">803</span>            throws JSONException<a name="line.803"></a>
-<span class="sourceLineNo">804</span>  {<a name="line.804"></a>
-<span class="sourceLineNo">805</span>    final List&lt;String&gt; fieldPath =<a name="line.805"></a>
-<span class="sourceLineNo">806</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.806"></a>
+<span class="sourceLineNo">801</span>  public JSONObject toNormalizedJSONObject()<a name="line.801"></a>
+<span class="sourceLineNo">802</span>  {<a name="line.802"></a>
+<span class="sourceLineNo">803</span>    final LinkedHashMap&lt;String,JSONValue&gt; fields =<a name="line.803"></a>
+<span class="sourceLineNo">804</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(6));<a name="line.804"></a>
+<span class="sourceLineNo">805</span><a name="line.805"></a>
+<span class="sourceLineNo">806</span>    fields.put(FIELD_FILTER_TYPE, new JSONString(FILTER_TYPE));<a name="line.806"></a>
 <span class="sourceLineNo">807</span><a name="line.807"></a>
-<span class="sourceLineNo">808</span>    final boolean isAllowEquals = getBoolean(filterObject,<a name="line.808"></a>
-<span class="sourceLineNo">809</span>         FIELD_ALLOW_EQUALS, false);<a name="line.809"></a>
-<span class="sourceLineNo">810</span><a name="line.810"></a>
-<span class="sourceLineNo">811</span>    final boolean isMatchAllElements = getBoolean(filterObject,<a name="line.811"></a>
-<span class="sourceLineNo">812</span>         FIELD_MATCH_ALL_ELEMENTS, false);<a name="line.812"></a>
-<span class="sourceLineNo">813</span><a name="line.813"></a>
-<span class="sourceLineNo">814</span>    final boolean isCaseSensitive = getBoolean(filterObject,<a name="line.814"></a>
-<span class="sourceLineNo">815</span>         FIELD_CASE_SENSITIVE, false);<a name="line.815"></a>
-<span class="sourceLineNo">816</span><a name="line.816"></a>
-<span class="sourceLineNo">817</span>    return new GreaterThanJSONObjectFilter(fieldPath,<a name="line.817"></a>
-<span class="sourceLineNo">818</span>         filterObject.getField(FIELD_VALUE), isAllowEquals, isMatchAllElements,<a name="line.818"></a>
-<span class="sourceLineNo">819</span>         isCaseSensitive);<a name="line.819"></a>
-<span class="sourceLineNo">820</span>  }<a name="line.820"></a>
-<span class="sourceLineNo">821</span>}<a name="line.821"></a>
+<span class="sourceLineNo">808</span>    if (field.size() == 1)<a name="line.808"></a>
+<span class="sourceLineNo">809</span>    {<a name="line.809"></a>
+<span class="sourceLineNo">810</span>      fields.put(FIELD_FIELD_PATH, new JSONString(field.get(0)));<a name="line.810"></a>
+<span class="sourceLineNo">811</span>    }<a name="line.811"></a>
+<span class="sourceLineNo">812</span>    else<a name="line.812"></a>
+<span class="sourceLineNo">813</span>    {<a name="line.813"></a>
+<span class="sourceLineNo">814</span>      final ArrayList&lt;JSONValue&gt; fieldNameValues =<a name="line.814"></a>
+<span class="sourceLineNo">815</span>           new ArrayList&lt;&gt;(field.size());<a name="line.815"></a>
+<span class="sourceLineNo">816</span>      for (final String s : field)<a name="line.816"></a>
+<span class="sourceLineNo">817</span>      {<a name="line.817"></a>
+<span class="sourceLineNo">818</span>        fieldNameValues.add(new JSONString(s));<a name="line.818"></a>
+<span class="sourceLineNo">819</span>      }<a name="line.819"></a>
+<span class="sourceLineNo">820</span>      fields.put(FIELD_FIELD_PATH, new JSONArray(fieldNameValues));<a name="line.820"></a>
+<span class="sourceLineNo">821</span>    }<a name="line.821"></a>
+<span class="sourceLineNo">822</span><a name="line.822"></a>
+<span class="sourceLineNo">823</span>    fields.put(FIELD_VALUE,<a name="line.823"></a>
+<span class="sourceLineNo">824</span>         value.toNormalizedValue(false, (! caseSensitive), false));<a name="line.824"></a>
+<span class="sourceLineNo">825</span><a name="line.825"></a>
+<span class="sourceLineNo">826</span>    if (allowEquals)<a name="line.826"></a>
+<span class="sourceLineNo">827</span>    {<a name="line.827"></a>
+<span class="sourceLineNo">828</span>      fields.put(FIELD_ALLOW_EQUALS, JSONBoolean.TRUE);<a name="line.828"></a>
+<span class="sourceLineNo">829</span>    }<a name="line.829"></a>
+<span class="sourceLineNo">830</span><a name="line.830"></a>
+<span class="sourceLineNo">831</span>    if (matchAllElements)<a name="line.831"></a>
+<span class="sourceLineNo">832</span>    {<a name="line.832"></a>
+<span class="sourceLineNo">833</span>      fields.put(FIELD_MATCH_ALL_ELEMENTS, JSONBoolean.TRUE);<a name="line.833"></a>
+<span class="sourceLineNo">834</span>    }<a name="line.834"></a>
+<span class="sourceLineNo">835</span><a name="line.835"></a>
+<span class="sourceLineNo">836</span>    if (caseSensitive)<a name="line.836"></a>
+<span class="sourceLineNo">837</span>    {<a name="line.837"></a>
+<span class="sourceLineNo">838</span>      fields.put(FIELD_CASE_SENSITIVE, JSONBoolean.TRUE);<a name="line.838"></a>
+<span class="sourceLineNo">839</span>    }<a name="line.839"></a>
+<span class="sourceLineNo">840</span><a name="line.840"></a>
+<span class="sourceLineNo">841</span>    return new JSONObject(fields);<a name="line.841"></a>
+<span class="sourceLineNo">842</span>  }<a name="line.842"></a>
+<span class="sourceLineNo">843</span><a name="line.843"></a>
+<span class="sourceLineNo">844</span><a name="line.844"></a>
+<span class="sourceLineNo">845</span><a name="line.845"></a>
+<span class="sourceLineNo">846</span>  /**<a name="line.846"></a>
+<span class="sourceLineNo">847</span>   * {@inheritDoc}<a name="line.847"></a>
+<span class="sourceLineNo">848</span>   */<a name="line.848"></a>
+<span class="sourceLineNo">849</span>  @Override()<a name="line.849"></a>
+<span class="sourceLineNo">850</span>  @NotNull()<a name="line.850"></a>
+<span class="sourceLineNo">851</span>  protected GreaterThanJSONObjectFilter decodeFilter(<a name="line.851"></a>
+<span class="sourceLineNo">852</span>                 @NotNull final JSONObject filterObject)<a name="line.852"></a>
+<span class="sourceLineNo">853</span>            throws JSONException<a name="line.853"></a>
+<span class="sourceLineNo">854</span>  {<a name="line.854"></a>
+<span class="sourceLineNo">855</span>    final List&lt;String&gt; fieldPath =<a name="line.855"></a>
+<span class="sourceLineNo">856</span>         getStrings(filterObject, FIELD_FIELD_PATH, false, null);<a name="line.856"></a>
+<span class="sourceLineNo">857</span><a name="line.857"></a>
+<span class="sourceLineNo">858</span>    final boolean isAllowEquals = getBoolean(filterObject,<a name="line.858"></a>
+<span class="sourceLineNo">859</span>         FIELD_ALLOW_EQUALS, false);<a name="line.859"></a>
+<span class="sourceLineNo">860</span><a name="line.860"></a>
+<span class="sourceLineNo">861</span>    final boolean isMatchAllElements = getBoolean(filterObject,<a name="line.861"></a>
+<span class="sourceLineNo">862</span>         FIELD_MATCH_ALL_ELEMENTS, false);<a name="line.862"></a>
+<span class="sourceLineNo">863</span><a name="line.863"></a>
+<span class="sourceLineNo">864</span>    final boolean isCaseSensitive = getBoolean(filterObject,<a name="line.864"></a>
+<span class="sourceLineNo">865</span>         FIELD_CASE_SENSITIVE, false);<a name="line.865"></a>
+<span class="sourceLineNo">866</span><a name="line.866"></a>
+<span class="sourceLineNo">867</span>    return new GreaterThanJSONObjectFilter(fieldPath,<a name="line.867"></a>
+<span class="sourceLineNo">868</span>         filterObject.getField(FIELD_VALUE), isAllowEquals, isMatchAllElements,<a name="line.868"></a>
+<span class="sourceLineNo">869</span>         isCaseSensitive);<a name="line.869"></a>
+<span class="sourceLineNo">870</span>  }<a name="line.870"></a>
+<span class="sourceLineNo">871</span>}<a name="line.871"></a>
 
 
 

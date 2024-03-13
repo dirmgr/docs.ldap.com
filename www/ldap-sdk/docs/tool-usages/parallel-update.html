@@ -300,13 +300,13 @@
       <li>
         <tt>--assuredReplicationLocalLevel <i>{none|received-any-server|processed-all-servers}</i></tt> &mdash; The replication assurance level that should be used for servers in the same location as the server that originally processed the change.  The value must be one of 'none', 'received-any-server', or 'processed-all-servers'.  If this is not provided, the server will determine an appropriate local assurance level.
         <br>
-        A provided value should be one of the following:  'none', 'processed-all-servers', 'received-any-server'.
+        A provided value should be one of the following:  'received-any-server', 'processed-all-servers', 'none'.
         <br><br>
       </li>
       <li>
         <tt>--assuredReplicationRemoteLevel <i>{level}</i></tt> &mdash; The assurance level to request when replicating changes to other servers in a different location from the server that originally received the change.  The value should be one of 'none', 'received-any-remote-location', 'received-all-remote-locations', or 'processed-all-remote-servers'.  If this is not specified, then the server will determine an appropriate remote assurance level.
         <br>
-        A provided value should be one of the following:  'none', 'processed-all-remote-servers', 'received-any-remote-location', 'received-all-remote-locations'.
+        A provided value should be one of the following:  'processed-all-remote-servers', 'none', 'received-any-remote-location', 'received-all-remote-locations'.
         <br><br>
       </li>
       <li>
@@ -324,7 +324,7 @@
       <li>
         <tt>--suppressOperationalAttributeUpdates <i>{attr}</i></tt> &mdash; Include the proprietary suppress operational attribute update request control in all add, bind, delete, modify, and modify DN requests.  This control indicates that the server should not update the specified operational attribute in the course of processing the operation.  The value may be one of 'last-access-time', 'last-login-time', 'last-login-ip', or 'lastmod'.  This argument may be provided multiple times to suppress updates to multiple operational attributes.
         <br>
-        A provided value should be one of the following:  'last-access-time', 'lastmod', 'last-login-ip', 'last-login-time'.
+        A provided value should be one of the following:  'last-access-time', 'last-login-ip', 'last-login-time', 'lastmod'.
         <br><br>
       </li>
       <li>

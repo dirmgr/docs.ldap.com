@@ -301,7 +301,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--use-jvm-default-trust-store</tt> &mdash; List certificates from the JVM-default trust store (/usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts).
+        <tt>--use-jvm-default-trust-store</tt> &mdash; List certificates from the JVM-default trust store (/usr/java/oracle/jdk1.8.0_371/jre/lib/security/cacerts).
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -325,7 +325,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when listing certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -398,7 +398,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--use-jvm-default-trust-store</tt> &mdash; Export certificates from the JVM-default trust store (/usr/java/oracle/jdk1.7.0_191/jre/lib/security/cacerts).
+        <tt>--use-jvm-default-trust-store</tt> &mdash; Export certificates from the JVM-default trust store (/usr/java/oracle/jdk1.8.0_371/jre/lib/security/cacerts).
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -422,7 +422,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when exporting certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant key store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -438,7 +438,7 @@
       <li>
         <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the exported certificate.  The value may be either 'PEM' (to export the certificate in the text-based PEM format), or 'DER' (to export the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.
         <br>
-        A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
+        A provided value should be one of the following:  'der', 'txt', 'bin', 'binary', 'pem', 'text', 'rfc'.
         <br><br>
       </li>
       <li>
@@ -546,7 +546,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when exporting private keys, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -556,7 +556,7 @@
       <li>
         <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the exported private key.  The value may be either 'PEM' (to export the private key in the text-based PEM format), or 'DER' (to export the key in the binary DER format).  If this is not provided, then the PEM output format will be used.
         <br>
-        A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
+        A provided value should be one of the following:  'der', 'txt', 'bin', 'binary', 'pem', 'text', 'rfc'.
         <br><br>
       </li>
       <li>
@@ -648,7 +648,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -779,7 +779,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when deleting certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -865,7 +865,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -969,7 +969,7 @@
       <li>
         <tt>--output-format <i>{format}</i></tt> &mdash; The format in which the generated certificate should be written to the specified output file.  The value may be either 'PEM' (to export the certificate in the text-based PEM format), or 'DER' (to export the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.
         <br>
-        A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
+        A provided value should be one of the following:  'der', 'txt', 'bin', 'binary', 'pem', 'text', 'rfc'.
         <br><br>
       </li>
       <li>
@@ -1065,7 +1065,7 @@
       <li>
         <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the generated certificate signing request.  The value may be either 'PEM' (to export the request in the text-based PEM format), or 'DER' (to export the request in the binary DER format).  If this is not provided, then the PEM output format will be used.
         <br>
-        A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
+        A provided value should be one of the following:  'der', 'txt', 'bin', 'binary', 'pem', 'text', 'rfc'.
         <br><br>
       </li>
       <li>
@@ -1115,7 +1115,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -1288,7 +1288,7 @@
       <li>
         <tt>--output-format <i>{format}</i></tt> &mdash; The output format to use for the signed certificate.  The value may be either 'PEM' (to write the certificate in the text-based PEM format), or 'DER' (to write the certificate in the binary DER format).  If this is not provided, then the PEM output format will be used.  If an output format of 'DER' is specified, then the --certificate-output-file argument must also be provided.
         <br>
-        A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
+        A provided value should be one of the following:  'der', 'txt', 'bin', 'binary', 'pem', 'text', 'rfc'.
         <br><br>
       </li>
       <li>
@@ -1332,7 +1332,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when signing certificates, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -1534,7 +1534,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when changing a certificate alias, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -1687,7 +1687,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when changing private key passwords, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -1815,7 +1815,7 @@
       <li>
         <tt>--source-keystore-type <i>{type}</i></tt> &mdash; The key store type for the source key store.  If provided, the value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 key store format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -1859,7 +1859,7 @@
       <li>
         <tt>--destination-keystore-type <i>{type}</i></tt> &mdash; The key store type for the destination key store.  If provided, the value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 key store format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type if the destination key store exists, or a default type of 'JKS' will be used if the file does not exist.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -1931,7 +1931,7 @@
       <li>
         <tt>--output-format <i>{format}</i></tt> &mdash; The format in which the certificates should be written to the specified output file.  The value may be either 'PEM' (to use the text-based PEM format), or 'DER' (to use the binary DER format).  This argument may only be provided if the --output-file argument is also given.  If this is not provided, then the PEM output format will be used.
         <br>
-        A provided value should be one of the following:  'der', 'pem', 'binary', 'text', 'bin', 'rfc', 'txt'.
+        A provided value should be one of the following:  'der', 'txt', 'bin', 'binary', 'pem', 'text', 'rfc'.
         <br><br>
       </li>
       <li>
@@ -2020,7 +2020,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store to create.  This argument should only be provided when creating a new key store, and it will be ignored if the key store already exists.  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then a default key store type of 'JKS' will be used for newly-created key stores.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>
@@ -2111,7 +2111,7 @@
       <li>
         <tt>--keystore-type <i>{type}</i></tt> &mdash; The key store type for the key store.  This is usually not necessary when checking certificate usability, but it may be required in some cases (for example, when listing the certificates in a BCFKS key store when not operating in FIPS 140-2-compliant mode).  The value must be one of 'JKS' (for the Java Key Store format), 'PKCS12' (for the standard PKCS #12 format), 'PKCS11' (for PKCS #11 tokens), or 'BCFKS' (for the Bouncy Castle FIPS 140-2-compliant Key Store format).  If this is not provided, then an attempt will be made to automatically infer the correct key store type.
         <br>
-        A provided value should be one of the following:  'bcfks', 'pkcs11', 'pkcs 12', 'jks', 'pkcs 11', 'pkcs#12', 'pkcs#11', 'pkcs #11', 'pkcs #12', 'pkcs12'.
+        A provided value should be one of the following:  'pkcs#11', 'pkcs#12', 'jks', 'pkcs11', 'pkcs 11', 'pkcs12', 'pkcs 12', 'pkcs #12', 'bcfks', 'pkcs #11'.
         <br><br>
       </li>
       <li>

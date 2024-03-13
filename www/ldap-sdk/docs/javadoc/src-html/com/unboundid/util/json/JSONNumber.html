@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2015-2023 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2015-2024 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2015-2023 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2015-2024 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -725,23 +725,37 @@
 <span class="sourceLineNo">717</span>   * {@inheritDoc}<a name="line.717"></a>
 <span class="sourceLineNo">718</span>   */<a name="line.718"></a>
 <span class="sourceLineNo">719</span>  @Override()<a name="line.719"></a>
-<span class="sourceLineNo">720</span>  public void appendToJSONBuffer(@NotNull final JSONBuffer buffer)<a name="line.720"></a>
-<span class="sourceLineNo">721</span>  {<a name="line.721"></a>
-<span class="sourceLineNo">722</span>    buffer.appendNumber(stringRepresentation);<a name="line.722"></a>
-<span class="sourceLineNo">723</span>  }<a name="line.723"></a>
-<span class="sourceLineNo">724</span><a name="line.724"></a>
-<span class="sourceLineNo">725</span><a name="line.725"></a>
-<span class="sourceLineNo">726</span><a name="line.726"></a>
-<span class="sourceLineNo">727</span>  /**<a name="line.727"></a>
-<span class="sourceLineNo">728</span>   * {@inheritDoc}<a name="line.728"></a>
-<span class="sourceLineNo">729</span>   */<a name="line.729"></a>
-<span class="sourceLineNo">730</span>  @Override()<a name="line.730"></a>
-<span class="sourceLineNo">731</span>  public void appendToJSONBuffer(@NotNull final String fieldName,<a name="line.731"></a>
-<span class="sourceLineNo">732</span>                                 @NotNull final JSONBuffer buffer)<a name="line.732"></a>
-<span class="sourceLineNo">733</span>  {<a name="line.733"></a>
-<span class="sourceLineNo">734</span>    buffer.appendNumber(fieldName, stringRepresentation);<a name="line.734"></a>
-<span class="sourceLineNo">735</span>  }<a name="line.735"></a>
-<span class="sourceLineNo">736</span>}<a name="line.736"></a>
+<span class="sourceLineNo">720</span>  @NotNull()<a name="line.720"></a>
+<span class="sourceLineNo">721</span>  public JSONNumber toNormalizedValue(final boolean ignoreFieldNameCase,<a name="line.721"></a>
+<span class="sourceLineNo">722</span>                                      final boolean ignoreValueCase,<a name="line.722"></a>
+<span class="sourceLineNo">723</span>                                      final boolean ignoreArrayOrder)<a name="line.723"></a>
+<span class="sourceLineNo">724</span>  {<a name="line.724"></a>
+<span class="sourceLineNo">725</span>    return new JSONNumber(normalizedValue);<a name="line.725"></a>
+<span class="sourceLineNo">726</span>  }<a name="line.726"></a>
+<span class="sourceLineNo">727</span><a name="line.727"></a>
+<span class="sourceLineNo">728</span><a name="line.728"></a>
+<span class="sourceLineNo">729</span><a name="line.729"></a>
+<span class="sourceLineNo">730</span>  /**<a name="line.730"></a>
+<span class="sourceLineNo">731</span>   * {@inheritDoc}<a name="line.731"></a>
+<span class="sourceLineNo">732</span>   */<a name="line.732"></a>
+<span class="sourceLineNo">733</span>  @Override()<a name="line.733"></a>
+<span class="sourceLineNo">734</span>  public void appendToJSONBuffer(@NotNull final JSONBuffer buffer)<a name="line.734"></a>
+<span class="sourceLineNo">735</span>  {<a name="line.735"></a>
+<span class="sourceLineNo">736</span>    buffer.appendNumber(stringRepresentation);<a name="line.736"></a>
+<span class="sourceLineNo">737</span>  }<a name="line.737"></a>
+<span class="sourceLineNo">738</span><a name="line.738"></a>
+<span class="sourceLineNo">739</span><a name="line.739"></a>
+<span class="sourceLineNo">740</span><a name="line.740"></a>
+<span class="sourceLineNo">741</span>  /**<a name="line.741"></a>
+<span class="sourceLineNo">742</span>   * {@inheritDoc}<a name="line.742"></a>
+<span class="sourceLineNo">743</span>   */<a name="line.743"></a>
+<span class="sourceLineNo">744</span>  @Override()<a name="line.744"></a>
+<span class="sourceLineNo">745</span>  public void appendToJSONBuffer(@NotNull final String fieldName,<a name="line.745"></a>
+<span class="sourceLineNo">746</span>                                 @NotNull final JSONBuffer buffer)<a name="line.746"></a>
+<span class="sourceLineNo">747</span>  {<a name="line.747"></a>
+<span class="sourceLineNo">748</span>    buffer.appendNumber(fieldName, stringRepresentation);<a name="line.748"></a>
+<span class="sourceLineNo">749</span>  }<a name="line.749"></a>
+<span class="sourceLineNo">750</span>}<a name="line.750"></a>
 
 
 

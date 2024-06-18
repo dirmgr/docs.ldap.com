@@ -296,9 +296,47 @@
         <br><br>
       </li>
       <li>
-        <tt>--helpSubcommands</tt> &mdash; Display the names and descriptions of the supported subcommands.
+        <tt>--help-subcommands</tt> &mdash; Display the names and descriptions of the supported subcommands.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--help-debug</tt> &mdash; Display usage information for debug logging.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--enable-debug-logging</tt> &mdash; Enables debug logging for the tool.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--debug-log-level <i>{level}</i></tt> &mdash; The debug log level to use for the tool.  Allowed values include 'off', 'severe', 'warning', 'info', 'fine', 'finer', and 'finest'.  If this is not specified, a default level of 'severe' will be used.
+        <br><br>
+      </li>
+      <li>
+        <tt>--debug-log-category <i>{category}</i></tt> &mdash; The message categories to include in the debug log output.  Allowed values include 'asn1', 'connect', 'exception', 'ldap', 'connectionpool', 'ldif', 'monitor', 'codingerror', and 'other'.  This argument may be provided multiple times to indicate that multiple categories should be included.  If this is not specified, then all categories will be included.
+        <br><br>
+      </li>
+      <li>
+        <tt>--include-debug-stack-traces</tt> &mdash; Indicates that debug log messages should include a stack trace with the code location from which each debug message originated.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--use-multi-line-debug-messages</tt> &mdash; Indicates that debug log messages (which will be JSON objects) should be written as multi-line strings rather than single-line strings.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--debug-log-file <i>{path}</i></tt> &mdash; The path to the debug log file to be written.  If this is not specified, a default path of 'manage-account.debug' will be used.
+        <br>
+        The specified path must refer to a file which may or may not exist, but whose parent directory must exist.
         <br><br>
       </li>
       <li>
@@ -920,13 +958,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240312152746.512Z'.</li>
+      <li>Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-changed-time set-password-changed-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordChangedTime 20240312152746.512Z</pre></blockquote>
+         --passwordChangedTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1018,13 +1056,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240312152746.512Z'.</li>
+      <li>Set the account activation time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-activation-time set-account-activation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountActivationTime 20240312152746.512Z</pre></blockquote>
+         --accountActivationTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1096,13 +1134,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240312152746.512Z'.</li>
+      <li>Set the account expiration time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-account-expiration-time set-account-expiration-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountExpirationTime 20240312152746.512Z</pre></blockquote>
+         --accountExpirationTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1174,14 +1212,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240312152746.512Z'.</li>
+      <li>Set the password expiration warned time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-password-expiration-warned-time \
          set-password-expiration-warned-time --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordExpirationWarnedTime 20240312152746.512Z</pre></blockquote>
+         --passwordExpirationWarnedTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1368,15 +1406,15 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20240312152734.167Z' and '20240312152746.512Z'.</li>
+      <li>Sets the authentication failure times for user 'uid=jdoe,ou=People,dc=example,dc=com' to include values of '20240618150731.903Z' and '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-authentication-failure-times \
          set-authentication-failure-times --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --authenticationFailureTime 20240312152734.167Z \
-         --authenticationFailureTime 20240312152746.512Z</pre></blockquote>
+         --authenticationFailureTime 20240618150731.903Z \
+         --authenticationFailureTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1565,13 +1603,13 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240312152746.512Z'.</li>
+      <li>Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-login-time set-last-login-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --lastLoginTime 20240312152746.512Z</pre></blockquote>
+         --lastLoginTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -1683,14 +1721,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20240312152734.167Z' and '20240312152746.512Z'.</li>
+      <li>Sets the grace login use times for user 'uid=jdoe,ou=People,dc=example,dc=com' to be '20240618150731.903Z' and '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-grace-login-use-times set-grace-login-use-times \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --graceLoginUseTime 20240312152734.167Z \
-         --graceLoginUseTime 20240312152746.512Z</pre></blockquote>
+         --graceLoginUseTime 20240618150731.903Z \
+         --graceLoginUseTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 
@@ -2144,14 +2182,14 @@
     </ul>
     <h3>Examples</h3>
     <ul>
-      <li>Updates the password policy state for user 'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last invoked password validators during a bind at time '20240312152746.512Z'.</li>
+      <li>Updates the password policy state for user 'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last invoked password validators during a bind at time '20240618150744.248Z'.</li>
     </ul>
     <blockquote><pre>    manage-account set-last-bind-password-validation-time \
          set-last-bind-password-validation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --validationTime 20240312152746.512Z</pre></blockquote>
+         --validationTime 20240618150744.248Z</pre></blockquote>
 
     <p>&nbsp;</p>
 

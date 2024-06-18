@@ -356,246 +356,262 @@
 <span class="sourceLineNo">348</span><a name="line.348"></a>
 <span class="sourceLineNo">349</span><a name="line.349"></a>
 <span class="sourceLineNo">350</span>  /**<a name="line.350"></a>
-<span class="sourceLineNo">351</span>   * Adds the command-line arguments supported for use with this tool to the<a name="line.351"></a>
-<span class="sourceLineNo">352</span>   * provided argument parser.  The tool may need to retain references to the<a name="line.352"></a>
-<span class="sourceLineNo">353</span>   * arguments (and/or the argument parser, if trailing arguments are allowed)<a name="line.353"></a>
-<span class="sourceLineNo">354</span>   * to it in order to obtain their values for use in later processing.<a name="line.354"></a>
-<span class="sourceLineNo">355</span>   *<a name="line.355"></a>
-<span class="sourceLineNo">356</span>   * @param  parser  The argument parser to which the arguments are to be added.<a name="line.356"></a>
-<span class="sourceLineNo">357</span>   *<a name="line.357"></a>
-<span class="sourceLineNo">358</span>   * @throws  ArgumentException  If a problem occurs while adding any of the<a name="line.358"></a>
-<span class="sourceLineNo">359</span>   *                             tool-specific arguments to the provided<a name="line.359"></a>
-<span class="sourceLineNo">360</span>   *                             argument parser.<a name="line.360"></a>
-<span class="sourceLineNo">361</span>   */<a name="line.361"></a>
-<span class="sourceLineNo">362</span>  @Override()<a name="line.362"></a>
-<span class="sourceLineNo">363</span>  public void addToolArguments(@NotNull final ArgumentParser parser)<a name="line.363"></a>
-<span class="sourceLineNo">364</span>         throws ArgumentException<a name="line.364"></a>
-<span class="sourceLineNo">365</span>  {<a name="line.365"></a>
-<span class="sourceLineNo">366</span>    this.parser = parser;<a name="line.366"></a>
-<span class="sourceLineNo">367</span><a name="line.367"></a>
-<span class="sourceLineNo">368</span>    final IntegerArgument indentColumnsArg = new IntegerArgument(null,<a name="line.368"></a>
-<span class="sourceLineNo">369</span>         ARG_INDENT_SPACES, false, 1, "{numSpaces}",<a name="line.369"></a>
-<span class="sourceLineNo">370</span>         "Specifies the number of spaces that should be used to indent each " +<a name="line.370"></a>
-<span class="sourceLineNo">371</span>              "additional level of filter hierarchy.  A value of zero " +<a name="line.371"></a>
-<span class="sourceLineNo">372</span>              "indicates that the hierarchy should be displayed without any " +<a name="line.372"></a>
-<span class="sourceLineNo">373</span>              "additional indenting.  If this argument is not provided, a " +<a name="line.373"></a>
-<span class="sourceLineNo">374</span>              "default indent of two spaces will be used.",<a name="line.374"></a>
-<span class="sourceLineNo">375</span>         0, Integer.MAX_VALUE, 2);<a name="line.375"></a>
-<span class="sourceLineNo">376</span>    indentColumnsArg.addLongIdentifier("indentSpaces", true);<a name="line.376"></a>
-<span class="sourceLineNo">377</span>    indentColumnsArg.addLongIdentifier("indent-columns", true);<a name="line.377"></a>
-<span class="sourceLineNo">378</span>    indentColumnsArg.addLongIdentifier("indentColumns", true);<a name="line.378"></a>
-<span class="sourceLineNo">379</span>    indentColumnsArg.addLongIdentifier("indent", true);<a name="line.379"></a>
-<span class="sourceLineNo">380</span>    parser.addArgument(indentColumnsArg);<a name="line.380"></a>
-<span class="sourceLineNo">381</span><a name="line.381"></a>
-<span class="sourceLineNo">382</span>    final BooleanArgument doNotSimplifyArg = new BooleanArgument(null,<a name="line.382"></a>
-<span class="sourceLineNo">383</span>         ARG_DO_NOT_SIMPLIFY, 1,<a name="line.383"></a>
-<span class="sourceLineNo">384</span>         "Indicates that the tool should not make any attempt to simplify " +<a name="line.384"></a>
-<span class="sourceLineNo">385</span>              "the provided filter.  If this argument is not provided, then " +<a name="line.385"></a>
-<span class="sourceLineNo">386</span>              "the tool will try to simplify the provided filter (for " +<a name="line.386"></a>
-<span class="sourceLineNo">387</span>              "example, by removing unnecessary levels of hierarchy, like an " +<a name="line.387"></a>
-<span class="sourceLineNo">388</span>              "AND embedded in an AND).");<a name="line.388"></a>
-<span class="sourceLineNo">389</span>    doNotSimplifyArg.addLongIdentifier("doNotSimplify", true);<a name="line.389"></a>
-<span class="sourceLineNo">390</span>    doNotSimplifyArg.addLongIdentifier("do-not-simplify-filter", true);<a name="line.390"></a>
-<span class="sourceLineNo">391</span>    doNotSimplifyArg.addLongIdentifier("doNotSimplifyFilter", true);<a name="line.391"></a>
-<span class="sourceLineNo">392</span>    doNotSimplifyArg.addLongIdentifier("dont-simplify", true);<a name="line.392"></a>
-<span class="sourceLineNo">393</span>    doNotSimplifyArg.addLongIdentifier("dontSimplify", true);<a name="line.393"></a>
-<span class="sourceLineNo">394</span>    doNotSimplifyArg.addLongIdentifier("dont-simplify-filter", true);<a name="line.394"></a>
-<span class="sourceLineNo">395</span>    doNotSimplifyArg.addLongIdentifier("dontSimplifyFilter", true);<a name="line.395"></a>
-<span class="sourceLineNo">396</span>    parser.addArgument(doNotSimplifyArg);<a name="line.396"></a>
-<span class="sourceLineNo">397</span>  }<a name="line.397"></a>
-<span class="sourceLineNo">398</span><a name="line.398"></a>
-<span class="sourceLineNo">399</span><a name="line.399"></a>
-<span class="sourceLineNo">400</span><a name="line.400"></a>
-<span class="sourceLineNo">401</span>  /**<a name="line.401"></a>
-<span class="sourceLineNo">402</span>   * Performs the core set of processing for this tool.<a name="line.402"></a>
-<span class="sourceLineNo">403</span>   *<a name="line.403"></a>
-<span class="sourceLineNo">404</span>   * @return  A result code that indicates whether the processing completed<a name="line.404"></a>
-<span class="sourceLineNo">405</span>   *          successfully.<a name="line.405"></a>
-<span class="sourceLineNo">406</span>   */<a name="line.406"></a>
-<span class="sourceLineNo">407</span>  @Override()<a name="line.407"></a>
-<span class="sourceLineNo">408</span>  @NotNull()<a name="line.408"></a>
-<span class="sourceLineNo">409</span>  public ResultCode doToolProcessing()<a name="line.409"></a>
-<span class="sourceLineNo">410</span>  {<a name="line.410"></a>
-<span class="sourceLineNo">411</span>    // Make sure that we can parse the filter string.<a name="line.411"></a>
-<span class="sourceLineNo">412</span>    final Filter filter;<a name="line.412"></a>
-<span class="sourceLineNo">413</span>    try<a name="line.413"></a>
-<span class="sourceLineNo">414</span>    {<a name="line.414"></a>
-<span class="sourceLineNo">415</span>      filter = Filter.create(parser.getTrailingArguments().get(0));<a name="line.415"></a>
-<span class="sourceLineNo">416</span>    }<a name="line.416"></a>
-<span class="sourceLineNo">417</span>    catch (final LDAPException e)<a name="line.417"></a>
-<span class="sourceLineNo">418</span>    {<a name="line.418"></a>
-<span class="sourceLineNo">419</span>      Debug.debugException(e);<a name="line.419"></a>
-<span class="sourceLineNo">420</span>      wrapErr(0, WRAP_COLUMN,<a name="line.420"></a>
-<span class="sourceLineNo">421</span>           "ERROR:  Unable to parse the provided filter string:  " +<a name="line.421"></a>
-<span class="sourceLineNo">422</span>           StaticUtils.getExceptionMessage(e));<a name="line.422"></a>
-<span class="sourceLineNo">423</span>      return e.getResultCode();<a name="line.423"></a>
-<span class="sourceLineNo">424</span>    }<a name="line.424"></a>
-<span class="sourceLineNo">425</span><a name="line.425"></a>
-<span class="sourceLineNo">426</span><a name="line.426"></a>
-<span class="sourceLineNo">427</span>    // Construct the base indent string.<a name="line.427"></a>
-<span class="sourceLineNo">428</span>    final int indentSpaces =<a name="line.428"></a>
-<span class="sourceLineNo">429</span>         parser.getIntegerArgument(ARG_INDENT_SPACES).getValue();<a name="line.429"></a>
-<span class="sourceLineNo">430</span>    final char[] indentChars = new char[indentSpaces];<a name="line.430"></a>
-<span class="sourceLineNo">431</span>    Arrays.fill(indentChars, ' ');<a name="line.431"></a>
-<span class="sourceLineNo">432</span>    final String indentString = new String(indentChars);<a name="line.432"></a>
-<span class="sourceLineNo">433</span><a name="line.433"></a>
-<span class="sourceLineNo">434</span><a name="line.434"></a>
-<span class="sourceLineNo">435</span>    // Display an indented representation of the provided filter.<a name="line.435"></a>
-<span class="sourceLineNo">436</span>    final List&lt;String&gt; indentedFilterLines = new ArrayList&lt;&gt;(10);<a name="line.436"></a>
-<span class="sourceLineNo">437</span>    indentLDAPFilter(filter, "", indentString, indentedFilterLines);<a name="line.437"></a>
-<span class="sourceLineNo">438</span>    for (final String line : indentedFilterLines)<a name="line.438"></a>
-<span class="sourceLineNo">439</span>    {<a name="line.439"></a>
-<span class="sourceLineNo">440</span>      out(line);<a name="line.440"></a>
-<span class="sourceLineNo">441</span>    }<a name="line.441"></a>
+<span class="sourceLineNo">351</span>   * Indicates whether this tool supports the ability to generate a debug log<a name="line.351"></a>
+<span class="sourceLineNo">352</span>   * file.  If this method returns {@code true}, then the tool will expose<a name="line.352"></a>
+<span class="sourceLineNo">353</span>   * additional arguments that can control debug logging.<a name="line.353"></a>
+<span class="sourceLineNo">354</span>   *<a name="line.354"></a>
+<span class="sourceLineNo">355</span>   * @return  {@code true} if this tool supports the ability to generate a debug<a name="line.355"></a>
+<span class="sourceLineNo">356</span>   *          log file, or {@code false} if not.<a name="line.356"></a>
+<span class="sourceLineNo">357</span>   */<a name="line.357"></a>
+<span class="sourceLineNo">358</span>  @Override()<a name="line.358"></a>
+<span class="sourceLineNo">359</span>  protected boolean supportsDebugLogging()<a name="line.359"></a>
+<span class="sourceLineNo">360</span>  {<a name="line.360"></a>
+<span class="sourceLineNo">361</span>    return true;<a name="line.361"></a>
+<span class="sourceLineNo">362</span>  }<a name="line.362"></a>
+<span class="sourceLineNo">363</span><a name="line.363"></a>
+<span class="sourceLineNo">364</span><a name="line.364"></a>
+<span class="sourceLineNo">365</span><a name="line.365"></a>
+<span class="sourceLineNo">366</span>  /**<a name="line.366"></a>
+<span class="sourceLineNo">367</span>   * Adds the command-line arguments supported for use with this tool to the<a name="line.367"></a>
+<span class="sourceLineNo">368</span>   * provided argument parser.  The tool may need to retain references to the<a name="line.368"></a>
+<span class="sourceLineNo">369</span>   * arguments (and/or the argument parser, if trailing arguments are allowed)<a name="line.369"></a>
+<span class="sourceLineNo">370</span>   * to it in order to obtain their values for use in later processing.<a name="line.370"></a>
+<span class="sourceLineNo">371</span>   *<a name="line.371"></a>
+<span class="sourceLineNo">372</span>   * @param  parser  The argument parser to which the arguments are to be added.<a name="line.372"></a>
+<span class="sourceLineNo">373</span>   *<a name="line.373"></a>
+<span class="sourceLineNo">374</span>   * @throws  ArgumentException  If a problem occurs while adding any of the<a name="line.374"></a>
+<span class="sourceLineNo">375</span>   *                             tool-specific arguments to the provided<a name="line.375"></a>
+<span class="sourceLineNo">376</span>   *                             argument parser.<a name="line.376"></a>
+<span class="sourceLineNo">377</span>   */<a name="line.377"></a>
+<span class="sourceLineNo">378</span>  @Override()<a name="line.378"></a>
+<span class="sourceLineNo">379</span>  public void addToolArguments(@NotNull final ArgumentParser parser)<a name="line.379"></a>
+<span class="sourceLineNo">380</span>         throws ArgumentException<a name="line.380"></a>
+<span class="sourceLineNo">381</span>  {<a name="line.381"></a>
+<span class="sourceLineNo">382</span>    this.parser = parser;<a name="line.382"></a>
+<span class="sourceLineNo">383</span><a name="line.383"></a>
+<span class="sourceLineNo">384</span>    final IntegerArgument indentColumnsArg = new IntegerArgument(null,<a name="line.384"></a>
+<span class="sourceLineNo">385</span>         ARG_INDENT_SPACES, false, 1, "{numSpaces}",<a name="line.385"></a>
+<span class="sourceLineNo">386</span>         "Specifies the number of spaces that should be used to indent each " +<a name="line.386"></a>
+<span class="sourceLineNo">387</span>              "additional level of filter hierarchy.  A value of zero " +<a name="line.387"></a>
+<span class="sourceLineNo">388</span>              "indicates that the hierarchy should be displayed without any " +<a name="line.388"></a>
+<span class="sourceLineNo">389</span>              "additional indenting.  If this argument is not provided, a " +<a name="line.389"></a>
+<span class="sourceLineNo">390</span>              "default indent of two spaces will be used.",<a name="line.390"></a>
+<span class="sourceLineNo">391</span>         0, Integer.MAX_VALUE, 2);<a name="line.391"></a>
+<span class="sourceLineNo">392</span>    indentColumnsArg.addLongIdentifier("indentSpaces", true);<a name="line.392"></a>
+<span class="sourceLineNo">393</span>    indentColumnsArg.addLongIdentifier("indent-columns", true);<a name="line.393"></a>
+<span class="sourceLineNo">394</span>    indentColumnsArg.addLongIdentifier("indentColumns", true);<a name="line.394"></a>
+<span class="sourceLineNo">395</span>    indentColumnsArg.addLongIdentifier("indent", true);<a name="line.395"></a>
+<span class="sourceLineNo">396</span>    parser.addArgument(indentColumnsArg);<a name="line.396"></a>
+<span class="sourceLineNo">397</span><a name="line.397"></a>
+<span class="sourceLineNo">398</span>    final BooleanArgument doNotSimplifyArg = new BooleanArgument(null,<a name="line.398"></a>
+<span class="sourceLineNo">399</span>         ARG_DO_NOT_SIMPLIFY, 1,<a name="line.399"></a>
+<span class="sourceLineNo">400</span>         "Indicates that the tool should not make any attempt to simplify " +<a name="line.400"></a>
+<span class="sourceLineNo">401</span>              "the provided filter.  If this argument is not provided, then " +<a name="line.401"></a>
+<span class="sourceLineNo">402</span>              "the tool will try to simplify the provided filter (for " +<a name="line.402"></a>
+<span class="sourceLineNo">403</span>              "example, by removing unnecessary levels of hierarchy, like an " +<a name="line.403"></a>
+<span class="sourceLineNo">404</span>              "AND embedded in an AND).");<a name="line.404"></a>
+<span class="sourceLineNo">405</span>    doNotSimplifyArg.addLongIdentifier("doNotSimplify", true);<a name="line.405"></a>
+<span class="sourceLineNo">406</span>    doNotSimplifyArg.addLongIdentifier("do-not-simplify-filter", true);<a name="line.406"></a>
+<span class="sourceLineNo">407</span>    doNotSimplifyArg.addLongIdentifier("doNotSimplifyFilter", true);<a name="line.407"></a>
+<span class="sourceLineNo">408</span>    doNotSimplifyArg.addLongIdentifier("dont-simplify", true);<a name="line.408"></a>
+<span class="sourceLineNo">409</span>    doNotSimplifyArg.addLongIdentifier("dontSimplify", true);<a name="line.409"></a>
+<span class="sourceLineNo">410</span>    doNotSimplifyArg.addLongIdentifier("dont-simplify-filter", true);<a name="line.410"></a>
+<span class="sourceLineNo">411</span>    doNotSimplifyArg.addLongIdentifier("dontSimplifyFilter", true);<a name="line.411"></a>
+<span class="sourceLineNo">412</span>    parser.addArgument(doNotSimplifyArg);<a name="line.412"></a>
+<span class="sourceLineNo">413</span>  }<a name="line.413"></a>
+<span class="sourceLineNo">414</span><a name="line.414"></a>
+<span class="sourceLineNo">415</span><a name="line.415"></a>
+<span class="sourceLineNo">416</span><a name="line.416"></a>
+<span class="sourceLineNo">417</span>  /**<a name="line.417"></a>
+<span class="sourceLineNo">418</span>   * Performs the core set of processing for this tool.<a name="line.418"></a>
+<span class="sourceLineNo">419</span>   *<a name="line.419"></a>
+<span class="sourceLineNo">420</span>   * @return  A result code that indicates whether the processing completed<a name="line.420"></a>
+<span class="sourceLineNo">421</span>   *          successfully.<a name="line.421"></a>
+<span class="sourceLineNo">422</span>   */<a name="line.422"></a>
+<span class="sourceLineNo">423</span>  @Override()<a name="line.423"></a>
+<span class="sourceLineNo">424</span>  @NotNull()<a name="line.424"></a>
+<span class="sourceLineNo">425</span>  public ResultCode doToolProcessing()<a name="line.425"></a>
+<span class="sourceLineNo">426</span>  {<a name="line.426"></a>
+<span class="sourceLineNo">427</span>    // Make sure that we can parse the filter string.<a name="line.427"></a>
+<span class="sourceLineNo">428</span>    final Filter filter;<a name="line.428"></a>
+<span class="sourceLineNo">429</span>    try<a name="line.429"></a>
+<span class="sourceLineNo">430</span>    {<a name="line.430"></a>
+<span class="sourceLineNo">431</span>      filter = Filter.create(parser.getTrailingArguments().get(0));<a name="line.431"></a>
+<span class="sourceLineNo">432</span>    }<a name="line.432"></a>
+<span class="sourceLineNo">433</span>    catch (final LDAPException e)<a name="line.433"></a>
+<span class="sourceLineNo">434</span>    {<a name="line.434"></a>
+<span class="sourceLineNo">435</span>      Debug.debugException(e);<a name="line.435"></a>
+<span class="sourceLineNo">436</span>      wrapErr(0, WRAP_COLUMN,<a name="line.436"></a>
+<span class="sourceLineNo">437</span>           "ERROR:  Unable to parse the provided filter string:  " +<a name="line.437"></a>
+<span class="sourceLineNo">438</span>           StaticUtils.getExceptionMessage(e));<a name="line.438"></a>
+<span class="sourceLineNo">439</span>      return e.getResultCode();<a name="line.439"></a>
+<span class="sourceLineNo">440</span>    }<a name="line.440"></a>
+<span class="sourceLineNo">441</span><a name="line.441"></a>
 <span class="sourceLineNo">442</span><a name="line.442"></a>
-<span class="sourceLineNo">443</span><a name="line.443"></a>
-<span class="sourceLineNo">444</span>    // See if we can simplify the provided filter.<a name="line.444"></a>
-<span class="sourceLineNo">445</span>    if (! parser.getBooleanArgument(ARG_DO_NOT_SIMPLIFY).isPresent())<a name="line.445"></a>
-<span class="sourceLineNo">446</span>    {<a name="line.446"></a>
-<span class="sourceLineNo">447</span>      out();<a name="line.447"></a>
-<span class="sourceLineNo">448</span>      final Filter simplifiedFilter = Filter.simplifyFilter(filter, false);<a name="line.448"></a>
-<span class="sourceLineNo">449</span>      if (simplifiedFilter.equals(filter))<a name="line.449"></a>
-<span class="sourceLineNo">450</span>      {<a name="line.450"></a>
-<span class="sourceLineNo">451</span>        wrapOut(0, WRAP_COLUMN, "The provided filter cannot be simplified.");<a name="line.451"></a>
-<span class="sourceLineNo">452</span>      }<a name="line.452"></a>
-<span class="sourceLineNo">453</span>      else<a name="line.453"></a>
-<span class="sourceLineNo">454</span>      {<a name="line.454"></a>
-<span class="sourceLineNo">455</span>        wrapOut(0, WRAP_COLUMN, "The provided filter can be simplified to:");<a name="line.455"></a>
-<span class="sourceLineNo">456</span>        out();<a name="line.456"></a>
-<span class="sourceLineNo">457</span>        out("     ", simplifiedFilter.toString());<a name="line.457"></a>
-<span class="sourceLineNo">458</span>        out();<a name="line.458"></a>
-<span class="sourceLineNo">459</span>        wrapOut(0, WRAP_COLUMN,<a name="line.459"></a>
-<span class="sourceLineNo">460</span>             "An indented representation of the simplified filter:");<a name="line.460"></a>
-<span class="sourceLineNo">461</span>        out();<a name="line.461"></a>
-<span class="sourceLineNo">462</span><a name="line.462"></a>
-<span class="sourceLineNo">463</span>        indentedFilterLines.clear();<a name="line.463"></a>
-<span class="sourceLineNo">464</span>        indentLDAPFilter(simplifiedFilter, "", indentString,<a name="line.464"></a>
-<span class="sourceLineNo">465</span>             indentedFilterLines);<a name="line.465"></a>
-<span class="sourceLineNo">466</span>        for (final String line : indentedFilterLines)<a name="line.466"></a>
-<span class="sourceLineNo">467</span>        {<a name="line.467"></a>
-<span class="sourceLineNo">468</span>          out(line);<a name="line.468"></a>
-<span class="sourceLineNo">469</span>        }<a name="line.469"></a>
-<span class="sourceLineNo">470</span>      }<a name="line.470"></a>
-<span class="sourceLineNo">471</span>    }<a name="line.471"></a>
-<span class="sourceLineNo">472</span><a name="line.472"></a>
-<span class="sourceLineNo">473</span>    return ResultCode.SUCCESS;<a name="line.473"></a>
-<span class="sourceLineNo">474</span>  }<a name="line.474"></a>
-<span class="sourceLineNo">475</span><a name="line.475"></a>
-<span class="sourceLineNo">476</span><a name="line.476"></a>
-<span class="sourceLineNo">477</span><a name="line.477"></a>
-<span class="sourceLineNo">478</span>  /**<a name="line.478"></a>
-<span class="sourceLineNo">479</span>   * Generates an indented representation of the provided filter.<a name="line.479"></a>
-<span class="sourceLineNo">480</span>   *<a name="line.480"></a>
-<span class="sourceLineNo">481</span>   * @param  filter               The filter to be indented.  It must not be<a name="line.481"></a>
-<span class="sourceLineNo">482</span>   *                              {@code null}.<a name="line.482"></a>
-<span class="sourceLineNo">483</span>   * @param  currentIndentString  A string that represents the current indent<a name="line.483"></a>
-<span class="sourceLineNo">484</span>   *                              that should be added before each line of the<a name="line.484"></a>
-<span class="sourceLineNo">485</span>   *                              filter.  It may be empty, but must not be<a name="line.485"></a>
-<span class="sourceLineNo">486</span>   *                              {@code null}.<a name="line.486"></a>
-<span class="sourceLineNo">487</span>   * @param  indentSpaces         A string that represents the number of<a name="line.487"></a>
-<span class="sourceLineNo">488</span>   *                              additional spaces that each subsequent level<a name="line.488"></a>
-<span class="sourceLineNo">489</span>   *                              of the hierarchy should be indented.  It may<a name="line.489"></a>
-<span class="sourceLineNo">490</span>   *                              be empty, but must not be {@code null}.<a name="line.490"></a>
-<span class="sourceLineNo">491</span>   * @param  indentedFilterLines  A list to which the lines that comprise the<a name="line.491"></a>
-<span class="sourceLineNo">492</span>   *                              indented filter should be added.  It must not<a name="line.492"></a>
-<span class="sourceLineNo">493</span>   *                              be {@code null}, and must be updatable.<a name="line.493"></a>
-<span class="sourceLineNo">494</span>   */<a name="line.494"></a>
-<span class="sourceLineNo">495</span>  public static void indentLDAPFilter(@NotNull final Filter filter,<a name="line.495"></a>
-<span class="sourceLineNo">496</span>                          @NotNull final String currentIndentString,<a name="line.496"></a>
-<span class="sourceLineNo">497</span>                          @NotNull final String indentSpaces,<a name="line.497"></a>
-<span class="sourceLineNo">498</span>                          @NotNull final List&lt;String&gt; indentedFilterLines)<a name="line.498"></a>
-<span class="sourceLineNo">499</span>  {<a name="line.499"></a>
-<span class="sourceLineNo">500</span>    switch (filter.getFilterType())<a name="line.500"></a>
-<span class="sourceLineNo">501</span>    {<a name="line.501"></a>
-<span class="sourceLineNo">502</span>      case Filter.FILTER_TYPE_AND:<a name="line.502"></a>
-<span class="sourceLineNo">503</span>        final Filter[] andComponents = filter.getComponents();<a name="line.503"></a>
-<span class="sourceLineNo">504</span>        if (andComponents.length == 0)<a name="line.504"></a>
-<span class="sourceLineNo">505</span>        {<a name="line.505"></a>
-<span class="sourceLineNo">506</span>          indentedFilterLines.add(currentIndentString + "(&amp;)");<a name="line.506"></a>
-<span class="sourceLineNo">507</span>        }<a name="line.507"></a>
-<span class="sourceLineNo">508</span>        else<a name="line.508"></a>
-<span class="sourceLineNo">509</span>        {<a name="line.509"></a>
-<span class="sourceLineNo">510</span>          indentedFilterLines.add(currentIndentString + "(&amp;");<a name="line.510"></a>
-<span class="sourceLineNo">511</span><a name="line.511"></a>
-<span class="sourceLineNo">512</span>          final String andComponentIndent =<a name="line.512"></a>
-<span class="sourceLineNo">513</span>               currentIndentString + " &amp;" + indentSpaces;<a name="line.513"></a>
-<span class="sourceLineNo">514</span>          for (final Filter andComponent : andComponents)<a name="line.514"></a>
-<span class="sourceLineNo">515</span>          {<a name="line.515"></a>
-<span class="sourceLineNo">516</span>            indentLDAPFilter(andComponent, andComponentIndent, indentSpaces,<a name="line.516"></a>
-<span class="sourceLineNo">517</span>                 indentedFilterLines);<a name="line.517"></a>
-<span class="sourceLineNo">518</span>          }<a name="line.518"></a>
-<span class="sourceLineNo">519</span>          indentedFilterLines.add(currentIndentString + " &amp;)");<a name="line.519"></a>
-<span class="sourceLineNo">520</span>        }<a name="line.520"></a>
-<span class="sourceLineNo">521</span>        break;<a name="line.521"></a>
-<span class="sourceLineNo">522</span><a name="line.522"></a>
-<span class="sourceLineNo">523</span><a name="line.523"></a>
-<span class="sourceLineNo">524</span>      case Filter.FILTER_TYPE_OR:<a name="line.524"></a>
-<span class="sourceLineNo">525</span>        final Filter[] orComponents = filter.getComponents();<a name="line.525"></a>
-<span class="sourceLineNo">526</span>        if (orComponents.length == 0)<a name="line.526"></a>
-<span class="sourceLineNo">527</span>        {<a name="line.527"></a>
-<span class="sourceLineNo">528</span>          indentedFilterLines.add(currentIndentString + "(|)");<a name="line.528"></a>
-<span class="sourceLineNo">529</span>        }<a name="line.529"></a>
-<span class="sourceLineNo">530</span>        else<a name="line.530"></a>
-<span class="sourceLineNo">531</span>        {<a name="line.531"></a>
-<span class="sourceLineNo">532</span>          indentedFilterLines.add(currentIndentString + "(|");<a name="line.532"></a>
-<span class="sourceLineNo">533</span><a name="line.533"></a>
-<span class="sourceLineNo">534</span>          final String orComponentIndent =<a name="line.534"></a>
-<span class="sourceLineNo">535</span>               currentIndentString + " |" + indentSpaces;<a name="line.535"></a>
-<span class="sourceLineNo">536</span>          for (final Filter orComponent : orComponents)<a name="line.536"></a>
-<span class="sourceLineNo">537</span>          {<a name="line.537"></a>
-<span class="sourceLineNo">538</span>            indentLDAPFilter(orComponent, orComponentIndent, indentSpaces,<a name="line.538"></a>
-<span class="sourceLineNo">539</span>                 indentedFilterLines);<a name="line.539"></a>
-<span class="sourceLineNo">540</span>          }<a name="line.540"></a>
-<span class="sourceLineNo">541</span>          indentedFilterLines.add(currentIndentString + " |)");<a name="line.541"></a>
-<span class="sourceLineNo">542</span>        }<a name="line.542"></a>
-<span class="sourceLineNo">543</span>        break;<a name="line.543"></a>
-<span class="sourceLineNo">544</span><a name="line.544"></a>
-<span class="sourceLineNo">545</span><a name="line.545"></a>
-<span class="sourceLineNo">546</span>      case Filter.FILTER_TYPE_NOT:<a name="line.546"></a>
-<span class="sourceLineNo">547</span>        indentedFilterLines.add(currentIndentString + "(!");<a name="line.547"></a>
-<span class="sourceLineNo">548</span>        indentLDAPFilter(filter.getNOTComponent(),<a name="line.548"></a>
-<span class="sourceLineNo">549</span>             currentIndentString + " !" + indentSpaces, indentSpaces,<a name="line.549"></a>
-<span class="sourceLineNo">550</span>             indentedFilterLines);<a name="line.550"></a>
-<span class="sourceLineNo">551</span>        indentedFilterLines.add(currentIndentString + " !)");<a name="line.551"></a>
-<span class="sourceLineNo">552</span>        break;<a name="line.552"></a>
-<span class="sourceLineNo">553</span><a name="line.553"></a>
-<span class="sourceLineNo">554</span><a name="line.554"></a>
-<span class="sourceLineNo">555</span>      default:<a name="line.555"></a>
-<span class="sourceLineNo">556</span>        indentedFilterLines.add(currentIndentString + filter.toString());<a name="line.556"></a>
-<span class="sourceLineNo">557</span>        break;<a name="line.557"></a>
-<span class="sourceLineNo">558</span>    }<a name="line.558"></a>
-<span class="sourceLineNo">559</span>  }<a name="line.559"></a>
+<span class="sourceLineNo">443</span>    // Construct the base indent string.<a name="line.443"></a>
+<span class="sourceLineNo">444</span>    final int indentSpaces =<a name="line.444"></a>
+<span class="sourceLineNo">445</span>         parser.getIntegerArgument(ARG_INDENT_SPACES).getValue();<a name="line.445"></a>
+<span class="sourceLineNo">446</span>    final char[] indentChars = new char[indentSpaces];<a name="line.446"></a>
+<span class="sourceLineNo">447</span>    Arrays.fill(indentChars, ' ');<a name="line.447"></a>
+<span class="sourceLineNo">448</span>    final String indentString = new String(indentChars);<a name="line.448"></a>
+<span class="sourceLineNo">449</span><a name="line.449"></a>
+<span class="sourceLineNo">450</span><a name="line.450"></a>
+<span class="sourceLineNo">451</span>    // Display an indented representation of the provided filter.<a name="line.451"></a>
+<span class="sourceLineNo">452</span>    final List&lt;String&gt; indentedFilterLines = new ArrayList&lt;&gt;(10);<a name="line.452"></a>
+<span class="sourceLineNo">453</span>    indentLDAPFilter(filter, "", indentString, indentedFilterLines);<a name="line.453"></a>
+<span class="sourceLineNo">454</span>    for (final String line : indentedFilterLines)<a name="line.454"></a>
+<span class="sourceLineNo">455</span>    {<a name="line.455"></a>
+<span class="sourceLineNo">456</span>      out(line);<a name="line.456"></a>
+<span class="sourceLineNo">457</span>    }<a name="line.457"></a>
+<span class="sourceLineNo">458</span><a name="line.458"></a>
+<span class="sourceLineNo">459</span><a name="line.459"></a>
+<span class="sourceLineNo">460</span>    // See if we can simplify the provided filter.<a name="line.460"></a>
+<span class="sourceLineNo">461</span>    if (! parser.getBooleanArgument(ARG_DO_NOT_SIMPLIFY).isPresent())<a name="line.461"></a>
+<span class="sourceLineNo">462</span>    {<a name="line.462"></a>
+<span class="sourceLineNo">463</span>      out();<a name="line.463"></a>
+<span class="sourceLineNo">464</span>      final Filter simplifiedFilter = Filter.simplifyFilter(filter, false);<a name="line.464"></a>
+<span class="sourceLineNo">465</span>      if (simplifiedFilter.equals(filter))<a name="line.465"></a>
+<span class="sourceLineNo">466</span>      {<a name="line.466"></a>
+<span class="sourceLineNo">467</span>        wrapOut(0, WRAP_COLUMN, "The provided filter cannot be simplified.");<a name="line.467"></a>
+<span class="sourceLineNo">468</span>      }<a name="line.468"></a>
+<span class="sourceLineNo">469</span>      else<a name="line.469"></a>
+<span class="sourceLineNo">470</span>      {<a name="line.470"></a>
+<span class="sourceLineNo">471</span>        wrapOut(0, WRAP_COLUMN, "The provided filter can be simplified to:");<a name="line.471"></a>
+<span class="sourceLineNo">472</span>        out();<a name="line.472"></a>
+<span class="sourceLineNo">473</span>        out("     ", simplifiedFilter.toString());<a name="line.473"></a>
+<span class="sourceLineNo">474</span>        out();<a name="line.474"></a>
+<span class="sourceLineNo">475</span>        wrapOut(0, WRAP_COLUMN,<a name="line.475"></a>
+<span class="sourceLineNo">476</span>             "An indented representation of the simplified filter:");<a name="line.476"></a>
+<span class="sourceLineNo">477</span>        out();<a name="line.477"></a>
+<span class="sourceLineNo">478</span><a name="line.478"></a>
+<span class="sourceLineNo">479</span>        indentedFilterLines.clear();<a name="line.479"></a>
+<span class="sourceLineNo">480</span>        indentLDAPFilter(simplifiedFilter, "", indentString,<a name="line.480"></a>
+<span class="sourceLineNo">481</span>             indentedFilterLines);<a name="line.481"></a>
+<span class="sourceLineNo">482</span>        for (final String line : indentedFilterLines)<a name="line.482"></a>
+<span class="sourceLineNo">483</span>        {<a name="line.483"></a>
+<span class="sourceLineNo">484</span>          out(line);<a name="line.484"></a>
+<span class="sourceLineNo">485</span>        }<a name="line.485"></a>
+<span class="sourceLineNo">486</span>      }<a name="line.486"></a>
+<span class="sourceLineNo">487</span>    }<a name="line.487"></a>
+<span class="sourceLineNo">488</span><a name="line.488"></a>
+<span class="sourceLineNo">489</span>    return ResultCode.SUCCESS;<a name="line.489"></a>
+<span class="sourceLineNo">490</span>  }<a name="line.490"></a>
+<span class="sourceLineNo">491</span><a name="line.491"></a>
+<span class="sourceLineNo">492</span><a name="line.492"></a>
+<span class="sourceLineNo">493</span><a name="line.493"></a>
+<span class="sourceLineNo">494</span>  /**<a name="line.494"></a>
+<span class="sourceLineNo">495</span>   * Generates an indented representation of the provided filter.<a name="line.495"></a>
+<span class="sourceLineNo">496</span>   *<a name="line.496"></a>
+<span class="sourceLineNo">497</span>   * @param  filter               The filter to be indented.  It must not be<a name="line.497"></a>
+<span class="sourceLineNo">498</span>   *                              {@code null}.<a name="line.498"></a>
+<span class="sourceLineNo">499</span>   * @param  currentIndentString  A string that represents the current indent<a name="line.499"></a>
+<span class="sourceLineNo">500</span>   *                              that should be added before each line of the<a name="line.500"></a>
+<span class="sourceLineNo">501</span>   *                              filter.  It may be empty, but must not be<a name="line.501"></a>
+<span class="sourceLineNo">502</span>   *                              {@code null}.<a name="line.502"></a>
+<span class="sourceLineNo">503</span>   * @param  indentSpaces         A string that represents the number of<a name="line.503"></a>
+<span class="sourceLineNo">504</span>   *                              additional spaces that each subsequent level<a name="line.504"></a>
+<span class="sourceLineNo">505</span>   *                              of the hierarchy should be indented.  It may<a name="line.505"></a>
+<span class="sourceLineNo">506</span>   *                              be empty, but must not be {@code null}.<a name="line.506"></a>
+<span class="sourceLineNo">507</span>   * @param  indentedFilterLines  A list to which the lines that comprise the<a name="line.507"></a>
+<span class="sourceLineNo">508</span>   *                              indented filter should be added.  It must not<a name="line.508"></a>
+<span class="sourceLineNo">509</span>   *                              be {@code null}, and must be updatable.<a name="line.509"></a>
+<span class="sourceLineNo">510</span>   */<a name="line.510"></a>
+<span class="sourceLineNo">511</span>  public static void indentLDAPFilter(@NotNull final Filter filter,<a name="line.511"></a>
+<span class="sourceLineNo">512</span>                          @NotNull final String currentIndentString,<a name="line.512"></a>
+<span class="sourceLineNo">513</span>                          @NotNull final String indentSpaces,<a name="line.513"></a>
+<span class="sourceLineNo">514</span>                          @NotNull final List&lt;String&gt; indentedFilterLines)<a name="line.514"></a>
+<span class="sourceLineNo">515</span>  {<a name="line.515"></a>
+<span class="sourceLineNo">516</span>    switch (filter.getFilterType())<a name="line.516"></a>
+<span class="sourceLineNo">517</span>    {<a name="line.517"></a>
+<span class="sourceLineNo">518</span>      case Filter.FILTER_TYPE_AND:<a name="line.518"></a>
+<span class="sourceLineNo">519</span>        final Filter[] andComponents = filter.getComponents();<a name="line.519"></a>
+<span class="sourceLineNo">520</span>        if (andComponents.length == 0)<a name="line.520"></a>
+<span class="sourceLineNo">521</span>        {<a name="line.521"></a>
+<span class="sourceLineNo">522</span>          indentedFilterLines.add(currentIndentString + "(&amp;)");<a name="line.522"></a>
+<span class="sourceLineNo">523</span>        }<a name="line.523"></a>
+<span class="sourceLineNo">524</span>        else<a name="line.524"></a>
+<span class="sourceLineNo">525</span>        {<a name="line.525"></a>
+<span class="sourceLineNo">526</span>          indentedFilterLines.add(currentIndentString + "(&amp;");<a name="line.526"></a>
+<span class="sourceLineNo">527</span><a name="line.527"></a>
+<span class="sourceLineNo">528</span>          final String andComponentIndent =<a name="line.528"></a>
+<span class="sourceLineNo">529</span>               currentIndentString + " &amp;" + indentSpaces;<a name="line.529"></a>
+<span class="sourceLineNo">530</span>          for (final Filter andComponent : andComponents)<a name="line.530"></a>
+<span class="sourceLineNo">531</span>          {<a name="line.531"></a>
+<span class="sourceLineNo">532</span>            indentLDAPFilter(andComponent, andComponentIndent, indentSpaces,<a name="line.532"></a>
+<span class="sourceLineNo">533</span>                 indentedFilterLines);<a name="line.533"></a>
+<span class="sourceLineNo">534</span>          }<a name="line.534"></a>
+<span class="sourceLineNo">535</span>          indentedFilterLines.add(currentIndentString + " &amp;)");<a name="line.535"></a>
+<span class="sourceLineNo">536</span>        }<a name="line.536"></a>
+<span class="sourceLineNo">537</span>        break;<a name="line.537"></a>
+<span class="sourceLineNo">538</span><a name="line.538"></a>
+<span class="sourceLineNo">539</span><a name="line.539"></a>
+<span class="sourceLineNo">540</span>      case Filter.FILTER_TYPE_OR:<a name="line.540"></a>
+<span class="sourceLineNo">541</span>        final Filter[] orComponents = filter.getComponents();<a name="line.541"></a>
+<span class="sourceLineNo">542</span>        if (orComponents.length == 0)<a name="line.542"></a>
+<span class="sourceLineNo">543</span>        {<a name="line.543"></a>
+<span class="sourceLineNo">544</span>          indentedFilterLines.add(currentIndentString + "(|)");<a name="line.544"></a>
+<span class="sourceLineNo">545</span>        }<a name="line.545"></a>
+<span class="sourceLineNo">546</span>        else<a name="line.546"></a>
+<span class="sourceLineNo">547</span>        {<a name="line.547"></a>
+<span class="sourceLineNo">548</span>          indentedFilterLines.add(currentIndentString + "(|");<a name="line.548"></a>
+<span class="sourceLineNo">549</span><a name="line.549"></a>
+<span class="sourceLineNo">550</span>          final String orComponentIndent =<a name="line.550"></a>
+<span class="sourceLineNo">551</span>               currentIndentString + " |" + indentSpaces;<a name="line.551"></a>
+<span class="sourceLineNo">552</span>          for (final Filter orComponent : orComponents)<a name="line.552"></a>
+<span class="sourceLineNo">553</span>          {<a name="line.553"></a>
+<span class="sourceLineNo">554</span>            indentLDAPFilter(orComponent, orComponentIndent, indentSpaces,<a name="line.554"></a>
+<span class="sourceLineNo">555</span>                 indentedFilterLines);<a name="line.555"></a>
+<span class="sourceLineNo">556</span>          }<a name="line.556"></a>
+<span class="sourceLineNo">557</span>          indentedFilterLines.add(currentIndentString + " |)");<a name="line.557"></a>
+<span class="sourceLineNo">558</span>        }<a name="line.558"></a>
+<span class="sourceLineNo">559</span>        break;<a name="line.559"></a>
 <span class="sourceLineNo">560</span><a name="line.560"></a>
 <span class="sourceLineNo">561</span><a name="line.561"></a>
-<span class="sourceLineNo">562</span><a name="line.562"></a>
-<span class="sourceLineNo">563</span>  /**<a name="line.563"></a>
-<span class="sourceLineNo">564</span>   * Retrieves a set of information that may be used to generate example usage<a name="line.564"></a>
-<span class="sourceLineNo">565</span>   * information.  Each element in the returned map should consist of a map<a name="line.565"></a>
-<span class="sourceLineNo">566</span>   * between an example set of arguments and a string that describes the<a name="line.566"></a>
-<span class="sourceLineNo">567</span>   * behavior of the tool when invoked with that set of arguments.<a name="line.567"></a>
-<span class="sourceLineNo">568</span>   *<a name="line.568"></a>
-<span class="sourceLineNo">569</span>   * @return  A set of information that may be used to generate example usage<a name="line.569"></a>
-<span class="sourceLineNo">570</span>   *          information.  It may be {@code null} or empty if no example usage<a name="line.570"></a>
-<span class="sourceLineNo">571</span>   *          information is available.<a name="line.571"></a>
-<span class="sourceLineNo">572</span>   */<a name="line.572"></a>
-<span class="sourceLineNo">573</span>  @Override()<a name="line.573"></a>
-<span class="sourceLineNo">574</span>  @NotNull()<a name="line.574"></a>
-<span class="sourceLineNo">575</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.575"></a>
-<span class="sourceLineNo">576</span>  {<a name="line.576"></a>
-<span class="sourceLineNo">577</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.577"></a>
-<span class="sourceLineNo">578</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.578"></a>
-<span class="sourceLineNo">579</span><a name="line.579"></a>
-<span class="sourceLineNo">580</span>    examples.put(<a name="line.580"></a>
-<span class="sourceLineNo">581</span>         new String[]<a name="line.581"></a>
-<span class="sourceLineNo">582</span>         {<a name="line.582"></a>
-<span class="sourceLineNo">583</span>           "(|(givenName=jdoe)(|(sn=jdoe)(|(cn=jdoe)(|(uid=jdoe)(mail=jdoe)))))"<a name="line.583"></a>
-<span class="sourceLineNo">584</span>         },<a name="line.584"></a>
-<span class="sourceLineNo">585</span>         "Displays an indented representation of the provided filter, as " +<a name="line.585"></a>
-<span class="sourceLineNo">586</span>              "well as a simplified version of that filter.");<a name="line.586"></a>
-<span class="sourceLineNo">587</span><a name="line.587"></a>
-<span class="sourceLineNo">588</span>    return examples;<a name="line.588"></a>
-<span class="sourceLineNo">589</span>  }<a name="line.589"></a>
-<span class="sourceLineNo">590</span>}<a name="line.590"></a>
+<span class="sourceLineNo">562</span>      case Filter.FILTER_TYPE_NOT:<a name="line.562"></a>
+<span class="sourceLineNo">563</span>        indentedFilterLines.add(currentIndentString + "(!");<a name="line.563"></a>
+<span class="sourceLineNo">564</span>        indentLDAPFilter(filter.getNOTComponent(),<a name="line.564"></a>
+<span class="sourceLineNo">565</span>             currentIndentString + " !" + indentSpaces, indentSpaces,<a name="line.565"></a>
+<span class="sourceLineNo">566</span>             indentedFilterLines);<a name="line.566"></a>
+<span class="sourceLineNo">567</span>        indentedFilterLines.add(currentIndentString + " !)");<a name="line.567"></a>
+<span class="sourceLineNo">568</span>        break;<a name="line.568"></a>
+<span class="sourceLineNo">569</span><a name="line.569"></a>
+<span class="sourceLineNo">570</span><a name="line.570"></a>
+<span class="sourceLineNo">571</span>      default:<a name="line.571"></a>
+<span class="sourceLineNo">572</span>        indentedFilterLines.add(currentIndentString + filter.toString());<a name="line.572"></a>
+<span class="sourceLineNo">573</span>        break;<a name="line.573"></a>
+<span class="sourceLineNo">574</span>    }<a name="line.574"></a>
+<span class="sourceLineNo">575</span>  }<a name="line.575"></a>
+<span class="sourceLineNo">576</span><a name="line.576"></a>
+<span class="sourceLineNo">577</span><a name="line.577"></a>
+<span class="sourceLineNo">578</span><a name="line.578"></a>
+<span class="sourceLineNo">579</span>  /**<a name="line.579"></a>
+<span class="sourceLineNo">580</span>   * Retrieves a set of information that may be used to generate example usage<a name="line.580"></a>
+<span class="sourceLineNo">581</span>   * information.  Each element in the returned map should consist of a map<a name="line.581"></a>
+<span class="sourceLineNo">582</span>   * between an example set of arguments and a string that describes the<a name="line.582"></a>
+<span class="sourceLineNo">583</span>   * behavior of the tool when invoked with that set of arguments.<a name="line.583"></a>
+<span class="sourceLineNo">584</span>   *<a name="line.584"></a>
+<span class="sourceLineNo">585</span>   * @return  A set of information that may be used to generate example usage<a name="line.585"></a>
+<span class="sourceLineNo">586</span>   *          information.  It may be {@code null} or empty if no example usage<a name="line.586"></a>
+<span class="sourceLineNo">587</span>   *          information is available.<a name="line.587"></a>
+<span class="sourceLineNo">588</span>   */<a name="line.588"></a>
+<span class="sourceLineNo">589</span>  @Override()<a name="line.589"></a>
+<span class="sourceLineNo">590</span>  @NotNull()<a name="line.590"></a>
+<span class="sourceLineNo">591</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.591"></a>
+<span class="sourceLineNo">592</span>  {<a name="line.592"></a>
+<span class="sourceLineNo">593</span>    final LinkedHashMap&lt;String[],String&gt; examples =<a name="line.593"></a>
+<span class="sourceLineNo">594</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.594"></a>
+<span class="sourceLineNo">595</span><a name="line.595"></a>
+<span class="sourceLineNo">596</span>    examples.put(<a name="line.596"></a>
+<span class="sourceLineNo">597</span>         new String[]<a name="line.597"></a>
+<span class="sourceLineNo">598</span>         {<a name="line.598"></a>
+<span class="sourceLineNo">599</span>           "(|(givenName=jdoe)(|(sn=jdoe)(|(cn=jdoe)(|(uid=jdoe)(mail=jdoe)))))"<a name="line.599"></a>
+<span class="sourceLineNo">600</span>         },<a name="line.600"></a>
+<span class="sourceLineNo">601</span>         "Displays an indented representation of the provided filter, as " +<a name="line.601"></a>
+<span class="sourceLineNo">602</span>              "well as a simplified version of that filter.");<a name="line.602"></a>
+<span class="sourceLineNo">603</span><a name="line.603"></a>
+<span class="sourceLineNo">604</span>    return examples;<a name="line.604"></a>
+<span class="sourceLineNo">605</span>  }<a name="line.605"></a>
+<span class="sourceLineNo">606</span>}<a name="line.606"></a>
 
 
 

@@ -556,6 +556,8 @@ Available options include:
         also be provided.
     -H, --help
         Display usage information for this program.
+    --help-debug
+        Display usage information for debug logging.
     --version
         Display version information for this program.
     --propertiesFilePath {path}

@@ -104,8 +104,10 @@ Available options include:
     Launch the tool in interactive mode.
 -H, --help
     Display usage information for this program.
---helpSubcommands
+--help-subcommands
     Display the names and descriptions of the supported subcommands.
+--help-debug
+    Display usage information for debug logging.
 -V, --version
     Display version information for this program.
 --propertiesFilePath {path}

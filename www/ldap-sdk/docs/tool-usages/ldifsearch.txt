@@ -132,6 +132,8 @@ Available options include:
         Launch the tool in interactive mode.
     -H, --help
         Display usage information for this program.
+    --help-debug
+        Display usage information for debug logging.
     -V, --version
         Display version information for this program.
     --propertiesFilePath {path}

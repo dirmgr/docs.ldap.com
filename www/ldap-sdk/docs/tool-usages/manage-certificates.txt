@@ -12,8 +12,10 @@ Available options include:
     Launch the tool in interactive mode.
 -H, --help
     Display usage information for this program.
---helpSubcommands
+--help-subcommands
     Display the names and descriptions of the supported subcommands.
+--help-debug
+    Display usage information for debug logging.
 -V, --version
     Display version information for this program.
 --propertiesFilePath {path}
@@ -258,7 +260,7 @@ Available options include:
     and if this argument is given, then the specified file must exist.
 --use-jvm-default-trust-store
     List certificates from the JVM-default trust store
-    (/usr/java/oracle/jdk1.8.0_371/jre/lib/security/cacerts).
+    (/usr/java/oracle/jdk1.8.0_411/jre/lib/security/cacerts).
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
     contents of the key store.  A key store password is optional for some key
@@ -342,7 +344,7 @@ Available options include:
     is required, and the key store file must exist.
 --use-jvm-default-trust-store
     Export certificates from the JVM-default trust store
-    (/usr/java/oracle/jdk1.8.0_371/jre/lib/security/cacerts).
+    (/usr/java/oracle/jdk1.8.0_411/jre/lib/security/cacerts).
 --keystore-password {password}
     The password (also called a passphrase or PIN) needed to access the
     contents of the key store.  A key store password is optional for some key

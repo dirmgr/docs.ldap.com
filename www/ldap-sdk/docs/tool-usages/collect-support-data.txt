@@ -281,6 +281,8 @@ Available options include:
         Launch the tool in interactive mode.
     -H, --help
         Display usage information for this program.
+    --help-debug
+        Display usage information for debug logging.
     -V, --version
         Display version information for this program.
     --propertiesFilePath {path}
@@ -320,5 +322,5 @@ Examples
   specified file.
 
     collect-support-data \
-         --decrypt support-data-ds-inst1-20240312152746.484Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20240618150744.218Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt

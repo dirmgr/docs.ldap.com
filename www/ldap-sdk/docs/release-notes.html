@@ -27,6 +27,72 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 7.0.2</h3>
+
+              <p>
+                The following changes were made between the 7.0.1 and 7.0.2 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added support for using the 2.x version of the Bouncy Castle FIPS-compliant
+                  security provider, which offers support for FIPS 140-3 compliance.  Previously,
+                  the LDAP SDK only supported the 1.x version of the library, which offers FIPS
+                  140-2 compliance.  The necessary jar files must already be in the CLASSPATH.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a new PropertyManager class that can be used to retrieve the values of
+                  system properties or environment variables, optionally parsing the values as
+                  Booleans, numbers, or comma-delimited lists.  Most uses of system properties
+                  within the LDAP SDK have been updated to use the PropertyManager, so those
+                  properties can now be set as environment variables as an alternative to Java
+                  system properties.
+                  <br><br>
+                </li>
+
+                <li>
+                  Fixed a bug in the SSLUtil.certificateToString method that prevented it from
+                  including notBefore and notAfter timestamp values in the resulting string
+                  representation of the provided certificate.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated client-side support for the Ping Identity Directory Server's get subtree
+                  accessibility and set subtree accessibility extended operations to include a new
+                  to-be-deleted accessibility state.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the MoveSubtree utility class to provide an option to use the new
+                  to-be-deleted subtree accessibility state when removing entries from the source
+                  server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added a SubtreeAccessibilityState.isMoreRestrictiveThan method that can be used
+                  to determine whether one state is more restrictive than another.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest revisions of
+                  draft-coretta-ldap-subnf-01, draft-coretta-oiddir-radit,
+                  draft-coretta-oiddir-radsa, draft-coretta-oiddir-radua,
+                  draft-coretta-oiddir-roadmap, and draft-coretta-oiddir-schema in the set of
+                  LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 7.0.1</h3>
 
               <p>

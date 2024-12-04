@@ -100,7 +100,7 @@ Available options include:
     -S, --state {state}
         The accessibility state to use for the accessibility restriction on the
         target subtree.  Allowed values:  accessible, read-only-bind-allowed,
-        read-only-bind-denied, hidden.
+        read-only-bind-denied, hidden, or to-be-deleted.
     -B, --bypassUserDN {dn}
         The DN of a user who is allowed to bypass restrictions on the target
         subtree.

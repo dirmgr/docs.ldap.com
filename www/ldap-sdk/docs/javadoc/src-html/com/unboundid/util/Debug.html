@@ -259,12 +259,12 @@
 <span class="sourceLineNo">251</span><a name="line.251"></a>
 <span class="sourceLineNo">252</span>  static<a name="line.252"></a>
 <span class="sourceLineNo">253</span>  {<a name="line.253"></a>
-<span class="sourceLineNo">254</span>    initialize(StaticUtils.getSystemProperties(PROPERTY_DEBUG_ENABLED,<a name="line.254"></a>
+<span class="sourceLineNo">254</span>    initialize(PropertyManager.getProperties(PROPERTY_DEBUG_ENABLED,<a name="line.254"></a>
 <span class="sourceLineNo">255</span>         PROPERTY_DEBUG_LEVEL, PROPERTY_DEBUG_TYPE,<a name="line.255"></a>
 <span class="sourceLineNo">256</span>         PROPERTY_INCLUDE_STACK_TRACE));<a name="line.256"></a>
 <span class="sourceLineNo">257</span><a name="line.257"></a>
 <span class="sourceLineNo">258</span>    final String logFilePropertyValue =<a name="line.258"></a>
-<span class="sourceLineNo">259</span>         StaticUtils.getSystemProperty(PROPERTY_DEBUG_FILE);<a name="line.259"></a>
+<span class="sourceLineNo">259</span>         PropertyManager.get(PROPERTY_DEBUG_FILE);<a name="line.259"></a>
 <span class="sourceLineNo">260</span>    if (logFilePropertyValue != null)<a name="line.260"></a>
 <span class="sourceLineNo">261</span>    {<a name="line.261"></a>
 <span class="sourceLineNo">262</span>      try<a name="line.262"></a>

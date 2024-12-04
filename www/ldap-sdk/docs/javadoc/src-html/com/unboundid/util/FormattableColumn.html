@@ -81,7 +81,7 @@
 <span class="sourceLineNo">073</span>  {<a name="line.73"></a>
 <span class="sourceLineNo">074</span>    char escapeCharacter = '"';<a name="line.74"></a>
 <span class="sourceLineNo">075</span>    final String propertyValue =<a name="line.75"></a>
-<span class="sourceLineNo">076</span>         StaticUtils.getSystemProperty(CSV_QUOTE_ESCAPE_CHARACTER_PROPERTY);<a name="line.76"></a>
+<span class="sourceLineNo">076</span>         PropertyManager.get(CSV_QUOTE_ESCAPE_CHARACTER_PROPERTY);<a name="line.76"></a>
 <span class="sourceLineNo">077</span>    if ((propertyValue != null) &amp;&amp; (propertyValue.length() == 1))<a name="line.77"></a>
 <span class="sourceLineNo">078</span>    {<a name="line.78"></a>
 <span class="sourceLineNo">079</span>      escapeCharacter = propertyValue.charAt(0);<a name="line.79"></a>

@@ -27,6 +27,97 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 7.0.3</h3>
+
+              <p>
+                The following changes were made between the 7.0.2 and 7.0.3 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Fixed an issue in which the LDAP SDK did not properly handle certificates with a
+                  notBefore or notAfter timestamp that fell in the year 2049 if that timestamp was
+                  encoded with the antiquated UTCTime syntax, which only uses two digits to express
+                  the year.  The X.509 specification indicates that UTCTimestamp values with years
+                  of "00" through "49" should be interpreted as the years 2000 through 2049, and
+                  that UTCTime years of "50" through "99" should be interpreted as the years 1950
+                  through 1999, but the LDAP SDK incorrectly treated a year of "49" as 1949 instead
+                  of 2049.  All other year values were properly handled in accordance with the
+                  X.509 specification.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated client-side support for the Ping Identity-proprietary transaction
+                  settings request control to add the ability to request that the server acquire a
+                  scoped lock under certain conditions.  Scoped locks may be useful when it is
+                  possible to identify operations that are more likely than others to result in
+                  lock conflicts (for example, in a multi-tenant deployment, operations targeting
+                  entries in the same tenant are probably more likely to conflict than operations
+                  targeting entries in different tenants), to limit the potential performance
+                  impact in the event of a conflict.  We also added the ability to override the
+                  conditions under which the server may attempt to acquire a single-writer lock
+                  within the associated backend, which could previously only be controlled through
+                  the server configuration, and to indicate whether the control should be taken
+                  into consideration when the operation is replicated to other servers in the
+                  topology.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the ldifmodify tool to report an error if any of the sourceLDIF,
+                  changesLDIF, or targetLDIF arguments referred to the same file.  They must all
+                  refer to different files.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved error reporting in the dump-dns tool, which can be used to obtain a list
+                  of the DNs of the entries beneath a specified base DN in a Ping Identity
+                  Directory Server instance.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the StaticUtils toLowerCase, toUpperCase, and getBytes methods to make
+                  their implementations simpler and more efficient.  These methods were originally
+                  implemented in a way that made them faster than the corresponding methods in the
+                  Java String class, especially for the common case in which the strings contained
+                  only ASCII characters.  However, in modern Java versions (Java 9 and later),
+                  strings are backed by byte arrays rather than character arrays, and it is now
+                  just as fast or faster to use the String methods.  As such, the LDAP SDK
+                  implementations of these methods are now primarily wrappers around the
+                  corresponding Java methods, but with special handling for null values.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved the IP address argument value validator to catch additional types of
+                  malformed IPv4 addresses that were previously accepted.  Also, improved
+                  performance when validating IPv4 addresses.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated client-side support for the Ping Identity Directory Server's version
+                  monitor entry to handle attributes used to indicate whether the server is running
+                  in FIPS-compliant mode (either FIPS 140-2 or FIPS 104-3).
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the set of LDAP-related specifications to include the latest revisions of
+                  the draft-bucksch-sasl-passkey, draft-bucksch-sasl-rememberme,
+                  draft-codere-ldapsyntax, draft-ietf-kitten-sasl-ht,
+                  draft-ietf-kitten-sasl-rememberme, and draft-schmaus-kitten-sasl-ht drafts.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 7.0.2</h3>
 
               <p>
@@ -83,7 +174,9 @@
                   Updated the documentation to include the latest revisions of
                   draft-coretta-ldap-subnf-01, draft-coretta-oiddir-radit,
                   draft-coretta-oiddir-radsa, draft-coretta-oiddir-radua,
-                  draft-coretta-oiddir-roadmap, and draft-coretta-oiddir-schema in the set of
+                  draft-coretta-oiddir-roadmap, draft-coretta-oiddir-schema,
+                  draft-ietf-kitten-scram-2fa, draft-melnikov-sasl2, draft-melnikov-scram-bis,
+                  draft-melnikov-scram-sha-512, and draft-melnikov-scram-sha3-512 in the set of
                   LDAP-related specifications.
                   <br><br>
                 </li>
@@ -10079,6 +10172,6 @@
               </p>
 
 
-    <div class="copyright-footer">Copyright &copy; 2010-2024 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2025 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

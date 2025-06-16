@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2010-2024 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2010-2025 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2010-2024 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2010-2025 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2010-2024 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2010-2025 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -474,114 +474,128 @@
 <span class="sourceLineNo">466</span>    {<a name="line.466"></a>
 <span class="sourceLineNo">467</span>      final ExtendedResult streamValuesResult =<a name="line.467"></a>
 <span class="sourceLineNo">468</span>           conn.processExtendedOperation(streamValuesRequest);<a name="line.468"></a>
-<span class="sourceLineNo">469</span>      err("Processing completed.  ", dnsWritten.get(), " DNs written.");<a name="line.469"></a>
-<span class="sourceLineNo">470</span>      return streamValuesResult.getResultCode();<a name="line.470"></a>
-<span class="sourceLineNo">471</span>    }<a name="line.471"></a>
-<span class="sourceLineNo">472</span>    catch (final LDAPException le)<a name="line.472"></a>
-<span class="sourceLineNo">473</span>    {<a name="line.473"></a>
-<span class="sourceLineNo">474</span>      err("Unable  to send the stream directory values extended request to " +<a name="line.474"></a>
-<span class="sourceLineNo">475</span>          "the Directory Server:  ", le.getExceptionMessage());<a name="line.475"></a>
-<span class="sourceLineNo">476</span>      return le.getResultCode();<a name="line.476"></a>
-<span class="sourceLineNo">477</span>    }<a name="line.477"></a>
-<span class="sourceLineNo">478</span>    finally<a name="line.478"></a>
-<span class="sourceLineNo">479</span>    {<a name="line.479"></a>
-<span class="sourceLineNo">480</span>      if (f != null)<a name="line.480"></a>
-<span class="sourceLineNo">481</span>      {<a name="line.481"></a>
-<span class="sourceLineNo">482</span>        outputStream.close();<a name="line.482"></a>
-<span class="sourceLineNo">483</span>      }<a name="line.483"></a>
-<span class="sourceLineNo">484</span><a name="line.484"></a>
-<span class="sourceLineNo">485</span>      conn.close();<a name="line.485"></a>
-<span class="sourceLineNo">486</span>    }<a name="line.486"></a>
-<span class="sourceLineNo">487</span>  }<a name="line.487"></a>
-<span class="sourceLineNo">488</span><a name="line.488"></a>
-<span class="sourceLineNo">489</span><a name="line.489"></a>
-<span class="sourceLineNo">490</span><a name="line.490"></a>
-<span class="sourceLineNo">491</span>  /**<a name="line.491"></a>
-<span class="sourceLineNo">492</span>   * Retrieves a set of information that may be used to generate example usage<a name="line.492"></a>
-<span class="sourceLineNo">493</span>   * information.  Each element in the returned map should consist of a map<a name="line.493"></a>
-<span class="sourceLineNo">494</span>   * between an example set of arguments and a string that describes the<a name="line.494"></a>
-<span class="sourceLineNo">495</span>   * behavior of the tool when invoked with that set of arguments.<a name="line.495"></a>
-<span class="sourceLineNo">496</span>   *<a name="line.496"></a>
-<span class="sourceLineNo">497</span>   * @return  A set of information that may be used to generate example usage<a name="line.497"></a>
-<span class="sourceLineNo">498</span>   *          information.  It may be {@code null} or empty if no example usage<a name="line.498"></a>
-<span class="sourceLineNo">499</span>   *          information is available.<a name="line.499"></a>
-<span class="sourceLineNo">500</span>   */<a name="line.500"></a>
-<span class="sourceLineNo">501</span>  @Override()<a name="line.501"></a>
-<span class="sourceLineNo">502</span>  @NotNull()<a name="line.502"></a>
-<span class="sourceLineNo">503</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.503"></a>
-<span class="sourceLineNo">504</span>  {<a name="line.504"></a>
-<span class="sourceLineNo">505</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap =<a name="line.505"></a>
-<span class="sourceLineNo">506</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.506"></a>
-<span class="sourceLineNo">507</span><a name="line.507"></a>
-<span class="sourceLineNo">508</span>    final String[] args =<a name="line.508"></a>
-<span class="sourceLineNo">509</span>    {<a name="line.509"></a>
-<span class="sourceLineNo">510</span>      "--hostname", "server.example.com",<a name="line.510"></a>
-<span class="sourceLineNo">511</span>      "--port", "389",<a name="line.511"></a>
-<span class="sourceLineNo">512</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.512"></a>
-<span class="sourceLineNo">513</span>      "--bindPassword", "password",<a name="line.513"></a>
-<span class="sourceLineNo">514</span>      "--baseDN", "dc=example,dc=com",<a name="line.514"></a>
-<span class="sourceLineNo">515</span>      "--outputFile", "example-dns.txt",<a name="line.515"></a>
-<span class="sourceLineNo">516</span>    };<a name="line.516"></a>
-<span class="sourceLineNo">517</span>    exampleMap.put(args,<a name="line.517"></a>
-<span class="sourceLineNo">518</span>         "Dump all entry DNs at or below 'dc=example,dc=com' to the file " +<a name="line.518"></a>
-<span class="sourceLineNo">519</span>              "'example-dns.txt'");<a name="line.519"></a>
-<span class="sourceLineNo">520</span><a name="line.520"></a>
-<span class="sourceLineNo">521</span>    return exampleMap;<a name="line.521"></a>
-<span class="sourceLineNo">522</span>  }<a name="line.522"></a>
-<span class="sourceLineNo">523</span><a name="line.523"></a>
-<span class="sourceLineNo">524</span><a name="line.524"></a>
-<span class="sourceLineNo">525</span><a name="line.525"></a>
-<span class="sourceLineNo">526</span>  /**<a name="line.526"></a>
-<span class="sourceLineNo">527</span>   * Indicates that the provided intermediate response has been returned by the<a name="line.527"></a>
-<span class="sourceLineNo">528</span>   * server and may be processed by this intermediate response listener.  In<a name="line.528"></a>
-<span class="sourceLineNo">529</span>   * this case, it will<a name="line.529"></a>
-<span class="sourceLineNo">530</span>   *<a name="line.530"></a>
-<span class="sourceLineNo">531</span>   * @param  intermediateResponse  The intermediate response that has been<a name="line.531"></a>
-<span class="sourceLineNo">532</span>   *                               returned by the server.<a name="line.532"></a>
-<span class="sourceLineNo">533</span>   */<a name="line.533"></a>
-<span class="sourceLineNo">534</span>  @Override()<a name="line.534"></a>
-<span class="sourceLineNo">535</span>  public void intermediateResponseReturned(<a name="line.535"></a>
-<span class="sourceLineNo">536</span>                   @NotNull final IntermediateResponse intermediateResponse)<a name="line.536"></a>
-<span class="sourceLineNo">537</span>  {<a name="line.537"></a>
-<span class="sourceLineNo">538</span>    // Try to parse the intermediate response as a stream directory values<a name="line.538"></a>
-<span class="sourceLineNo">539</span>    // intermediate response.<a name="line.539"></a>
-<span class="sourceLineNo">540</span>    final StreamDirectoryValuesIntermediateResponse streamValuesIR;<a name="line.540"></a>
-<span class="sourceLineNo">541</span>    try<a name="line.541"></a>
-<span class="sourceLineNo">542</span>    {<a name="line.542"></a>
-<span class="sourceLineNo">543</span>      streamValuesIR =<a name="line.543"></a>
-<span class="sourceLineNo">544</span>           new StreamDirectoryValuesIntermediateResponse(intermediateResponse);<a name="line.544"></a>
-<span class="sourceLineNo">545</span>    }<a name="line.545"></a>
-<span class="sourceLineNo">546</span>    catch (final LDAPException le)<a name="line.546"></a>
-<span class="sourceLineNo">547</span>    {<a name="line.547"></a>
-<span class="sourceLineNo">548</span>      err("Unable to parse an intermediate response message as a stream " +<a name="line.548"></a>
-<span class="sourceLineNo">549</span>          "directory values intermediate response:  ",<a name="line.549"></a>
-<span class="sourceLineNo">550</span>          le.getExceptionMessage());<a name="line.550"></a>
-<span class="sourceLineNo">551</span>      return;<a name="line.551"></a>
-<span class="sourceLineNo">552</span>    }<a name="line.552"></a>
-<span class="sourceLineNo">553</span><a name="line.553"></a>
-<span class="sourceLineNo">554</span>    final String diagnosticMessage = streamValuesIR.getDiagnosticMessage();<a name="line.554"></a>
-<span class="sourceLineNo">555</span>    if ((diagnosticMessage != null) &amp;&amp; (! diagnosticMessage.isEmpty()))<a name="line.555"></a>
+<span class="sourceLineNo">469</span><a name="line.469"></a>
+<span class="sourceLineNo">470</span>      final ResultCode resultCode = streamValuesResult.getResultCode();<a name="line.470"></a>
+<span class="sourceLineNo">471</span>      if (resultCode != ResultCode.SUCCESS)<a name="line.471"></a>
+<span class="sourceLineNo">472</span>      {<a name="line.472"></a>
+<span class="sourceLineNo">473</span>        err("Processing failed with result code ", resultCode);<a name="line.473"></a>
+<span class="sourceLineNo">474</span>      }<a name="line.474"></a>
+<span class="sourceLineNo">475</span><a name="line.475"></a>
+<span class="sourceLineNo">476</span>      final String diagnosticMessage =<a name="line.476"></a>
+<span class="sourceLineNo">477</span>           streamValuesResult.getDiagnosticMessage();<a name="line.477"></a>
+<span class="sourceLineNo">478</span>      if ((diagnosticMessage != null) &amp;&amp; (! diagnosticMessage.isEmpty()))<a name="line.478"></a>
+<span class="sourceLineNo">479</span>      {<a name="line.479"></a>
+<span class="sourceLineNo">480</span>        err(diagnosticMessage);<a name="line.480"></a>
+<span class="sourceLineNo">481</span>      }<a name="line.481"></a>
+<span class="sourceLineNo">482</span><a name="line.482"></a>
+<span class="sourceLineNo">483</span>      err("Processing completed.  ", dnsWritten.get(), " DNs written.");<a name="line.483"></a>
+<span class="sourceLineNo">484</span>      return streamValuesResult.getResultCode();<a name="line.484"></a>
+<span class="sourceLineNo">485</span>    }<a name="line.485"></a>
+<span class="sourceLineNo">486</span>    catch (final LDAPException le)<a name="line.486"></a>
+<span class="sourceLineNo">487</span>    {<a name="line.487"></a>
+<span class="sourceLineNo">488</span>      err("Unable  to send the stream directory values extended request to " +<a name="line.488"></a>
+<span class="sourceLineNo">489</span>          "the Directory Server:  ", le.getExceptionMessage());<a name="line.489"></a>
+<span class="sourceLineNo">490</span>      return le.getResultCode();<a name="line.490"></a>
+<span class="sourceLineNo">491</span>    }<a name="line.491"></a>
+<span class="sourceLineNo">492</span>    finally<a name="line.492"></a>
+<span class="sourceLineNo">493</span>    {<a name="line.493"></a>
+<span class="sourceLineNo">494</span>      if (f != null)<a name="line.494"></a>
+<span class="sourceLineNo">495</span>      {<a name="line.495"></a>
+<span class="sourceLineNo">496</span>        outputStream.close();<a name="line.496"></a>
+<span class="sourceLineNo">497</span>      }<a name="line.497"></a>
+<span class="sourceLineNo">498</span><a name="line.498"></a>
+<span class="sourceLineNo">499</span>      conn.close();<a name="line.499"></a>
+<span class="sourceLineNo">500</span>    }<a name="line.500"></a>
+<span class="sourceLineNo">501</span>  }<a name="line.501"></a>
+<span class="sourceLineNo">502</span><a name="line.502"></a>
+<span class="sourceLineNo">503</span><a name="line.503"></a>
+<span class="sourceLineNo">504</span><a name="line.504"></a>
+<span class="sourceLineNo">505</span>  /**<a name="line.505"></a>
+<span class="sourceLineNo">506</span>   * Retrieves a set of information that may be used to generate example usage<a name="line.506"></a>
+<span class="sourceLineNo">507</span>   * information.  Each element in the returned map should consist of a map<a name="line.507"></a>
+<span class="sourceLineNo">508</span>   * between an example set of arguments and a string that describes the<a name="line.508"></a>
+<span class="sourceLineNo">509</span>   * behavior of the tool when invoked with that set of arguments.<a name="line.509"></a>
+<span class="sourceLineNo">510</span>   *<a name="line.510"></a>
+<span class="sourceLineNo">511</span>   * @return  A set of information that may be used to generate example usage<a name="line.511"></a>
+<span class="sourceLineNo">512</span>   *          information.  It may be {@code null} or empty if no example usage<a name="line.512"></a>
+<span class="sourceLineNo">513</span>   *          information is available.<a name="line.513"></a>
+<span class="sourceLineNo">514</span>   */<a name="line.514"></a>
+<span class="sourceLineNo">515</span>  @Override()<a name="line.515"></a>
+<span class="sourceLineNo">516</span>  @NotNull()<a name="line.516"></a>
+<span class="sourceLineNo">517</span>  public LinkedHashMap&lt;String[],String&gt; getExampleUsages()<a name="line.517"></a>
+<span class="sourceLineNo">518</span>  {<a name="line.518"></a>
+<span class="sourceLineNo">519</span>    final LinkedHashMap&lt;String[],String&gt; exampleMap =<a name="line.519"></a>
+<span class="sourceLineNo">520</span>         new LinkedHashMap&lt;&gt;(StaticUtils.computeMapCapacity(1));<a name="line.520"></a>
+<span class="sourceLineNo">521</span><a name="line.521"></a>
+<span class="sourceLineNo">522</span>    final String[] args =<a name="line.522"></a>
+<span class="sourceLineNo">523</span>    {<a name="line.523"></a>
+<span class="sourceLineNo">524</span>      "--hostname", "server.example.com",<a name="line.524"></a>
+<span class="sourceLineNo">525</span>      "--port", "389",<a name="line.525"></a>
+<span class="sourceLineNo">526</span>      "--bindDN", "uid=admin,dc=example,dc=com",<a name="line.526"></a>
+<span class="sourceLineNo">527</span>      "--bindPassword", "password",<a name="line.527"></a>
+<span class="sourceLineNo">528</span>      "--baseDN", "dc=example,dc=com",<a name="line.528"></a>
+<span class="sourceLineNo">529</span>      "--outputFile", "example-dns.txt",<a name="line.529"></a>
+<span class="sourceLineNo">530</span>    };<a name="line.530"></a>
+<span class="sourceLineNo">531</span>    exampleMap.put(args,<a name="line.531"></a>
+<span class="sourceLineNo">532</span>         "Dump all entry DNs at or below 'dc=example,dc=com' to the file " +<a name="line.532"></a>
+<span class="sourceLineNo">533</span>              "'example-dns.txt'");<a name="line.533"></a>
+<span class="sourceLineNo">534</span><a name="line.534"></a>
+<span class="sourceLineNo">535</span>    return exampleMap;<a name="line.535"></a>
+<span class="sourceLineNo">536</span>  }<a name="line.536"></a>
+<span class="sourceLineNo">537</span><a name="line.537"></a>
+<span class="sourceLineNo">538</span><a name="line.538"></a>
+<span class="sourceLineNo">539</span><a name="line.539"></a>
+<span class="sourceLineNo">540</span>  /**<a name="line.540"></a>
+<span class="sourceLineNo">541</span>   * Indicates that the provided intermediate response has been returned by the<a name="line.541"></a>
+<span class="sourceLineNo">542</span>   * server and may be processed by this intermediate response listener.  In<a name="line.542"></a>
+<span class="sourceLineNo">543</span>   * this case, it will<a name="line.543"></a>
+<span class="sourceLineNo">544</span>   *<a name="line.544"></a>
+<span class="sourceLineNo">545</span>   * @param  intermediateResponse  The intermediate response that has been<a name="line.545"></a>
+<span class="sourceLineNo">546</span>   *                               returned by the server.<a name="line.546"></a>
+<span class="sourceLineNo">547</span>   */<a name="line.547"></a>
+<span class="sourceLineNo">548</span>  @Override()<a name="line.548"></a>
+<span class="sourceLineNo">549</span>  public void intermediateResponseReturned(<a name="line.549"></a>
+<span class="sourceLineNo">550</span>                   @NotNull final IntermediateResponse intermediateResponse)<a name="line.550"></a>
+<span class="sourceLineNo">551</span>  {<a name="line.551"></a>
+<span class="sourceLineNo">552</span>    // Try to parse the intermediate response as a stream directory values<a name="line.552"></a>
+<span class="sourceLineNo">553</span>    // intermediate response.<a name="line.553"></a>
+<span class="sourceLineNo">554</span>    final StreamDirectoryValuesIntermediateResponse streamValuesIR;<a name="line.554"></a>
+<span class="sourceLineNo">555</span>    try<a name="line.555"></a>
 <span class="sourceLineNo">556</span>    {<a name="line.556"></a>
-<span class="sourceLineNo">557</span>      err(diagnosticMessage);<a name="line.557"></a>
-<span class="sourceLineNo">558</span>    }<a name="line.558"></a>
-<span class="sourceLineNo">559</span><a name="line.559"></a>
-<span class="sourceLineNo">560</span><a name="line.560"></a>
-<span class="sourceLineNo">561</span>    final List&lt;ASN1OctetString&gt; values = streamValuesIR.getValues();<a name="line.561"></a>
-<span class="sourceLineNo">562</span>    if ((values != null) &amp;&amp; (! values.isEmpty()))<a name="line.562"></a>
-<span class="sourceLineNo">563</span>    {<a name="line.563"></a>
-<span class="sourceLineNo">564</span>      for (final ASN1OctetString s : values)<a name="line.564"></a>
-<span class="sourceLineNo">565</span>      {<a name="line.565"></a>
-<span class="sourceLineNo">566</span>        outputStream.println(s.toString());<a name="line.566"></a>
-<span class="sourceLineNo">567</span>      }<a name="line.567"></a>
-<span class="sourceLineNo">568</span><a name="line.568"></a>
-<span class="sourceLineNo">569</span>      final long updatedCount = dnsWritten.addAndGet(values.size());<a name="line.569"></a>
-<span class="sourceLineNo">570</span>      if (outputFile.isPresent())<a name="line.570"></a>
-<span class="sourceLineNo">571</span>      {<a name="line.571"></a>
-<span class="sourceLineNo">572</span>        err(updatedCount, " DNs written.");<a name="line.572"></a>
-<span class="sourceLineNo">573</span>      }<a name="line.573"></a>
-<span class="sourceLineNo">574</span>    }<a name="line.574"></a>
-<span class="sourceLineNo">575</span>  }<a name="line.575"></a>
-<span class="sourceLineNo">576</span>}<a name="line.576"></a>
+<span class="sourceLineNo">557</span>      streamValuesIR =<a name="line.557"></a>
+<span class="sourceLineNo">558</span>           new StreamDirectoryValuesIntermediateResponse(intermediateResponse);<a name="line.558"></a>
+<span class="sourceLineNo">559</span>    }<a name="line.559"></a>
+<span class="sourceLineNo">560</span>    catch (final LDAPException le)<a name="line.560"></a>
+<span class="sourceLineNo">561</span>    {<a name="line.561"></a>
+<span class="sourceLineNo">562</span>      err("Unable to parse an intermediate response message as a stream " +<a name="line.562"></a>
+<span class="sourceLineNo">563</span>          "directory values intermediate response:  ",<a name="line.563"></a>
+<span class="sourceLineNo">564</span>          le.getExceptionMessage());<a name="line.564"></a>
+<span class="sourceLineNo">565</span>      return;<a name="line.565"></a>
+<span class="sourceLineNo">566</span>    }<a name="line.566"></a>
+<span class="sourceLineNo">567</span><a name="line.567"></a>
+<span class="sourceLineNo">568</span>    final String diagnosticMessage = streamValuesIR.getDiagnosticMessage();<a name="line.568"></a>
+<span class="sourceLineNo">569</span>    if ((diagnosticMessage != null) &amp;&amp; (! diagnosticMessage.isEmpty()))<a name="line.569"></a>
+<span class="sourceLineNo">570</span>    {<a name="line.570"></a>
+<span class="sourceLineNo">571</span>      err(diagnosticMessage);<a name="line.571"></a>
+<span class="sourceLineNo">572</span>    }<a name="line.572"></a>
+<span class="sourceLineNo">573</span><a name="line.573"></a>
+<span class="sourceLineNo">574</span><a name="line.574"></a>
+<span class="sourceLineNo">575</span>    final List&lt;ASN1OctetString&gt; values = streamValuesIR.getValues();<a name="line.575"></a>
+<span class="sourceLineNo">576</span>    if ((values != null) &amp;&amp; (! values.isEmpty()))<a name="line.576"></a>
+<span class="sourceLineNo">577</span>    {<a name="line.577"></a>
+<span class="sourceLineNo">578</span>      for (final ASN1OctetString s : values)<a name="line.578"></a>
+<span class="sourceLineNo">579</span>      {<a name="line.579"></a>
+<span class="sourceLineNo">580</span>        outputStream.println(s.toString());<a name="line.580"></a>
+<span class="sourceLineNo">581</span>      }<a name="line.581"></a>
+<span class="sourceLineNo">582</span><a name="line.582"></a>
+<span class="sourceLineNo">583</span>      final long updatedCount = dnsWritten.addAndGet(values.size());<a name="line.583"></a>
+<span class="sourceLineNo">584</span>      if (outputFile.isPresent())<a name="line.584"></a>
+<span class="sourceLineNo">585</span>      {<a name="line.585"></a>
+<span class="sourceLineNo">586</span>        err(updatedCount, " DNs written.");<a name="line.586"></a>
+<span class="sourceLineNo">587</span>      }<a name="line.587"></a>
+<span class="sourceLineNo">588</span>    }<a name="line.588"></a>
+<span class="sourceLineNo">589</span>  }<a name="line.589"></a>
+<span class="sourceLineNo">590</span>}<a name="line.590"></a>
 
 
 

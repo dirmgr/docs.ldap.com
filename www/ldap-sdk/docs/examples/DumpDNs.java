@@ -1,9 +1,9 @@
 /*
- * Copyright 2010-2024 Ping Identity Corporation
+ * Copyright 2010-2025 Ping Identity Corporation
  * All Rights Reserved.
  */
 /*
- * Copyright 2010-2024 Ping Identity Corporation
+ * Copyright 2010-2025 Ping Identity Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2010-2024 Ping Identity Corporation
+ * Copyright (C) 2010-2025 Ping Identity Corporation
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License (GPLv2 only)
@@ -466,6 +466,20 @@ public final class DumpDNs
     {
       final ExtendedResult streamValuesResult =
            conn.processExtendedOperation(streamValuesRequest);
+
+      final ResultCode resultCode = streamValuesResult.getResultCode();
+      if (resultCode != ResultCode.SUCCESS)
+      {
+        err("Processing failed with result code ", resultCode);
+      }
+
+      final String diagnosticMessage =
+           streamValuesResult.getDiagnosticMessage();
+      if ((diagnosticMessage != null) && (! diagnosticMessage.isEmpty()))
+      {
+        err(diagnosticMessage);
+      }
+
       err("Processing completed.  ", dnsWritten.get(), " DNs written.");
       return streamValuesResult.getResultCode();
     }

@@ -322,5 +322,5 @@ Examples
   specified file.
 
     collect-support-data \
-         --decrypt support-data-ds-inst1-20250613151904.661Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20251203175012.332Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt

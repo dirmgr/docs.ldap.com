@@ -27,6 +27,69 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 7.0.4</h3>
+
+              <p>
+                The following changes were made between the 7.0.3 and 7.0.4 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Added a "discard results" search result listener that can be used in cases where
+                  a search should be performed, but the actual contents of any applicable search
+                  result entries or references are not needed.  The number of entries and
+                  references returned will still be available in the search result.  For example,
+                  this may be useful for testing purposes, if a search should be performed and
+                  you want to verify the result and potentially the number of entries and/or
+                  references returned, but you don't need to examine their contents.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added client-side support for a W3C trace context request control that can be
+                  used to convey information for use in distributed tracing (e.g., via
+                  OpenTelemetry).  This control was originally defined in the ForgeRock Directory
+                  Server (now known as PingDS), and will also be supported in the Ping Identity
+                  Directory Server.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the server set blacklist manager to improve debug logging in the event
+                  that servers are added to or removed from the blacklist.  The round robin and
+                  fewest connections server sets can be configured to use this blacklist manager to
+                  temporarily avoid attempting to create connections to a server when health
+                  checking determines that it's not in an acceptably usable state.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the PropertyManager class to make it possible to cache property values
+                  for faster access with less contention.  Caching is disabled by default, but
+                  you can enable it by specifying a maximum cache duration.  Additional methods
+                  are provided to clear the cache, and to populate the cache based on the
+                  currently defined system properties and environment variables.
+                  <br><br>
+                </li>
+
+                <li>
+                  Improved performance and reduced contention when retrieving environment variables
+                  from the JVM process.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest revisions of
+                  draft-bouchez-scram-mcf and draft-codere-ldapsyntax in the set of LDAP-related
+                  specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 7.0.3</h3>
 
               <p>

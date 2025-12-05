@@ -517,13 +517,13 @@ Available options include:
 Examples
 
   Set the password changed time for user 'uid=jdoe,ou=People,dc=example,dc=com'
-  to '20250613151904.687Z'.
+  to '20251203175012.358Z'.
 
     manage-account set-password-changed-time set-password-changed-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordChangedTime 20250613151904.687Z
+         --passwordChangedTime 20251203175012.358Z
 
 
 
@@ -665,13 +665,13 @@ Available options include:
 Examples
 
   Set the account activation time for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to '20250613151904.687Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to '20251203175012.358Z'.
 
     manage-account set-account-activation-time set-account-activation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountActivationTime 20250613151904.687Z
+         --accountActivationTime 20251203175012.358Z
 
 
 
@@ -781,13 +781,13 @@ Available options include:
 Examples
 
   Set the account expiration time for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to '20250613151904.687Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to '20251203175012.358Z'.
 
     manage-account set-account-expiration-time set-account-expiration-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --accountExpirationTime 20250613151904.687Z
+         --accountExpirationTime 20251203175012.358Z
 
 
 
@@ -894,14 +894,14 @@ Available options include:
 Examples
 
   Set the password expiration warned time for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to '20250613151904.687Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to '20251203175012.358Z'.
 
     manage-account set-password-expiration-warned-time \
          set-password-expiration-warned-time --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --passwordExpirationWarnedTime 20250613151904.687Z
+         --passwordExpirationWarnedTime 20251203175012.358Z
 
 
 
@@ -1180,15 +1180,15 @@ Examples
 
   Sets the authentication failure times for user
   'uid=jdoe,ou=People,dc=example,dc=com' to include values of
-  '20250613151852.342Z' and '20250613151904.687Z'.
+  '20251203175000.013Z' and '20251203175012.358Z'.
 
     manage-account set-authentication-failure-times \
          set-authentication-failure-times --hostname server.example.com \
          --port 389 --bindDN uid=admin,dc=example,dc=com \
          --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --authenticationFailureTime 20250613151852.342Z \
-         --authenticationFailureTime 20250613151904.687Z
+         --authenticationFailureTime 20251203175000.013Z \
+         --authenticationFailureTime 20251203175012.358Z
 
 
 
@@ -1477,13 +1477,13 @@ Available options include:
 Examples
 
   Sets the last login time for user 'uid=jdoe,ou=People,dc=example,dc=com' to
-  '20250613151904.687Z'.
+  '20251203175012.358Z'.
 
     manage-account set-last-login-time set-last-login-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --lastLoginTime 20250613151904.687Z
+         --lastLoginTime 20251203175012.358Z
 
 
 
@@ -1642,15 +1642,15 @@ Available options include:
 Examples
 
   Sets the grace login use times for user
-  'uid=jdoe,ou=People,dc=example,dc=com' to be '20250613151852.342Z' and
-  '20250613151904.687Z'.
+  'uid=jdoe,ou=People,dc=example,dc=com' to be '20251203175000.013Z' and
+  '20251203175012.358Z'.
 
     manage-account set-grace-login-use-times set-grace-login-use-times \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --graceLoginUseTime 20250613151852.342Z \
-         --graceLoginUseTime 20250613151904.687Z
+         --graceLoginUseTime 20251203175000.013Z \
+         --graceLoginUseTime 20251203175012.358Z
 
 
 
@@ -2286,14 +2286,14 @@ Examples
 
   Updates the password policy state for user
   'uid=jdoe,ou=People,dc=example,dc=com' to indicate that the server last
-  invoked password validators during a bind at time '20250613151904.687Z'.
+  invoked password validators during a bind at time '20251203175012.358Z'.
 
     manage-account set-last-bind-password-validation-time \
          set-last-bind-password-validation-time \
          --hostname server.example.com --port 389 \
          --bindDN uid=admin,dc=example,dc=com --promptForBindPassword \
          --targetDN uid=jdoe,ou=People,dc=example,dc=com \
-         --validationTime 20250613151904.687Z
+         --validationTime 20251203175012.358Z
 
 
 

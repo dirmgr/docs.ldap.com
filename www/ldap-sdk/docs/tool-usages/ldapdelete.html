@@ -652,7 +652,8 @@
          --trustStorePath trust-store.jks \
          --bindDN uid=admin,dc=example,dc=com \
          --bindPasswordFile admin-password.txt \
-         --deleteEntriesMatchingFilter "(description=delete)"</pre></blockquote>
+         --deleteEntriesMatchingFilter "(description=delete)" \
+         --searchBaseDN ou=People,dc=example,dc=com</pre></blockquote>
     <ul>
       <li>Deletes the entries whose DNs are read from standard input (one DN per line).</li>
     </ul>

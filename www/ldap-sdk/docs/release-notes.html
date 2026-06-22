@@ -27,6 +27,46 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 7.0.5</h3>
+
+              <p>
+                The following changes were made between the 7.0.4 and 7.0.5 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Updated the LDAP SDK's persistence framework to provide improved security
+                  validation when using Java serialization with the DefaultObjectEncoder.  Relying
+                  on Java serialization is not recommended, especially when using the persistence
+                  framework (a) because it's not necessarily safe in general to load Java arbitrary
+                  Java objects from an external data store, and (b) because the resulting attribute
+                  values won't be usable by anything other than Java applications able to
+                  deserialize them.  This is contrary to the intent of the persistence framework,
+                  which is meant to allow store objects in an LDAP server in a way that makes them
+                  generally accessible to other kinds of LDAP clients.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated an ldapdelete example usage to include --searchBaseDN argument that was
+                  mentioned in the example description but inadvertently omitted from the example
+                  arguments.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest revisions of
+                  draft-bouchez-scram-mcf, draft-codere-ldapsyntax, draft-kaliski-asn1-layman-guide,
+                  draft-ietf-kitten-password-storage, draft-ietf-kitten-sasl-ht,
+                  draft-khan-ldap-bind-return-dn, and draft-sabadello-did-challenge-sasl.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 7.0.4</h3>
 
               <p>
@@ -10235,6 +10275,6 @@
               </p>
 
 
-    <div class="copyright-footer">Copyright &copy; 2010-2025 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
+    <div class="copyright-footer">Copyright &copy; 2010-2026 &ndash; Ping Identity Corporation &ndash; All rights reserved.</div>
   </body>
 </html>

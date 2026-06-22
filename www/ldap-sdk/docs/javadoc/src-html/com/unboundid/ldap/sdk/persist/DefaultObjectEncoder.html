@@ -7,11 +7,11 @@
 <body>
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
-<span class="sourceLineNo">002</span> * Copyright 2009-2025 Ping Identity Corporation<a name="line.2"></a>
+<span class="sourceLineNo">002</span> * Copyright 2009-2026 Ping Identity Corporation<a name="line.2"></a>
 <span class="sourceLineNo">003</span> * All Rights Reserved.<a name="line.3"></a>
 <span class="sourceLineNo">004</span> */<a name="line.4"></a>
 <span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Copyright 2009-2025 Ping Identity Corporation<a name="line.6"></a>
+<span class="sourceLineNo">006</span> * Copyright 2009-2026 Ping Identity Corporation<a name="line.6"></a>
 <span class="sourceLineNo">007</span> *<a name="line.7"></a>
 <span class="sourceLineNo">008</span> * Licensed under the Apache License, Version 2.0 (the "License");<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * you may not use this file except in compliance with the License.<a name="line.9"></a>
@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span> * limitations under the License.<a name="line.18"></a>
 <span class="sourceLineNo">019</span> */<a name="line.19"></a>
 <span class="sourceLineNo">020</span>/*<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * Copyright (C) 2009-2025 Ping Identity Corporation<a name="line.21"></a>
+<span class="sourceLineNo">021</span> * Copyright (C) 2009-2026 Ping Identity Corporation<a name="line.21"></a>
 <span class="sourceLineNo">022</span> *<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * This program is free software; you can redistribute it and/or modify<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * it under the terms of the GNU General Public License (GPLv2 only)<a name="line.24"></a>
@@ -1583,67 +1583,68 @@
 <span class="sourceLineNo">1575</span>      {<a name="line.1575"></a>
 <span class="sourceLineNo">1576</span>        final ByteArrayInputStream bais =<a name="line.1576"></a>
 <span class="sourceLineNo">1577</span>             new ByteArrayInputStream(v.getValue());<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>        final ObjectInputStream ois = new ObjectInputStream(bais);<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>        final Object o = ois.readObject();<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>        ois.close();<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>        return o;<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>      }<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>      catch (final Exception e)<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span>      {<a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>        Debug.debugException(e);<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>        throw new LDAPPersistException(<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>             ERR_DEFAULT_ENCODER_CANNOT_DESERIALIZE.get(a.getName(),<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>                  StaticUtils.getExceptionMessage(e)),<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>             e);<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>      }<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>    }<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span><a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>    return null;<a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>  }<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span><a name="line.1595"></a>
+<span class="sourceLineNo">1578</span>        final ObjectInputStream ois =<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>             new DefaultObjectEncoderWhitelistingObjectInputStream(bais, t);<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>        final Object o = ois.readObject();<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>        ois.close();<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>        return o;<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>      }<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>      catch (final Exception e)<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>      {<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>        Debug.debugException(e);<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>        throw new LDAPPersistException(<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>             ERR_DEFAULT_ENCODER_CANNOT_DESERIALIZE.get(a.getName(),<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>                  StaticUtils.getExceptionMessage(e)),<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>             e);<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>      }<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>    }<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span><a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>    return null;<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>  }<a name="line.1595"></a>
 <span class="sourceLineNo">1596</span><a name="line.1596"></a>
 <span class="sourceLineNo">1597</span><a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>  /**<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>   * Invokes the {@code add} method on the provided {@code List} or {@code Set}<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>   * object.<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>   *<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span>   * @param  l  The list or set on which to invoke the {@code add} method.<a name="line.1602"></a>
-<span class="sourceLineNo">1603</span>   * @param  o  The object to add to the {@code List} or {@code Set} object.<a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>   *<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>   * @throws  LDAPPersistException  If a problem occurs while attempting to<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span>   *                                invoke the {@code add} method.<a name="line.1606"></a>
-<span class="sourceLineNo">1607</span>   */<a name="line.1607"></a>
-<span class="sourceLineNo">1608</span>  private static void invokeAdd(@NotNull final Object l,<a name="line.1608"></a>
-<span class="sourceLineNo">1609</span>                                @NotNull final Object o)<a name="line.1609"></a>
-<span class="sourceLineNo">1610</span>          throws LDAPPersistException<a name="line.1610"></a>
-<span class="sourceLineNo">1611</span>  {<a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>    final Class&lt;?&gt; c = l.getClass();<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span><a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>    for (final Method m : c.getMethods())<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span>    {<a name="line.1615"></a>
-<span class="sourceLineNo">1616</span>      if (m.getName().equals("add") &amp;&amp;<a name="line.1616"></a>
-<span class="sourceLineNo">1617</span>          (m.getGenericParameterTypes().length == 1))<a name="line.1617"></a>
-<span class="sourceLineNo">1618</span>      {<a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>        try<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>        {<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>          m.invoke(l, o);<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span>          return;<a name="line.1622"></a>
-<span class="sourceLineNo">1623</span>        }<a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>        catch (final Exception e)<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span>        {<a name="line.1625"></a>
-<span class="sourceLineNo">1626</span>          Debug.debugException(e);<a name="line.1626"></a>
-<span class="sourceLineNo">1627</span>          throw new LDAPPersistException(<a name="line.1627"></a>
-<span class="sourceLineNo">1628</span>               ERR_DEFAULT_ENCODER_CANNOT_ADD.get(<a name="line.1628"></a>
-<span class="sourceLineNo">1629</span>                    StaticUtils.getExceptionMessage(e)),<a name="line.1629"></a>
-<span class="sourceLineNo">1630</span>               e);<a name="line.1630"></a>
-<span class="sourceLineNo">1631</span>        }<a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>      }<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span>    }<a name="line.1633"></a>
-<span class="sourceLineNo">1634</span><a name="line.1634"></a>
-<span class="sourceLineNo">1635</span>    throw new LDAPPersistException(<a name="line.1635"></a>
-<span class="sourceLineNo">1636</span>         ERR_DEFAULT_ENCODER_CANNOT_FIND_ADD_METHOD.get());<a name="line.1636"></a>
-<span class="sourceLineNo">1637</span>  }<a name="line.1637"></a>
-<span class="sourceLineNo">1638</span>}<a name="line.1638"></a>
+<span class="sourceLineNo">1598</span><a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>  /**<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>   * Invokes the {@code add} method on the provided {@code List} or {@code Set}<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>   * object.<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>   *<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>   * @param  l  The list or set on which to invoke the {@code add} method.<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>   * @param  o  The object to add to the {@code List} or {@code Set} object.<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>   *<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>   * @throws  LDAPPersistException  If a problem occurs while attempting to<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span>   *                                invoke the {@code add} method.<a name="line.1607"></a>
+<span class="sourceLineNo">1608</span>   */<a name="line.1608"></a>
+<span class="sourceLineNo">1609</span>  private static void invokeAdd(@NotNull final Object l,<a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>                                @NotNull final Object o)<a name="line.1610"></a>
+<span class="sourceLineNo">1611</span>          throws LDAPPersistException<a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>  {<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span>    final Class&lt;?&gt; c = l.getClass();<a name="line.1613"></a>
+<span class="sourceLineNo">1614</span><a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>    for (final Method m : c.getMethods())<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>    {<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>      if (m.getName().equals("add") &amp;&amp;<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span>          (m.getGenericParameterTypes().length == 1))<a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>      {<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>        try<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>        {<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>          m.invoke(l, o);<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span>          return;<a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>        }<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>        catch (final Exception e)<a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>        {<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>          Debug.debugException(e);<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>          throw new LDAPPersistException(<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span>               ERR_DEFAULT_ENCODER_CANNOT_ADD.get(<a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>                    StaticUtils.getExceptionMessage(e)),<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>               e);<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>        }<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>      }<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>    }<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span><a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>    throw new LDAPPersistException(<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span>         ERR_DEFAULT_ENCODER_CANNOT_FIND_ADD_METHOD.get());<a name="line.1637"></a>
+<span class="sourceLineNo">1638</span>  }<a name="line.1638"></a>
+<span class="sourceLineNo">1639</span>}<a name="line.1639"></a>
 
 
 

@@ -339,7 +339,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--use-jvm-default-trust-store</tt> &mdash; List certificates from the JVM-default trust store (/usr/java/oracle/jdk1.8.0_411/jre/lib/security/cacerts).
+        <tt>--use-jvm-default-trust-store</tt> &mdash; List certificates from the JVM-default trust store (/usr/java/oracle/jdk1.8.0_511/jre/lib/security/cacerts).
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -436,7 +436,7 @@
         <br><br>
       </li>
       <li>
-        <tt>--use-jvm-default-trust-store</tt> &mdash; Export certificates from the JVM-default trust store (/usr/java/oracle/jdk1.8.0_411/jre/lib/security/cacerts).
+        <tt>--use-jvm-default-trust-store</tt> &mdash; Export certificates from the JVM-default trust store (/usr/java/oracle/jdk1.8.0_511/jre/lib/security/cacerts).
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>
@@ -739,6 +739,12 @@
       </li>
       <li>
         <tt>--no-prompt</tt> &mdash; Import the certificates without prompting the end user.  By default, the certificates will be displayed and the user will be interactively prompted about whether to import them.
+        <br>
+        This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
+        <br><br>
+      </li>
+      <li>
+        <tt>--skip-validation</tt> &mdash; Do not perform any validation on the certificate chain being imported.  Note that this may allow importing invalid certificate chains.
         <br>
         This argument is not allowed to have a value.  If this argument is included in a set of arguments, then it will be assumed to have a value of 'true'.  If it is absent from a set of arguments, then it will be assumed to have a value of 'false'.
         <br><br>

@@ -186,6 +186,13 @@ Available options include:
         traces of all threads running in the JVM.  A value of zero indicates
         that the jstack tool should not be invoked.  If this argument is not
         provided, the tool will be invoked ten times by default.
+    --noJFR
+        Indicates that no attempt should be made to collect Java Flight
+        Recorder (JFR) data.  When this argument is provided, the tool will not
+        attempt to start a new recording, detect an existing recording, or
+        include a JFR recording sample in the support data archive.  While JFR
+        data can be very helpful in diagnosing issues, it may substantially
+        increase the size of the support data archive.
     --reportCount {count}
         The number of intervals of data to collect from tools that use
         interval-based sampling (e.g., vmstat, iostat, mpstat, etc.).  A value
@@ -322,5 +329,5 @@ Examples
   specified file.
 
     collect-support-data \
-         --decrypt support-data-ds-inst1-20260608201152.403Z-zip-encrypted \
+         --decrypt support-data-ds-inst1-20261027220132.887Z-zip-encrypted \
          --passphraseFile encryption-passphrase.txt

@@ -27,6 +27,87 @@
 
               <h2>Release Notes</h2>
 
+              <h3>Version 7.0.6</h3>
+
+              <p>
+                The following changes were made between the 7.0.5 and 7.0.6 releases:
+              </p>
+
+              <ul>
+                <li>
+                  Improved the logic used by the Attribute.nameIsValid methods.  These methods are
+                  used to determine whether a given string represents a valid attribute
+                  description, which consists of a base name and zero or more attribute options.
+                  Previously, the method incorrectly rejected attribute options whose name started
+                  with a digit or a hyphen character, which is a valid initial character for an
+                  attribute option, but not for the base attribute name.  Further, the method
+                  previously only supported textual attribute names, but it now supports numeric
+                  OIDs.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added an Attribute.baseNameIsValid method, which can be used to determine whether
+                  a given string represents a valid base attribute type name, optionally allowing
+                  for numeric OIDs.
+                  <br><br>
+                </li>
+
+                <li>
+                  Added an Attribute.optionNameIsValid method, which can be used to determine
+                  whether a given string represents a valid attribute option name.
+                  <br><br>
+                </li>
+
+                <li>
+                  Permanently disabled auto-reconnect functionality in the LDAP SDK.  This
+                  capability had been deprecated for over ten years, as it was very fragile and
+                  could only work under limited circumstances.  The autoReconnect() and
+                  setAutoReconnect() methods in the LDAPConnectionOptions class are still in place
+                  to preserve API compatibility, but the autoReconnect() method now always returns
+                  a hard-coded value of false, and the setAutoReconnect() method now has no effect.
+                  In cases where automatic retry functionality is desired, you should use a
+                  connection pool instead of an individual connection, using the pool's
+                  setRetryFailedOperationsDueToInvalidConnections() method to enable automatic
+                  retry, and use the pool's LDAPInterface methods to process operations.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the collect-support-data tool, extended request, and administrative task
+                  to add an option to exclude Java Flight Recorder data from the resulting archive.
+                  This may be useful in cases where it is desirable to make collect-support-data
+                  processing operate as quickly as possible, or to minimize the size of the
+                  generated archive.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the BouncyCastleFIPSHelper class to add a couple of constants to make it
+                  easier to use the LDAP SDK in conjunction with version 2.1.3 of the Bouncy Castle
+                  bc-fips provider to enable support for FIPS 140-3 compliance.  This release of
+                  the provider introduced support for using native CPU instructions for certain
+                  kinds of operations, but this has been observed to result in failures in some
+                  environments.  The use of native CPU instructions can be disabled by setting the
+                  "org.bouncycastle.native.cpu_variant" system property with a value of "java", and
+                  the new PROPERTY_CPU_VARIANT and CPU_VARIANT_JAVA constants can help make that
+                  easier to accomplish programmatically.
+                  <br><br>
+                </li>
+
+                <li>
+                  Updated the documentation to include the latest revisions of
+                  draft-codere-ldapsyntax, draft-housley-asn1-layman-guide,
+                  draft-ietf-kitten-password-storage, draft-ietf-kitten-sasl-ht, and
+                  draft-melnikov-sasl2 in the set of LDAP-related specifications.
+                  <br><br>
+                </li>
+              </ul>
+
+              <p></p>
+
+
+
               <h3>Version 7.0.5</h3>
 
               <p>
